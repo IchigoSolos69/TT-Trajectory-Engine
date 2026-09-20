@@ -6,19 +6,15 @@
 #include <sstream>
 #include <vector>
 #include <map>
+#include <set>
 #include <cmath>
 #include <algorithm>
+#include <cctype>
 #include <opencv2/opencv.hpp>
-
-struct BallGT {
-    int frameId;
-    float x;
-    float y;
-};
 
 int main(int argc, char** argv) {
     std::cout << "=========================================================================" << std::endl;
-    std::cout << "  Authoritative C++ TensorRT FP16 System Evaluation (Full 16,800 Frames)" << std::endl;
+    std::cout << "  Authoritative C++ TensorRT System Evaluation (Full 16,800 Frames)" << std::endl;
     std::cout << "=========================================================================" << std::endl;
 
     std::string videoPath = "python_tools/dataset/raw_videos/test_1.mp4";
@@ -38,7 +34,7 @@ int main(int argc, char** argv) {
     float imgW = static_cast<float>(cap.get(cv::CAP_PROP_FRAME_WIDTH));
     float imgH = static_cast<float>(cap.get(cv::CAP_PROP_FRAME_HEIGHT));
 
-    // Load GT Ball Markups
+    // Load GT Ball Markups with robust digit-key JSON parser
     std::map<int, std::pair<float, float>> gtBallMap;
     std::ifstream ballFile(ballJsonPath);
     if (ballFile.is_open()) {
@@ -47,30 +43,30 @@ int main(int argc, char** argv) {
         std::string content = buffer.str();
         size_t pos = 0;
         while ((pos = content.find("\"", pos)) != std::string::npos) {
-            size_t endFramePos = content.find("\"", pos + 1);
-            if (endFramePos == std::string::npos) break;
-            std::string frameStr = content.substr(pos + 1, endFramePos - pos - 1);
-            pos = endFramePos + 1;
-            if (frameStr == "x" || frameStr == "y" || frameStr == "status") continue;
-            try {
-                int frameIdx = std::stoi(frameStr);
-                size_t xPos = content.find("\"x\"", pos);
-                if (xPos == std::string::npos || xPos > pos + 100) continue;
-                size_t xValStart = content.find(":", xPos) + 1;
-                size_t xValEnd = content.find_first_of(",}", xValStart);
-                float xVal = std::stof(content.substr(xValStart, xValEnd - xValStart));
+            size_t endKeyPos = content.find("\"", pos + 1);
+            if (endKeyPos == std::string::npos) break;
+            std::string key = content.substr(pos + 1, endKeyPos - pos - 1);
+            pos = endKeyPos + 1;
 
-                size_t yPos = content.find("\"y\"", pos);
-                if (yPos == std::string::npos || yPos > pos + 100) continue;
-                size_t yValStart = content.find(":", yPos) + 1;
-                size_t yValEnd = content.find_first_of(",}", yValStart);
-                float yVal = std::stof(content.substr(yValStart, yValEnd - yValStart));
-
-                if (xVal >= 0 && yVal >= 0) {
-                    gtBallMap[frameIdx] = {xVal, yVal};
+            bool isFrameNumber = !key.empty() && std::all_of(key.begin(), key.end(), ::isdigit);
+            if (isFrameNumber) {
+                int frameIdx = std::stoi(key);
+                size_t bracePos = content.find("{", pos);
+                if (bracePos != std::string::npos && bracePos < pos + 20) {
+                    size_t closeBrace = content.find("}", bracePos);
+                    if (closeBrace != std::string::npos) {
+                        std::string objStr = content.substr(bracePos, closeBrace - bracePos + 1);
+                        size_t xPos = objStr.find("\"x\"");
+                        size_t yPos = objStr.find("\"y\"");
+                        if (xPos != std::string::npos && yPos != std::string::npos) {
+                            float xVal = std::stof(objStr.substr(objStr.find(":", xPos) + 1));
+                            float yVal = std::stof(objStr.substr(objStr.find(":", yPos) + 1));
+                            if (xVal >= 0 && yVal >= 0) {
+                                gtBallMap[frameIdx] = {xVal, yVal};
+                            }
+                        }
+                    }
                 }
-            } catch (...) {
-                continue;
             }
         }
     }
@@ -89,17 +85,18 @@ int main(int argc, char** argv) {
             std::string key = content.substr(pos + 1, endPos - pos - 1);
             pos = endPos + 1;
             
-            // Look for value matching "bounce" strictly
-            size_t valStart = content.find("\"", pos);
-            if (valStart == std::string::npos || valStart > pos + 30) continue;
-            size_t valEnd = content.find("\"", valStart + 1);
-            std::string valStr = content.substr(valStart + 1, valEnd - valStart - 1);
-            pos = valEnd + 1;
+            bool isFrameNumber = !key.empty() && std::all_of(key.begin(), key.end(), ::isdigit);
+            if (isFrameNumber) {
+                size_t valStart = content.find("\"", pos);
+                if (valStart != std::string::npos && valStart < pos + 30) {
+                    size_t valEnd = content.find("\"", valStart + 1);
+                    std::string valStr = content.substr(valStart + 1, valEnd - valStart - 1);
+                    pos = valEnd + 1;
 
-            if (valStr == "bounce") {
-                try {
-                    gtBounces.push_back(std::stoi(key));
-                } catch (...) {}
+                    if (valStr == "bounce") {
+                        gtBounces.push_back(std::stoi(key));
+                    }
+                }
             }
         }
         std::sort(gtBounces.begin(), gtBounces.end());
@@ -121,6 +118,7 @@ int main(int argc, char** argv) {
     cv::Mat frame;
     int frameId = 0;
 
+    // Sequential Frame Processing
     while (cap.read(frame)) {
         if (frame.empty()) break;
         frameId++;
@@ -130,15 +128,16 @@ int main(int argc, char** argv) {
         if (trtOk) {
             std::vector<float> inputBuffer = TensorRTEngine::preprocessOpenCVFrame(frame, 640, 640);
             std::vector<Detection> detections = trtEngine.inferFrame(inputBuffer);
-            std::vector<TrackedObject> tracks = tracker.update(detections);
-
-            for (const auto& trk : tracks) {
-                if (trk.class_id == 0) {
-                    detPxX = (trk.x + trk.w / 2.0f) * imgW;
-                    detPxY = (trk.y + trk.h / 2.0f) * imgH;
-                    break;
-                }
+            
+            if (!detections.empty()) {
+                // Top confidence detection
+                const auto& bestDet = detections[0];
+                detPxX = (bestDet.x + bestDet.w / 2.0f) * imgW;
+                detPxY = (bestDet.y + bestDet.h / 2.0f) * imgH;
             }
+
+            // Update ByteTracker for physics engine line
+            std::vector<TrackedObject> tracks = tracker.update(detections);
         }
 
         // Ball Detector Level Evaluation on Annotated Frames ONLY
@@ -153,6 +152,8 @@ int main(int argc, char** argv) {
 
                 if (dist <= 15.0f) {
                     ballTP++;
+                } else {
+                    ballFN++;
                 }
             } else {
                 ballFN++;
@@ -200,7 +201,7 @@ int main(int argc, char** argv) {
     float p95Loc = locErrorsPx.empty() ? 0.0f : locErrorsPx[locErrorsPx.size() * 95 / 100];
     float p99Loc = locErrorsPx.empty() ? 0.0f : locErrorsPx[locErrorsPx.size() * 99 / 100];
 
-    std::cout << "\n--- DEPLOYED TENSORRT FP16 ENGINE DETECTOR METRICS (test_1: 880 GT Ball Frames) ---" << std::endl;
+    std::cout << "\n--- DEPLOYED TENSORRT ENGINE DETECTOR METRICS (test_1: " << gtBallMap.size() << " GT Ball Frames) ---" << std::endl;
     std::cout << "  Center Distance Match Threshold : <= 15.0 pixels" << std::endl;
     std::cout << "  Annotated Frames Detected (TP)  : " << ballTP << " / " << gtBallMap.size() << std::endl;
     std::cout << "  Missed Ball Frames (FN)         : " << ballFN << std::endl;
@@ -210,7 +211,7 @@ int main(int argc, char** argv) {
     std::cout << "  Localization Error p95          : " << p95Loc << " pixels" << std::endl;
     std::cout << "  Localization Error p99          : " << p99Loc << " pixels" << std::endl;
 
-    std::cout << "\n--- DEPLOYED TENSORRT FP16 SYSTEM BOUNCE METRICS (Full 16,800 Frames) ---" << std::endl;
+    std::cout << "\n--- DEPLOYED TENSORRT SYSTEM BOUNCE METRICS (Full 16,800 Frames) ---" << std::endl;
     std::cout << "  Ground Truth Bounces (GT)        : " << gtBounces.size() << std::endl;
     std::cout << "  Total Detected Bounces Clip-Wide : " << detectedBounceFrames.size() << std::endl;
     std::cout << "  True Positive Bounces (TP)       : " << bounceTP << std::endl;

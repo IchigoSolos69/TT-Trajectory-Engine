@@ -337,7 +337,7 @@ std::vector<Detection> TensorRTEngine::inferFrame(const std::vector<float>& rgbN
 
     std::vector<float> rawOutput(84 * 8400, 0.0f);
     executeInference(rgbNormalizedBuffer, rawOutput);
-    detections = postProcess(rawOutput, inputW_, inputH_, 0.25f, 0.45f);
+    detections = postProcess(rawOutput, inputW_, inputH_, 0.15f, 0.45f);
 
     return detections;
 }
@@ -378,7 +378,7 @@ void TensorRTEngine::executeInference(const std::vector<float>& inputCPU, std::v
 
 std::vector<Detection> TensorRTEngine::postProcess(const std::vector<float>& rawOutput, int imgWidth, int imgHeight, float confThreshold, float nmsThreshold) {
     std::vector<Detection> finalDetections;
-    std::vector<cv::Rect> boxes;
+    std::vector<cv::Rect2d> boxes;
     std::vector<float> confidences;
     std::vector<int> classIds;
 
@@ -423,12 +423,12 @@ std::vector<Detection> TensorRTEngine::postProcess(const std::vector<float>& raw
             float wOrig  = w / scaleR;
             float hOrig  = h / scaleR;
 
-            int left   = static_cast<int>(cxOrig - wOrig / 2.0f);
-            int top    = static_cast<int>(cyOrig - hOrig / 2.0f);
-            int width  = static_cast<int>(wOrig);
-            int height = static_cast<int>(hOrig);
+            double left   = cxOrig - wOrig / 2.0;
+            double top    = cyOrig - hOrig / 2.0;
+            double width  = wOrig;
+            double height = hOrig;
 
-            boxes.push_back(cv::Rect(left, top, width, height));
+            boxes.push_back(cv::Rect2d(left, top, width, height));
             confidences.push_back(maxProb);
             classIds.push_back(maxClassId);
         }
@@ -443,14 +443,13 @@ std::vector<Detection> TensorRTEngine::postProcess(const std::vector<float>& raw
         Detection det;
         det.class_id = classIds[idx];
         det.confidence = confidences[idx];
-        det.x = static_cast<float>(boxes[idx].x) / imgWidth;
-        det.y = static_cast<float>(boxes[idx].y) / imgHeight;
-        det.w = static_cast<float>(boxes[idx].width) / imgWidth;
-        det.h = static_cast<float>(boxes[idx].height) / imgHeight;
+        det.x = static_cast<float>(boxes[idx].x / imgWidth);
+        det.y = static_cast<float>(boxes[idx].y / imgHeight);
+        det.w = static_cast<float>(boxes[idx].width / imgWidth);
+        det.h = static_cast<float>(boxes[idx].height / imgHeight);
         finalDetections.push_back(det);
     }
 
     return finalDetections;
 }
-
 
