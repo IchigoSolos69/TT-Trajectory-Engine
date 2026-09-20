@@ -1,0 +1,22 @@
+{
+  "sequence": "test_1",
+  "total_video_frames": 16800,
+  "annotated_gt_frames": 880,
+  "detected_gt_frames": 787,
+  "raw_recall_pct": 89.43181818181817,
+  "total_detections_all_frames": 8884,
+  "annotated_detections_count": 787,
+  "fp_unannotated_frames": 3557,
+  "median_error_px": 2.852317778621388,
+  "mean_error_px": 4.635271338086402,
+  "std_error_px": 7.645109752333028,
+  "p90_error_px": 8.05276839769154,
+  "p95_error_px": 10.716556876734115,
+  "p99_error_px": 52.48466616890164,
+  "out_of_15px_count": 21,
+  "out_of_15px_pct": 2.6683608640406606,
+  "hit_rate_5px_pct": 74.58703939008895,
+  "hit_rate_10px_pct": 94.0279542566709,
+  "hit_rate_15px_pct": 97.33163913595934,
+  "full_frame_precision_15px_pct": 8.622242233228276
+}

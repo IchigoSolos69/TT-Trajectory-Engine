@@ -1,0 +1,40 @@
+# Node modules & build artifacts
+node_modules/
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+
+# C++ Build outputs
+backend_cpp/build/
+*.exe
+*.obj
+*.lib
+*.dll
+*.exp
+
+# Python & ML artifacts
+__pycache__/
+*.pyc
+runs/
+*.onnx
+*.pt
+*.engine
+weights/
+models/
+python_tools/weights/
+python_tools/runs/
+
+# Large media & datasets
+*.mp4
+*.zip
+python_tools/dataset/
+python_tools/dataset/raw_videos/
+python_tools/dataset/raw_markup/
+python_tools/dataset/images/
+python_tools/dataset/labels/
+
+# Temporary logs & telemetry
+*.log
+gpu_log.csv
+cpu_log.txt
+realtime_wallclock_latency.csv

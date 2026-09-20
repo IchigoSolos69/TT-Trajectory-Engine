@@ -1,0 +1,93 @@
+[
+  {
+    "frame_id": 1,
+    "timestamp": 1726678200000,
+    "fps": 60,
+    "ball": { "x": 0.22, "y": 0.68, "z": 0.95, "vx": 18.2, "vy": -4.1, "vz": 2.8, "speed_kmh": 68.5, "confidence": 0.98, "is_bounce": false },
+    "spin": { "rpm": 4800, "type": "topspin", "axis_deg": 45 },
+    "players": [
+      { "id": 1, "label": "Player A (Near)", "bbox": [0.38, 0.78, 0.24, 0.20], "confidence": 0.98 },
+      { "id": 2, "label": "Player B (Far)", "bbox": [0.42, 0.36, 0.16, 0.18], "confidence": 0.95 }
+    ],
+    "table_corners": [[0.28, 0.52], [0.72, 0.52], [0.85, 0.88], [0.15, 0.88]],
+    "rally": { "in_progress": true, "stroke_count": 14, "rally_duration_s": 5.4, "max_speed_kmh": 94.2 }
+  },
+  {
+    "frame_id": 2,
+    "timestamp": 1726678200016,
+    "fps": 60,
+    "ball": { "x": 0.28, "y": 0.62, "z": 1.05, "vx": 19.1, "vy": -3.5, "vz": 2.9, "speed_kmh": 72.0, "confidence": 0.98, "is_bounce": false },
+    "spin": { "rpm": 4850, "type": "topspin", "axis_deg": 45 },
+    "players": [
+      { "id": 1, "label": "Player A (Near)", "bbox": [0.38, 0.78, 0.24, 0.20], "confidence": 0.98 },
+      { "id": 2, "label": "Player B (Far)", "bbox": [0.42, 0.36, 0.16, 0.18], "confidence": 0.95 }
+    ],
+    "table_corners": [[0.28, 0.52], [0.72, 0.52], [0.85, 0.88], [0.15, 0.88]],
+    "rally": { "in_progress": true, "stroke_count": 14, "rally_duration_s": 5.4, "max_speed_kmh": 94.2 }
+  },
+  {
+    "frame_id": 3,
+    "timestamp": 1726678200032,
+    "fps": 60,
+    "ball": { "x": 0.35, "y": 0.58, "z": 1.10, "vx": 20.4, "vy": -2.8, "vz": 3.0, "speed_kmh": 76.5, "confidence": 0.99, "is_bounce": false },
+    "spin": { "rpm": 4900, "type": "topspin", "axis_deg": 45 },
+    "players": [
+      { "id": 1, "label": "Player A (Near)", "bbox": [0.37, 0.77, 0.24, 0.20], "confidence": 0.98 },
+      { "id": 2, "label": "Player B (Far)", "bbox": [0.42, 0.36, 0.16, 0.18], "confidence": 0.95 }
+    ],
+    "table_corners": [[0.28, 0.52], [0.72, 0.52], [0.85, 0.88], [0.15, 0.88]],
+    "rally": { "in_progress": true, "stroke_count": 14, "rally_duration_s": 5.4, "max_speed_kmh": 94.2 }
+  },
+  {
+    "frame_id": 4,
+    "timestamp": 1726678200048,
+    "fps": 60,
+    "ball": { "x": 0.44, "y": 0.60, "z": 0.98, "vx": 22.0, "vy": 2.1, "vz": 2.4, "speed_kmh": 84.0, "confidence": 0.99, "is_bounce": false },
+    "spin": { "rpm": 5100, "type": "topspin", "axis_deg": 45 },
+    "players": [
+      { "id": 1, "label": "Player A (Near)", "bbox": [0.37, 0.77, 0.24, 0.20], "confidence": 0.98 },
+      { "id": 2, "label": "Player B (Far)", "bbox": [0.43, 0.36, 0.16, 0.18], "confidence": 0.95 }
+    ],
+    "table_corners": [[0.28, 0.52], [0.72, 0.52], [0.85, 0.88], [0.15, 0.88]],
+    "rally": { "in_progress": true, "stroke_count": 14, "rally_duration_s": 5.4, "max_speed_kmh": 94.2 }
+  },
+  {
+    "frame_id": 5,
+    "timestamp": 1726678200064,
+    "fps": 60,
+    "ball": { "x": 0.52, "y": 0.68, "z": 0.82, "vx": 24.5, "vy": 6.8, "vz": 1.2, "speed_kmh": 94.2, "confidence": 0.99, "is_bounce": true, "bounce_type": "table_player2" },
+    "spin": { "rpm": 5200, "type": "topspin", "axis_deg": 45 },
+    "players": [
+      { "id": 1, "label": "Player A (Near)", "bbox": [0.36, 0.76, 0.24, 0.20], "confidence": 0.98 },
+      { "id": 2, "label": "Player B (Far)", "bbox": [0.44, 0.36, 0.16, 0.18], "confidence": 0.95 }
+    ],
+    "table_corners": [[0.28, 0.52], [0.72, 0.52], [0.85, 0.88], [0.15, 0.88]],
+    "rally": { "in_progress": true, "stroke_count": 14, "rally_duration_s": 5.5, "max_speed_kmh": 94.2 }
+  },
+  {
+    "frame_id": 6,
+    "timestamp": 1726678200080,
+    "fps": 60,
+    "ball": { "x": 0.61, "y": 0.58, "z": 0.96, "vx": 21.0, "vy": -5.2, "vz": -1.1, "speed_kmh": 81.0, "confidence": 0.97, "is_bounce": false },
+    "spin": { "rpm": 4600, "type": "topspin", "axis_deg": 45 },
+    "players": [
+      { "id": 1, "label": "Player A (Near)", "bbox": [0.36, 0.76, 0.24, 0.20], "confidence": 0.98 },
+      { "id": 2, "label": "Player B (Far)", "bbox": [0.45, 0.36, 0.16, 0.18], "confidence": 0.96 }
+    ],
+    "table_corners": [[0.28, 0.52], [0.72, 0.52], [0.85, 0.88], [0.15, 0.88]],
+    "rally": { "in_progress": true, "stroke_count": 14, "rally_duration_s": 5.6, "max_speed_kmh": 94.2 }
+  },
+  {
+    "frame_id": 7,
+    "timestamp": 1726678200096,
+    "fps": 60,
+    "ball": { "x": 0.68, "y": 0.46, "z": 1.08, "vx": 17.5, "vy": -6.1, "vz": -2.0, "speed_kmh": 70.2, "confidence": 0.96, "is_bounce": false },
+    "spin": { "rpm": 4400, "type": "topspin", "axis_deg": 45 },
+    "players": [
+      { "id": 1, "label": "Player A (Near)", "bbox": [0.36, 0.76, 0.24, 0.20], "confidence": 0.98 },
+      { "id": 2, "label": "Player B (Far)", "bbox": [0.46, 0.36, 0.16, 0.18], "confidence": 0.96 }
+    ],
+    "table_corners": [[0.28, 0.52], [0.72, 0.52], [0.85, 0.88], [0.15, 0.88]],
+    "rally": { "in_progress": true, "stroke_count": 15, "rally_duration_s": 5.7, "max_speed_kmh": 94.2 }
+  }
+]
