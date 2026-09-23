@@ -196,6 +196,7 @@ int main(int argc, char** argv) {
             // STATE 3: Hardware active & frame acquired
             if (isCameraCurrentlyOpen && cap.read(frame) && !frame.empty()) {
                 frameId++;
+                auto t0 = std::chrono::high_resolution_clock::now();
                 auto t1 = std::chrono::high_resolution_clock::now();
                 std::vector<Detection> detections = trtEngine.inferFrameGPU(frame);
 
