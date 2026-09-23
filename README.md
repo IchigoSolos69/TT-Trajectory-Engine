@@ -128,9 +128,9 @@ Logged across 5 isolated runs over 16,800 frames per run on a clean machine (no 
 
 
 <!-- BEGIN RESULTS SECTION -->
-## Canonical Performance & Benchmark Summary (Commit: `c4698cc3dfbcefde42e529fc1a82741b5c544e33`)
+## Canonical Performance & Benchmark Summary (Commit: `3342fd599729a17c7804e1de7252b01df6b2740e`)
 
-### Ground-Truth Bounce Detection Baseline (Match Window $\pm 3$ Frames / $\pm 25\text{ ms}$)
+### 1. Ground-Truth Bounce Detection Baseline (Match Window $\pm 3$ Frames / $\pm 25\text{ ms}$)
 > *"Bounce logic on ground-truth ball positions, no detector involved; tuned on `game_1` and `test_1`: precision 84–94%, recall 87–90%. Held-out evaluation pending."*
 
 | Sequence | Split | GT Bounces | Detected | TP | FP | FN | Precision | Recall | F1 Score |
@@ -138,34 +138,54 @@ Logged across 5 isolated runs over 16,800 frames per run on a clean machine (no 
 | **`game_1`** | Tuning Set | 227 | 217 | 205 | 12 | 22 | **94.47%** | **90.31%** | **92.34%** |
 | **`test_1`** | Dev Set | 31 | 32 | 27 | 5 | 4 | **84.38%** | **87.10%** | **85.71%** |
 
+### 2. Fine-Tuned Detector Localization & Frame-Shift Sweep (`test_1`, `models/yolov11_ttgames.engine`)
+> *"Frame-shift sweep from -3 to +3 offsets verifies Offset 0 as the unequivocal peak. Raw top-1 detector predictions with C++ aspect-ratio letterboxing achieve 4.03 px median localization error and 61.70% hit rate within 15 px on 880 annotated frames."*
 
-### Detector Heavy-Tail Localization & Hit Rate (`test_1`, Commit: `dd34a7b3db0866b0c8bb6c5f3535ac989513252f`)
-- **GT Ball Frames**: 880 | **Detected GT Frames**: 787 (89.43% Raw Recall)
-- **Localization Error Distribution (px)**:
-  - **Median (p50)**: **2.85 px** | **Mean**: **4.64 ± 7.65 px**
-  - **p90**: **8.05 px** | **p95**: **10.72 px** | **p99**: **52.48 px**
-  - **Error > 15 px**: 21 detections (2.67%)
-- **Hit Rate among Detections on Annotated Frames**:
-  - $\le 5\text{ px}$: **74.59%** (587 / 787)
-  - $\le 10\text{ px}$: **94.03%** (740 / 787)
-  - $\le 15\text{ px}$: **97.33%** (766 / 787)
+- **Frame-Shift Sweep (-3 to +3 Offsets on C++ TensorRT Path)**:
+  | Frame Offset | Hit Rate $\le 5.0\text{ px}$ | Hit Rate $\le 10.0\text{ px}$ | Hit Rate $\le 15.0\text{ px}$ | Median Localization Error |
+  | :--- | :--- | :--- | :--- | :--- |
+  | **Offset -3** | 0.00% | 0.11% | 0.23% | 72.22 px |
+  | **Offset -2** | 0.00% | 0.00% | 1.25% | 49.09 px |
+  | **Offset -1** | 0.34% | 3.41% | 12.16% | 25.77 px |
+  | **Offset +0 (Aligned Peak)** | **46.25%** | **59.77%** | **61.70%** | **4.03 px** |
+  | **Offset +1** | 1.70% | 9.43% | 24.09% | 20.08 px |
+  | **Offset +2** | 14.55% | 19.43% | 21.25% | 30.51 px |
+  | **Offset +3** | 0.34% | 0.91% | 4.20% | 45.10 px |
 
-### Fine-Tuned FP16 TensorRT Engine Real-Time Wall-Clock Latency & Telemetry
-> *"10.27 ms median total frame wall-clock latency across five process-isolated passes (range 10.11–12.40 ms), single-threaded, including 1080p H.264 decode, 640px TensorRT 11.3 FP16 ball engine (7.27 MB), ByteTrack, and physics. Plainly stated: single-threaded wall-clock processing does not hold a 120 FPS (8.33 ms) cadence without hardware decoding and CUDA preprocessing offload."*
+- **Side-by-Side Raw Tensor Parity (Frame 1672)**:
+  - **ONNX Model**: Anchor 3073 | Raw 640x640: `(266.1, 307.8)` | Conf: `0.491` | Unletterboxed 1080p: `(798.3, 503.5)` | Error: **1.37 px**
+  - **C++ TensorRT**: Anchor 3073 | Raw 640x640: `(266.0, 307.8)` | Conf: `0.491` | Unletterboxed 1080p: `(798.0, 503.3)` | Error: **1.25 px**
+  - *Full 880-frame side-by-side CSV*: [side_by_side_880_frames.csv](file:///c:/Users/Adi/Documents/GitHub/TT%20Trajectory%20Engine/python_tools/side_by_side_880_frames.csv).
 
-- **Fine-Tuned Engine Metadata**:
-  - **Engine Path**: `models/yolov11_ttgames.engine` | **File Size**: 7,268,804 bytes (~7.27 MB FP16)
-  - **SHA-256 Checksum**: `847d5ed2c02ee27993451c3286c0aedde59e78779a1d0349fda6706bd8c6d42e`
-  - **Runtime & Library**: TensorRT Library Version `11.3.0` (DLL `nvinfer_11.dll`)
-  - **Tensor Dimensions**: Input `[1, 3, 640, 640]`, Output `[1, 5, 8400]` (1-class ball detector)
-- **Per-Run Wall-Clock Latency (p50)**:
-  - Run 1: **10.11 ms** | Run 2: **10.27 ms** | Run 3: **10.60 ms** | Run 4: **12.40 ms** | Run 5: **10.23 ms**
-  - **Median of Medians**: **10.27 ms** (Spread: 10.11 ms – 12.40 ms)
-  - **Stage Breakdown (p50)**: Native TensorRT GPU Inference: **4.45 ms** (43.3%) | Preprocess: **3.49 ms** (34.0%) | Decode: **2.33 ms** (22.7%) | ByteTrack & Physics: **< 0.001 ms**.
-- **Latency Percentiles & Cadence (16,800 frames, Clean Process-Isolated Run)**:
-  - **p50 (Median)**: **10.11 ms** | **p95**: **11.59 ms** | **p99**: **13.77 ms**
-  - **120 Hz Cadence On-Time Percentage ($\le 8.33\text{ ms}$)**: **0.00%** (0 / 16,800 frames within 8.33 ms budget)
-- **Hardware Telemetry Summary**:
-  - **GPU**: NVIDIA GeForce RTX 5050 Laptop GPU @ 1605–2565 MHz | Temp: 62–71 °C (Median 70 °C) | Power: 23.53 W – 38.70 W | Status: `0x0 (Zero active throttling; 99.8% unthrottled during benchmark window)`.
-  - **CPU**: Processor Performance 80% - 100%.
+### 3. Deployed C++ End-to-End System Evaluation & Tracking Feed Comparative Ablation (`eval_real_trt_system.exe`)
+> *"Comparative end-to-end evaluation across 16,800 frames against 31 strict GT bounces confirms ByteTrack's human-tuned Kalman filter degrades fast ball tracking (2.63% F1). Relaxing the track continuity gate from >=3 to >=1 restored bounce recall from 29.03% to 41.94%, and feeding confidence-gated raw top-1 detections directly into PhysicsEngine yields a 15.48% F1 score."*
+
+| Tracking Feed Mode | Clip-Wide Bounces | TP | FP | FN | Precision | Recall | F1 Score |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Mode A: ByteTrack Tracked Feed** | 121 | 2 | 119 | 29 | 1.65% | 6.45% | **2.63%** |
+| **Mode B: Gated Raw Top-1 Feed** | 137 | 13 | 124 | 18 | 9.49% | **41.94%** | **15.48%** |
+
+- **False Positive Diagnostic & Sample Overlays**:
+  - Rendered 20 FP bounce overlay PNGs into `python_tools/fp_samples/` using `fast_render_fp_overlays.py`.
+  - **Root Cause**: 76.4% of false positive bounces (e.g., frames 2674, 3583, 7404, 7793, 11480) occur in **unannotated inter-rally regions** where players walk around holding balls or picking them off the floor between rallies without an active rally state gate.
+
+### 4. Fused CUDA GPU Preprocessing Pipeline & Isolated 5-Pass Benchmark (`run_isolated_benchmark.ps1`)
+> *"6.43 ms median total frame wall-clock latency across five process-isolated passes (range 6.18–7.65 ms p95), achieving a 98.97% on-time real-time cadence (16,627 / 16,800 frames) within the 120 FPS (8.33 ms) budget on an RTX 5050 Laptop GPU."*
+
+- **Isolated Sub-Stage Breakdown & Overhead Analysis (6.43 ms Median Total Frame Wall-Clock)**:
+  | Processing Sub-Stage | Baseline CPU Preprocess | Fused CUDA GPU Preprocess Pipeline | Percentage of Frame Window |
+  | :--- | :--- | :--- | :--- |
+  | **OpenCV CPU Aspect Letterboxing Preprocess** | 3.50 ms | **0.54 ms** (CUDA H2D + Preprocess) | 8.40% |
+  | **OpenCV CPU Video Frame Decoding** | 2.30 ms | **2.30 ms** | 35.77% |
+  | **TensorRT GPU Execution (`enqueueV3`)** | 2.11 ms | **1.81 ms** | 28.15% |
+  | **CPU NMS & Postprocess Bounding Box Decoding** | 1.08 ms | **0.54 ms** | 8.40% |
+  | **CUDA D2H Device-to-Host Output Copy** | 0.19 ms | **0.84 ms** | 13.06% |
+  | **ByteTrack & Physics Update** | 0.02 ms | **0.02 ms** | 0.31% |
+  | **Loop & Calibration Overhead** | 1.77 ms | **0.38 ms** | 5.91% |
+  | **Total Frame Wall-Clock Latency (p50)** | **11.20 ms** | **6.43 ms** (98.97% $\le 8.33\text{ ms}$) | **100.00%** |
+
+- **GPU Clock Ramp Proof (`test_gpu_burst_clocks.exe` + `nvidia-smi`)**:
+  - Isolated Burst GPU Compute (10ms CPU Idle Window): **2.11 ms** (GPU SM Clock downclocks to **1897 MHz**).
+  - 100 Consecutive Back-to-Back Warm Inferences: **1.64 ms** (GPU SM Clock boosts to **2812 MHz**).
+  - Empirical Idle Window Penalty: **+0.47 ms** (32.5% frequency drop during single-threaded CPU idle windows between frames).
 <!-- END RESULTS SECTION -->

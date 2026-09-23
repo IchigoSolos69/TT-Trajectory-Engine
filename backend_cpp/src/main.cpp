@@ -196,11 +196,8 @@ int main(int argc, char** argv) {
             // STATE 3: Hardware active & frame acquired
             if (isCameraCurrentlyOpen && cap.read(frame) && !frame.empty()) {
                 frameId++;
-                auto t0 = std::chrono::high_resolution_clock::now();
-                std::vector<float> inputBuffer = TensorRTEngine::preprocessOpenCVFrame(frame, 640, 640);
-
                 auto t1 = std::chrono::high_resolution_clock::now();
-                std::vector<Detection> detections = trtEngine.inferFrame(inputBuffer);
+                std::vector<Detection> detections = trtEngine.inferFrameGPU(frame);
 
                 auto t2 = std::chrono::high_resolution_clock::now();
                 std::vector<TrackedObject> tracks = tracker.update(detections);
@@ -268,11 +265,10 @@ int main(int argc, char** argv) {
                         break;
                     }
                 }
-                std::vector<float> inputBuffer = TensorRTEngine::preprocessOpenCVFrame(frame, 640, 640);
-                detections = trtEngine.inferFrame(inputBuffer);
+                detections = trtEngine.inferFrameGPU(frame);
             } else {
-                std::vector<float> mockFrameBuffer(3 * 640 * 640, 0.5f);
-                detections = trtEngine.inferFrame(mockFrameBuffer);
+                cv::Mat mockFrame(640, 640, CV_8UC3, cv::Scalar(128, 128, 128));
+                detections = trtEngine.inferFrameGPU(mockFrame);
             }
 
             std::vector<TrackedObject> tracks = tracker.update(detections);

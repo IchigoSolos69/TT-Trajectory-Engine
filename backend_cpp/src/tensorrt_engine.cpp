@@ -1,8 +1,10 @@
 #include "tensorrt_engine.hpp"
+#include "cuda_preprocess.hpp"
 #include <fstream>
 #include <algorithm>
 #include <cmath>
 #include <cstring>
+#include <chrono>
 
 #ifdef HAS_TENSORRT
 #include <NvInfer.h>
@@ -148,6 +150,61 @@ std::string TensorRTEngine::resolveEnginePath(const std::string& userPath) {
     if (envPath && std::ifstream(envPath).good()) {
         return std::string(envPath);
     }
+
+    std::vector<std::string> candidateSearchList = {
+        "models/yolov11_ttgames.engine",
+        "../models/yolov11_ttgames.engine",
+        "../../models/yolov11_ttgames.engine",
+        "../../../models/yolov11_ttgames.engine"
+    };
+
+    if (!userPath.empty()) {
+        candidateSearchList.insert(candidateSearchList.begin(), userPath);
+        candidateSearchList.insert(candidateSearchList.begin() + 1, "../" + userPath);
+        candidateSearchList.insert(candidateSearchList.begin() + 2, "../../" + userPath);
+    }
+
+    std::vector<std::string> existingPaths;
+    std::vector<std::string> canonicalPaths;
+    namespace fs = std::filesystem;
+
+    for (const auto& path : candidateSearchList) {
+        if (std::ifstream(path).good()) {
+            std::string cPath = path;
+            try {
+                cPath = fs::canonical(path).string();
+            } catch (...) {}
+
+            // Check if canonical path is unique
+            if (std::find(canonicalPaths.begin(), canonicalPaths.end(), cPath) == canonicalPaths.end()) {
+                existingPaths.push_back(path);
+                canonicalPaths.push_back(cPath);
+            }
+        }
+    }
+
+    if (canonicalPaths.size() > 1) {
+        std::cerr << "========================================================================\n";
+        std::cerr << "[TensorRTEngine] CRITICAL FATAL ERROR: Multiple distinct engine files detected on search paths!\n";
+        std::cerr << "[TensorRTEngine] Ambiguity hazard! The engine resolver found " << canonicalPaths.size() << " conflicting engine files:\n";
+        for (size_t i = 0; i < existingPaths.size(); ++i) {
+            uint64_t fSize = 0;
+            try { fSize = fs::file_size(existingPaths[i]); } catch(...) {}
+            std::string sha = computeSha256(existingPaths[i]);
+            std::cerr << "  [" << (i + 1) << "] Relative: " << existingPaths[i] 
+                      << " | Canonical: " << canonicalPaths[i] 
+                      << " | Size: " << fSize << " bytes"
+                      << " | SHA-256: " << sha << "\n";
+        }
+        std::cerr << "[TensorRTEngine] Please remove duplicate engine files to guarantee determinism.\n";
+        std::cerr << "========================================================================\n";
+        std::exit(1);
+    }
+
+    if (!existingPaths.empty()) {
+        return existingPaths[0];
+    }
+
     return "models/yolov11_ttgames.engine";
 }
 
@@ -158,6 +215,7 @@ TensorRTEngine::TensorRTEngine(const std::string& enginePath, int inputWidth, in
       isInitialized_(false),
       context_(nullptr),
       engine_(nullptr),
+      stream_(nullptr),
       hostInputBuffer_(nullptr),
       hostOutputBuffer_(nullptr),
       deviceInputBuffer_(nullptr),
@@ -169,13 +227,26 @@ TensorRTEngine::TensorRTEngine(const std::string& enginePath, int inputWidth, in
 
 TensorRTEngine::~TensorRTEngine() {
 #ifdef HAS_TENSORRT
+    if (evStartH2D_) cudaEventDestroy(static_cast<cudaEvent_t>(evStartH2D_));
+    if (evStopH2D_) cudaEventDestroy(static_cast<cudaEvent_t>(evStopH2D_));
+    if (evStartPrep_) cudaEventDestroy(static_cast<cudaEvent_t>(evStartPrep_));
+    if (evStopPrep_) cudaEventDestroy(static_cast<cudaEvent_t>(evStopPrep_));
+    if (evStartExec_) cudaEventDestroy(static_cast<cudaEvent_t>(evStartExec_));
+    if (evStopExec_) cudaEventDestroy(static_cast<cudaEvent_t>(evStopExec_));
+    if (evStartD2H_) cudaEventDestroy(static_cast<cudaEvent_t>(evStartD2H_));
+    if (evStopD2H_) cudaEventDestroy(static_cast<cudaEvent_t>(evStopD2H_));
     if (context_) delete static_cast<nvinfer1::IExecutionContext*>(context_);
     if (engine_) delete static_cast<nvinfer1::ICudaEngine*>(engine_);
     if (deviceInputBuffer_) cudaFree(deviceInputBuffer_);
     if (deviceOutputBuffer_) cudaFree(deviceOutputBuffer_);
-#endif
+    if (deviceBGRBuffer_) cudaFree(deviceBGRBuffer_);
+    if (hostInputBuffer_) cudaFreeHost(hostInputBuffer_);
+    if (hostOutputBuffer_) cudaFreeHost(hostOutputBuffer_);
+    if (stream_) cudaStreamDestroy(static_cast<cudaStream_t>(stream_));
+#else
     if (hostInputBuffer_) free(hostInputBuffer_);
     if (hostOutputBuffer_) free(hostOutputBuffer_);
+#endif
 }
 
 static std::string fetchGitCommitSha() {
@@ -232,9 +303,6 @@ bool TensorRTEngine::init() {
     std::cout << "[TensorRTEngine] Runtime Git SHA   : " << gitCommitSha_ << std::endl;
     std::cout << "[TensorRTEngine] Compile-Time SHA  : " << COMPILE_GIT_COMMIT_SHA << std::endl;
 
-    hostInputBuffer_ = malloc(inputSize_);
-    hostOutputBuffer_ = malloc(outputSize_);
-
 #ifdef HAS_TENSORRT
     int trtVersion = getInferLibVersion();
     std::cout << "[TensorRTEngine] TensorRT Library Version : " << (trtVersion / 10000) << "." << ((trtVersion / 100) % 100) << "." << (trtVersion % 100) << " (raw: " << trtVersion << ")" << std::endl;
@@ -249,6 +317,14 @@ bool TensorRTEngine::init() {
     engine_ = engine;
     nvinfer1::IExecutionContext* context = engine->createExecutionContext();
     context_ = context;
+
+    // Allocate Pinned Host Memory for zero-copy DMA execution
+    cudaMallocHost(&hostInputBuffer_, inputSize_);
+    cudaMallocHost(&hostOutputBuffer_, outputSize_);
+
+    cudaStream_t stream;
+    cudaStreamCreate(&stream);
+    stream_ = stream;
 
     // Log data type for all I/O tensors via TensorRT 10 API
     for (int i = 0; i < engine->getNbIOTensors(); ++i) {
@@ -265,11 +341,32 @@ bool TensorRTEngine::init() {
     cudaMalloc(&deviceInputBuffer_, inputSize_);
     cudaMalloc(&deviceOutputBuffer_, outputSize_);
 
-    std::cout << "[TensorRTEngine] CUDA buffers allocated successfully on Device GPU." << std::endl;
+    // Set static tensor addresses once during init
+    for (int i = 0; i < engine->getNbIOTensors(); ++i) {
+        const char* tName = engine->getIOTensorName(i);
+        if (engine->getTensorIOMode(tName) == nvinfer1::TensorIOMode::kINPUT) {
+            context->setTensorAddress(tName, deviceInputBuffer_);
+        } else {
+            context->setTensorAddress(tName, deviceOutputBuffer_);
+        }
+    }
+
+    cudaEventCreate(reinterpret_cast<cudaEvent_t*>(&evStartH2D_));
+    cudaEventCreate(reinterpret_cast<cudaEvent_t*>(&evStopH2D_));
+    cudaEventCreate(reinterpret_cast<cudaEvent_t*>(&evStartPrep_));
+    cudaEventCreate(reinterpret_cast<cudaEvent_t*>(&evStopPrep_));
+    cudaEventCreate(reinterpret_cast<cudaEvent_t*>(&evStartExec_));
+    cudaEventCreate(reinterpret_cast<cudaEvent_t*>(&evStopExec_));
+    cudaEventCreate(reinterpret_cast<cudaEvent_t*>(&evStartD2H_));
+    cudaEventCreate(reinterpret_cast<cudaEvent_t*>(&evStopD2H_));
+
+    std::cout << "[TensorRTEngine] CUDA buffers allocated successfully on Device GPU (Pinned Host Memory Enabled)." << std::endl;
     std::cout << "[TensorRTEngine] Input Tensor Shape  : [1, 3, " << inputW_ << ", " << inputH_ << "] (Float32 CHW)" << std::endl;
     std::cout << "[TensorRTEngine] Output Tensor Shape : [1, 5, 8400] (1-class ball detector FP16 engine)" << std::endl;
     delete runtime;
 #else
+    hostInputBuffer_ = malloc(inputSize_);
+    hostOutputBuffer_ = malloc(outputSize_);
     std::cout << "[TensorRTEngine] Input Tensor Shape  : [1, 3, " << inputW_ << ", " << inputH_ << "] (Float32 CHW)" << std::endl;
     std::cout << "[TensorRTEngine] Output Tensor Shape : [1, 5, 8400] (Host CPU buffer allocated)" << std::endl;
 #endif
@@ -328,7 +425,7 @@ std::vector<float> TensorRTEngine::preprocessOpenCVFrame(const cv::Mat& inputFra
     return inputData;
 }
 
-std::vector<Detection> TensorRTEngine::inferFrame(const std::vector<float>& rgbNormalizedBuffer) {
+std::vector<Detection> TensorRTEngine::inferFrame(const std::vector<float>& rgbNormalizedBuffer, int origImgWidth, int origImgHeight, float confThreshold, float nmsThreshold) {
     std::vector<Detection> detections;
 
     if (!isInitialized_) {
@@ -337,41 +434,178 @@ std::vector<Detection> TensorRTEngine::inferFrame(const std::vector<float>& rgbN
 
     std::vector<float> rawOutput(84 * 8400, 0.0f);
     executeInference(rgbNormalizedBuffer, rawOutput);
-    detections = postProcess(rawOutput, inputW_, inputH_, 0.15f, 0.45f);
+    detections = postProcess(rawOutput, origImgWidth, origImgHeight, confThreshold, nmsThreshold);
 
     return detections;
 }
 
+std::vector<Detection> TensorRTEngine::inferFrameDetailed(const std::vector<float>& rgbNormalizedBuffer, InferenceTimingDetailed& timing, int origImgWidth, int origImgHeight, float confThreshold, float nmsThreshold) {
+    std::vector<Detection> detections;
+
+    if (!isInitialized_) {
+        return detections;
+    }
+
+    std::vector<float> rawOutput(84 * 8400, 0.0f);
+    executeInferenceDetailed(rgbNormalizedBuffer, rawOutput, timing.h2dMs, timing.gpuComputeMs, timing.d2hMs);
+
+    auto tDecodeStart = std::chrono::high_resolution_clock::now();
+    detections = postProcess(rawOutput, origImgWidth, origImgHeight, confThreshold, nmsThreshold);
+    auto tDecodeEnd = std::chrono::high_resolution_clock::now();
+    timing.decodeMs = std::chrono::duration<float, std::milli>(tDecodeEnd - tDecodeStart).count();
+
+    return detections;
+}
+
+std::vector<Detection> TensorRTEngine::inferFrameGPUDetailed(const cv::Mat& frame, InferenceTimingDetailed& timing, float confThreshold, float nmsThreshold) {
+    std::vector<Detection> detections;
+    if (!isInitialized_ || frame.empty()) return detections;
+
+#ifdef HAS_TENSORRT
+    cudaStream_t stream = static_cast<cudaStream_t>(stream_);
+    size_t reqBGRSize = frame.total() * frame.elemSize();
+
+    if (deviceBGRCapacity_ < reqBGRSize) {
+        if (deviceBGRBuffer_) cudaFree(deviceBGRBuffer_);
+        cudaMalloc(&deviceBGRBuffer_, reqBGRSize);
+        deviceBGRCapacity_ = reqBGRSize;
+    }
+
+    cudaEvent_t startH2D = static_cast<cudaEvent_t>(evStartH2D_);
+    cudaEvent_t stopH2D = static_cast<cudaEvent_t>(evStopH2D_);
+    cudaEvent_t startPrep = static_cast<cudaEvent_t>(evStartPrep_);
+    cudaEvent_t stopPrep = static_cast<cudaEvent_t>(evStopPrep_);
+    cudaEvent_t startExec = static_cast<cudaEvent_t>(evStartExec_);
+    cudaEvent_t stopExec = static_cast<cudaEvent_t>(evStopExec_);
+    cudaEvent_t startD2H = static_cast<cudaEvent_t>(evStartD2H_);
+    cudaEvent_t stopD2H = static_cast<cudaEvent_t>(evStopD2H_);
+
+    // 1. Copy raw frame BGR bytes directly to GPU memory (H2D)
+    cudaEventRecord(startH2D, stream);
+    cudaMemcpyAsync(deviceBGRBuffer_, frame.data, reqBGRSize, cudaMemcpyHostToDevice, stream);
+    cudaEventRecord(stopH2D, stream);
+
+    // 2. Launch CUDA Letterbox Preprocessing Kernel (NV12/BGR -> RGB planar CHW float)
+    cudaEventRecord(startPrep, stream);
+    launchLetterboxPreprocessKernel(
+        static_cast<const unsigned char*>(deviceBGRBuffer_), frame.cols, frame.rows, static_cast<int>(frame.step),
+        static_cast<float*>(deviceInputBuffer_), inputW_, inputH_,
+        stream
+    );
+    cudaEventRecord(stopPrep, stream);
+
+    // 3. TensorRT GPU Compute
+    cudaEventRecord(startExec, stream);
+    auto* ctx = static_cast<nvinfer1::IExecutionContext*>(context_);
+    ctx->enqueueV3(stream);
+    cudaEventRecord(stopExec, stream);
+
+    // 4. Device to Host Output Copy (into Pinned Host Memory)
+    cudaEventRecord(startD2H, stream);
+    std::vector<float> rawOutput(84 * 8400, 0.0f);
+    size_t copyBytes = std::min(outputSize_, rawOutput.size() * sizeof(float));
+    cudaMemcpyAsync(hostOutputBuffer_ ? hostOutputBuffer_ : rawOutput.data(), deviceOutputBuffer_, copyBytes, cudaMemcpyDeviceToHost, stream);
+    cudaEventRecord(stopD2H, stream);
+
+    cudaStreamSynchronize(stream);
+
+    if (hostOutputBuffer_) {
+        std::memcpy(rawOutput.data(), hostOutputBuffer_, copyBytes);
+    }
+
+    cudaEventElapsedTime(&timing.h2dMs, startH2D, stopH2D);
+    cudaEventElapsedTime(&timing.preprocessMs, startPrep, stopPrep);
+    cudaEventElapsedTime(&timing.gpuComputeMs, startExec, stopExec);
+    cudaEventElapsedTime(&timing.d2hMs, startD2H, stopD2H);
+
+    // 5. Unletterbox Postprocess
+    auto tDecodeStart = std::chrono::high_resolution_clock::now();
+    detections = postProcess(rawOutput, frame.cols, frame.rows, confThreshold, nmsThreshold);
+    auto tDecodeEnd = std::chrono::high_resolution_clock::now();
+    timing.decodeMs = std::chrono::duration<float, std::milli>(tDecodeEnd - tDecodeStart).count();
+#endif
+
+    return detections;
+}
+
+std::vector<Detection> TensorRTEngine::inferFrameGPU(const cv::Mat& frame, float confThreshold, float nmsThreshold) {
+    InferenceTimingDetailed dummyTiming;
+    return inferFrameGPUDetailed(frame, dummyTiming, confThreshold, nmsThreshold);
+}
+
 void TensorRTEngine::executeInference(const std::vector<float>& inputCPU, std::vector<float>& outputCPU) {
 #ifdef HAS_TENSORRT
-    if (context_) {
-        cudaStream_t stream;
-        cudaStreamCreate(&stream);
+    if (context_ && stream_) {
+        cudaStream_t stream = static_cast<cudaStream_t>(stream_);
+
+        if (hostInputBuffer_) {
+            std::memcpy(hostInputBuffer_, inputCPU.data(), inputSize_);
+        }
 
         // 1. Host to Device (CPU -> GPU)
-        cudaMemcpyAsync(deviceInputBuffer_, inputCPU.data(), inputSize_, cudaMemcpyHostToDevice, stream);
+        cudaMemcpyAsync(deviceInputBuffer_, hostInputBuffer_ ? hostInputBuffer_ : inputCPU.data(), inputSize_, cudaMemcpyHostToDevice, stream);
 
-        // 2. Set tensor addresses and execute TRT 10 inference
+        // 2. Execute TRT inference
         auto* ctx = static_cast<nvinfer1::IExecutionContext*>(context_);
-        auto* eng = static_cast<nvinfer1::ICudaEngine*>(engine_);
-        
-        for (int i = 0; i < eng->getNbIOTensors(); ++i) {
-            const char* tName = eng->getIOTensorName(i);
-            if (eng->getTensorIOMode(tName) == nvinfer1::TensorIOMode::kINPUT) {
-                ctx->setTensorAddress(tName, deviceInputBuffer_);
-            } else {
-                ctx->setTensorAddress(tName, deviceOutputBuffer_);
-            }
-        }
-        
         ctx->enqueueV3(stream);
 
         // 3. Device to Host (GPU -> CPU)
-        cudaMemcpyAsync(outputCPU.data(), deviceOutputBuffer_, outputSize_, cudaMemcpyDeviceToHost, stream);
+        size_t copyBytes = std::min(outputSize_, outputCPU.size() * sizeof(float));
+        cudaMemcpyAsync(hostOutputBuffer_ ? hostOutputBuffer_ : outputCPU.data(), deviceOutputBuffer_, copyBytes, cudaMemcpyDeviceToHost, stream);
 
         // 4. Block CPU until stream finishes
         cudaStreamSynchronize(stream);
-        cudaStreamDestroy(stream);
+
+        if (hostOutputBuffer_) {
+            std::memcpy(outputCPU.data(), hostOutputBuffer_, copyBytes);
+        }
+    }
+#endif
+}
+
+void TensorRTEngine::executeInferenceDetailed(const std::vector<float>& inputCPU, std::vector<float>& outputCPU, float& h2dMs, float& gpuComputeMs, float& d2hMs) {
+#ifdef HAS_TENSORRT
+    if (context_ && stream_) {
+        cudaStream_t stream = static_cast<cudaStream_t>(stream_);
+        cudaEvent_t startH2D, stopH2D, startExec, stopExec, startD2H, stopD2H;
+        cudaEventCreate(&startH2D); cudaEventCreate(&stopH2D);
+        cudaEventCreate(&startExec); cudaEventCreate(&stopExec);
+        cudaEventCreate(&startD2H); cudaEventCreate(&stopD2H);
+
+        if (hostInputBuffer_) {
+            std::memcpy(hostInputBuffer_, inputCPU.data(), inputSize_);
+        }
+
+        // 1. H2D (Host to Device)
+        cudaEventRecord(startH2D, stream);
+        cudaMemcpyAsync(deviceInputBuffer_, hostInputBuffer_ ? hostInputBuffer_ : inputCPU.data(), inputSize_, cudaMemcpyHostToDevice, stream);
+        cudaEventRecord(stopH2D, stream);
+
+        // 2. GPU Execution
+        cudaEventRecord(startExec, stream);
+        auto* ctx = static_cast<nvinfer1::IExecutionContext*>(context_);
+        ctx->enqueueV3(stream);
+        cudaEventRecord(stopExec, stream);
+
+        // 3. D2H (Device to Host)
+        cudaEventRecord(startD2H, stream);
+        size_t copyBytes = std::min(outputSize_, outputCPU.size() * sizeof(float));
+        cudaMemcpyAsync(hostOutputBuffer_ ? hostOutputBuffer_ : outputCPU.data(), deviceOutputBuffer_, copyBytes, cudaMemcpyDeviceToHost, stream);
+        cudaEventRecord(stopD2H, stream);
+
+        cudaStreamSynchronize(stream);
+
+        if (hostOutputBuffer_) {
+            std::memcpy(outputCPU.data(), hostOutputBuffer_, copyBytes);
+        }
+
+        cudaEventElapsedTime(&h2dMs, startH2D, stopH2D);
+        cudaEventElapsedTime(&gpuComputeMs, startExec, stopExec);
+        cudaEventElapsedTime(&d2hMs, startD2H, stopD2H);
+
+        cudaEventDestroy(startH2D); cudaEventDestroy(stopH2D);
+        cudaEventDestroy(startExec); cudaEventDestroy(stopExec);
+        cudaEventDestroy(startD2H); cudaEventDestroy(stopD2H);
     }
 #endif
 }
@@ -452,4 +686,3 @@ std::vector<Detection> TensorRTEngine::postProcess(const std::vector<float>& raw
 
     return finalDetections;
 }
-

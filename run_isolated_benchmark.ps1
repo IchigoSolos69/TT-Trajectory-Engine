@@ -3,7 +3,7 @@ Write-Host "  ISOLATED 5-PASS C++ BENCHMARK WITH PROCESS GUARD & TELEMETRY LOGGI
 Write-Host "========================================================================="
 
 # 1. Process Guard: Check for concurrent heavy tasks
-$competingProcs = Get-Process -Name "benchmark_realtime_loop", "python", "trtexec", "eval_bounce" -ErrorAction SilentlyContinue
+$competingProcs = Get-Process -Name "benchmark_realtime_loop", "python", "trtexec", "eval_bounce", "eval_real_trt_system", "tt_trajectory_engine" -ErrorAction SilentlyContinue
 if ($competingProcs) {
     Write-Error "CRITICAL ERROR: Competing processes detected! Benchmark refused to prevent contamination."
     $competingProcs | Format-Table Id, ProcessName, CPU, WorkingSet

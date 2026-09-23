@@ -36,7 +36,16 @@ private:
     bool bounceSignalArmed_; // Require trajectory signal to re-arm before next bounce trigger
     int dirSign;            // Latched longitudinal direction sign (+1, -1, or 0)
     int trackingLossFrames; // Frames elapsed without valid tracking sample
+    int consecutiveTrackFrames; // Consecutive valid frames with non-noise tracking
     std::vector<float> vyHistory; // History of 2D vertical pixel velocities
+
+    // Peak-picking state buffer
+    bool candidateBounceActive_;
+    int candidateBounceFrame_;
+    float candidateMaxPixelY_;
+    float candidateBounceX_;
+    float candidateBounceY_;
+    int candidateWaitCounter_;
 
     // Server-authoritative cumulative counters
     int strokeCount;

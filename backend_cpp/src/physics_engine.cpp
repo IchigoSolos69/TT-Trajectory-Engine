@@ -20,6 +20,13 @@ void PhysicsEngine::reset() {
     cooldown = 0;
     bounceCooldown = 0;
     bounceSignalArmed_ = true;
+    consecutiveTrackFrames = 0;
+    candidateBounceActive_ = false;
+    candidateBounceFrame_ = 0;
+    candidateMaxPixelY_ = -1.0f;
+    candidateBounceX_ = 0.0f;
+    candidateBounceY_ = 0.0f;
+    candidateWaitCounter_ = 0;
     vyHistory.clear();
 }
 
@@ -33,12 +40,18 @@ void PhysicsEngine::resetRally() {
     bounceCooldown = 0;
     bounceSignalArmed_ = true;
     trackingLossFrames = 0;
+    consecutiveTrackFrames = 0;
+    candidateBounceActive_ = false;
+    candidateBounceFrame_ = 0;
+    candidateMaxPixelY_ = -1.0f;
+    candidateBounceX_ = 0.0f;
+    candidateBounceY_ = 0.0f;
+    candidateWaitCounter_ = 0;
     rallyActive = false;
     vyHistory.clear();
 }
 
 PhysicsState PhysicsEngine::update(float x, float y, float deltaTime, float pixelX, float pixelY) {
-    (void)pixelX;
     PhysicsState state;
     state.isStrike = false;
     state.isTableBounce = false;
@@ -49,13 +62,14 @@ PhysicsState PhysicsEngine::update(float x, float y, float deltaTime, float pixe
     float dt = std::max(1.0f / 240.0f, std::min(1.0f / 30.0f, deltaTime));
 
     // 1. First-frame / tracking re-entry check
-    if (!hasLast) {
+    if (!hasLast || pixelY < 0.0f) {
         lastX = x;
         lastY = y;
         lastPixelY = pixelY;
         smVy = 0.0f;
         lastValidSpeedKmh = 0.0f;
-        hasLast = true;
+        hasLast = (pixelY >= 0.0f);
+        consecutiveTrackFrames = 0;
 
         state.velocityKmh = 0.0f;
         state.zHeight = currentZ;
@@ -66,8 +80,9 @@ PhysicsState PhysicsEngine::update(float x, float y, float deltaTime, float pixe
         return state;
     }
 
-    // 2. Tracking Timeout & Rally Reset Check (120 frames ~ 1.0 sec without track)
+    // 2. Tracking Timeout & Rally Reset Check
     trackingLossFrames = 0;
+    consecutiveTrackFrames++;
 
     // Accumulate total flight time for active rally
     if (rallyActive || strokeCount > 0) {
@@ -84,10 +99,10 @@ PhysicsState PhysicsEngine::update(float x, float y, float deltaTime, float pixe
     float rawSpeedMs = std::sqrt(vx * vx + vy * vy);
     float rawSpeedKmh = rawSpeedMs * 3.6f;
 
-    // Reject implausible tracking jumps (> 150 km/h = 41.67 m/s) instead of clamping
+    // Reject implausible tracking jumps (> 150 km/h)
     if (rawSpeedKmh > 150.0f) {
-        // Discard corrupt tracking sample: reset tracking baseline for next frame
         hasLast = false;
+        consecutiveTrackFrames = 0;
         state.velocityKmh = lastValidSpeedKmh;
         state.zHeight = currentZ;
         state.strokeCount = strokeCount;
@@ -107,49 +122,83 @@ PhysicsState PhysicsEngine::update(float x, float y, float deltaTime, float pixe
         maxVelocityKmh = rawSpeedKmh;
     }
 
-    // 4. Vision-Based 2D Pixel Discontinuity Table Bounce Detector
+    // 4. Vision-Based 2D Pixel Discontinuity Table Bounce Detector with Peak Picking & Gating
     if (bounceCooldown > 0) bounceCooldown--;
 
     if (pixelY >= 0.0f && lastPixelY >= 0.0f) {
         float pixelVy = (pixelY - lastPixelY) / dt; // positive = downward in camera view
         float pixelAccelSpike = (lastPixelVy - pixelVy) / dt;
 
-        vyHistory.push_back(pixelVy);
-        if (vyHistory.size() > 4) {
-            vyHistory.erase(vyHistory.begin());
-        }
-
-        bool isTableRectangle = (x >= -0.1f && x <= 1.625f && y >= -0.1f && y <= 2.84f);
-
-        float maxInbound = -9999.0f;
-        for (size_t i = 0; i + 1 < vyHistory.size(); ++i) {
-            if (vyHistory[i] > maxInbound) maxInbound = vyHistory[i];
-        }
-        float deltaVy = maxInbound - pixelVy;
-
-        // Suppress table bounce trigger if paddle strike occurred within 4 frames
-        bool strikeActive = (cooldown >= 11);
-
-        bool conditionSignFlip = (lastPixelVy > 80.0f && pixelVy < -20.0f && pixelAccelSpike > 1500.0f);
-        bool conditionWindowed = (maxInbound > 60.0f && pixelVy <= 0.0f && deltaVy > 400.0f);
-
-        if (bounceCooldown == 0 && bounceSignalArmed_ && !strikeActive && vyHistory.size() >= 3 && isTableRectangle) {
-            if (conditionSignFlip || conditionWindowed) {
-                state.isTableBounce = true;
-                state.bounceX = x;
-                state.bounceY = y;
-                currentZ = 0.02f; // Re-anchor elevation at physical impact site
-                velocityZ = std::abs(velocityZ) * 0.85f; // Table surface restitution
-                bounceCooldown = 15; // 15-frame refractory period
-                bounceSignalArmed_ = false; // Disarm until trajectory signal clears
+        // Sanity check on pixel velocity (ignore noise jumps > 4000 px/s)
+        if (std::abs(pixelVy) < 4000.0f) {
+            vyHistory.push_back(pixelVy);
+            if (vyHistory.size() > 4) {
+                vyHistory.erase(vyHistory.begin());
             }
-        }
 
-        // Re-arm signal once vertical trajectory is no longer meeting trigger conditions
-        if (!conditionSignFlip && !conditionWindowed) {
-            bounceSignalArmed_ = true;
+            // Gating 1: Table ROI Check (in normalized 3D table space or 1080p pixel space)
+            bool isTableRectangle = (x >= -0.1f && x <= 1.625f && y >= -0.1f && y <= 2.84f);
+            // Gating 2: Minimum Track Continuity (require >= 1 tracked frame so motion-blur dropouts at impact don't kill recall)
+            bool hasTrackContinuity = (consecutiveTrackFrames >= 1);
+
+            float maxInbound = -9999.0f;
+            for (size_t i = 0; i + 1 < vyHistory.size(); ++i) {
+                if (vyHistory[i] > maxInbound) maxInbound = vyHistory[i];
+            }
+            float deltaVy = maxInbound - pixelVy;
+
+            // Suppress table bounce trigger if paddle strike occurred recently
+            bool strikeActive = (cooldown >= 11);
+
+            bool conditionSignFlip = (lastPixelVy > 80.0f && pixelVy < -20.0f && pixelAccelSpike > 1500.0f);
+            bool conditionWindowed = (maxInbound > 60.0f && pixelVy <= 0.0f && deltaVy > 400.0f);
+
+            // Candidate Peak-Picking: Buffer turning point and pick local maximum Y (bottom-most point of arc)
+            if (bounceCooldown == 0 && bounceSignalArmed_ && !strikeActive && vyHistory.size() >= 3 && isTableRectangle && hasTrackContinuity) {
+                if (conditionSignFlip || conditionWindowed) {
+                    if (!candidateBounceActive_) {
+                        candidateBounceActive_ = true;
+                        candidateMaxPixelY_ = pixelY;
+                        candidateBounceX_ = x;
+                        candidateBounceY_ = y;
+                        candidateWaitCounter_ = 2; // Buffer 2 additional frames to find true turning point peak
+                    } else if (pixelY > candidateMaxPixelY_) {
+                        // Found lower point (higher Y on screen) during turning window
+                        candidateMaxPixelY_ = pixelY;
+                        candidateBounceX_ = x;
+                        candidateBounceY_ = y;
+                    }
+                }
+            }
+
+            // Process active candidate window
+            if (candidateBounceActive_) {
+                if (pixelY > candidateMaxPixelY_) {
+                    candidateMaxPixelY_ = pixelY;
+                    candidateBounceX_ = x;
+                    candidateBounceY_ = y;
+                }
+
+                candidateWaitCounter_--;
+                if (candidateWaitCounter_ <= 0) {
+                    // Fire Peak-Picked Bounce!
+                    state.isTableBounce = true;
+                    state.bounceX = candidateBounceX_;
+                    state.bounceY = candidateBounceY_;
+                    currentZ = 0.02f; // Re-anchor elevation at physical impact site
+                    velocityZ = std::abs(velocityZ) * 0.85f; // Table surface restitution
+                    bounceCooldown = 15; // 15-frame refractory period
+                    bounceSignalArmed_ = false; // Disarm until trajectory signal clears
+                    candidateBounceActive_ = false;
+                }
+            }
+
+            // Re-arm signal once vertical trajectory is no longer meeting trigger conditions
+            if (!conditionSignFlip && !conditionWindowed && !candidateBounceActive_) {
+                bounceSignalArmed_ = true;
+            }
+            lastPixelVy = pixelVy;
         }
-        lastPixelVy = pixelVy;
     }
     lastPixelY = pixelY;
 

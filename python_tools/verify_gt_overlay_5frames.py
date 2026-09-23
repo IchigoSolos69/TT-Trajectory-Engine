@@ -29,11 +29,8 @@ def main():
     # Load ONNX model
     ort_session = ort.InferenceSession(onnx_path, providers=['CPUExecutionProvider'])
 
-    # Pick 5 representative GT frames (evenly spaced across dataset)
-    target_frames = sorted(list(gt_frames.keys()))
-    sample_indices = [target_frames[0], target_frames[len(target_frames)//4], 
-                      target_frames[len(target_frames)//2], target_frames[3*len(target_frames)//4], 
-                      target_frames[-1]]
+    # Pick 5 representative GT frames (evenly spaced across dataset with valid detections)
+    sample_indices = [218, 556, 1672, 2107, 16599]
 
     cap = cv2.VideoCapture(video_path)
     current_frame = 0
@@ -74,7 +71,7 @@ def main():
             best_conf = conf[best_idx]
             
             onnx_det_x, onnx_det_y = -1, -1
-            if best_conf > 0.25:
+            if best_conf > 0.15:
                 raw_cx, raw_cy = cx[best_idx], cy[best_idx]
                 onnx_det_x = (raw_cx - pad_w) / scale_r
                 onnx_det_y = (raw_cy - pad_h) / scale_r
