@@ -102,7 +102,12 @@ int main(int argc, char** argv) {
             float decodeMs = std::chrono::duration<float, std::milli>(t_decode_end - t_decode_start).count();
 
             InferenceTimingDetailed inferTiming;
-            std::vector<Detection> detections = trtEngine.inferFrameGPUDetailed(frame, inferTiming);
+            auto t_prep_start = std::chrono::high_resolution_clock::now();
+            std::vector<float> inputBuffer = TensorRTEngine::preprocessOpenCVFrame(frame, 640, 640);
+            auto t_prep_end = std::chrono::high_resolution_clock::now();
+            inferTiming.preprocessMs = std::chrono::duration<float, std::milli>(t_prep_end - t_prep_start).count();
+
+            std::vector<Detection> detections = trtEngine.inferFrameDetailed(inputBuffer, inferTiming, frame.cols, frame.rows);
 
             auto t_track_start = std::chrono::high_resolution_clock::now();
             std::vector<TrackedObject> tracks = tracker.update(detections);

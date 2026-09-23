@@ -129,7 +129,8 @@ int main() {
 
         if (trtOk) {
             InferenceTimingDetailed inferTiming;
-            std::vector<Detection> detections = trtEngine.inferFrameGPUDetailed(frame, inferTiming);
+            std::vector<float> inputBuffer = TensorRTEngine::preprocessOpenCVFrame(frame, 640, 640);
+            std::vector<Detection> detections = trtEngine.inferFrameDetailed(inputBuffer, inferTiming, static_cast<int>(imgW), static_cast<int>(imgH));
             fDets.allDets = detections;
 
             if (!detections.empty()) {
