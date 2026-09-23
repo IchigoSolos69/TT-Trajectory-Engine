@@ -36,6 +36,20 @@ export const CppBridgeStatus: React.FC<CppBridgeStatusProps> = ({ currentFrame, 
         </div>
       </div>
 
+      {/* Experimental Bounce Detector Alert Banner */}
+      <div className="flex items-center justify-between p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 font-mono text-xs shadow-[0_0_15px_rgba(245,158,11,0.1)]">
+        <div className="flex items-center gap-2.5">
+          <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping" />
+          <span className="font-bold text-amber-400 uppercase tracking-wider">BOUNCE DETECTOR STATUS:</span>
+          <span className="text-slate-200">
+            {currentFrame?.bounce_detector_status || 'EXPERIMENTAL (~15.5% F1 - Mode B Gated Raw Top-1 Feed)'}
+          </span>
+        </div>
+        <span className="text-[10px] text-amber-400/80 font-semibold px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/30">
+          ACTIVE-RALLY GATE ROADMAP
+        </span>
+      </div>
+
       {/* Grid of Hardware & Pipeline Specifications */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
         {/* Card 1: CUDA & TensorRT Buffer Allocation */}

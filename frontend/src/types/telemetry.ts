@@ -24,6 +24,7 @@ export interface PlayerDetection {
 
 export interface TelemetryFrame {
   mode?: 'live' | 'simulation' | string;
+  bounce_detector_status?: string;
   x?: number;
   y?: number;
   z?: number;
