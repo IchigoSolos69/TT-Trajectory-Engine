@@ -584,16 +584,25 @@ void TensorRTEngine::executeInferenceDetailed(const std::vector<float>& inputCPU
         // 2. GPU Execution
         cudaEventRecord(startExec, stream);
         auto* ctx = static_cast<nvinfer1::IExecutionContext*>(context_);
-        ctx->enqueueV3(stream);
+        bool status = ctx->enqueueV3(stream);
+        if (!status) {
+            std::cerr << "[TensorRTEngine] ERROR: TensorRT enqueueV3 failed!" << std::endl;
+        }
         cudaEventRecord(stopExec, stream);
 
         // 3. D2H (Device to Host)
         cudaEventRecord(startD2H, stream);
         size_t copyBytes = std::min(outputSize_, outputCPU.size() * sizeof(float));
-        cudaMemcpyAsync(hostOutputBuffer_ ? hostOutputBuffer_ : outputCPU.data(), deviceOutputBuffer_, copyBytes, cudaMemcpyDeviceToHost, stream);
+        cudaError_t errCopy = cudaMemcpyAsync(hostOutputBuffer_ ? hostOutputBuffer_ : outputCPU.data(), deviceOutputBuffer_, copyBytes, cudaMemcpyDeviceToHost, stream);
+        if (errCopy != cudaSuccess) {
+            std::cerr << "[TensorRTEngine] CUDA Error on D2H copy: " << cudaGetErrorString(errCopy) << std::endl;
+        }
         cudaEventRecord(stopD2H, stream);
 
-        cudaStreamSynchronize(stream);
+        cudaError_t errSync = cudaStreamSynchronize(stream);
+        if (errSync != cudaSuccess) {
+            std::cerr << "[TensorRTEngine] CUDA Error on stream sync: " << cudaGetErrorString(errSync) << std::endl;
+        }
 
         if (hostOutputBuffer_) {
             std::memcpy(outputCPU.data(), hostOutputBuffer_, copyBytes);

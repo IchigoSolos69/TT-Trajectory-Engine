@@ -90,6 +90,7 @@ int main(int argc, char** argv) {
 
     // 5. Main Inference Loop (120 FPS high-speed video capture & CUDA stream loop)
     std::cout << "[Main] Starting GPU Telemetry Loop..." << std::endl;
+    std::cout << "[Main] [Bounce Detector Status] EXPERIMENTAL Mode B Gated Raw Top-1 Feed (~15.5% F1, 9.49% Precision, 41.94% Recall)" << std::endl;
 
     int frameId = 0;
     const float targetFPS = 120.0f;

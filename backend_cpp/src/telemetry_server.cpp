@@ -35,6 +35,7 @@ std::string TelemetryServer::serializeToJSON(int frameId, const std::vector<Trac
     ss << std::fixed << std::setprecision(4);
     ss << "{\n";
     ss << "  \"mode\": \"" << mode << "\",\n";
+    ss << "  \"bounce_detector_status\": \"EXPERIMENTAL (~15.5% F1 - Mode B Gated Raw Top-1)\",\n";
     ss << "  \"frame_id\": " << frameId << ",\n";
     ss << "  \"timestamp\": " << ms << ",\n";
     ss << "  \"fps\": " << fps << ",\n";
