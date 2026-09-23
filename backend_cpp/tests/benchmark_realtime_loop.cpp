@@ -171,18 +171,19 @@ int main(int argc, char** argv) {
     csv << "frame_id,decode_ms,preprocess_ms,h2d_ms,gpu_compute_ms,d2h_ms,nms_decode_ms,track_ms,physics_ms,total_ms,deadline_met\n";
 
     int deadlineMetCount = 0;
-    std::vector<float> allTotalLatencies, allH2D, allPrep, allGPU, allD2H, allDecode;
+    std::vector<float> allTotalLatencies, allH2D, allPrep, allGPU, allD2H, allDecode, allNMS;
     for (size_t i = 0; i < bestRunStageLatencies.size(); i++) {
         const auto& stg = bestRunStageLatencies[i];
         bool metDeadline = (stg.total_ms <= 8.333f);
         if (metDeadline) deadlineMetCount++;
 
         allTotalLatencies.push_back(stg.total_ms);
-        allH2D.push_back(stg.h2d_ms);
+        allDecode.push_back(stg.decode_ms);
         allPrep.push_back(stg.preprocess_ms);
+        allH2D.push_back(stg.h2d_ms);
         allGPU.push_back(stg.gpu_compute_ms);
         allD2H.push_back(stg.d2h_ms);
-        allDecode.push_back(stg.nms_ms);
+        allNMS.push_back(stg.nms_ms);
 
         csv << (i + 1) << ","
             << stg.decode_ms << ","
@@ -199,11 +200,12 @@ int main(int argc, char** argv) {
     csv.close();
 
     std::sort(allTotalLatencies.begin(), allTotalLatencies.end());
-    std::sort(allH2D.begin(), allH2D.end());
+    std::sort(allDecode.begin(), allDecode.end());
     std::sort(allPrep.begin(), allPrep.end());
+    std::sort(allH2D.begin(), allH2D.end());
     std::sort(allGPU.begin(), allGPU.end());
     std::sort(allD2H.begin(), allD2H.end());
-    std::sort(allDecode.begin(), allDecode.end());
+    std::sort(allNMS.begin(), allNMS.end());
 
     size_t nFrames = allTotalLatencies.size();
     float p50Total = allTotalLatencies[nFrames * 0.50];
@@ -220,12 +222,13 @@ int main(int argc, char** argv) {
     std::cout << "  Model Size           : " << trtEngine.getFileSizeBytes() << " bytes" << std::endl;
     std::cout << "-------------------------------------------------------------------------" << std::endl;
     std::cout << "  Median of Medians Total Latency : " << medianOfMediansTotal << " ms" << std::endl;
-    std::cout << "  Sub-stage Breakdown (p50 CUDA Event Timers):" << std::endl;
+    std::cout << "  Sub-stage Breakdown (p50 Timers):" << std::endl;
+    std::cout << "    - OpenCV Video Frame Decode  : " << allDecode[nFrames * 0.50] << " ms" << std::endl;
+    std::cout << "    - CPU Letterbox & Normalization: " << allPrep[nFrames * 0.50] << " ms" << std::endl;
     std::cout << "    - H2D Frame Copy (1080p BGR) : " << allH2D[nFrames * 0.50] << " ms" << std::endl;
-    std::cout << "    - CUDA Letterbox Preprocess  : " << allPrep[nFrames * 0.50] << " ms" << std::endl;
     std::cout << "    - TensorRT GPU Compute p50   : " << allGPU[nFrames * 0.50] << " ms" << std::endl;
     std::cout << "    - D2H Output Copy p50        : " << allD2H[nFrames * 0.50] << " ms" << std::endl;
-    std::cout << "    - NMS Postprocess Decode     : " << allDecode[nFrames * 0.50] << " ms" << std::endl;
+    std::cout << "    - NMS & Unletterbox Decode   : " << allNMS[nFrames * 0.50] << " ms" << std::endl;
     std::cout << "-------------------------------------------------------------------------" << std::endl;
     std::cout << "  Representative Run Percentiles (Total Frame Wall-Clock):" << std::endl;
     std::cout << "    - p50  : " << p50Total << " ms" << std::endl;

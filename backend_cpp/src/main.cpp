@@ -208,21 +208,18 @@ int main(int argc, char** argv) {
                 float realTimeY_meters = 1.37f;
                 float ballPixelX = -1.0f;
                 float ballPixelY = -1.0f;
-                bool hasBallTrack = false;
-                for (auto& track : tracks) {
-                    float pixelX = (track.x + track.w / 2.0f) * 640.0f;
-                    float pixelY = (track.y + track.h / 2.0f) * 640.0f;
-                    auto realWorldMeters = calibrator.pixelToMeters(pixelX, pixelY);
-                    if (track.class_id == 0) {
-                        realTimeX_meters = realWorldMeters.first;
-                        realTimeY_meters = realWorldMeters.second;
-                        ballPixelX = pixelX;
-                        ballPixelY = pixelY;
-                        hasBallTrack = true;
-                    }
+                bool hasBallDet = false;
+
+                if (!detections.empty() && detections[0].class_id == 0 && detections[0].confidence >= 0.25f) {
+                    ballPixelX = (detections[0].x + detections[0].w / 2.0f) * frame.cols;
+                    ballPixelY = (detections[0].y + detections[0].h / 2.0f) * frame.rows;
+                    auto realWorldMeters = calibrator.pixelToMeters(ballPixelX, ballPixelY);
+                    realTimeX_meters = realWorldMeters.first;
+                    realTimeY_meters = realWorldMeters.second;
+                    hasBallDet = true;
                 }
 
-                if (!hasBallTrack) {
+                if (!hasBallDet) {
                     physics.reset();
                 }
 
@@ -277,21 +274,18 @@ int main(int argc, char** argv) {
             float realTimeY_meters = 1.37f;
             float ballPixelX = -1.0f;
             float ballPixelY = -1.0f;
-            bool hasBallTrack = false;
-            for (auto& track : tracks) {
-                float pixelX = (track.x + track.w / 2.0f) * 640.0f;
-                float pixelY = (track.y + track.h / 2.0f) * 640.0f;
-                auto realWorldMeters = calibrator.pixelToMeters(pixelX, pixelY);
-                if (track.class_id == 0) {
-                    realTimeX_meters = realWorldMeters.first;
-                    realTimeY_meters = realWorldMeters.second;
-                    ballPixelX = pixelX;
-                    ballPixelY = pixelY;
-                    hasBallTrack = true;
-                }
+            bool hasBallDet = false;
+
+            if (!detections.empty() && detections[0].class_id == 0 && detections[0].confidence >= 0.25f) {
+                ballPixelX = (detections[0].x + detections[0].w / 2.0f) * frame.cols;
+                ballPixelY = (detections[0].y + detections[0].h / 2.0f) * frame.rows;
+                auto realWorldMeters = calibrator.pixelToMeters(ballPixelX, ballPixelY);
+                realTimeX_meters = realWorldMeters.first;
+                realTimeY_meters = realWorldMeters.second;
+                hasBallDet = true;
             }
 
-            if (!hasBallTrack) {
+            if (!hasBallDet) {
                 physics.reset();
             }
 
