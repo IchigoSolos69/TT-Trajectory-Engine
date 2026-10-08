@@ -21,8 +21,22 @@ runs/
 *.engine
 weights/
 models/
+training_data/
+artifacts/recorder_test/
+artifacts/domain_adaptation/data/
+artifacts/domain_adaptation/candidate*/
+artifacts/domain_adaptation/*.txt
+artifacts/domain_adaptation/*.yaml
+artifacts/domain_adaptation/screenshots/
 python_tools/weights/
 python_tools/runs/
+artifacts/python_deps/
+artifacts/detector_improvement/clean_dataset/
+artifacts/detector_improvement/candidate*/
+artifacts/detector_improvement/*_frames.json
+artifacts/detector_improvement/*.txt
+artifacts/detector_improvement/data.yaml
+artifacts/detector_improvement/*.csv
 
 # Large media & datasets
 *.mp4
@@ -38,3 +52,24 @@ python_tools/dataset/labels/
 gpu_log.csv
 cpu_log.txt
 realtime_wallclock_latency.csv
+
+artifacts/scene_detector/dataset/
+artifacts/scene_detector/candidate*/
+artifacts/scene_detector/data.yaml
+artifacts/*.tmp
+artifacts/multigame/dataset/
+artifacts/multigame/candidate*/
+artifacts/multigame/*.yaml
+artifacts/multigame/*.txt
+artifacts/multigame/*.csv
+
+artifacts/browser-profile/
+artifacts/browser-profile-*/
+artifacts/scene_detector/*.csv
+artifacts/review_api_*/
+artifacts/trajectory*.jsonl
+artifacts/temporal_recovery_v*/
+artifacts/temporal_train_*.csv
+artifacts/temporal_pipeline_*.csv
+artifacts/analyses/
+artifacts/replay fixture *.avi

@@ -97,13 +97,21 @@ int main() {
     TensorRTEngine trtEngine(modelPath);
     bool trtOk = trtEngine.init();
 
-    ByteTracker tracker(0.25f, 0.1f, 30);
-    PhysicsEngine physicsRaw;
-    PhysicsEngine physicsTrack;
+    ByteTracker trackerA_025(0.25f, 0.10f, 30);
+    ByteTracker trackerA_015(0.15f, 0.08f, 30);
+
+    PhysicsEngine physicsA_025;
+    PhysicsEngine physicsA_015;
+    PhysicsEngine physicsB_025;
+    PhysicsEngine physicsB_015;
+
     float dt = 1.0f / 120.0f;
 
-    std::vector<int> detectedBouncesRaw;
-    std::vector<int> detectedBouncesTrack;
+    std::vector<int> detectedBouncesA_025;
+    std::vector<int> detectedBouncesA_015;
+    std::vector<int> detectedBouncesB_025;
+    std::vector<int> detectedBouncesB_015;
+
     std::vector<float> locErrorsPx;
     int ballTP_5 = 0, ballTP_10 = 0, ballTP_15 = 0;
     int ballFN_5 = 0, ballFN_10 = 0, ballFN_15 = 0;
@@ -130,11 +138,18 @@ int main() {
         if (trtOk) {
             InferenceTimingDetailed inferTiming;
             std::vector<float> inputBuffer = TensorRTEngine::preprocessOpenCVFrame(frame, 640, 640);
-            std::vector<Detection> detections = trtEngine.inferFrameDetailed(inputBuffer, inferTiming, static_cast<int>(imgW), static_cast<int>(imgH));
-            fDets.allDets = detections;
 
-            if (!detections.empty()) {
-                const auto& bestDet = detections[0];
+            // Infer candidates down to 0.15f threshold
+            std::vector<Detection> detections015 = trtEngine.inferFrameDetailed(inputBuffer, inferTiming, static_cast<int>(imgW), static_cast<int>(imgH), 0.15f);
+            std::vector<Detection> detections025;
+            for (const auto& d : detections015) {
+                if (d.confidence >= 0.25f) detections025.push_back(d);
+            }
+
+            fDets.allDets = detections015;
+
+            if (!detections015.empty()) {
+                const auto& bestDet = detections015[0];
                 detPxX = (bestDet.x + bestDet.w / 2.0f) * imgW;
                 detPxY = (bestDet.y + bestDet.h / 2.0f) * imgH;
                 fDets.topConfX = detPxX;
@@ -142,68 +157,47 @@ int main() {
                 fDets.topConf = bestDet.confidence;
             }
 
-            std::vector<TrackedObject> tracks = tracker.update(detections);
-            if (!tracks.empty()) {
-                fDets.trackX = (tracks[0].x + tracks[0].w / 2.0f) * imgW;
-                fDets.trackY = (tracks[0].y + tracks[0].h / 2.0f) * imgH;
-            }
-        }
+            // 1. Mode A @ 0.25 Tracker Update
+            std::vector<TrackedObject> tracksA_025 = trackerA_025.update(detections025);
+            bool hasTrkA_025 = !tracksA_025.empty() && tracksA_025[0].is_active;
+            float trkX_025 = hasTrkA_025 ? (tracksA_025[0].x + tracksA_025[0].w / 2.0f) * imgW : -1.0f;
+            float trkY_025 = hasTrkA_025 ? (tracksA_025[0].y + tracksA_025[0].h / 2.0f) * imgH : -1.0f;
+            fDets.trackX = trkX_025;
+            fDets.trackY = trkY_025;
 
-        auto gtIt = gtBallMap.find(frameId);
-        if (gtIt != gtBallMap.end()) {
-            float gtX = gtIt->second.first;
-            float gtY = gtIt->second.second;
-            float minD = 9999.0f;
-            float cX = -1.0f, cY = -1.0f;
-            for (const auto& det : fDets.allDets) {
-                float pxX = (det.x + det.w / 2.0f) * imgW;
-                float pxY = (det.y + det.h / 2.0f) * imgH;
-                float d = std::sqrt((pxX - gtX) * (pxX - gtX) + (pxY - gtY) * (pxY - gtY));
-                if (d < minD) {
-                    minD = d;
-                    cX = pxX;
-                    cY = pxY;
-                }
-            }
-            fDets.closestX = cX;
-            fDets.closestY = cY;
-            fDets.closestErr = minD;
-        }
+            float mxA_025 = (trkX_025 / imgW) * 1.525f;
+            float myA_025 = (trkY_025 / imgH) * 2.74f;
+            PhysicsState pStateA_025 = physicsA_025.update(mxA_025, myA_025, dt, trkX_025, trkY_025);
+            if (pStateA_025.isTableBounce) detectedBouncesA_025.push_back(frameId);
 
-        frameDetsMap[frameId] = fDets;
+            // 2. Mode A @ 0.15 Tracker Update
+            std::vector<TrackedObject> tracksA_015 = trackerA_015.update(detections015);
+            bool hasTrkA_015 = !tracksA_015.empty() && tracksA_015[0].is_active;
+            float trkX_015 = hasTrkA_015 ? (tracksA_015[0].x + tracksA_015[0].w / 2.0f) * imgW : -1.0f;
+            float trkY_015 = hasTrkA_015 ? (tracksA_015[0].y + tracksA_015[0].h / 2.0f) * imgH : -1.0f;
 
-        if (gtIt != gtBallMap.end()) {
-            if (detPxX >= 0 && detPxY >= 0) {
-                totalDetectionsOnAnnotated++;
-                float dist = std::sqrt((detPxX - gtIt->second.first) * (detPxX - gtIt->second.first) + (detPxY - gtIt->second.second) * (detPxY - gtIt->second.second));
-                locErrorsPx.push_back(dist);
+            float mxA_015 = (trkX_015 / imgW) * 1.525f;
+            float myA_015 = (trkY_015 / imgH) * 2.74f;
+            PhysicsState pStateA_015 = physicsA_015.update(mxA_015, myA_015, dt, trkX_015, trkY_015);
+            if (pStateA_015.isTableBounce) detectedBouncesA_015.push_back(frameId);
 
-                if (dist <= 5.0f)  ballTP_5++;  else ballFN_5++;
-                if (dist <= 10.0f) ballTP_10++; else ballFN_10++;
-                if (dist <= 15.0f) ballTP_15++; else ballFN_15++;
-            } else {
-                ballFN_5++;
-                ballFN_10++;
-                ballFN_15++;
-            }
-        }
+            // 3. Mode B @ 0.25 Raw Feed Update
+            bool isRawValid025 = (!detections025.empty());
+            float rx025 = isRawValid025 ? (detections025[0].x + detections025[0].w / 2.0f) * imgW : -1.0f;
+            float ry025 = isRawValid025 ? (detections025[0].y + detections025[0].h / 2.0f) * imgH : -1.0f;
+            float mxB_025 = (rx025 / imgW) * 1.525f;
+            float myB_025 = (ry025 / imgH) * 2.74f;
+            PhysicsState pStateB_025 = physicsB_025.update(mxB_025, myB_025, dt, rx025, ry025);
+            if (pStateB_025.isTableBounce) detectedBouncesB_025.push_back(frameId);
 
-        // Mode B: Raw Top-1 Gated Feed (Conf >= 0.25)
-        bool isRawValid = (fDets.topConf >= 0.25f);
-        float rawMetersX = (detPxX / imgW) * 1.525f;
-        float rawMetersY = (detPxY / imgH) * 2.74f;
-        PhysicsState pStateRaw = physicsRaw.update(rawMetersX, rawMetersY, dt, isRawValid ? detPxX : -1.0f, isRawValid ? detPxY : -1.0f);
-        if (pStateRaw.isTableBounce) {
-            detectedBouncesRaw.push_back(frameId);
-        }
-
-        // Mode A: ByteTrack Tracked Feed
-        bool isTrkValid = (fDets.trackX >= 0.0f);
-        float trkMetersX = (fDets.trackX / imgW) * 1.525f;
-        float trkMetersY = (fDets.trackY / imgH) * 2.74f;
-        PhysicsState pStateTrk = physicsTrack.update(trkMetersX, trkMetersY, dt, isTrkValid ? fDets.trackX : -1.0f, isTrkValid ? fDets.trackY : -1.0f);
-        if (pStateTrk.isTableBounce) {
-            detectedBouncesTrack.push_back(frameId);
+            // 4. Mode B @ 0.15 Raw Feed Update
+            bool isRawValid015 = (!detections015.empty());
+            float rx015 = isRawValid015 ? (detections015[0].x + detections015[0].w / 2.0f) * imgW : -1.0f;
+            float ry015 = isRawValid015 ? (detections015[0].y + detections015[0].h / 2.0f) * imgH : -1.0f;
+            float mxB_015 = (rx015 / imgW) * 1.525f;
+            float myB_015 = (ry015 / imgH) * 2.74f;
+            PhysicsState pStateB_015 = physicsB_015.update(mxB_015, myB_015, dt, rx015, ry015);
+            if (pStateB_015.isTableBounce) detectedBouncesB_015.push_back(frameId);
         }
     }
 
@@ -228,7 +222,7 @@ int main() {
         }
         std::sort(errs.begin(), errs.end());
         float med = errs.empty() ? 0.0f : errs[errs.size() / 2];
-        std::cout << "  Offset " << (off >= 0 ? "+" : "") << off 
+        std::cout << "  Offset " << (off >= 0 ? "+" : "") << off
                   << " | Hit <=5px: " << (float)h5/total*100.0f << "%"
                   << " | Hit <=10px: " << (float)h10/total*100.0f << "%"
                   << " | Hit <=15px: " << (float)h15/total*100.0f << "%"
@@ -293,20 +287,22 @@ int main() {
     std::cout << "    Max    : " << maxLoc << " px" << std::endl;
 
     std::cout << "\n=========================================================================" << std::endl;
-    std::cout << "--- DEPLOYED TENSORRT SYSTEM BOUNCE METRICS (Full 16,800 Frames) ---" << std::endl;
+    std::cout << "--- 4-WAY SYSTEM BOUNCE METRICS COMPARISON (Full 16,800 Frames) ---" << std::endl;
     std::cout << "=========================================================================" << std::endl;
-    evalBounces(detectedBouncesTrack, "MODE A: ByteTrack Tracked Feed into PhysicsEngine");
-    evalBounces(detectedBouncesRaw,   "MODE B: Gated Raw Top-1 Feed into PhysicsEngine (Conf >= 0.25)");
+    evalBounces(detectedBouncesA_025, "MODE A @ 0.25 (ByteTrack Tracked Feed @ Conf >= 0.25)");
+    evalBounces(detectedBouncesA_015, "MODE A @ 0.15 (ByteTrack Tracked Feed @ Conf >= 0.15)");
+    evalBounces(detectedBouncesB_025, "MODE B @ 0.25 (Raw Gated Feed @ Conf >= 0.25)");
+    evalBounces(detectedBouncesB_015, "MODE B @ 0.15 (Raw Gated Feed @ Conf >= 0.15)");
 
     // Export list of detected FP bounce frames for instant Python overlay rendering
     std::ofstream fpListOut("python_tools/fp_bounces_list.json");
     fpListOut << "{\n  \"raw_bounces\": [";
-    for (size_t i = 0; i < detectedBouncesRaw.size(); ++i) {
-        fpListOut << detectedBouncesRaw[i] << (i + 1 < detectedBouncesRaw.size() ? ", " : "");
+    for (size_t i = 0; i < detectedBouncesB_025.size(); ++i) {
+        fpListOut << detectedBouncesB_025[i] << (i + 1 < detectedBouncesB_025.size() ? ", " : "");
     }
     fpListOut << "],\n  \"track_bounces\": [";
-    for (size_t i = 0; i < detectedBouncesTrack.size(); ++i) {
-        fpListOut << detectedBouncesTrack[i] << (i + 1 < detectedBouncesTrack.size() ? ", " : "");
+    for (size_t i = 0; i < detectedBouncesA_025.size(); ++i) {
+        fpListOut << detectedBouncesA_025[i] << (i + 1 < detectedBouncesA_025.size() ? ", " : "");
     }
     fpListOut << "]\n}\n";
     fpListOut.close();

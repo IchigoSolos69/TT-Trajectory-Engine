@@ -1,0 +1,211 @@
+{
+  "passed": true,
+  "sim": {
+    "mode": "--sim",
+    "frames": 538,
+    "sample": {
+      "mode": "simulation",
+      "source_video": "test_2.mp4",
+      "bounce_detector_status": "EXPERIMENTAL (~15.5% F1 - Mode B Gated Raw Top-1)",
+      "table_calibration_status": "MODEL_TABLE_WITH_CONTOUR_REFINEMENT",
+      "frame_id": 33,
+      "timestamp": 1790405885082,
+      "fps": 120,
+      "latency_ms": 57.4672,
+      "infer_ms": 3.5516,
+      "z": 0,
+      "velocity": 0,
+      "strike": false,
+      "is_strike": false,
+      "bounce": false,
+      "is_bounce": false,
+      "bounce_x": -1,
+      "bounce_y": -1,
+      "stroke_count": 0,
+      "rally_strokes": 0,
+      "max_velocity": 0,
+      "max_speed_kmh": 0,
+      "elapsed_time": 0,
+      "ball": null,
+      "spin": {
+        "rpm": null,
+        "status": "unavailable",
+        "type": "camera_axis",
+        "axis_deg": null,
+        "quality": 0,
+        "reason": "Ball too small or texture unresolved"
+      },
+      "players": [],
+      "table_corners": [
+        [
+          0.1833,
+          0.6102
+        ],
+        [
+          0.2667,
+          0.4769
+        ],
+        [
+          0.7745,
+          0.4889
+        ],
+        [
+          0.7745,
+          0.6102
+        ]
+      ],
+      "rally": {
+        "in_progress": false,
+        "stroke_count": 0,
+        "rally_strokes": 0,
+        "rally_duration_s": 0,
+        "max_speed_kmh": 0
+      },
+      "source_id": 3,
+      "position_basis": "table_plane_projection",
+      "height_observed": false,
+      "video_picker_open": false,
+      "video_error": "",
+      "strikes": [],
+      "source_width": 1920,
+      "source_height": 1080,
+      "source_time": 0.2667,
+      "total_frames": 3600,
+      "playback_rate": 4,
+      "processing_fps": 0,
+      "preview_fps": 17.3177,
+      "skipped_frames": 31,
+      "camera_active": false,
+      "camera_index": 0,
+      "training_recording": {
+        "active": false,
+        "failed": false,
+        "saved_frames": 0,
+        "dropped_frames": 0,
+        "clip": ""
+      },
+      "paused": true,
+      "ended": false,
+      "scene_detections": [
+        {
+          "class_id": 1,
+          "confidence": 0.978,
+          "bbox": [
+            0.1844,
+            0.4778,
+            0.5914,
+            0.1347
+          ]
+        },
+        {
+          "class_id": 0,
+          "confidence": 0.958,
+          "bbox": [
+            0.4691,
+            0.297,
+            0.0648,
+            0.1031
+          ]
+        },
+        {
+          "class_id": 0,
+          "confidence": 0.9458,
+          "bbox": [
+            0.7924,
+            0.2233,
+            0.1324,
+            0.5562
+          ]
+        },
+        {
+          "class_id": 0,
+          "confidence": 0.9141,
+          "bbox": [
+            -0.0002,
+            0.4101,
+            0.1559,
+            0.4271
+          ]
+        }
+      ],
+      "impact_points": [],
+      "image_impact_points": []
+    },
+    "log": "[TensorRTEngine] Loading engine file: models/yolov11_ttgames.engine\r\n[TensorRTEngine] Metadata | Size: 7248572 bytes | Last Modified: 2026-09-24T19:03:14Z\r\n[TensorRTEngine] SHA-256 Checksum  : 2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9\r\n[TensorRTEngine] Runtime Git SHA   : 1cfc5967e1a335ff0535b0d8209e133f528c9c7a\r\n[TensorRTEngine] Compile-Time SHA  : 1cfc5967e1a335ff0535b0d8209e133f528c9c7a\r\n[TensorRTEngine] TensorRT Library Version : 11.3.0 (raw: 110300)\r\n[TensorRTEngine] getTensorDataType | Tensor: 'images' [INPUT] -> Float32 (kFLOAT)\r\n[TensorRTEngine] getTensorDataType | Tensor: 'output0' [OUTPUT] -> Float32 (kFLOAT)\r\n[TensorRTEngine] CUDA buffers allocated successfully on Device GPU (Pinned Host Memory Enabled).\r\n[TensorRTEngine] Input Tensor Shape  : [1, 3, 640, 640] (Float32 CHW)\r\n[TensorRTEngine] Validated static detector output (FP32 I/O, FP16 compute)\r\n[TensorRTEngine] Loading engine file: models/scene.engine\r\n[TensorRTEngine] Metadata | Size: 7289076 bytes | Last Modified: 2026-09-24T19:04:21Z\r\n[TensorRTEngine] SHA-256 Checksum  : 5eb0ecbfe0cddb8631cc89fbf6e7a2145d2a4a6b10595034afd4ab8b1a454cee\r\n[TensorRTEngine] Runtime Git SHA   : 1cfc5967e1a335ff0535b0d8209e133f528c9c7a\r\n[TensorRTEngine] Compile-Time SHA  : 1cfc5967e1a335ff0535b0d8209e133f528c9c7a\r\n[TensorRTEngine] TensorRT Library Version : 11.3.0 (raw: 110300)\r\n[TensorRTEngine] getTensorDataType | Tensor: 'images' [INPUT] -> Float32 (kFLOAT)\r\n[TensorRTEngine] getTensorDataType | Tensor: 'output0' [OUTPUT] -> Float32 (kFLOAT)\r\n[TensorRTEngine] CUDA buffers allocated successfully on Device GPU (Pinned Host Memory Enabled).\r\n[TensorRTEngine] Input Tensor Shape  : [1, 3, 640, 640] (Float32 CHW)\r\n[TensorRTEngine] Validated static detector output (FP32 I/O, FP16 compute)\r\n[TelemetryServer] Starting WebSocket Broadcast Server on port 9002...\r\n[TelemetryServer] Listening for WebSocket clients on ws://localhost:9002\r\n[Main] simulation source=python_tools/dataset/raw_videos/game_1.mp4\r\n[TelemetryServer] Incoming TCP connection accepted.\r\n[TelemetryServer] WebSocket Handshake successful!\r\n[Main] frame=6720 source=simulation ball_candidates=0 scene=4 calibrated=1 total_ms=65.7955 ball_infer_ms=4.529\r\n[Main] frame=12267 source=simulation ball_candidates=2 scene=5 calibrated=1 total_ms=48.9051 ball_infer_ms=3.2523\r\n[Source] Select an existing MP4, AVI, MKV, MOV, WebM or M4V recording.\r\n[Source] Opened C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\python_tools\\dataset\\raw_videos\\test_2.mp4 (3600 frames, 120 FPS)\r\n"
+  },
+  "live": {
+    "mode": "--live",
+    "frames": 2,
+    "sample": {
+      "mode": "live",
+      "source_video": "",
+      "bounce_detector_status": "EXPERIMENTAL (~15.5% F1 - Mode B Gated Raw Top-1)",
+      "table_calibration_status": "UNAVAILABLE",
+      "frame_id": 0,
+      "timestamp": 1790405885706,
+      "fps": 0,
+      "latency_ms": 0,
+      "infer_ms": 0,
+      "z": 0,
+      "velocity": 0,
+      "strike": false,
+      "is_strike": false,
+      "bounce": false,
+      "is_bounce": false,
+      "bounce_x": -1,
+      "bounce_y": -1,
+      "stroke_count": 0,
+      "rally_strokes": 0,
+      "max_velocity": 0,
+      "max_speed_kmh": 0,
+      "elapsed_time": 0,
+      "ball": null,
+      "spin": {
+        "rpm": null,
+        "status": "unavailable",
+        "type": "camera_axis",
+        "axis_deg": null,
+        "quality": 0,
+        "reason": "Ball too small or texture unresolved"
+      },
+      "players": [],
+      "table_corners": [],
+      "rally": {
+        "in_progress": false,
+        "stroke_count": 0,
+        "rally_strokes": 0,
+        "rally_duration_s": 0,
+        "max_speed_kmh": 0
+      },
+      "source_id": 1,
+      "position_basis": "table_plane_projection",
+      "height_observed": false,
+      "video_picker_open": false,
+      "video_error": "Recordings can only be opened in simulation mode.",
+      "strikes": [],
+      "source_width": 0,
+      "source_height": 0,
+      "source_time": 0,
+      "total_frames": 0,
+      "playback_rate": 1,
+      "processing_fps": 0,
+      "preview_fps": 0,
+      "skipped_frames": 0,
+      "camera_active": false,
+      "camera_index": 0,
+      "training_recording": {
+        "active": false,
+        "failed": false,
+        "saved_frames": 0,
+        "dropped_frames": 0,
+        "clip": ""
+      },
+      "paused": false,
+      "ended": false,
+      "scene_detections": [],
+      "impact_points": [],
+      "image_impact_points": []
+    },
+    "log": "[TensorRTEngine] Loading engine file: models/yolov11_ttgames.engine\r\n[TensorRTEngine] Metadata | Size: 7248572 bytes | Last Modified: 2026-09-24T19:03:14Z\r\n[TensorRTEngine] SHA-256 Checksum  : 2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9\r\n[TensorRTEngine] Runtime Git SHA   : 1cfc5967e1a335ff0535b0d8209e133f528c9c7a\r\n[TensorRTEngine] Compile-Time SHA  : 1cfc5967e1a335ff0535b0d8209e133f528c9c7a\r\n[TensorRTEngine] TensorRT Library Version : 11.3.0 (raw: 110300)\r\n[TensorRTEngine] getTensorDataType | Tensor: 'images' [INPUT] -> Float32 (kFLOAT)\r\n[TensorRTEngine] getTensorDataType | Tensor: 'output0' [OUTPUT] -> Float32 (kFLOAT)\r\n[TensorRTEngine] CUDA buffers allocated successfully on Device GPU (Pinned Host Memory Enabled).\r\n[TensorRTEngine] Input Tensor Shape  : [1, 3, 640, 640] (Float32 CHW)\r\n[TensorRTEngine] Validated static detector output (FP32 I/O, FP16 compute)\r\n[TensorRTEngine] Loading engine file: models/scene.engine\r\n[TensorRTEngine] Metadata | Size: 7289076 bytes | Last Modified: 2026-09-24T19:04:21Z\r\n[TensorRTEngine] SHA-256 Checksum  : 5eb0ecbfe0cddb8631cc89fbf6e7a2145d2a4a6b10595034afd4ab8b1a454cee\r\n[TensorRTEngine] Runtime Git SHA   : 1cfc5967e1a335ff0535b0d8209e133f528c9c7a\r\n[TensorRTEngine] Compile-Time SHA  : 1cfc5967e1a335ff0535b0d8209e133f528c9c7a\r\n[TensorRTEngine] TensorRT Library Version : 11.3.0 (raw: 110300)\r\n[TensorRTEngine] getTensorDataType | Tensor: 'images' [INPUT] -> Float32 (kFLOAT)\r\n[TensorRTEngine] getTensorDataType | Tensor: 'output0' [OUTPUT] -> Float32 (kFLOAT)\r\n[TensorRTEngine] CUDA buffers allocated successfully on Device GPU (Pinned Host Memory Enabled).\r\n[TensorRTEngine] Input Tensor Shape  : [1, 3, 640, 640] (Float32 CHW)\r\n[TensorRTEngine] Validated static detector output (FP32 I/O, FP16 compute)\r\n[TelemetryServer] Starting WebSocket Broadcast Server on port 9002...\r\n[TelemetryServer] Listening for WebSocket clients on ws://localhost:9002\r\n[Main] live source=selected camera (standby)\r\n[TelemetryServer] Incoming TCP connection accepted.\r\n[TelemetryServer] WebSocket Handshake successful!\r\n"
+  }
+}

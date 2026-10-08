@@ -1,0 +1,176 @@
+{
+  "passed": true,
+  "frame": {
+    "mode": "simulation",
+    "source_video": "game_1.mp4",
+    "bounce_detector_status": "EXPERIMENTAL (~15.5% F1 - Mode B Gated Raw Top-1)",
+    "table_calibration_status": "MODEL_TABLE_WITH_CONTOUR_REFINEMENT",
+    "frame_id": 18,
+    "timestamp": 1790405993984,
+    "fps": 120,
+    "latency_ms": 24.598,
+    "infer_ms": 3.4429,
+    "z": 0,
+    "velocity": 0,
+    "strike": false,
+    "is_strike": false,
+    "bounce": false,
+    "is_bounce": false,
+    "bounce_x": -1,
+    "bounce_y": -1,
+    "stroke_count": 0,
+    "rally_strokes": 0,
+    "max_velocity": 102.8285,
+    "max_speed_kmh": 102.8285,
+    "elapsed_time": 0,
+    "ball": {
+      "x": 0.2957,
+      "y": 0.5062,
+      "z": 0,
+      "vx": 0.9961,
+      "vy": 0.7083,
+      "vz": 0,
+      "speed_kmh": 0,
+      "confidence": 0.8018,
+      "is_strike": false,
+      "is_bounce": false,
+      "bounce_x": -1,
+      "bounce_y": -1
+    },
+    "spin": {
+      "rpm": null,
+      "status": "unavailable",
+      "type": "camera_axis",
+      "axis_deg": null,
+      "quality": 0,
+      "reason": "Ball too small or texture unresolved"
+    },
+    "players": [],
+    "table_corners": [
+      [
+        0.1578,
+        0.4843
+      ],
+      [
+        0.6776,
+        0.4843
+      ],
+      [
+        0.7479,
+        0.6093
+      ],
+      [
+        0.1578,
+        0.6167
+      ]
+    ],
+    "rally": {
+      "in_progress": false,
+      "stroke_count": 0,
+      "rally_strokes": 0,
+      "rally_duration_s": 0,
+      "max_speed_kmh": 102.8285
+    },
+    "source_id": 2,
+    "position_basis": "table_plane_projection",
+    "height_observed": false,
+    "video_picker_open": false,
+    "video_error": "",
+    "strikes": [],
+    "source_width": 1920,
+    "source_height": 1080,
+    "source_time": 0.1417,
+    "total_frames": 88599,
+    "playback_rate": 0.5,
+    "processing_fps": 0,
+    "preview_fps": 16.5706,
+    "skipped_frames": 5,
+    "camera_active": false,
+    "camera_index": 0,
+    "training_recording": {
+      "active": false,
+      "failed": false,
+      "saved_frames": 0,
+      "dropped_frames": 0,
+      "clip": ""
+    },
+    "paused": true,
+    "ended": false,
+    "table_position": [
+      0.2865,
+      0.6837
+    ],
+    "scene_detections": [
+      {
+        "class_id": 1,
+        "confidence": 0.9771,
+        "bbox": [
+          0.1578,
+          0.4847,
+          0.5906,
+          0.1333
+        ]
+      },
+      {
+        "class_id": 0,
+        "confidence": 0.9727,
+        "bbox": [
+          0.4563,
+          0.295,
+          0.0625,
+          0.1115
+        ]
+      },
+      {
+        "class_id": 0,
+        "confidence": 0.9395,
+        "bbox": [
+          0.7709,
+          0.2986,
+          0.152,
+          0.6361
+        ]
+      },
+      {
+        "class_id": 0,
+        "confidence": 0.8467,
+        "bbox": [
+          0.1049,
+          0.2833,
+          0.0957,
+          0.4569
+        ]
+      },
+      {
+        "class_id": 0,
+        "confidence": 0.7295,
+        "bbox": [
+          0.1111,
+          0.6135,
+          0.0857,
+          0.1257
+        ]
+      }
+    ],
+    "impact_points": [],
+    "image_impact_points": []
+  },
+  "radar": {
+    "frame": 18,
+    "imageFrame": 18,
+    "x": 0.2865,
+    "y": 0.6837
+  },
+  "volume": {
+    "frame": 18,
+    "imageFrame": 18,
+    "x": 0.2865,
+    "y": 0.6837
+  },
+  "alignment": {
+    "samples": 120,
+    "mismatches": 0
+  },
+  "errors": [],
+  "picker_command_acknowledged": true
+}

@@ -1,0 +1,11 @@
+{
+  "samples": 32,
+  "max_logit_error": 0.013817628845572472,
+  "max_presence_score_error": 0.00012744374152881544,
+  "max_localization_delta_source_px": 0.0,
+  "argmax_matches": 32,
+  "scope": "Fixed ROI tensor numerical parity, not tracking or live accuracy.",
+  "engine_sha256": "84e5b592f2d176857ab243d55548439c66f0ff59f69f3d0aa47449a5a818e2e2",
+  "input_sha256": "4fc9477c4c54d38d942dbf08056810f4c7b45d23cc8871148f540b4049f02acb",
+  "passed": true
+}

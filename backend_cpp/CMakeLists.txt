@@ -18,6 +18,7 @@ execute_process(
 if(NOT GIT_COMMIT_SHA)
     set(GIT_COMMIT_SHA "UNKNOWN_BUILD_COMMIT")
 endif()
+
 add_compile_definitions(COMPILE_GIT_COMMIT_SHA="${GIT_COMMIT_SHA}")
 message(STATUS "Compile-Time Git Commit SHA: ${GIT_COMMIT_SHA}")
 
@@ -79,7 +80,26 @@ endif()
 
 # Physics Engine Offline Unit Test & Latency Benchmark Executables
 add_executable(test_physics_engine tests/test_physics_engine.cpp src/physics_engine.cpp)
+add_executable(test_analysis_journal tests/test_analysis_journal.cpp)
 add_executable(test_bounce_matcher tests/test_bounce_matcher.cpp)
+add_executable(test_tracking tests/test_tracking.cpp src/bytetrack.cpp)
+add_executable(test_training_recorder tests/test_training_recorder.cpp)
+add_executable(test_observed_spin tests/test_observed_spin.cpp)
+target_link_libraries(test_observed_spin PRIVATE ${OpenCV_LIBS})
+add_executable(test_trajectory_intelligence tests/test_trajectory_intelligence.cpp)
+target_link_libraries(test_trajectory_intelligence PRIVATE ${OpenCV_LIBS})
+add_executable(eval_trajectory_uncertainty tests/eval_trajectory_uncertainty.cpp)
+add_executable(eval_temporal_recovery tests/eval_temporal_recovery.cpp src/temporal_recovery.cpp)
+target_link_libraries(eval_temporal_recovery PRIVATE ${TENSORRT_LIBS} ${CUDA_LIBRARIES} ${CUDA_cudart_static_LIBRARY})
+add_executable(eval_temporal_pipeline tests/eval_temporal_pipeline.cpp src/temporal_recovery.cpp)
+target_link_libraries(eval_temporal_pipeline PRIVATE ${OpenCV_LIBS} ${TENSORRT_LIBS} ${CUDA_LIBRARIES} ${CUDA_cudart_static_LIBRARY})
+add_executable(test_temporal_window tests/test_temporal_window.cpp)
+target_link_libraries(test_temporal_window PRIVATE ${OpenCV_LIBS})
+add_executable(test_rally_learning tests/test_rally_learning.cpp)
+target_link_libraries(test_rally_learning PRIVATE ${OpenCV_LIBS})
+target_link_libraries(eval_trajectory_uncertainty PRIVATE ${OpenCV_LIBS})
+target_link_libraries(test_training_recorder PRIVATE ${OpenCV_LIBS})
+target_link_libraries(test_tracking PRIVATE ${OpenCV_LIBS})
 add_executable(eval_bounce tests/eval_bounce.cpp src/physics_engine.cpp)
 add_executable(benchmark_latency tests/benchmark_latency.cpp src/tensorrt_engine.cpp src/cuda_preprocess.cu src/bytetrack.cpp src/telemetry_server.cpp src/physics_engine.cpp src/homography_calibrator.cpp)
 add_executable(benchmark_realtime_loop tests/benchmark_realtime_loop.cpp src/tensorrt_engine.cpp src/cuda_preprocess.cu src/bytetrack.cpp src/telemetry_server.cpp src/physics_engine.cpp src/homography_calibrator.cpp)
@@ -88,6 +108,11 @@ add_executable(dump_frame_1672_cpp tests/dump_frame_1672_cpp.cpp src/tensorrt_en
 add_executable(test_gpu_burst_clocks tests/test_gpu_burst_clocks.cpp src/tensorrt_engine.cpp src/cuda_preprocess.cu src/bytetrack.cpp src/telemetry_server.cpp src/physics_engine.cpp src/homography_calibrator.cpp)
 add_executable(test_gpu_pipeline_latency tests/test_gpu_pipeline_latency.cpp src/tensorrt_engine.cpp src/cuda_preprocess.cu src/bytetrack.cpp src/telemetry_server.cpp src/physics_engine.cpp src/homography_calibrator.cpp)
 add_executable(test_cudacodec tests/test_cudacodec.cpp)
+
+foreach(detector_target dump_detector_predictions dump_scene_predictions test_letterbox test_scene_geometry)
+    add_executable(${detector_target} tests/${detector_target}.cpp src/tensorrt_engine.cpp src/cuda_preprocess.cu)
+    target_link_libraries(${detector_target} PRIVATE ${OpenCV_LIBS} ${CUDA_LIBRARIES} ${CUDA_cudart_static_LIBRARY} ${TENSORRT_LIBS})
+endforeach()
 
 if(OpenCV_FOUND)
     target_link_libraries(benchmark_latency PRIVATE ${OpenCV_LIBS})
@@ -116,6 +141,20 @@ if(TENSORRT_LIBS)
     target_link_libraries(test_gpu_burst_clocks PRIVATE ${TENSORRT_LIBS})
     target_link_libraries(test_gpu_pipeline_latency PRIVATE ${TENSORRT_LIBS})
 endif()
+
+if(WIN32)
+    target_link_libraries(tt_trajectory_engine PRIVATE ws2_32 advapi32 crypt32 ole32 uuid)
+    target_link_libraries(benchmark_latency PRIVATE ws2_32 advapi32 crypt32)
+    target_link_libraries(benchmark_realtime_loop PRIVATE ws2_32 advapi32 crypt32)
+    target_link_libraries(eval_real_trt_system PRIVATE ws2_32 advapi32 crypt32)
+    target_link_libraries(dump_frame_1672_cpp PRIVATE ws2_32 advapi32 crypt32)
+    target_link_libraries(test_gpu_burst_clocks PRIVATE ws2_32 advapi32 crypt32)
+    target_link_libraries(test_gpu_pipeline_latency PRIVATE ws2_32 advapi32 crypt32)
+endif()
+
+# Validate a candidate without replacing an executable that is in use.
+add_executable(tt_intelligence_candidate EXCLUDE_FROM_ALL ${SOURCES})
+target_link_libraries(tt_intelligence_candidate PRIVATE $<TARGET_PROPERTY:tt_trajectory_engine,LINK_LIBRARIES>)
 
 
 

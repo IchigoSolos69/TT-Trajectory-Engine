@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "real_camera_opened": false,
+  "scope": "Production component execution and server rendering; not a desktop browser visual test.",
+  "commands": [
+    "START_TRAINING_RECORDING",
+    "START_TEMPORAL_RECORDING",
+    "START_ACTIVE_LEARNING",
+    "STOP_TRAINING_RECORDING"
+  ],
+  "checks": [
+    "camera authorization gating",
+    "mode command dispatch",
+    "active stop control",
+    "capture failure/drop warnings",
+    "mode limits and labeling/split guidance",
+    "optional checklist toggle"
+  ]
+}

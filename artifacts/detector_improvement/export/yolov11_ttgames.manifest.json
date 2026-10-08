@@ -1,0 +1,18 @@
+{
+  "onnx": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\detector_improvement\\export\\yolov11_ttgames.onnx",
+  "engine": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\detector_improvement\\export\\yolov11_ttgames.engine",
+  "fp16_internal": true,
+  "input": [
+    1,
+    3,
+    640,
+    640
+  ],
+  "output": [
+    1,
+    5,
+    8400
+  ],
+  "onnx_sha256": "0076063a7c2c100eb1cc36a0ad197addb54ab86e883987fd306e9c92c5a41198",
+  "engine_sha256": "364557d6622fe31fd1e95579252544973eb905b73da6fd0cea2cc4f9343d57af"
+}

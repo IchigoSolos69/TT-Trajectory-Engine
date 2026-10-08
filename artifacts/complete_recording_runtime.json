@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "analysis_id": "1790650304794355_23864",
+  "total_frames": 360,
+  "pause_start_analyzed": 0,
+  "seek_ahead_wait_observed": true,
+  "unicode_source": true,
+  "coverage": "all consecutive source frames",
+  "checks": [
+    "analysis continues while paused",
+    "exact seek and frame stepping",
+    "playback-rate independent analytics",
+    "historical event state",
+    "invalid source preserves frame",
+    "restart reuses analysis",
+    "source isolation",
+    "source write lock",
+    "completed cache reused across process restart"
+  ],
+  "log": "[TelemetryServer] Starting WebSocket Broadcast Server on port 9102...\r\n[TelemetryServer] Listening for WebSocket clients on ws://localhost:9102\r\n[TelemetryServer] Incoming TCP connection accepted.\r\n[TelemetryServer] WebSocket Handshake successful!\r\n[Source] Opened C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\replay fixture café.avi; analysis=1790650304794355_23864 NEW\r\n[Source] Select a supported local video recording\r\n\nRELAUNCH\n[TelemetryServer] Starting WebSocket Broadcast Server on port 9102...\r\n[TelemetryServer] Listening for WebSocket clients on ws://localhost:9102\r\n[TelemetryServer] Incoming TCP connection accepted.\r\n[TelemetryServer] WebSocket Handshake successful!\r\n[Source] Opened C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\replay fixture café.avi; analysis=1790650304794355_23864 CACHED\r\n"
+}

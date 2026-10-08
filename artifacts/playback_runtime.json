@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "samples": [
+    {
+      "rates": [
+        {
+          "requested": 0.25,
+          "achieved": 0.22916820946574784,
+          "analyzed_fps": 0,
+          "preview_fps": 74.5284,
+          "skipped_frames": 0
+        },
+        {
+          "requested": 1,
+          "achieved": 1.0408491450649466,
+          "analyzed_fps": 0,
+          "preview_fps": 104.0875,
+          "skipped_frames": 0
+        },
+        {
+          "requested": 2,
+          "achieved": 2.0643801342072257,
+          "analyzed_fps": 91.138,
+          "preview_fps": 103.8023,
+          "skipped_frames": 0
+        },
+        {
+          "requested": 4,
+          "achieved": 3.7414825150544857,
+          "analyzed_fps": 93.4027,
+          "preview_fps": 102.4758,
+          "skipped_frames": 0
+        }
+      ],
+      "pause_frame": 281,
+      "decode_errors": 0
+    }
+  ],
+  "log": "[TelemetryServer] Starting WebSocket Broadcast Server on port 9105...\r\n[TelemetryServer] Listening for WebSocket clients on ws://localhost:9105\r\n[Source] Opened C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\replay fixture café.avi; analysis=1790650588738360_592 NEW\r\n[TelemetryServer] Incoming TCP connection accepted.\r\n[TelemetryServer] WebSocket Handshake successful!\r\n"
+}

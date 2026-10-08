@@ -1,0 +1,46 @@
+{
+  "conditional_roi_evaluation": true,
+  "test_sequences_used": false,
+  "input": [
+    15,
+    128,
+    128
+  ],
+  "crop_side_pixels": 192,
+  "splits": {
+    "train": {
+      "samples": 2387,
+      "positive": 1795
+    },
+    "val": {
+      "samples": 921,
+      "positive": 691
+    }
+  },
+  "sources": [
+    {
+      "split": "train",
+      "game": "game_1",
+      "first": 5,
+      "last": 20000,
+      "selected_frames": 800,
+      "markup_sha256": "d43d421ad63a3c64f6d4ac6324759ed4f1c1eaa0f3e4ad0ecc5a1b6e4ad7ccfc"
+    },
+    {
+      "split": "train",
+      "game": "game_2",
+      "first": 5,
+      "last": 20000,
+      "selected_frames": 1000,
+      "markup_sha256": "b350119e322e605109233182768ed2f7583b075c7ee226bae6b25179593c662b"
+    },
+    {
+      "split": "val",
+      "game": "game_1",
+      "first": 70999,
+      "last": 79416,
+      "selected_frames": 700,
+      "markup_sha256": "d43d421ad63a3c64f6d4ac6324759ed4f1c1eaa0f3e4ad0ecc5a1b6e4ad7ccfc"
+    }
+  ]
+}

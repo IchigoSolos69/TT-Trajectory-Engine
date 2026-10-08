@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "fixture": "recorded native candidate + isolated review fixtures",
+  "alignment": {
+    "view": "2653",
+    "image": "2653"
+  },
+  "review_click_save": true,
+  "drafts_survive_navigation": true,
+  "errors": []
+}

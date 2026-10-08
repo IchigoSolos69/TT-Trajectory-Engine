@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "before": {
+    "source_id": 2,
+    "source_video": "game_1.mp4"
+  },
+  "after": {
+    "source_id": 6,
+    "source_video": "test_2.mp4",
+    "frame_id": 3600,
+    "picker_open": false,
+    "error": ""
+  },
+  "method": "Observed source switch after native picker interaction; element click reported geometry unavailable, so exact automation action attribution is uncertain."
+}

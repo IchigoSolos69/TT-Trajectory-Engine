@@ -1,0 +1,384 @@
+{
+  "configurations": [
+    {
+      "acceleration_sigma": 4000,
+      "measurement_sigma_scale": 1,
+      "by_state": {
+        "MEASURED": {
+          "count": 1672,
+          "rmse_px": 31.602810195513765,
+          "median_px": 5.2697769799584675,
+          "p95_px": 36.069747363296,
+          "localized_within_15px": 0.8995215311004785,
+          "model_95_region_coverage": 0.6489234449760766
+        },
+        "REJECTED": {
+          "count": 495,
+          "rmse_px": 108.7648399721176,
+          "median_px": 51.66467099517136,
+          "p95_px": 208.13647035164215,
+          "localized_within_15px": 0.05454545454545454,
+          "model_95_region_coverage": 0.04242424242424243
+        },
+        "REACQUIRED": {
+          "count": 148,
+          "rmse_px": 21.591524978745923,
+          "median_px": 3.3033359842741157,
+          "p95_px": 53.252088567094724,
+          "localized_within_15px": 0.777027027027027,
+          "model_95_region_coverage": 0.7094594594594594
+        },
+        "PREDICTED": {
+          "count": 70,
+          "rmse_px": 97.77642478309043,
+          "median_px": 64.56684359305474,
+          "p95_px": 210.38257319379292,
+          "localized_within_15px": 0.17142857142857143,
+          "model_95_region_coverage": 0.14285714285714285
+        }
+      },
+      "known_positive_lost": 66,
+      "known_absent_with_track": 14,
+      "unknown_excluded": 15134,
+      "warning": "Image-plane only; empirical coverage is not guaranteed. Sparse annotations; no live-camera accuracy claim."
+    },
+    {
+      "acceleration_sigma": 12000,
+      "measurement_sigma_scale": 1,
+      "by_state": {
+        "MEASURED": {
+          "count": 1820,
+          "rmse_px": 30.39668729727389,
+          "median_px": 3.9587696273590085,
+          "p95_px": 36.091744915650715,
+          "localized_within_15px": 0.9032967032967033,
+          "model_95_region_coverage": 0.7818681318681319
+        },
+        "REJECTED": {
+          "count": 361,
+          "rmse_px": 122.48829420383291,
+          "median_px": 51.06180632316294,
+          "p95_px": 233.12063995590887,
+          "localized_within_15px": 0.09418282548476455,
+          "model_95_region_coverage": 0.09695290858725762
+        },
+        "REACQUIRED": {
+          "count": 140,
+          "rmse_px": 21.523158407204438,
+          "median_px": 5.834959469439335,
+          "p95_px": 51.43902903893597,
+          "localized_within_15px": 0.7142857142857143,
+          "model_95_region_coverage": 0.6714285714285714
+        },
+        "PREDICTED": {
+          "count": 78,
+          "rmse_px": 96.57446876257106,
+          "median_px": 49.071971589080675,
+          "p95_px": 207.8582548789739,
+          "localized_within_15px": 0.3717948717948718,
+          "model_95_region_coverage": 0.3974358974358974
+        }
+      },
+      "known_positive_lost": 52,
+      "known_absent_with_track": 14,
+      "unknown_excluded": 15134,
+      "warning": "Image-plane only; empirical coverage is not guaranteed. Sparse annotations; no live-camera accuracy claim."
+    },
+    {
+      "acceleration_sigma": 40000,
+      "measurement_sigma_scale": 1,
+      "by_state": {
+        "MEASURED": {
+          "count": 2040,
+          "rmse_px": 12.710446325088498,
+          "median_px": 2.7363690506947367,
+          "p95_px": 33.48316716989154,
+          "localized_within_15px": 0.9235294117647059,
+          "model_95_region_coverage": 0.8921568627450981
+        },
+        "PREDICTED": {
+          "count": 81,
+          "rmse_px": 78.90209003680869,
+          "median_px": 14.36725550385252,
+          "p95_px": 164.35339182588714,
+          "localized_within_15px": 0.5061728395061729,
+          "model_95_region_coverage": 0.5802469135802469
+        },
+        "REJECTED": {
+          "count": 180,
+          "rmse_px": 141.3589546709463,
+          "median_px": 54.92943537266881,
+          "p95_px": 292.09188120660343,
+          "localized_within_15px": 0.22777777777777777,
+          "model_95_region_coverage": 0.25
+        },
+        "REACQUIRED": {
+          "count": 116,
+          "rmse_px": 21.839465221602747,
+          "median_px": 7.063919825606729,
+          "p95_px": 46.97063801493973,
+          "localized_within_15px": 0.7413793103448276,
+          "model_95_region_coverage": 0.7413793103448276
+        }
+      },
+      "known_positive_lost": 34,
+      "known_absent_with_track": 16,
+      "unknown_excluded": 15134,
+      "warning": "Image-plane only; empirical coverage is not guaranteed. Sparse annotations; no live-camera accuracy claim."
+    },
+    {
+      "acceleration_sigma": 4000,
+      "measurement_sigma_scale": 2,
+      "by_state": {
+        "MEASURED": {
+          "count": 2045,
+          "rmse_px": 19.958263516203644,
+          "median_px": 11.044631450483042,
+          "p95_px": 40.60716459212712,
+          "localized_within_15px": 0.6454767726161369,
+          "model_95_region_coverage": 0.5242053789731052
+        },
+        "REJECTED": {
+          "count": 218,
+          "rmse_px": 143.33072990150887,
+          "median_px": 86.83180247798849,
+          "p95_px": 317.14053863618665,
+          "localized_within_15px": 0.01834862385321101,
+          "model_95_region_coverage": 0.022935779816513763
+        },
+        "REACQUIRED": {
+          "count": 74,
+          "rmse_px": 27.84852598171694,
+          "median_px": 6.269848484166067,
+          "p95_px": 59.08575575820379,
+          "localized_within_15px": 0.581081081081081,
+          "model_95_region_coverage": 0.581081081081081
+        },
+        "PREDICTED": {
+          "count": 79,
+          "rmse_px": 105.28490662639089,
+          "median_px": 53.58060712917417,
+          "p95_px": 224.7590459454811,
+          "localized_within_15px": 0.10126582278481013,
+          "model_95_region_coverage": 0.12658227848101267
+        }
+      },
+      "known_positive_lost": 35,
+      "known_absent_with_track": 16,
+      "unknown_excluded": 15134,
+      "warning": "Image-plane only; empirical coverage is not guaranteed. Sparse annotations; no live-camera accuracy claim."
+    },
+    {
+      "acceleration_sigma": 12000,
+      "measurement_sigma_scale": 2,
+      "by_state": {
+        "MEASURED": {
+          "count": 2191,
+          "rmse_px": 17.324125411549527,
+          "median_px": 7.452864236144402,
+          "p95_px": 34.23948800215914,
+          "localized_within_15px": 0.7498858968507531,
+          "model_95_region_coverage": 0.7507987220447284
+        },
+        "PREDICTED": {
+          "count": 80,
+          "rmse_px": 95.95063739906038,
+          "median_px": 36.53118350730101,
+          "p95_px": 205.4624638408738,
+          "localized_within_15px": 0.125,
+          "model_95_region_coverage": 0.2625
+        },
+        "REJECTED": {
+          "count": 98,
+          "rmse_px": 193.09142478216336,
+          "median_px": 155.88068180978723,
+          "p95_px": 377.92033233823565,
+          "localized_within_15px": 0.10204081632653061,
+          "model_95_region_coverage": 0.12244897959183673
+        },
+        "REACQUIRED": {
+          "count": 53,
+          "rmse_px": 30.705694702346246,
+          "median_px": 20.205628720621327,
+          "p95_px": 66.37659033177663,
+          "localized_within_15px": 0.39622641509433965,
+          "model_95_region_coverage": 0.4716981132075472
+        }
+      },
+      "known_positive_lost": 29,
+      "known_absent_with_track": 16,
+      "unknown_excluded": 15134,
+      "warning": "Image-plane only; empirical coverage is not guaranteed. Sparse annotations; no live-camera accuracy claim."
+    },
+    {
+      "acceleration_sigma": 40000,
+      "measurement_sigma_scale": 2,
+      "by_state": {
+        "MEASURED": {
+          "count": 2200,
+          "rmse_px": 15.308812917676477,
+          "median_px": 3.7754360020532625,
+          "p95_px": 34.48708253387932,
+          "localized_within_15px": 0.8809090909090909,
+          "model_95_region_coverage": 0.9109090909090909
+        },
+        "PREDICTED": {
+          "count": 81,
+          "rmse_px": 78.69497418797603,
+          "median_px": 18.924446513441264,
+          "p95_px": 167.21836995936673,
+          "localized_within_15px": 0.4444444444444444,
+          "model_95_region_coverage": 0.6790123456790124
+        },
+        "REJECTED": {
+          "count": 87,
+          "rmse_px": 192.0278750700941,
+          "median_px": 145.36256232118538,
+          "p95_px": 374.81745154525197,
+          "localized_within_15px": 0.16091954022988506,
+          "model_95_region_coverage": 0.25287356321839083
+        },
+        "REACQUIRED": {
+          "count": 52,
+          "rmse_px": 32.22669953329947,
+          "median_px": 6.473517895827569,
+          "p95_px": 72.38324470960114,
+          "localized_within_15px": 0.6730769230769231,
+          "model_95_region_coverage": 0.7307692307692307
+        }
+      },
+      "known_positive_lost": 31,
+      "known_absent_with_track": 16,
+      "unknown_excluded": 15134,
+      "warning": "Image-plane only; empirical coverage is not guaranteed. Sparse annotations; no live-camera accuracy claim."
+    },
+    {
+      "acceleration_sigma": 4000,
+      "measurement_sigma_scale": 4,
+      "by_state": {
+        "MEASURED": {
+          "count": 2190,
+          "rmse_px": 28.68509610270052,
+          "median_px": 17.099092719884325,
+          "p95_px": 55.46794514928062,
+          "localized_within_15px": 0.4484018264840183,
+          "model_95_region_coverage": 0.5963470319634703
+        },
+        "PREDICTED": {
+          "count": 81,
+          "rmse_px": 116.8577685511041,
+          "median_px": 64.56526644750485,
+          "p95_px": 239.2340069919233,
+          "localized_within_15px": 0.037037037037037035,
+          "model_95_region_coverage": 0.1111111111111111
+        },
+        "REJECTED": {
+          "count": 109,
+          "rmse_px": 219.82343952791845,
+          "median_px": 181.13733420474662,
+          "p95_px": 432.45461720790496,
+          "localized_within_15px": 0.0,
+          "model_95_region_coverage": 0.01834862385321101
+        },
+        "REACQUIRED": {
+          "count": 42,
+          "rmse_px": 55.23058767842758,
+          "median_px": 50.08852869690025,
+          "p95_px": 91.41169303525628,
+          "localized_within_15px": 0.16666666666666666,
+          "model_95_region_coverage": 0.21428571428571427
+        }
+      },
+      "known_positive_lost": 29,
+      "known_absent_with_track": 16,
+      "unknown_excluded": 15134,
+      "warning": "Image-plane only; empirical coverage is not guaranteed. Sparse annotations; no live-camera accuracy claim."
+    },
+    {
+      "acceleration_sigma": 12000,
+      "measurement_sigma_scale": 4,
+      "by_state": {
+        "MEASURED": {
+          "count": 2203,
+          "rmse_px": 23.4414315537172,
+          "median_px": 13.050727041697712,
+          "p95_px": 45.129107910133776,
+          "localized_within_15px": 0.5637766681797549,
+          "model_95_region_coverage": 0.8206990467544257
+        },
+        "PREDICTED": {
+          "count": 81,
+          "rmse_px": 102.0986251366,
+          "median_px": 46.645150383486786,
+          "p95_px": 208.41142719759785,
+          "localized_within_15px": 0.012345679012345678,
+          "model_95_region_coverage": 0.20987654320987653
+        },
+        "REJECTED": {
+          "count": 92,
+          "rmse_px": 221.47270348093858,
+          "median_px": 173.36540168095826,
+          "p95_px": 432.9647215544039,
+          "localized_within_15px": 0.010869565217391304,
+          "model_95_region_coverage": 0.05434782608695652
+        },
+        "REACQUIRED": {
+          "count": 46,
+          "rmse_px": 51.43555177015497,
+          "median_px": 33.1794758512186,
+          "p95_px": 94.39305929130595,
+          "localized_within_15px": 0.17391304347826086,
+          "model_95_region_coverage": 0.43478260869565216
+        }
+      },
+      "known_positive_lost": 29,
+      "known_absent_with_track": 16,
+      "unknown_excluded": 15134,
+      "warning": "Image-plane only; empirical coverage is not guaranteed. Sparse annotations; no live-camera accuracy claim."
+    },
+    {
+      "acceleration_sigma": 40000,
+      "measurement_sigma_scale": 4,
+      "by_state": {
+        "MEASURED": {
+          "count": 2210,
+          "rmse_px": 18.18263194389235,
+          "median_px": 5.88231483808888,
+          "p95_px": 35.97424007037539,
+          "localized_within_15px": 0.797737556561086,
+          "model_95_region_coverage": 0.9452488687782805
+        },
+        "PREDICTED": {
+          "count": 81,
+          "rmse_px": 86.28003936007737,
+          "median_px": 28.864450077623125,
+          "p95_px": 184.67933775238126,
+          "localized_within_15px": 0.35802469135802467,
+          "model_95_region_coverage": 0.691358024691358
+        },
+        "REJECTED": {
+          "count": 84,
+          "rmse_px": 220.2095272069213,
+          "median_px": 168.21822447527052,
+          "p95_px": 431.97131156612903,
+          "localized_within_15px": 0.07142857142857142,
+          "model_95_region_coverage": 0.21428571428571427
+        },
+        "REACQUIRED": {
+          "count": 47,
+          "rmse_px": 37.51028205294006,
+          "median_px": 14.016534816212632,
+          "p95_px": 82.61087707156364,
+          "localized_within_15px": 0.5106382978723404,
+          "model_95_region_coverage": 0.8936170212765957
+        }
+      },
+      "known_positive_lost": 29,
+      "known_absent_with_track": 16,
+      "unknown_excluded": 15134,
+      "warning": "Image-plane only; empirical coverage is not guaranteed. Sparse annotations; no live-camera accuracy claim."
+    }
+  ],
+  "samples_sha256": "3af25829f91973e7b835fb8074aa518cdd564711dff30a783fb581d01f192813",
+  "markup_sha256": "d43d421ad63a3c64f6d4ac6324759ed4f1c1eaa0f3e4ad0ecc5a1b6e4ad7ccfc"
+}

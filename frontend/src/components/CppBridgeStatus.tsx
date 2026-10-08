@@ -31,7 +31,7 @@ export const CppBridgeStatus: React.FC<CppBridgeStatusProps> = ({ currentFrame, 
         <div className="flex items-center gap-2 font-mono text-xs px-3 py-1.5 rounded-full border bg-slate-900 border-slate-700">
           <span className={`w-2.5 h-2.5 rounded-full ${isConnected ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
           <span className={isConnected ? 'text-emerald-400 font-bold' : 'text-amber-400'}>
-            {isConnected ? 'WEBSOCKET ACTIVE (uWebSockets)' : 'SIMULATION MODE (FALLBACK)'}
+            {isConnected ? 'WEBSOCKET ACTIVE' : 'DISCONNECTED — WAITING FOR ENGINE'}
           </span>
         </div>
       </div>
@@ -67,7 +67,7 @@ export const CppBridgeStatus: React.FC<CppBridgeStatusProps> = ({ currentFrame, 
             </div>
             <div className="flex justify-between">
               <span>OUTPUT BUFFER (NMS):</span>
-              <span className="text-slate-200">1 x 84 x 8400 (Float)</span>
+              <span className="text-slate-200">1 x 5 x 8400 (Float)</span>
             </div>
             <div className="flex justify-between">
               <span>EXECUTION CONTEXT:</span>
@@ -90,12 +90,25 @@ export const CppBridgeStatus: React.FC<CppBridgeStatusProps> = ({ currentFrame, 
               <span className="text-cyan-400 font-bold">120 FPS</span>
             </div>
             <div className="flex justify-between">
-              <span>CURRENT FPS:</span>
-              <span className="text-slate-200">{currentFrame?.fps || 120} FPS</span>
+              <span>SOURCE FPS:</span>
+              <span className="text-slate-200">{currentFrame?.fps?.toFixed(1) ?? '—'} FPS</span>
+            </div>
+            <div className="flex justify-between"><span>ANALYZED / PREVIEW FPS:</span><span>{currentFrame?.processing_fps?.toFixed(1) ?? '—'} / {currentFrame?.preview_fps?.toFixed(1) ?? '—'}</span></div>
+            <div className="flex justify-between">
+              <span>CAPTURE TO PREVIEW ENCODE:</span>
+              <span className="text-emerald-400 font-bold">
+                {typeof currentFrame?.latency_ms === 'number' && currentFrame.latency_ms > 0
+                  ? `${currentFrame.latency_ms.toFixed(2)} ms (${currentFrame.mode === 'live' ? 'CAMERA' : 'DATASET'})`
+                  : 'Awaiting measurement'}
+              </span>
             </div>
             <div className="flex justify-between">
-              <span>LATENCY (GPU INFER):</span>
-              <span className="text-emerald-400">~2.4 ms / frame</span>
+              <span>BALL INFERENCE + TRANSFER + NMS:</span>
+              <span className="text-cyan-400">
+                {typeof currentFrame?.infer_ms === 'number' && currentFrame.infer_ms > 0
+                  ? `${currentFrame.infer_ms.toFixed(2)} ms`
+                  : 'Awaiting measurement'}
+              </span>
             </div>
           </div>
         </div>
@@ -115,7 +128,7 @@ export const CppBridgeStatus: React.FC<CppBridgeStatusProps> = ({ currentFrame, 
             </div>
             <div className="flex justify-between">
               <span>ASSOCIATION:</span>
-              <span className="text-slate-200">IoU + Kalman Filter</span>
+              <span className="text-slate-200">Two-stage IoU + motion</span>
             </div>
             <div className="flex justify-between">
               <span>HIGH-SPEED ADVANTAGE:</span>

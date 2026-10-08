@@ -1,0 +1,18 @@
+{
+  "train_cutoff": 70879,
+  "val_start": 70999,
+  "splits": {
+    "train": {
+      "positive": 4270,
+      "negative": 54,
+      "unknown_excluded": 12996,
+      "labels_corrected": 54
+    },
+    "val": {
+      "positive": 2451,
+      "negative": 16,
+      "unknown_excluded": 7409,
+      "labels_corrected": 16
+    }
+  }
+}

@@ -1,0 +1,338 @@
+[
+  {
+    "epoch": 1,
+    "loss": 4.201557156480389,
+    "thresholds": [
+      {
+        "threshold": 0.5,
+        "precision": 0.9024045261669024,
+        "recall": 0.9232995658465991,
+        "tp": 638,
+        "fp": 69,
+        "fn": 53
+      },
+      {
+        "threshold": 0.7,
+        "precision": 0.9140401146131805,
+        "recall": 0.9232995658465991,
+        "tp": 638,
+        "fp": 60,
+        "fn": 53
+      },
+      {
+        "threshold": 0.85,
+        "precision": 0.9190751445086706,
+        "recall": 0.9204052098408104,
+        "tp": 636,
+        "fp": 56,
+        "fn": 55
+      },
+      {
+        "threshold": 0.95,
+        "precision": 0.9349112426035503,
+        "recall": 0.914616497829233,
+        "tp": 632,
+        "fp": 44,
+        "fn": 59
+      }
+    ],
+    "positive_rmse_px": 18.413170764497853,
+    "positive_median_px": 6.082761764526367,
+    "samples": 921,
+    "scope": "Prior-annotation-conditioned ROI validation; not end-to-end or live accuracy."
+  },
+  {
+    "epoch": 2,
+    "loss": 4.191837787628174,
+    "thresholds": [
+      {
+        "threshold": 0.5,
+        "precision": 0.9094766619519095,
+        "recall": 0.9305354558610709,
+        "tp": 643,
+        "fp": 64,
+        "fn": 48
+      },
+      {
+        "threshold": 0.7,
+        "precision": 0.9212034383954155,
+        "recall": 0.9305354558610709,
+        "tp": 643,
+        "fp": 55,
+        "fn": 48
+      },
+      {
+        "threshold": 0.85,
+        "precision": 0.9289855072463769,
+        "recall": 0.9276410998552822,
+        "tp": 641,
+        "fp": 49,
+        "fn": 50
+      },
+      {
+        "threshold": 0.95,
+        "precision": 0.9478390461997019,
+        "recall": 0.9204052098408104,
+        "tp": 636,
+        "fp": 35,
+        "fn": 55
+      }
+    ],
+    "positive_rmse_px": 18.578421003457777,
+    "positive_median_px": 5.8309550285339355,
+    "samples": 921,
+    "scope": "Prior-annotation-conditioned ROI validation; not end-to-end or live accuracy."
+  },
+  {
+    "epoch": 3,
+    "loss": 4.145439412858751,
+    "thresholds": [
+      {
+        "threshold": 0.5,
+        "precision": 0.9166666666666666,
+        "recall": 0.9232995658465991,
+        "tp": 638,
+        "fp": 58,
+        "fn": 53
+      },
+      {
+        "threshold": 0.7,
+        "precision": 0.9284671532846716,
+        "recall": 0.9204052098408104,
+        "tp": 636,
+        "fp": 49,
+        "fn": 55
+      },
+      {
+        "threshold": 0.85,
+        "precision": 0.9431988041853513,
+        "recall": 0.9131693198263386,
+        "tp": 631,
+        "fp": 38,
+        "fn": 60
+      },
+      {
+        "threshold": 0.95,
+        "precision": 0.9545454545454546,
+        "recall": 0.8813314037626628,
+        "tp": 609,
+        "fp": 29,
+        "fn": 82
+      }
+    ],
+    "positive_rmse_px": 18.354129970410142,
+    "positive_median_px": 5.8309502601623535,
+    "samples": 921,
+    "scope": "Prior-annotation-conditioned ROI validation; not end-to-end or live accuracy."
+  },
+  {
+    "epoch": 4,
+    "loss": 4.130580778475161,
+    "thresholds": [
+      {
+        "threshold": 0.5,
+        "precision": 0.903954802259887,
+        "recall": 0.9261939218523878,
+        "tp": 640,
+        "fp": 68,
+        "fn": 51
+      },
+      {
+        "threshold": 0.7,
+        "precision": 0.9167862266857962,
+        "recall": 0.9247467438494935,
+        "tp": 639,
+        "fp": 58,
+        "fn": 52
+      },
+      {
+        "threshold": 0.85,
+        "precision": 0.9206349206349206,
+        "recall": 0.9232995658465991,
+        "tp": 638,
+        "fp": 55,
+        "fn": 53
+      },
+      {
+        "threshold": 0.95,
+        "precision": 0.9377777777777778,
+        "recall": 0.9160636758321273,
+        "tp": 633,
+        "fp": 42,
+        "fn": 58
+      }
+    ],
+    "positive_rmse_px": 16.76327029074842,
+    "positive_median_px": 5.8309502601623535,
+    "samples": 921,
+    "scope": "Prior-annotation-conditioned ROI validation; not end-to-end or live accuracy."
+  },
+  {
+    "epoch": 5,
+    "loss": 4.108647116908321,
+    "thresholds": [
+      {
+        "threshold": 0.5,
+        "precision": 0.9226361031518625,
+        "recall": 0.9319826338639653,
+        "tp": 644,
+        "fp": 54,
+        "fn": 47
+      },
+      {
+        "threshold": 0.7,
+        "precision": 0.9318840579710145,
+        "recall": 0.9305354558610709,
+        "tp": 643,
+        "fp": 47,
+        "fn": 48
+      },
+      {
+        "threshold": 0.85,
+        "precision": 0.9438700147710487,
+        "recall": 0.9247467438494935,
+        "tp": 639,
+        "fp": 38,
+        "fn": 52
+      },
+      {
+        "threshold": 0.95,
+        "precision": 0.9573170731707317,
+        "recall": 0.9088277858176556,
+        "tp": 628,
+        "fp": 28,
+        "fn": 63
+      }
+    ],
+    "positive_rmse_px": 16.798972994145263,
+    "positive_median_px": 5.656852722167969,
+    "samples": 921,
+    "scope": "Prior-annotation-conditioned ROI validation; not end-to-end or live accuracy."
+  },
+  {
+    "epoch": 6,
+    "loss": 4.113445761763019,
+    "thresholds": [
+      {
+        "threshold": 0.5,
+        "precision": 0.9147727272727273,
+        "recall": 0.9319826338639653,
+        "tp": 644,
+        "fp": 60,
+        "fn": 47
+      },
+      {
+        "threshold": 0.7,
+        "precision": 0.9239598278335724,
+        "recall": 0.9319826338639653,
+        "tp": 644,
+        "fp": 53,
+        "fn": 47
+      },
+      {
+        "threshold": 0.85,
+        "precision": 0.9331395348837209,
+        "recall": 0.9290882778581766,
+        "tp": 642,
+        "fp": 46,
+        "fn": 49
+      },
+      {
+        "threshold": 0.95,
+        "precision": 0.9505988023952096,
+        "recall": 0.918958031837916,
+        "tp": 635,
+        "fp": 33,
+        "fn": 56
+      }
+    ],
+    "positive_rmse_px": 17.80615992971147,
+    "positive_median_px": 5.8309550285339355,
+    "samples": 921,
+    "scope": "Prior-annotation-conditioned ROI validation; not end-to-end or live accuracy."
+  },
+  {
+    "epoch": 7,
+    "loss": 4.121061952025802,
+    "thresholds": [
+      {
+        "threshold": 0.5,
+        "precision": 0.9259259259259259,
+        "recall": 0.9406657018813314,
+        "tp": 650,
+        "fp": 52,
+        "fn": 41
+      },
+      {
+        "threshold": 0.7,
+        "precision": 0.9364161849710982,
+        "recall": 0.9377713458755427,
+        "tp": 648,
+        "fp": 44,
+        "fn": 43
+      },
+      {
+        "threshold": 0.85,
+        "precision": 0.9499263622974963,
+        "recall": 0.9334298118668596,
+        "tp": 645,
+        "fp": 34,
+        "fn": 46
+      },
+      {
+        "threshold": 0.95,
+        "precision": 0.9606656580937972,
+        "recall": 0.918958031837916,
+        "tp": 635,
+        "fp": 26,
+        "fn": 56
+      }
+    ],
+    "positive_rmse_px": 16.94513144668725,
+    "positive_median_px": 5.385162353515625,
+    "samples": 921,
+    "scope": "Prior-annotation-conditioned ROI validation; not end-to-end or live accuracy."
+  },
+  {
+    "epoch": 8,
+    "loss": 4.092454224456976,
+    "thresholds": [
+      {
+        "threshold": 0.5,
+        "precision": 0.9257142857142857,
+        "recall": 0.9377713458755427,
+        "tp": 648,
+        "fp": 52,
+        "fn": 43
+      },
+      {
+        "threshold": 0.7,
+        "precision": 0.9363241678726484,
+        "recall": 0.9363241678726484,
+        "tp": 647,
+        "fp": 44,
+        "fn": 44
+      },
+      {
+        "threshold": 0.85,
+        "precision": 0.9428989751098097,
+        "recall": 0.9319826338639653,
+        "tp": 644,
+        "fp": 39,
+        "fn": 47
+      },
+      {
+        "threshold": 0.95,
+        "precision": 0.9587786259541985,
+        "recall": 0.9088277858176556,
+        "tp": 628,
+        "fp": 27,
+        "fn": 63
+      }
+    ],
+    "positive_rmse_px": 16.791218149602113,
+    "positive_median_px": 5.385162353515625,
+    "samples": 921,
+    "scope": "Prior-annotation-conditioned ROI validation; not end-to-end or live accuracy."
+  }
+]

@@ -1,0 +1,37 @@
+const fs=require('node:fs'),assert=require('node:assert/strict');
+async function main(){
+ const target=await(await fetch('http://localhost:9227/json/new?about:blank',{method:'PUT'})).json();
+ const ws=new WebSocket(target.webSocketDebuggerUrl);await new Promise((r,j)=>{ws.onopen=r;ws.onerror=j;});
+ let id=0;const calls=new Map(),errors=[];
+ ws.onmessage=e=>{const m=JSON.parse(e.data);if(m.id){const p=calls.get(m.id);calls.delete(m.id);m.error?p.reject(Error(JSON.stringify(m.error))):p.resolve(m.result);}else if(m.method==='Runtime.exceptionThrown')errors.push(m.params);};
+ const call=(method,params={})=>new Promise((resolve,reject)=>{calls.set(++id,{resolve,reject});ws.send(JSON.stringify({id,method,params}));});
+ const evaluate=async expression=>{const r=await call('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true});if(r.exceptionDetails)throw Error(JSON.stringify(r.exceptionDetails));return r.result.value;};
+ const wait=async expression=>{for(let i=0;i<150;i++){if(await evaluate(`Boolean(${expression})`))return;await new Promise(r=>setTimeout(r,100));}throw Error('Timed out: '+expression);};
+ await call('Page.enable');await call('Runtime.enable');await call('Emulation.setDeviceMetricsOverride',{width:1440,height:1200,deviceScaleFactor:1,mobile:false});
+ await call('Page.navigate',{url:'http://localhost:3000'});
+ await wait("document.querySelector('canvas[data-frame-id]') && document.body.innerText.includes('Open recording')");
+ const click=async name=>evaluate(`(()=>{const b=[...document.querySelectorAll('button')].find(b=>b.innerText.trim()===${JSON.stringify(name)});if(!b)throw Error('Button missing');b.click();})()`);
+ await evaluate(`window.testSocket=new WebSocket('ws://localhost:9002');window.testSocket.onmessage=e=>window.testFrame=JSON.parse(e.data)`);
+ await wait('!!window.testFrame');await evaluate("window.beforeSource=testFrame.source_id;testSocket.send('PLAYBACK_RATE:0.5');testSocket.send('RESTART')");
+ await wait('window.testFrame.source_id!==window.beforeSource');
+ await wait('window.testFrame.ball && window.testFrame.table_position');await evaluate("testSocket.send('PAUSE')");await wait('window.testFrame.paused');
+ const frame=await evaluate('({...window.testFrame,preview_jpeg:undefined})');
+ const read=label=>evaluate(`(()=>{const view=document.querySelector('[aria-label="${label}"]');const image=document.querySelector('canvas[data-frame-id]');return view&&image?{frame:Number(view.dataset.frameId),imageFrame:Number(image.dataset.frameId),x:Number(view.dataset.ballX),y:Number(view.dataset.ballY)}:null})()`);
+ await click('2D RADAR');await wait("document.querySelector('[aria-label=\"2D table plane projection\"]') && document.querySelector('canvas[data-frame-id]')");
+ const radar=await read('2D table plane projection');assert.equal(radar.frame,radar.imageFrame);assert.equal(radar.frame,frame.frame_id);assert.deepEqual([radar.x,radar.y],frame.table_position);
+ let shot=await call('Page.captureScreenshot',{format:'png',captureBeyondViewport:true});fs.writeFileSync('artifacts/spatial_radar.png',Buffer.from(shot.data,'base64'));
+ await click('3D VOLUMETRIC');await wait("document.querySelector('[aria-label=\"3D table plane projection\"]') && document.querySelector('canvas[data-frame-id]')");
+ const volume=await read('3D table plane projection');assert.deepEqual(volume,radar);
+ await new Promise(r=>setTimeout(r,700));shot=await call('Page.captureScreenshot',{format:'png',captureBeyondViewport:true});fs.writeFileSync('artifacts/spatial_3d.png',Buffer.from(shot.data,'base64'));
+ await evaluate("testSocket.send('PLAY')");
+ const alignment=await evaluate(`new Promise(resolve=>{let samples=0,mismatches=0;const check=()=>{const a=document.querySelector('[aria-label="3D table plane projection"]'),b=document.querySelector('canvas[data-frame-id]');if(a&&b&&a.dataset.frameId!==b.dataset.frameId)mismatches++;if(++samples<120)requestAnimationFrame(check);else resolve({samples,mismatches});};requestAnimationFrame(check);})`);
+ assert.equal(alignment.mismatches,0,'view and footage must present the same frame at paint time');
+ await evaluate("testSocket.send('PAUSE')");await wait('window.testFrame.paused');
+ await click('VISUALIZER');await wait("document.querySelector('[aria-label=\"Dataset playback controls\"]')");
+ const text=await evaluate('document.body.innerText');assert(text.includes('LAST STRIKE'));assert(text.includes('STRIKE SPEEDS'));assert(!text.includes('ILLUSTRATIVE SPIN'));assert(text.includes('UNRESOLVED'));
+ await click('Open recording…');await wait('window.testFrame.video_picker_open');
+ assert.equal(errors.length,0,JSON.stringify(errors));
+ fs.writeFileSync('artifacts/browser_spatial.json',JSON.stringify({passed:true,frame,radar,volume,alignment,errors,picker_command_acknowledged:true},null,2));
+ console.log(JSON.stringify({passed:true,radar,volume,alignment,picker_open:true}));ws.close();
+}
+main().catch(e=>{console.error(e);process.exit(1);});

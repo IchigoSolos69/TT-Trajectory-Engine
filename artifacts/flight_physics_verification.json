@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "sweep_cases": 36,
+  "second_bounce_example": {
+    "speed_kmh": 18,
+    "launch_angle_deg": 15,
+    "side_angle_deg": 0,
+    "spin_rpm": 4800,
+    "spin_type": "topspin",
+    "drag_coefficient": 0.4,
+    "table_restitution": 0.89,
+    "magnus_coefficient": 0.28,
+    "table_friction": 0.22
+  },
+  "second_bounce": {
+    "x": 2.7332350003525288,
+    "y": 0.78,
+    "z": 0,
+    "vx": 5.022532844981427,
+    "vy": 1.7386352666512879,
+    "vz": 0,
+    "time": 0.5972519532359032,
+    "isBounce": true,
+    "bounceNumber": 2
+  },
+  "second_bounce_convergence_m": 0.008194150839777592,
+  "restitution_error_ms": 0.0014664980579617293
+}

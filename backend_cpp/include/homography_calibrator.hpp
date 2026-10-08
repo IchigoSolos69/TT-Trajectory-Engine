@@ -28,7 +28,8 @@ public:
         float brX, float brY,
         float blX, float blY,
         float tableWidthMeters = 1.525f,
-        float tableLengthMeters = 2.74f
+        float tableLengthMeters = 2.74f,
+        bool isDefaultGrid = false
     );
 
     // Transform 2D pixel coordinates (x, y) to real-world table meters (x_m, y_m)

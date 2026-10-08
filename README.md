@@ -1,8 +1,20 @@
 # 🏓 Table Tennis Trajectory Engine & Analytics Dashboard
 
-A high-performance Table Tennis Match Analysis engine combining a low-latency C++ inference backend (TensorRT + OpenCV + ByteTrack + uWebSockets) and a modern Next.js TypeScript dashboard with real-time canvas visualization and Magnus spin aerodynamics simulation.
+A high-performance Table Tennis Match Analysis engine combining a low-latency C++ inference backend (TensorRT + OpenCV + ByteTrack-style tracking + WebSockets) and a modern Next.js TypeScript dashboard with real-time canvas visualization and Magnus spin aerodynamics simulation.
 
 ---
+
+## Current implementation and measured results
+
+See [VERIFICATION.md](VERIFICATION.md) for the deployed model hashes, before/after detector metrics, live-camera smoke test, playback measurements, screenshots/traces, and limitations. The current application uses separate ball and person/table models and synchronized backend footage. Historical performance tables farther below describe older benchmark configurations; they are not current live-stream performance claims.
+
+For room/camera adaptation, the live Visualizer now has an explicit **Record training clip** control. See [TRAINING_LIVE.md](TRAINING_LIVE.md) for clean local capture, reviewed labels, recording-level train/validation/test splits, and candidate training. Recording does not automatically label frames or replace a deployed model.
+
+Simulation includes **Open recording…** for local game videos. The dashboard retains per-strike speed history. The 2D and 3D views share the same source-frame table-plane projection; airborne height is unknown. Rotation is estimated from visible ball markings when resolvable, otherwise shown as **UNRESOLVED**. It estimates the camera-axis component only.
+
+Recording analysis now runs in a separate C++ worker and saves every analyzed frame under `artifacts/analyses/`. Pause, speed, seek and frame-step controls operate on that indexed timeline. Seeking beyond the analyzed portion waits for progress. Compatible completed analyses are reused; source/model/runtime/settings hashes invalidate stale results. `launch_engine.bat` reuses healthy project services and offers a controlled restart when necessary, while preserving unrelated port owners.
+
+An opt-in C++ intelligence prototype adds covariance/state telemetry, persistent table geometry, motion gates, a candidate event timeline and difficult-example capture/review. Its uncertainty coverage has not passed validation, so it is not enabled by the normal launcher. See [INTELLIGENCE_ROADMAP.md](INTELLIGENCE_ROADMAP.md) for the implementation status of all twelve requested features, evidence, limitations and remaining acceptance gates.
 
 ## 🏗 System Architecture
 
@@ -16,7 +28,7 @@ A high-performance Table Tennis Match Analysis engine combining a low-latency C+
                                                  │
                                                  ▼
                              ┌────────────────────────────────────────┐
-                             │   TensorRT 10.x Inference Engine       │
+                             │   TensorRT Ball + Scene Engines       │
                              │   - Asynchronous CUDA Stream Execution │
                              │   - 1x3x640x640 BGR->RGB Float Preproc │
                              └───────────────────┬────────────────────┘
@@ -24,13 +36,13 @@ A high-performance Table Tennis Match Analysis engine combining a low-latency C+
                                                  ▼
                              ┌────────────────────────────────────────┐
                              │       ByteTrack Object Tracker         │
-                             │   - Kalman Motion State Prediction     │
+                             │   - Constant-Velocity Prediction     │
                              │   - High-Speed IoU Association         │
                              └───────────────────┬────────────────────┘
                                                  │
                                                  ▼
                              ┌────────────────────────────────────────┐
-                             │    uWebSockets Telemetry Broadcaster   │
+                             │    WebSocket Frame Broadcaster   │
                              │   - Port 9002 JSON Stream              │
                              └───────────────────┬────────────────────┘
                                                  │
@@ -53,11 +65,11 @@ A high-performance Table Tennis Match Analysis engine combining a low-latency C+
    - Explicit CUDA memory management (`cudaMalloc`, `cudaMemcpyAsync`).
    - Vectorized BGR to RGB planar float normalization ($1 \times 3 \times 640 \times 640$).
    - ByteTrack tracker tuned for 40mm fast-moving ping pong balls.
-   - Fallback simulation harness when TensorRT hardware is off-line.
+   - Strict source routing: dataset video for `--sim`, authorized camera for `--live`; no synthetic fallback.
 
 2. **Next.js Dashboard (`/frontend`)**:
-   - **Live Trajectory Overlay**: Layers over 60/120 FPS video with gradient fading arcs, impact ripples, and player tracking HUD.
-   - **Physics Sandbox**: Solves 3D aerodynamic flight differential equations with Magnus Force ($\vec{F}_M = \frac{1}{2} \rho A C_M \frac{r}{v} (\vec{\omega} \times \vec{v})$), gravity, drag, and table bounce restitution ($e \approx 0.89$).
+   - **Footage Overlay**: Source imagery paired with same-frame ball/person/table detections, an estimated table surface, and image-space motion trails. Preview delivery is capped near 30 FPS and actual rates are reported separately.
+   - **Physics Sandbox**: Solves 3D aerodynamic flight differential equations with Magnus Force ($\vec{F}_M = \frac{1}{2} \rho A C_M r (\vec{\omega} \times \vec{v})$), gravity, drag, and table bounce restitution ($e \approx 0.89$).
    - **WebSocket Stream Receiver**: Auto-reconnecting client with live telemetry feed.
 
 3. **Python Tooling (`/python_tools`)**:
@@ -75,6 +87,8 @@ npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+On Windows, `launch_engine.bat` starts both services after checking ports 9002 and 3000. If either port is occupied, it names the conflicting port and waits for you to close the previous service window; press R to retry the checks or C to cancel. If the dashboard is already serving on port 3000, you can use that window instead. The TensorRT CUDA lazy-loading message is an optional startup/memory optimization suggestion; this launcher deliberately loads CUDA modules at startup with `CUDA_MODULE_LOADING=EAGER`.
+
 ### 2. Build C++ Inference Engine (Windows MSVC)
 ```powershell
 # Install CMake if not already installed:
@@ -89,17 +103,27 @@ cmake --build . --config Release
 .\Release\tt_trajectory_engine.exe
 ```
 
-### 3. Export YOLO Model to TensorRT Engine
+### 3. Export a Trained Ball Model to a Separate TensorRT Candidate
 ```powershell
 cd python_tools
-python export_yolo_onnx.py --model yolov11n.pt --output_dir ../models --fp16
+python export_yolo_onnx.py --model <ball-best.pt> --output_dir ../artifacts/candidate_export --fp16
 ```
 
----
+The exporter requires an existing checkpoint and refuses to overwrite an existing export. Ball export expects one class; use `--kind scene` for the separate `{person, table}` model. Runtime requires both `models/yolov11_ttgames.engine` and `models/scene.engine`. TensorRT 11 precision is encoded in the ONNX graph, with FP32 input/output retained for the C++ interface. Do not promote candidate weights until the C++ evaluation passes.
+
+Simulation reads dataset footage from frame 1 and holds the final frame at EOF. Pause, restart, and 0.25×–4× rate controls operate on the backend playback clock. Replay reports skipped frames when sampling is needed to keep pace. `--video <file>` selects a local dataset file; it is rejected with `--live`. Missing footage, missing models, inference failures, and conflicting source flags stop analysis. Live mode opens only the selected camera after dashboard authorization and releases it on failure or revocation. Dashboard disconnects clear telemetry and retry the connection without generating mock results.
+
+The default confidence threshold is shared by both modes; override with `--confidence <0..1>`. Confidence values are model scores, not calibrated probabilities. Source restrictions and detector verification are covered by `backend_cpp/tests/test_source_routing.cjs`, `frontend/tests/telemetry_source.test.cjs`, `test_letterbox.exe`, and `python_tools/test_detector_metrics.py`.
+
+For candidate training, run `python python_tools/improve_detector.py train --epochs 20` from the repository root. This creates a separate dataset using only labeled frames, preserves the chronological split and temporal gap, corrects absent-ball labels, and enables validation. Unannotated frames are excluded rather than treated as negatives. See `artifacts/detector_improvement/data_audit.json` for the actual counts. Actual camera accuracy still requires representative labeled footage from that camera.
 
 ---
 
-## 📊 Empirical Performance & Validation Summary
+---
+
+## 📊 Historical Performance & Validation Summary
+
+The following results predate the two-model JPEG preview pipeline. Consult [current verification](VERIFICATION.md) for present detector and streaming measurements.
 
 ### Published Benchmark Statement
 > **"Bounce logic on ground-truth ball positions, no detector involved; tuned on `game_1` and `test_1`: precision 84–94%, recall 87–90%. Held-out evaluation pending."**
@@ -172,8 +196,9 @@ Logged across 5 isolated runs over 16,800 frames per run on a clean machine (no 
 ### 4. Vectorized CPU Preprocessing Pipeline & Isolated 5-Pass Benchmark (`run_isolated_benchmark.ps1`)
 > *"Single-threaded p50 latency of 7.56 ms (~132 FPS instantaneous throughput), holding the 120 FPS / 8.33 ms deadline on 94.7%–98.6% of frames depending on pass."*
 
+- **Production Pipeline Architecture**: The live and simulation engine paths in `main.cpp` utilize OpenCV CPU letterbox preprocessing (`preprocessOpenCVFrame`) + TensorRT engine execution (`inferFrame`), guaranteeing clean cross-driver compatibility on CUDA 13.3 drivers without PTX toolchain version hazards.
 - **Formal Retraction of Earlier CUDA Kernel Claim**:
-  - *Retraction Note*: The previously reported 0.54 ms preprocessing / 6.43 ms total latency figures are officially retracted as a suspected early-return artifact. When `cudaError 222` occurred in `enqueueV3` due to toolchain/driver fatbinary mismatches, TensorRT returned near-instantly on the host without executing GPU inference.
+  - *Retraction Note*: The previously reported 0.54 ms preprocessing / 6.43 ms total latency figures are officially retracted as an early-return artifact. When `cudaError 222` occurred in `enqueueV3` due to toolchain/driver fatbinary mismatches (`cuda_preprocess.cu` compiled with CUDA 13.4 Toolkit against CUDA 13.3 driver), TensorRT returned near-instantly on the host without executing GPU inference.
   - *Standing Defensive Practice*: All GPU calls now enforce explicit return-code checking (`enqueueV3` status check, `cudaMemcpyAsync` error check, `cudaStreamSynchronize` error check) in `tensorrt_engine.cpp` to log errors loudly.
 
 - **5-Pass Isolated Latency Table (16,800 Frames per Pass, 10s Thermal Cooldowns)**:
@@ -200,4 +225,12 @@ Logged across 5 isolated runs over 16,800 frames per run on a clean machine (no 
   | **CUDA D2H Device-to-Host Output Copy** | **0.17 ms** | 2.3% |
   | **NMS & Unletterbox Bounding Box Decoding** | **0.48 ms** | 6.4% |
   | **Total Accounted Sub-Stage Latency** | **7.54 ms** | **99.7% of 7.56 ms Total** |
+
+### 5. Offline Replay vs. Live Hardware Webcam Latency Qualification
+- **Offline File Replay Benchmark (`test_1.mp4` — Rigorous 5-Pass Baseline)**:
+  - **TensorRT GPU Compute**: **1.66 ms** (`enqueueV3`)
+  - **Total Pipeline Latency**: **7.56 ms** p50 (includes pre-decoded MP4 frame read & CPU letterboxing).
+- **Live Hardware Camera Pipeline (USB Webcam Capture — Single-Session Observed Estimate)**:
+  - **TensorRT GPU Compute**: **4.0–5.0 ms**
+  - **Total Pipeline Latency**: **7.2–9.4 ms** (single-session live capture estimate, including USB camera frame acquisition, RGB buffer locking, and format conversion overhead).
 <!-- END RESULTS SECTION -->

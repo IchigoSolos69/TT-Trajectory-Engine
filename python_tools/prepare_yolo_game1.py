@@ -3,13 +3,14 @@ import json
 import shutil
 import random
 import cv2
+from improve_detector import annotation_status
 
 def prepare_dataset():
     dataset_root = "python_tools/dataset"
     yolo_dir = os.path.join(dataset_root, "yolo_ball_game1")
 
     if os.path.exists(yolo_dir):
-        shutil.rmtree(yolo_dir)
+        raise FileExistsError(f'Dataset already exists: {yolo_dir}. Use improve_detector.py to create a separate clean dataset.')
 
     train_img_dir = os.path.join(yolo_dir, "images", "train")
     val_img_dir = os.path.join(yolo_dir, "images", "val")
@@ -60,7 +61,10 @@ def prepare_dataset():
         
         fstr = str(fid)
         pos = ball_markup.get(fstr, None)
-        is_pos = (pos is not None and isinstance(pos, dict) and "x" in pos and "y" in pos and pos["x"] is not None and pos["y"] is not None)
+        status = annotation_status(pos)
+        if status == 'unknown':
+            continue
+        is_pos = status == 'positive'
         
         if fid <= train_cutoff:
             if is_pos: train_pos_frames.append(fid)
@@ -124,7 +128,7 @@ def prepare_dataset():
 
         cv2.imwrite(img_out_path, frame)
 
-        if ball_pos is not None and isinstance(ball_pos, dict) and "x" in ball_pos and "y" in ball_pos and ball_pos["x"] is not None:
+        if annotation_status(ball_pos) == 'positive':
             bx = float(ball_pos["x"]) / width
             by = float(ball_pos["y"]) / height
             bx = max(0.0, min(1.0, bx))

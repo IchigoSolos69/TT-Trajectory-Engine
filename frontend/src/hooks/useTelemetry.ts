@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef, RefObject } from 'react';
 import { TelemetryFrame } from '../types/telemetry';
+import { decodedFrames } from '../lib/decodedFrames';
 
 export interface TelemetryStats {
   rallyStrokes: number;
@@ -7,160 +8,127 @@ export interface TelemetryStats {
   elapsedTimeSec: number;
 }
 
-export function useTelemetry(videoRef?: RefObject<HTMLVideoElement>, targetFps: number = 60) {
+const emptyStats: TelemetryStats = { rallyStrokes: 0, maxVelocity: 0, elapsedTimeSec: 0 };
+
+export function useTelemetry(_videoRef?: RefObject<HTMLVideoElement>, _targetFps = 60) {
   const [currentFrame, setCurrentFrame] = useState<TelemetryFrame | null>(null);
-  const [isSimulated, setIsSimulated] = useState<boolean>(false);
-  const [isConnected, setIsConnected] = useState<boolean>(false);
-  const [socket, setSocket] = useState<WebSocket | null>(null);
-
-  // Real-time aggregated statistics from C++ physics payload
-  const [stats, setStats] = useState<TelemetryStats>({
-    rallyStrokes: 0,
-    maxVelocity: 0,
-    elapsedTimeSec: 0,
-  });
-
+  const [isSimulated, setIsSimulated] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
+  const [stats, setStats] = useState<TelemetryStats>(emptyStats);
   const [impactPoints, setImpactPoints] = useState<Array<{ x: number; y: number }>>([]);
-
-  const frameCount = useRef(0);
+  const socketRef = useRef<WebSocket | null>(null);
 
   const sendCommand = useCallback((cmd: string) => {
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      console.log(`[useTelemetry] Transmitting command to C++ Backend: ${cmd}`);
-      socket.send(cmd);
-    }
-  }, [socket]);
-
+    if (socketRef.current?.readyState === WebSocket.OPEN) socketRef.current.send(cmd);
+  }, []);
   const resetStats = useCallback(() => {
-    frameCount.current = 0;
     setImpactPoints([]);
-    setStats({ rallyStrokes: 0, maxVelocity: 0, elapsedTimeSec: 0 });
+    setStats(emptyStats);
   }, []);
 
   useEffect(() => {
-    let ws: WebSocket | null = null;
-    let animFrameId: number;
-    let mockFrames: TelemetryFrame[] = [];
-    let isCancelled = false;
+    let cancelled = false;
+    let lastFrame = -1;
+    let lastMode = "";
+    let lastSource: number | undefined;
+    let reconnectTimer: ReturnType<typeof setTimeout> | undefined;
 
-    async function initFallback() {
-      if (isCancelled) return;
-      setIsSimulated(true);
+    function disconnected() {
       setIsConnected(false);
-
-      try {
-        const res = await fetch('/data/mock_telemetry.json');
-        if (res.ok) {
-          mockFrames = await res.json();
-        }
-      } catch (e) {
-        console.warn('[useTelemetry] Failed to load mock_telemetry.json:', e);
+      setIsSimulated(false);
+      setCurrentFrame(null);
+      setStats(emptyStats);
+      setImpactPoints([]);
+      if (!cancelled && reconnectTimer === undefined) {
+        reconnectTimer = setTimeout(() => {
+          reconnectTimer = undefined;
+          connect();
+        }, 3000);
       }
-
-      // Loop sync function
-      const syncLoop = () => {
-        if (isCancelled) return;
-
-        if (videoRef?.current && mockFrames.length > 0) {
-          const frameIdx = Math.floor(videoRef.current.currentTime * targetFps) % mockFrames.length;
-          if (mockFrames[frameIdx]) {
-            setCurrentFrame(mockFrames[frameIdx]);
-          }
-        } else if (mockFrames.length > 0) {
-          const idx = Math.floor(Date.now() / (1000 / targetFps)) % mockFrames.length;
-          const frame = mockFrames[idx];
-          setCurrentFrame(frame);
-          if (frame) {
-            frameCount.current += 1;
-            const velocity = frame.ball?.speed_kmh ?? frame.velocity ?? 0;
-            const isBounce = frame.ball?.is_bounce ?? frame.bounce ?? false;
-            if (isBounce) {
-              const bx = frame.bounce_x ?? frame.ball?.bounce_x ?? frame.ball?.x ?? 0.5;
-              const by = frame.bounce_y ?? frame.ball?.bounce_y ?? frame.ball?.y ?? 0.5;
-              setImpactPoints(prev => [...prev.slice(-49), { x: bx, y: by }]);
-            }
-            setStats((prev) => ({
-              rallyStrokes: isBounce ? prev.rallyStrokes + 1 : prev.rallyStrokes,
-              maxVelocity: Math.max(prev.maxVelocity, velocity),
-              elapsedTimeSec: frameCount.current / targetFps,
-            }));
-          }
-        }
-
-        animFrameId = requestAnimationFrame(syncLoop);
-      };
-
-      animFrameId = requestAnimationFrame(syncLoop);
     }
 
-    try {
-      ws = new WebSocket('ws://localhost:9002');
-      setSocket(ws);
-
+    function connect() {
+      if (cancelled) return;
+      let ws: WebSocket;
+      try {
+        ws = new WebSocket('ws://localhost:9002');
+      } catch (error) {
+        console.error('[useTelemetry] Connection failed:', error);
+        disconnected();
+        return;
+      }
+      socketRef.current = ws;
+      const active = () => !cancelled && socketRef.current === ws;
       ws.onopen = () => {
-        console.log('[useTelemetry] Connected to C++ uWebSockets Engine on port 9002');
-        setIsConnected(true);
-        setIsSimulated(false);
+        if (active()) setIsConnected(true);
       };
-
+      const publish = (data: TelemetryFrame) => {
+          if (!active()) return;
+          if (data.mode !== lastMode || data.source_id !== lastSource || data.frame_id < lastFrame) setImpactPoints([]);
+          const fresh = data.mode !== lastMode || data.source_id !== lastSource || data.frame_id !== lastFrame;
+          lastMode = data.mode ?? ''; lastFrame = data.frame_id; lastSource = data.source_id;
+          setCurrentFrame(data);
+          setIsSimulated(data.mode === 'simulation');
+          if (data.impact_points) {
+            setImpactPoints(data.impact_points.map(([x,y])=>({x,y})));
+          } else setImpactPoints([]);
+          setStats({
+            rallyStrokes: data.rally?.stroke_count ?? 0,
+            maxVelocity: data.rally?.max_speed_kmh ?? 0,
+            elapsedTimeSec: data.rally?.rally_duration_s ?? 0,
+          });
+      };
+      let decoding=false, pending: TelemetryFrame | null=null;
+      const decode = () => {
+        if(decoding || !pending || !active()) return;
+        const data=pending;pending=null;
+        if(!data.preview_jpeg){publish(data);return;}
+        decoding=true;
+        const image=new Image();
+        image.onload=()=>{
+          decoding=false;
+          if(active() && (!pending || (pending.source_id===data.source_id && pending.mode===data.mode && pending.frame_id>=data.frame_id))) {
+            decodedFrames.set(data,image);publish(data);
+          }
+          decode();
+        };
+        image.onerror=()=>{decoding=false;if(active()){console.error('[useTelemetry] Source image decode failed');setCurrentFrame(null);}decode();};
+        image.src=`data:image/jpeg;base64,${data.preview_jpeg}`;
+      };
       ws.onmessage = (event) => {
+        if (!active()) return;
         try {
           const data: TelemetryFrame = JSON.parse(event.data);
-          setCurrentFrame(data);
-          if (data.mode) {
-            setIsSimulated(data.mode === 'simulation');
-          }
-
-          frameCount.current += 1;
-          const currentVelocity = data.ball?.speed_kmh ?? data.velocity ?? 0;
-          const isStrike = (data as any).is_strike ?? (data as any).strike ?? false;
-          const isBounce = (data as any).is_bounce ?? (data as any).bounce ?? false;
-
-          if (isBounce) {
-            const bx = (data as any).bounce_x ?? data.ball?.bounce_x ?? data.ball?.x ?? 0.5;
-            const by = (data as any).bounce_y ?? data.ball?.bounce_y ?? data.ball?.y ?? 0.5;
-            setImpactPoints(prev => [...prev.slice(-49), { x: bx, y: by }]);
-          }
-
-          const serverStrokes = data.rally?.stroke_count ?? (data as any).stroke_count ?? (data as any).rally_strokes;
-          const serverMaxVelocity = data.rally?.max_speed_kmh ?? (data as any).max_velocity ?? (data as any).max_speed_kmh;
-          const serverElapsedTime = data.rally?.rally_duration_s ?? (data as any).elapsed_time;
-
-          setStats((prev) => ({
-            rallyStrokes: typeof serverStrokes === 'number' ? serverStrokes : (isStrike ? prev.rallyStrokes + 1 : prev.rallyStrokes),
-            maxVelocity: typeof serverMaxVelocity === 'number' ? serverMaxVelocity : Math.max(prev.maxVelocity, currentVelocity),
-            elapsedTimeSec: typeof serverElapsedTime === 'number' ? serverElapsedTime : (frameCount.current / 120),
-          }));
-        } catch (err) {
-          console.error('[useTelemetry] JSON parse error:', err);
+          if (data.mode !== 'simulation' && data.mode !== 'live') throw new Error('Telemetry must declare its footage source.');
+          pending=data;decode();
+        } catch (error) {
+          console.error('[useTelemetry] Invalid telemetry:', error);
+          setCurrentFrame(null);
         }
       };
-
-      ws.onerror = () => {
-        initFallback();
+      ws.onerror = (error) => {
+        if (!active()) return;
+        console.error('[useTelemetry] WebSocket error:', error);
+        ws.close();
       };
-
       ws.onclose = () => {
-        initFallback();
+        if (!active()) return;
+        socketRef.current = null;
+        disconnected();
       };
-    } catch (e) {
-      initFallback();
     }
-
+    connect();
     return () => {
-      isCancelled = true;
+      cancelled = true;
+      if (reconnectTimer !== undefined) clearTimeout(reconnectTimer);
+      const ws = socketRef.current;
+      socketRef.current = null;
       if (ws) {
-        ws.onopen = null;
-        ws.onmessage = null;
-        ws.onerror = null;
-        ws.onclose = null;
-        if (ws.readyState === WebSocket.OPEN) {
-          ws.close();
-        }
+        ws.onopen = ws.onmessage = ws.onerror = ws.onclose = null;
+        ws.close();
       }
-      if (animFrameId) cancelAnimationFrame(animFrameId);
     };
-  }, [videoRef, targetFps]);
+  }, []);
 
   return { currentFrame, isSimulated, isConnected, sendCommand, stats, resetStats, impactPoints };
 }

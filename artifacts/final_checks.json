@@ -1,0 +1,56 @@
+[
+  {
+    "test": "backend_cpp/build/Release/test_letterbox.exe",
+    "exit": 0,
+    "stdout": "PASS 1920x1080 CHW and coordinate round trip\r\nPASS 1280x721 CHW and coordinate round trip\r\nPASS 721x1280 CHW and coordinate round trip\r\nPASS 641x479 CHW and coordinate round trip\r\n",
+    "stderr": ""
+  },
+  {
+    "test": "backend_cpp/build/Release/test_scene_geometry.exe",
+    "exit": 0,
+    "stdout": "PASS: scene geometry, unavailable calibration, class-aware NMS\r\n",
+    "stderr": ""
+  },
+  {
+    "test": "backend_cpp/build/Release/test_tracking.exe",
+    "exit": 0,
+    "stdout": "PASS: track identity, velocity, second association, occlusion, class isolation, expiration\r\n",
+    "stderr": ""
+  },
+  {
+    "test": "backend_cpp/build/Release/test_physics_engine.exe",
+    "exit": 0,
+    "stdout": "===========================================\r\n  Table Tennis Physics Engine Unit Tests   \r\n===========================================\r\n[Test] Running Synthetic Rally Physics Test...\r\n -> Final Stroke Count: 2 (Expected: 2)\r\n -> Final Max Speed: 28.8001 km/h (Expected: <= 29.0 km/h)\r\n -> Floor Bounces Triggered: 0\r\n[Test PASS] Synthetic Rally Physics Test Passed Successfully!\r\n\r\n[Test] Running Tracking Spike Rejection Test...\r\n -> Speed during tracking jump: 21.6 km/h (Expected: <= 30.0 km/h)\r\n -> Max Speed Recorded: 21.6 km/h (Expected: <= 30.0 km/h)\r\n[Test PASS] Tracking Spike Rejection Test Passed Successfully!\r\n\r\n[Test] Running Vision 2D Pixel Discontinuity Bounce Test...\r\n -> Vision Bounce Detected: YES (Expected: YES)\r\n[Test PASS] Vision 2D Pixel Bounce Test Passed Successfully!\r\n\r\n[Test] Running Continuous Trigger Signal Re-arming Test...\r\n -> Continuous Signal Total Bounce Count: 1 (Expected: 1)\r\n[Test PASS] Continuous Trigger Signal Re-arming Test Passed Successfully!\r\n\r\nAll Physics Engine Tests PASSED!\r\n",
+    "stderr": ""
+  },
+  {
+    "test": "backend_cpp/build/Release/test_bounce_matcher.exe",
+    "exit": 0,
+    "stdout": "=========================================================================\r\n  UNIT TEST: C++ BOUNCE MATCHER EVALUATOR (tolerance = +/-3 frames)\r\n=========================================================================\r\n  [PASS] Case 1: Perfect Detections (TP=3, FP=0, FN=0, Prec=100%, Rec=100%)\r\n  [PASS] Case 2: Duplicate Near-GT Detections (TP=1, FP=1, FN=0, Prec=50%, Rec=100%)\r\n  [PASS] Case 3: Detection Outside Tolerance Window (TP=0, FP=1, FN=1, Prec=0%, Rec=0%)\r\n  [PASS] Case 4: Zero Detections (TP=0, FP=0, FN=2, Prec=0%, Rec=0%, Safe Division)\r\n=========================================================================\r\n  ALL MATCHER UNIT TESTS PASSED SUCCESSFULLY!\r\n=========================================================================\r\n\r\n",
+    "stderr": ""
+  },
+  {
+    "test": "frontend/tests/flight_physics.test.cjs",
+    "exit": 0,
+    "stdout": "{\n  \"passed\": true,\n  \"sweep_cases\": 36,\n  \"second_bounce_example\": {\n    \"speed_kmh\": 18,\n    \"launch_angle_deg\": 15,\n    \"side_angle_deg\": 0,\n    \"spin_rpm\": 4800,\n    \"spin_type\": \"topspin\",\n    \"drag_coefficient\": 0.4,\n    \"table_restitution\": 0.89,\n    \"magnus_coefficient\": 0.28,\n    \"table_friction\": 0.22\n  },\n  \"second_bounce\": {\n    \"x\": 2.7332350003525288,\n    \"y\": 0.78,\n    \"z\": 0,\n    \"vx\": 5.022532844981427,\n    \"vy\": 1.7386352666512879,\n    \"vz\": 0,\n    \"time\": 0.5972519532359032,\n    \"isBounce\": true,\n    \"bounceNumber\": 2\n  },\n  \"second_bounce_convergence_m\": 0.008194150839777592,\n  \"restitution_error_ms\": 0.0014664980579617293\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "frontend/tests/telemetry_source.test.cjs",
+    "exit": 0,
+    "stdout": "PASS: live disconnect clears telemetry, no mock fallback, one reconnect, stale socket ignored, dataset mode retained.\n",
+    "stderr": ""
+  },
+  {
+    "test": "backend_cpp/tests/test_source_routing.cjs",
+    "exit": 0,
+    "stdout": "PASS: 4 invalid-source cases; real dataset telemetry; live standby without camera authorization.\n",
+    "stderr": ""
+  },
+  {
+    "test": "backend_cpp/tests/test_playback.cjs",
+    "exit": 0,
+    "stdout": "{\n  \"passed\": true,\n  \"rates\": [\n    {\n      \"requested\": 0.25,\n      \"achieved\": 0.25558822590239344,\n      \"analyzed_fps\": 28.9149,\n      \"preview_fps\": 14.7594,\n      \"skipped_frames\": 2\n    },\n    {\n      \"requested\": 1,\n      \"achieved\": 0.9885131743555168,\n      \"analyzed_fps\": 70.4988,\n      \"preview_fps\": 23.3817,\n      \"skipped_frames\": 96\n    },\n    {\n      \"requested\": 2,\n      \"achieved\": 2.015906401165907,\n      \"analyzed_fps\": 57.7542,\n      \"preview_fps\": 21.5806,\n      \"skipped_frames\": 341\n    },\n    {\n      \"requested\": 4,\n      \"achieved\": 3.9193668203711156,\n      \"analyzed_fps\": 48.9296,\n      \"preview_fps\": 20.0022,\n      \"skipped_frames\": 802\n    }\n  ],\n  \"pause_frame\": 922\n}\n",
+    "stderr": ""
+  }
+]

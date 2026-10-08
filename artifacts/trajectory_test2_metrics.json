@@ -1,0 +1,42 @@
+{
+  "by_state": {
+    "MEASURED": {
+      "count": 377,
+      "rmse_px": 14.39317994481997,
+      "median_px": 4.366579491192198,
+      "p95_px": 39.32628675188644,
+      "localized_within_15px": 0.9098143236074271,
+      "model_95_region_coverage": 0.6790450928381963
+    },
+    "REJECTED": {
+      "count": 250,
+      "rmse_px": 129.0107565752408,
+      "median_px": 73.3605643605616,
+      "p95_px": 282.49247161650806,
+      "localized_within_15px": 0.02,
+      "model_95_region_coverage": 0.024
+    },
+    "REACQUIRED": {
+      "count": 23,
+      "rmse_px": 28.30130800158767,
+      "median_px": 15.355530898917136,
+      "p95_px": 55.35201873556641,
+      "localized_within_15px": 0.43478260869565216,
+      "model_95_region_coverage": 0.34782608695652173
+    },
+    "PREDICTED": {
+      "count": 45,
+      "rmse_px": 62.546894321389836,
+      "median_px": 50.29601878319302,
+      "p95_px": 109.1825352449928,
+      "localized_within_15px": 0.08888888888888889,
+      "model_95_region_coverage": 0.24444444444444444
+    }
+  },
+  "known_positive_lost": 78,
+  "known_absent_with_track": 6,
+  "unknown_excluded": 2821,
+  "warning": "Image-plane only; empirical coverage is not guaranteed. Sparse annotations; no live-camera accuracy claim.",
+  "samples_sha256": "ce250e0edcb4b89c61062e21e5919d9a71c35d0b23c07eb0982a4174a5da19c2",
+  "markup_sha256": "db79a74c3fc2299d84668b7bcc98e4a925ccdee839e6ca00a28c16bc91d85c74"
+}

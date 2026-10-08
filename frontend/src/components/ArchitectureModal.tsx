@@ -38,7 +38,7 @@ export const ArchitectureModal: React.FC<ArchitectureModalProps> = ({ onClose })
               <div className="text-xs font-mono text-slate-500 mb-2">STAGE 01</div>
               <h3 className="font-bold text-slate-200 mb-1">C++ Video Ingestion</h3>
               <p className="text-sm text-slate-400">
-                OpenCV 4.x captures the raw feed. Zero-copy pointer mapping prevents CPU-GPU bottlenecks by keeping memory unified.
+                OpenCV reads the selected camera or dataset file. Letterboxing preserves image geometry before transferring the frame to the GPU.
               </p>
               {/* Arrow linking to next step */}
               <div className="hidden md:block absolute -right-3 top-1/2 -translate-y-1/2 text-slate-600 font-bold">
@@ -51,11 +51,11 @@ export const ArchitectureModal: React.FC<ArchitectureModalProps> = ({ onClose })
               <div className="text-xs font-mono text-emerald-500 mb-2">STAGE 02</div>
               <h3 className="font-bold text-emerald-300 mb-1">TensorRT Engine</h3>
               <p className="text-sm text-slate-400">
-                YOLOv11 executes via CUDA 13.4 on RTX 5050. Utilizing FP16 quantization and{' '}
+                Separate YOLO11 ball and scene detectors execute in TensorRT using FP16 computation and{' '}
                 <code className="text-emerald-400 bg-emerald-950 px-1 rounded font-mono">
                   cudaStreamAsync
                 </code>{' '}
-                for ~2.4ms latency.
+                with runtime timing reported in the engine view.
               </p>
               <div className="hidden md:block absolute -right-3 top-1/2 -translate-y-1/2 text-emerald-800 font-bold">
                 →
@@ -67,7 +67,7 @@ export const ArchitectureModal: React.FC<ArchitectureModalProps> = ({ onClose })
               <div className="text-xs font-mono text-slate-500 mb-2">STAGE 03</div>
               <h3 className="font-bold text-slate-200 mb-1">Tracker & Projection</h3>
               <p className="text-sm text-slate-400">
-                ByteTrack handles Kalman-based association without heavy ReID. Homography matrix maps 2D coordinates to physical 3D ITTF table dimensions.
+                ByteTrack-style association uses constant-velocity prediction and two-stage IoU matching without ReID. Detected table bounds support approximate planar projection. Ball height and spin remain model estimates.
               </p>
               <div className="hidden md:block absolute -right-3 top-1/2 -translate-y-1/2 text-slate-600 font-bold">
                 →
@@ -80,9 +80,9 @@ export const ArchitectureModal: React.FC<ArchitectureModalProps> = ({ onClose })
               <h3 className="font-bold text-blue-300 mb-1">WebSocket Streaming</h3>
               <p className="text-sm text-slate-400">
                 <code className="text-blue-400 bg-blue-950 px-1 rounded font-mono">
-                  uWebSockets
+                  Non-blocking sockets
                 </code>{' '}
-                broadcasts JSON telemetry at 120 FPS to the Next.js React frontend for Canvas API rendering.
+                deliver matching imagery and detections together. A bounded queue keeps the latest waiting frame; preview delivery is capped near 30 FPS.
               </p>
             </div>
           </div>

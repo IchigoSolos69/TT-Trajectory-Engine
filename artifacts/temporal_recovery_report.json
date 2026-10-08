@@ -1,0 +1,180 @@
+{
+  "epoch": 11,
+  "experiments": {
+    "five_frames": {
+      "thresholds": [
+        {
+          "threshold": 0.5,
+          "precision": 0.9057142857142857,
+          "recall": 0.9175108538350217,
+          "tp": 634,
+          "fp": 66,
+          "fn": 57
+        },
+        {
+          "threshold": 0.7,
+          "precision": 0.9107913669064748,
+          "recall": 0.9160636758321273,
+          "tp": 633,
+          "fp": 62,
+          "fn": 58
+        },
+        {
+          "threshold": 0.85,
+          "precision": 0.9224011713030746,
+          "recall": 0.9117221418234442,
+          "tp": 630,
+          "fp": 53,
+          "fn": 61
+        },
+        {
+          "threshold": 0.95,
+          "precision": 0.9370199692780338,
+          "recall": 0.8827785817655571,
+          "tp": 610,
+          "fp": 41,
+          "fn": 81
+        }
+      ],
+      "positive_rmse_px": 18.797727312858903,
+      "positive_median_px": 6.082761764526367,
+      "samples": 921,
+      "scope": "Prior-annotation-conditioned ROI validation; not end-to-end or live accuracy."
+    },
+    "repeated_current": {
+      "thresholds": [
+        {
+          "threshold": 0.5,
+          "precision": 0.0,
+          "recall": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 691
+        },
+        {
+          "threshold": 0.7,
+          "precision": 0.0,
+          "recall": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 691
+        },
+        {
+          "threshold": 0.85,
+          "precision": 0.0,
+          "recall": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 691
+        },
+        {
+          "threshold": 0.95,
+          "precision": 0.0,
+          "recall": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 691
+        }
+      ],
+      "positive_rmse_px": 72.47423812899946,
+      "positive_median_px": 59.4810905456543,
+      "samples": 921,
+      "scope": "Prior-annotation-conditioned ROI validation; not end-to-end or live accuracy."
+    },
+    "masked_current": {
+      "thresholds": [
+        {
+          "threshold": 0.5,
+          "precision": 0.860832137733142,
+          "recall": 0.8683068017366136,
+          "tp": 600,
+          "fp": 97,
+          "fn": 91
+        },
+        {
+          "threshold": 0.7,
+          "precision": 0.8658008658008658,
+          "recall": 0.8683068017366136,
+          "tp": 600,
+          "fp": 93,
+          "fn": 91
+        },
+        {
+          "threshold": 0.85,
+          "precision": 0.8746312684365781,
+          "recall": 0.8581765557163531,
+          "tp": 593,
+          "fp": 85,
+          "fn": 98
+        },
+        {
+          "threshold": 0.95,
+          "precision": 0.9042386185243328,
+          "recall": 0.8335745296671491,
+          "tp": 576,
+          "fp": 61,
+          "fn": 115
+        }
+      ],
+      "positive_rmse_px": 17.256890979457815,
+      "positive_median_px": 5.099022388458252,
+      "samples": 921,
+      "scope": "Prior-annotation-conditioned ROI validation; not end-to-end or live accuracy."
+    },
+    "masked_repeated_current": {
+      "thresholds": [
+        {
+          "threshold": 0.5,
+          "precision": 0.0,
+          "recall": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 691
+        },
+        {
+          "threshold": 0.7,
+          "precision": 0.0,
+          "recall": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 691
+        },
+        {
+          "threshold": 0.85,
+          "precision": 0.0,
+          "recall": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 691
+        },
+        {
+          "threshold": 0.95,
+          "precision": 0.0,
+          "recall": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 691
+        }
+      ],
+      "positive_rmse_px": 67.19175749917521,
+      "positive_median_px": 50.08992004394531,
+      "samples": 921,
+      "scope": "Prior-annotation-conditioned ROI validation; not end-to-end or live accuracy."
+    }
+  },
+  "promotion": "NOT_APPROVED",
+  "scope": "Chronological, prior-annotation-conditioned ROI validation. Synthetic masking is not natural occlusion. No live test or end-to-end detector comparison.",
+  "onnx_sha256": "e3b62e54a2f75302bc345bcc0005fbe5327a6889c9bd463fb1bd32e1660a483e",
+  "checkpoint_sha256": "e6d7d3cb9ec3be2818ce2635e510349f04f5af48ea30b8b324328ea282d8453f",
+  "input": [
+    1,
+    15,
+    128,
+    128
+  ],
+  "output": [
+    1,
+    1025
+  ],
+  "precision": "FP32"
+}

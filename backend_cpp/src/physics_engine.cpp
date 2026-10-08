@@ -17,6 +17,7 @@ void PhysicsEngine::reset() {
     velocityZ = 0.0f;
     currentZ = 0.15f; // Initial elevation above table (0.15m)
     hasLast = false;
+    dirSign = 0;
     cooldown = 0;
     bounceCooldown = 0;
     bounceSignalArmed_ = true;
@@ -58,8 +59,9 @@ PhysicsState PhysicsEngine::update(float x, float y, float deltaTime, float pixe
     state.bounceX = -1.0f;
     state.bounceY = -1.0f;
 
-    // Clamp dt to valid interval [1/240s, 1/30s] to avoid division by zero or huge jumps after frame stalls
-    float dt = std::max(1.0f / 240.0f, std::min(1.0f / 30.0f, deltaTime));
+    // Preserve actual camera/sample timing down to 4 FPS. Main resets continuity
+    // for long gaps; forcing a 15 FPS camera to 1/30s doubled estimated speeds.
+    float dt = std::max(1.0f / 240.0f, std::min(0.25f, deltaTime));
 
     // 1. First-frame / tracking re-entry check
     if (!hasLast || pixelY < 0.0f) {
@@ -108,7 +110,7 @@ PhysicsState PhysicsEngine::update(float x, float y, float deltaTime, float pixe
         state.strokeCount = strokeCount;
         state.maxVelocityKmh = maxVelocityKmh;
         state.elapsedTimeSec = elapsedTimeSec;
-        state.spinRpm = std::min(6000.0f, lastValidSpeedKmh * 55.0f + 1200.0f);
+        state.spinRpm = 0.0f;
         return state;
     }
 
@@ -237,8 +239,9 @@ PhysicsState PhysicsEngine::update(float x, float y, float deltaTime, float pixe
     state.strokeCount = strokeCount;
     state.maxVelocityKmh = maxVelocityKmh;
     state.elapsedTimeSec = elapsedTimeSec;
-    // Aerodynamic Magnus Spin model (estimated from stroke velocity)
-    state.spinRpm = std::min(6000.0f, rawSpeedKmh * 55.0f + 1200.0f);
+    // Spin cannot be inferred from translational speed. Surface observations
+    // are handled by ObservedSpinEstimator and may be unavailable.
+    state.spinRpm = 0.0f;
 
     return state;
 }

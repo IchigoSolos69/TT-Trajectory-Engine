@@ -23,7 +23,7 @@ struct InferenceTimingDetailed {
 
 class TensorRTEngine {
 public:
-    TensorRTEngine(const std::string& enginePath = "", int inputWidth = 640, int inputHeight = 640);
+    TensorRTEngine(const std::string& enginePath = "", int inputWidth = 640, int inputHeight = 640, int classes = 1);
     ~TensorRTEngine();
 
     bool init();
@@ -59,6 +59,7 @@ public:
 
 private:
     std::string enginePath_;
+    int classes_;
     int inputW_;
     int inputH_;
     bool isInitialized_;

@@ -1,0 +1,472 @@
+{
+  "test1": {
+    "annotated_positive_frames": 880,
+    "annotated_negative_frames": 5,
+    "unknown_frames_excluded": 15915,
+    "baseline": {
+      "threshold": 0.25,
+      "tp": 543,
+      "fp": 174,
+      "fn": 337,
+      "tn": 4,
+      "precision": 0.7573221757322176,
+      "recall": 0.6170454545454546,
+      "f1": 0.6800250469630558,
+      "localized_frame_accuracy": 0.6180790960451977,
+      "median_correct_error_px": 2.850438562747845,
+      "mean_correct_confidence": 0.3879007862946593,
+      "reliability_bins": [
+        {
+          "count": 0,
+          "confidence_sum": 0,
+          "correct": 0
+        },
+        {
+          "count": 0,
+          "confidence_sum": 0,
+          "correct": 0
+        },
+        {
+          "count": 98,
+          "confidence_sum": 27.407226560000005,
+          "correct": 75
+        },
+        {
+          "count": 344,
+          "confidence_sum": 119.50732421599999,
+          "correct": 237
+        },
+        {
+          "count": 213,
+          "confidence_sum": 94.84106446299998,
+          "correct": 178
+        },
+        {
+          "count": 62,
+          "confidence_sum": 32.61767577799999,
+          "correct": 53
+        },
+        {
+          "count": 0,
+          "confidence_sum": 0,
+          "correct": 0
+        },
+        {
+          "count": 0,
+          "confidence_sum": 0,
+          "correct": 0
+        },
+        {
+          "count": 0,
+          "confidence_sum": 0,
+          "correct": 0
+        },
+        {
+          "count": 0,
+          "confidence_sum": 0,
+          "correct": 0
+        }
+      ]
+    },
+    "deployed": {
+      "threshold": 0.25,
+      "tp": 761,
+      "fp": 108,
+      "fn": 119,
+      "tn": 0,
+      "precision": 0.8757192174913694,
+      "recall": 0.8647727272727272,
+      "f1": 0.8702115494568324,
+      "localized_frame_accuracy": 0.8598870056497175,
+      "median_correct_error_px": 2.335209038549001,
+      "mean_correct_confidence": 0.6540880241116952,
+      "reliability_bins": [
+        {
+          "count": 0,
+          "confidence_sum": 0,
+          "correct": 0
+        },
+        {
+          "count": 0,
+          "confidence_sum": 0,
+          "correct": 0
+        },
+        {
+          "count": 20,
+          "confidence_sum": 5.484863278999999,
+          "correct": 7
+        },
+        {
+          "count": 58,
+          "confidence_sum": 20.580566404000002,
+          "correct": 26
+        },
+        {
+          "count": 88,
+          "confidence_sum": 39.859863286000014,
+          "correct": 59
+        },
+        {
+          "count": 154,
+          "confidence_sum": 85.62939453299998,
+          "correct": 135
+        },
+        {
+          "count": 233,
+          "confidence_sum": 151.3642578209999,
+          "correct": 222
+        },
+        {
+          "count": 234,
+          "confidence_sum": 175.06103516999985,
+          "correct": 232
+        },
+        {
+          "count": 82,
+          "confidence_sum": 67.81249999500002,
+          "correct": 80
+        },
+        {
+          "count": 0,
+          "confidence_sum": 0,
+          "correct": 0
+        }
+      ]
+    }
+  },
+  "test2": {
+    "annotated_positive_frames": 773,
+    "annotated_negative_frames": 6,
+    "unknown_frames_excluded": 2821,
+    "baseline": {
+      "threshold": 0.25,
+      "tp": 427,
+      "fp": 166,
+      "fn": 346,
+      "tn": 6,
+      "precision": 0.7200674536256324,
+      "recall": 0.5523932729624839,
+      "f1": 0.6251830161054174,
+      "localized_frame_accuracy": 0.5558408215661104,
+      "median_correct_error_px": 2.6100766272276377,
+      "mean_correct_confidence": 0.4314102065667447,
+      "reliability_bins": [
+        {
+          "count": 0,
+          "confidence_sum": 0,
+          "correct": 0
+        },
+        {
+          "count": 0,
+          "confidence_sum": 0,
+          "correct": 0
+        },
+        {
+          "count": 44,
+          "confidence_sum": 12.297363277999994,
+          "correct": 26
+        },
+        {
+          "count": 210,
+          "confidence_sum": 74.28393554200001,
+          "correct": 133
+        },
+        {
+          "count": 218,
+          "confidence_sum": 97.79614258999999,
+          "correct": 166
+        },
+        {
+          "count": 113,
+          "confidence_sum": 60.895507814000005,
+          "correct": 94
+        },
+        {
+          "count": 8,
+          "confidence_sum": 4.957519532,
+          "correct": 8
+        },
+        {
+          "count": 0,
+          "confidence_sum": 0,
+          "correct": 0
+        },
+        {
+          "count": 0,
+          "confidence_sum": 0,
+          "correct": 0
+        },
+        {
+          "count": 0,
+          "confidence_sum": 0,
+          "correct": 0
+        }
+      ]
+    },
+    "deployed": {
+      "threshold": 0.25,
+      "tp": 650,
+      "fp": 66,
+      "fn": 123,
+      "tn": 6,
+      "precision": 0.9078212290502793,
+      "recall": 0.8408796895213454,
+      "f1": 0.8730691739422431,
+      "localized_frame_accuracy": 0.8421052631578947,
+      "median_correct_error_px": 2.1360009363293826,
+      "mean_correct_confidence": 0.6597303185369231,
+      "reliability_bins": [
+        {
+          "count": 0,
+          "confidence_sum": 0,
+          "correct": 0
+        },
+        {
+          "count": 0,
+          "confidence_sum": 0,
+          "correct": 0
+        },
+        {
+          "count": 13,
+          "confidence_sum": 3.5112304670000003,
+          "correct": 9
+        },
+        {
+          "count": 62,
+          "confidence_sum": 22.066406250000004,
+          "correct": 46
+        },
+        {
+          "count": 89,
+          "confidence_sum": 40.014892584,
+          "correct": 67
+        },
+        {
+          "count": 102,
+          "confidence_sum": 56.29833984299999,
+          "correct": 91
+        },
+        {
+          "count": 143,
+          "confidence_sum": 93.56298828699998,
+          "correct": 133
+        },
+        {
+          "count": 159,
+          "confidence_sum": 119.32910156799996,
+          "correct": 156
+        },
+        {
+          "count": 137,
+          "confidence_sum": 114.979492191,
+          "correct": 137
+        },
+        {
+          "count": 11,
+          "confidence_sum": 10.012695313,
+          "correct": 11
+        }
+      ]
+    }
+  },
+  "ball_engine_sha256": "2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9",
+  "scene_engine_sha256": "5eb0ecbfe0cddb8631cc89fbf6e7a2145d2a4a6b10595034afd4ab8b1a454cee",
+  "scene": {
+    "frames": 779,
+    "confidence_threshold": 0.4,
+    "iou_threshold": 0.5,
+    "person": {
+      "tp": 2612,
+      "fp": 19,
+      "fn": 39,
+      "precision": 0.9927784112504751,
+      "recall": 0.985288570350811
+    },
+    "table": {
+      "tp": 779,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    },
+    "table_quad_frames": 779,
+    "table_quad_mean_mask_iou": 0.7973991860257017,
+    "limitation": "People include officials; table quad is color/contour refinement of a learned box. Test_2 is dataset footage, not a live camera evaluation."
+  },
+  "parity": {
+    "sample_count": 32,
+    "sampling": "32 evenly spaced C++ predictions above 0.1",
+    "max_center_delta_px": 0.842911686282786,
+    "max_confidence_delta": 0.0022105579607849535,
+    "frames": [
+      {
+        "frame": 1,
+        "center_delta_px": 0.08819725161137995,
+        "confidence_delta": 0.0022105579607849535
+      },
+      {
+        "frame": 114,
+        "center_delta_px": 0.6880589212684383,
+        "confidence_delta": 0.0006335680716400005
+      },
+      {
+        "frame": 213,
+        "center_delta_px": 0.08274010053638256,
+        "confidence_delta": 0.0002707694375534142
+      },
+      {
+        "frame": 307,
+        "center_delta_px": 0.57858649111507,
+        "confidence_delta": 0.00043344472680661994
+      },
+      {
+        "frame": 407,
+        "center_delta_px": 0.11709796047791537,
+        "confidence_delta": 0.00037074114050295037
+      },
+      {
+        "frame": 502,
+        "center_delta_px": 0.2123976871374655,
+        "confidence_delta": 0.0011740028858184814
+      },
+      {
+        "frame": 610,
+        "center_delta_px": 0.6568563652945552,
+        "confidence_delta": 0.00007450580596923828
+      },
+      {
+        "frame": 710,
+        "center_delta_px": 0.22600266743505773,
+        "confidence_delta": 0.0015959739685058594
+      },
+      {
+        "frame": 802,
+        "center_delta_px": 0.6977211482031209,
+        "confidence_delta": 0.0005121228579101356
+      },
+      {
+        "frame": 905,
+        "center_delta_px": 0.5911872719277063,
+        "confidence_delta": 0.00009375860623173082
+      },
+      {
+        "frame": 1021,
+        "center_delta_px": 0.6540112370123892,
+        "confidence_delta": 0.000017404806274434748
+      },
+      {
+        "frame": 1141,
+        "center_delta_px": 0.415909347459912,
+        "confidence_delta": 0.0019769666079101356
+      },
+      {
+        "frame": 1240,
+        "center_delta_px": 0.05294637979898295,
+        "confidence_delta": 0.0001854602272186312
+      },
+      {
+        "frame": 1352,
+        "center_delta_px": 0.082720377796482,
+        "confidence_delta": 0.001468419653686548
+      },
+      {
+        "frame": 1484,
+        "center_delta_px": 0.2780133361423109,
+        "confidence_delta": 0.0014149549748229961
+      },
+      {
+        "frame": 1622,
+        "center_delta_px": 0.4327994002178487,
+        "confidence_delta": 0.0020177288281059275
+      },
+      {
+        "frame": 1772,
+        "center_delta_px": 0.3745041788031031,
+        "confidence_delta": 0.000027433100257878706
+      },
+      {
+        "frame": 1876,
+        "center_delta_px": 0.5861814444087604,
+        "confidence_delta": 0.001342266423019406
+      },
+      {
+        "frame": 2071,
+        "center_delta_px": 0.1273780274724034,
+        "confidence_delta": 0.0005228517252197223
+      },
+      {
+        "frame": 2267,
+        "center_delta_px": 0.4792755826403707,
+        "confidence_delta": 0.00048714926174930895
+      },
+      {
+        "frame": 2359,
+        "center_delta_px": 0.10296097194949798,
+        "confidence_delta": 0.0004769265651702881
+      },
+      {
+        "frame": 2464,
+        "center_delta_px": 0.24502358036032837,
+        "confidence_delta": 0.001191556453704834
+      },
+      {
+        "frame": 2557,
+        "center_delta_px": 0.07920645011692057,
+        "confidence_delta": 0.0005223150021667067
+      },
+      {
+        "frame": 2650,
+        "center_delta_px": 0.19586590063833467,
+        "confidence_delta": 0.0006228983402252197
+      },
+      {
+        "frame": 2747,
+        "center_delta_px": 0.5675101449205119,
+        "confidence_delta": 0.0007908342393798951
+      },
+      {
+        "frame": 2838,
+        "center_delta_px": 0.3257429467040397,
+        "confidence_delta": 0.000421702611785868
+      },
+      {
+        "frame": 2947,
+        "center_delta_px": 0.02791565547004699,
+        "confidence_delta": 0.0009692911083374056
+      },
+      {
+        "frame": 3186,
+        "center_delta_px": 0.020265234461825005,
+        "confidence_delta": 0.00009685729775998908
+      },
+      {
+        "frame": 3283,
+        "center_delta_px": 0.44696971316428175,
+        "confidence_delta": 0.0012580158826294152
+      },
+      {
+        "frame": 3386,
+        "center_delta_px": 0.4416433020634933,
+        "confidence_delta": 0.00041079546179201287
+      },
+      {
+        "frame": 3488,
+        "center_delta_px": 0.842911686282786,
+        "confidence_delta": 0.0007483363151550293
+      },
+      {
+        "frame": 3600,
+        "center_delta_px": 0.33719264827515477,
+        "confidence_delta": 0.0002598767512207445
+      }
+    ],
+    "passed": true
+  },
+  "limitations": [
+    "Scores use top-1 localization within 15 pixels on annotated dataset frames only.",
+    "Sparse negative labels do not establish full-video false-positive rates.",
+    "test_1 is an existing development set; test_2 remained outside training but was evaluated across candidates.",
+    "Live camera transport was verified; live detection accuracy is unmeasured without labeled camera footage.",
+    "3D height/spin and table-plane speed are estimates; homography does not recover true airborne 3D motion."
+  ]
+}

@@ -1,0 +1,45 @@
+const {spawn}=require('node:child_process'),fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const delay=ms=>new Promise(r=>setTimeout(r,ms));
+async function main(){
+ const root=path.resolve('artifacts/review_api_'+Date.now()),clip='live_0_0',dir=path.join(root,clip);
+ fs.mkdirSync(dir,{recursive:true});fs.copyFileSync('artifacts/spatial_runtime_frame.jpg',path.join(dir,'frame_1.jpg'));
+ fs.copyFileSync('artifacts/spatial_runtime_frame.jpg',path.join(dir,'frame_2.jpg'));
+ fs.writeFileSync(path.join(dir,'capture.json'),JSON.stringify({source:'test_fixture'}));
+ fs.writeFileSync(path.join(dir,'frames.jsonl'),'{"file":"frame_1.jpg","source_frame":1,"elapsed_ms":0}\n{"file":"frame_2.jpg","source_frame":2,"elapsed_ms":200}\n');
+ const server=spawn(process.execPath,['node_modules/next/dist/bin/next','start','-H','127.0.0.1','-p','3100'],{cwd:path.resolve('frontend'),env:{...process.env,TT_TRAINING_ROOT:root}});
+ let log='';server.stdout.on('data',d=>log+=d);server.stderr.on('data',d=>log+=d);
+ const base='http://localhost:3100/api/training-review';
+ try{
+  for(let i=0;i<150&&!log.includes('Ready');i++)await delay(100);assert(log.includes('Ready'),log);
+  const clips=await(await fetch(base)).json();assert.deepEqual(clips.clips,[clip]);
+  let detail=await(await fetch(base+'?clip='+clip)).json();assert.equal(detail.frames.length,2);
+  assert.equal((await fetch(base+'?clip=..')).status,400);
+  assert.equal((await fetch(base+'?clip='+clip+'&file=..%2Fcapture.json')).status,400);
+  assert.equal((await fetch(base+'?clip='+clip+'&file=frame_1.jpg')).headers.get('content-type'),'image/jpeg');
+  const geometry={landmarks:{corner_near_left:[.1,.8],net_left:[.2,.5]},landmarks_reviewed:true,visibility:'partial',blur:'severe',events:['strike'],events_reviewed:true};
+  const body={clip,file:'frame_1.jpg',reviewed:true,revision:detail.revision,labels:{ball:[[.1,.2,.03,.04]],person:[],table:[],geometry}};
+  const post=async(data,origin='http://localhost:3100')=>fetch(base,{method:'POST',headers:{'Content-Type':'application/json',Origin:origin},body:JSON.stringify(data)});
+  assert.equal((await post(body,'https://untrusted.example')).status,403);
+  assert.equal((await post({...body,labels:{ball:[[.9,.9,.3,.3]],person:[],table:[]}})).status,400);
+  for(const invalid of [{...geometry,landmarks:{net_left:[2,.5]}},{...geometry,events:['made_up']},{...geometry,visibility:'absent'}])
+    assert.equal((await post({...body,labels:{...body.labels,geometry:invalid}})).status,400);
+  let saved=await post(body);assert.equal(saved.status,200);const savedBody=await saved.json();
+  assert.equal((await post(body)).status,409,'stale revisions must not overwrite reviewed labels');
+  detail=await(await fetch(base+'?clip='+clip)).json();assert.equal(detail.annotations['frame_1.jpg'].reviewed,true);
+  assert.deepEqual(detail.annotations['frame_1.jpg'].ball,body.labels.ball);
+  assert.deepEqual(detail.annotations['frame_1.jpg'].geometry,geometry);
+  assert.equal(detail.annotations['frame_1.jpg'].source_frame,1);
+  assert.equal(detail.annotations['frame_1.jpg'].elapsed_ms,0);
+  saved=await post({...body,reviewed:false,revision:savedBody.revision});assert.equal(saved.status,200);
+  assert.equal(JSON.parse(fs.readFileSync(path.join(dir,'annotations.json'),'utf8'))['frame_1.jpg'].reviewed,false);
+  const versions=fs.readdirSync(path.join(dir,'annotation_history')).map(file=>JSON.parse(fs.readFileSync(path.join(dir,'annotation_history',file),'utf8')));
+  assert(versions.some(v=>v['frame_1.jpg']?.reviewed===true),'Prior reviewed revision must remain recoverable');
+  if(process.argv.includes('--browser'))await new Promise((resolve,reject)=>{
+    const check=spawn(process.execPath,['frontend/tests/browser_intelligence.cjs'],{stdio:'inherit'});
+    check.on('exit',code=>code===0?resolve():reject(Error('Browser check failed: '+code)));check.on('error',reject);
+  });
+  fs.writeFileSync('artifacts/training_review_api.json',JSON.stringify({passed:true,fixture_root:root,checks:['indexed frames','jpeg','path confinement','origin guard','label bounds','revision conflict','reviewed save','exclude from training','landmarks and visibility/blur validation','source event timestamps','immutable annotation history'],log},null,2));
+  console.log('PASS: local review API, path/origin guards, valid labels, stale-write protection, reviewed/excluded persistence.');
+ }finally{server.kill();if(server.exitCode===null)await new Promise(r=>server.once('exit',r));}
+}
+main().catch(e=>{console.error(e);process.exitCode=1;});

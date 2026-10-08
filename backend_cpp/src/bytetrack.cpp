@@ -8,10 +8,11 @@ ByteTracker::ByteTracker(float highScoreThresh, float lowScoreThresh, int maxAge
 ByteTracker::~ByteTracker() {}
 
 float ByteTracker::computeIoU(const Detection& a, const TrackedObject& b) {
-    float x1 = std::max(a.x - a.w / 2.0f, b.x - b.w / 2.0f);
-    float y1 = std::max(a.y - a.h / 2.0f, b.y - b.h / 2.0f);
-    float x2 = std::min(a.x + a.w / 2.0f, b.x + b.w / 2.0f);
-    float y2 = std::min(a.y + a.h / 2.0f, b.y + b.h / 2.0f);
+    // Detector boxes use normalized top-left coordinates, not centre coordinates.
+    float x1 = std::max(a.x, b.x);
+    float y1 = std::max(a.y, b.y);
+    float x2 = std::min(a.x + a.w, b.x + b.w);
+    float y2 = std::min(a.y + a.h, b.y + b.h);
 
     float intersectionW = std::max(0.0f, x2 - x1);
     float intersectionH = std::max(0.0f, y2 - y1);
@@ -38,7 +39,7 @@ std::vector<TrackedObject> ByteTracker::update(const std::vector<Detection>& det
         }
     }
 
-    // 2. Predict Kalman motion step for existing tracks
+    // 2. Constant-velocity prediction for existing tracks.
     for (auto& track : activeTracks_) {
         track.x += track.vx;
         track.y += track.vy;
@@ -54,7 +55,7 @@ std::vector<TrackedObject> ByteTracker::update(const std::vector<Detection>& det
         int bestTrackIdx = -1;
 
         for (size_t j = 0; j < activeTracks_.size(); ++j) {
-            if (trackMatched[j]) continue;
+            if (trackMatched[j] || highDets[i].class_id != activeTracks_[j].class_id) continue;
             float iou = computeIoU(highDets[i], activeTracks_[j]);
             if (iou > bestIoU) {
                 bestIoU = iou;
@@ -65,8 +66,10 @@ std::vector<TrackedObject> ByteTracker::update(const std::vector<Detection>& det
         if (bestTrackIdx >= 0) {
             // Update Track
             auto& t = activeTracks_[bestTrackIdx];
-            t.vx = highDets[i].x - t.x;
-            t.vy = highDets[i].y - t.y;
+            // Residual is relative to the predicted position. Preserve velocity
+            // when a detection lands exactly on the prediction, including gaps.
+            t.vx += (highDets[i].x - t.x) / std::max(1, t.age);
+            t.vy += (highDets[i].y - t.y) / std::max(1, t.age);
             t.x = highDets[i].x;
             t.y = highDets[i].y;
             t.w = highDets[i].w;
@@ -77,6 +80,24 @@ std::vector<TrackedObject> ByteTracker::update(const std::vector<Detection>& det
             detMatched[i] = true;
             trackMatched[bestTrackIdx] = true;
         }
+    }
+
+    // Second association: low-confidence observations may maintain an existing
+    // identity but cannot create a new track.
+    for (const auto& detection : lowDets) {
+        int best = -1;
+        float bestIoU = .2f;
+        for (size_t j = 0; j < activeTracks_.size(); ++j) {
+            if (trackMatched[j] || detection.class_id != activeTracks_[j].class_id) continue;
+            const float overlap = computeIoU(detection, activeTracks_[j]);
+            if (overlap > bestIoU) { bestIoU = overlap; best = static_cast<int>(j); }
+        }
+        if (best < 0) continue;
+        auto& t = activeTracks_[best];
+        t.vx += (detection.x-t.x)/std::max(1,t.age);
+        t.vy += (detection.y-t.y)/std::max(1,t.age);
+        t.x=detection.x;t.y=detection.y;t.w=detection.w;t.h=detection.h;
+        t.confidence=detection.confidence;t.age=0;trackMatched[best]=true;
     }
 
     // 4. Create new tracks for unmatched high-confidence detections

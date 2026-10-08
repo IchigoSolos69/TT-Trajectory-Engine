@@ -27,7 +27,7 @@ void test_synthetic_rally() {
     float v1 = 8.0f;
     for (int i = 0; i < 40; ++i) {
         currentY += v1 * dt;
-        PhysicsState state = physics.update(currentX, currentY, dt);
+        PhysicsState state = physics.update(currentX, currentY, dt, 320.0f, 240.0f);
         if (state.isStrike) strikeCountDetected++;
         if (state.isTableBounce) bounceCountDetected++;
     }
@@ -36,7 +36,7 @@ void test_synthetic_rally() {
     float v2 = -5.0f;
     for (int i = 0; i < 40; ++i) {
         currentY += v2 * dt;
-        PhysicsState state = physics.update(currentX, currentY, dt);
+        PhysicsState state = physics.update(currentX, currentY, dt, 320.0f, 240.0f);
         if (state.isStrike) strikeCountDetected++;
         if (state.isTableBounce) bounceCountDetected++;
     }
@@ -45,7 +45,7 @@ void test_synthetic_rally() {
     float v3 = 8.0f;
     for (int i = 0; i < 40; ++i) {
         currentY += v3 * dt;
-        PhysicsState state = physics.update(currentX, currentY, dt);
+        PhysicsState state = physics.update(currentX, currentY, dt, 320.0f, 240.0f);
         if (state.isStrike) strikeCountDetected++;
         if (state.isTableBounce) bounceCountDetected++;
     }
@@ -53,12 +53,12 @@ void test_synthetic_rally() {
     // Phase 4: Ball falls to simulated table surface and bounces for 60 frames
     for (int i = 0; i < 60; ++i) {
         currentY += 1.0f * dt;
-        PhysicsState state = physics.update(currentX, currentY, dt);
+        PhysicsState state = physics.update(currentX, currentY, dt, 320.0f, 240.0f);
         if (state.isStrike) strikeCountDetected++;
         if (state.isTableBounce) bounceCountDetected++;
     }
 
-    PhysicsState finalState = physics.update(currentX, currentY, dt);
+    PhysicsState finalState = physics.update(currentX, currentY, dt, 320.0f, 240.0f);
 
     std::cout << " -> Final Stroke Count: " << finalState.strokeCount << " (Expected: 2)" << std::endl;
     std::cout << " -> Final Max Speed: " << finalState.maxVelocityKmh << " km/h (Expected: <= 29.0 km/h)" << std::endl;
@@ -77,11 +77,11 @@ void test_tracking_spike_rejection() {
     float dt = 1.0f / 120.0f;
 
     // Initial normal tracking
-    physics.update(0.5f, 1.0f, dt);
-    PhysicsState s1 = physics.update(0.5f, 1.05f, dt); // ~21.6 km/h
+    physics.update(0.5f, 1.0f, dt, 320.0f, 240.0f);
+    PhysicsState s1 = physics.update(0.5f, 1.05f, dt, 320.0f, 240.0f); // ~21.6 km/h
 
     // Injected 10-meter tracking jump in 1 frame (> 4300 km/h)
-    PhysicsState sSpike = physics.update(0.5f, 11.05f, dt);
+    PhysicsState sSpike = physics.update(0.5f, 11.05f, dt, 320.0f, 240.0f);
 
     std::cout << " -> Speed during tracking jump: " << sSpike.velocityKmh << " km/h (Expected: <= 30.0 km/h)" << std::endl;
     std::cout << " -> Max Speed Recorded: " << sSpike.maxVelocityKmh << " km/h (Expected: <= 30.0 km/h)" << std::endl;
@@ -162,6 +162,10 @@ int main() {
     test_tracking_spike_rejection();
     test_vision_bounce_detection();
     test_continuous_trigger_signal_rearming();
+    PhysicsEngine slowCamera;
+    slowCamera.update(.5f, 1.f, 1.f/15.f, 320.f, 240.f);
+    const auto slowState = slowCamera.update(.5f, 1.1f, 1.f/15.f, 320.f, 240.f);
+    TEST_ASSERT(std::abs(slowState.velocityKmh - 5.4f) < .01f, "15 FPS timing must not double speed");
 
     std::cout << "All Physics Engine Tests PASSED!" << std::endl;
     return 0;

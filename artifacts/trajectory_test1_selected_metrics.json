@@ -1,0 +1,34 @@
+{
+  "by_state": {
+    "MEASURED": {
+      "count": 781,
+      "rmse_px": 13.47701362558316,
+      "median_px": 3.248526573278993,
+      "p95_px": 39.57262298109646,
+      "localized_within_15px": 0.910371318822023,
+      "model_95_region_coverage": 0.8911651728553137
+    },
+    "REJECTED": {
+      "count": 64,
+      "rmse_px": 101.39898459786724,
+      "median_px": 54.3625926641123,
+      "p95_px": 212.49761502821622,
+      "localized_within_15px": 0.125,
+      "model_95_region_coverage": 0.171875
+    },
+    "REACQUIRED": {
+      "count": 30,
+      "rmse_px": 32.750069134390145,
+      "median_px": 12.783179675827911,
+      "p95_px": 59.097436187924465,
+      "localized_within_15px": 0.5666666666666667,
+      "model_95_region_coverage": 0.5666666666666667
+    }
+  },
+  "known_positive_lost": 5,
+  "known_absent_with_track": 5,
+  "unknown_excluded": 15915,
+  "warning": "Image-plane only; empirical coverage is not guaranteed. Sparse annotations; no live-camera accuracy claim.",
+  "samples_sha256": "a6359376191128a0153c1b46f70fb0074c5a3469cb30ddd82e37d57f8fb0de1a",
+  "markup_sha256": "f60ca733c514e5e4792ca9184331649bb6bc241f84d862d12e459397f49dc621"
+}

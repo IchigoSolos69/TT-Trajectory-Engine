@@ -1,0 +1,1096 @@
+{
+  "scope": "C++ TensorRT recovery with causal detector-driven ROIs; full source-frame replay. Sparse annotations, no live camera accuracy claim.",
+  "first_frame": 70999,
+  "last_frame": 88599,
+  "source_frames": 17601,
+  "known_positive": 2451,
+  "known_negative": 16,
+  "unknown_excluded": 15134,
+  "localization_tolerance_px": 15,
+  "detector_threshold": 0.25,
+  "recovery_threshold": 0.95,
+  "max_missed_frames": 4,
+  "recovery_extends_anchor_lifetime": false,
+  "baseline": {
+    "tp": 2041,
+    "fp": 249,
+    "fn": 410,
+    "tn": 14,
+    "precision": 0.8912663755458515,
+    "recall": 0.8327213382292942,
+    "f1": 0.860999789074035
+  },
+  "hybrid": {
+    "tp": 2096,
+    "fp": 278,
+    "fn": 355,
+    "tn": 10,
+    "precision": 0.8828980623420387,
+    "recall": 0.8551611587107303,
+    "f1": 0.8688082901554404
+  },
+  "baseline_absent_false_positives": 2,
+  "hybrid_absent_false_positives": 6,
+  "promotion_gates": {
+    "precision_non_regression": false,
+    "recall_non_regression": true,
+    "absent_frame_false_positive_non_regression": false,
+    "independent_sequence_verified": false,
+    "live_camera_verified": false
+  },
+  "invoked_known_subset": {
+    "tp": 55,
+    "fp": 29,
+    "fn": 82,
+    "tn": 7,
+    "precision": 0.6547619047619048,
+    "recall": 0.40145985401459855,
+    "f1": 0.497737556561086
+  },
+  "recovery_calls": 731,
+  "accepted_hypotheses_all_frames": 242,
+  "gpu_inference_median_ms": 0.237535998,
+  "timing_scope": "Single offline replay, recovery GPU calls only; excludes decoding/crops/detector/dashboard. Neither a multi-pass throughput benchmark nor live-camera FPS.",
+  "predictions_sha256": "809d923a6109de05f24696695d06735065167ab18de040a2cc7d1b3e16165b26",
+  "markup_sha256": "d43d421ad63a3c64f6d4ac6324759ed4f1c1eaa0f3e4ad0ecc5a1b6e4ad7ccfc",
+  "engine_sha256": "f357ccdecc64d76050669333f29ae93a54dc915ba30149e211e321a2c9bb8617",
+  "promotion": "NOT_APPROVED: requires independent sequences, negatives and live-camera evaluation",
+  "known_recovery_frames": [
+    {
+      "frame": 71169,
+      "positive": true,
+      "accepted": true,
+      "error_px": 58.82176467941097,
+      "score": 0.987209201
+    },
+    {
+      "frame": 71264,
+      "positive": true,
+      "accepted": false,
+      "error_px": 122.03687967167957,
+      "score": 0.504325688
+    },
+    {
+      "frame": 71303,
+      "positive": true,
+      "accepted": true,
+      "error_px": 9.899494936611665,
+      "score": 0.999998212
+    },
+    {
+      "frame": 71358,
+      "positive": true,
+      "accepted": true,
+      "error_px": 7.211102550927978,
+      "score": 0.999999642
+    },
+    {
+      "frame": 71379,
+      "positive": true,
+      "accepted": true,
+      "error_px": 11.180339887498949,
+      "score": 0.990252137
+    },
+    {
+      "frame": 71501,
+      "positive": true,
+      "accepted": true,
+      "error_px": 26.476404589747453,
+      "score": 0.999993443
+    },
+    {
+      "frame": 71502,
+      "positive": true,
+      "accepted": true,
+      "error_px": 28.0178514522438,
+      "score": 0.999993443
+    },
+    {
+      "frame": 71503,
+      "positive": true,
+      "accepted": true,
+      "error_px": 32.57299494980466,
+      "score": 0.999814808
+    },
+    {
+      "frame": 71527,
+      "positive": true,
+      "accepted": true,
+      "error_px": 7.280109889280518,
+      "score": 0.999983907
+    },
+    {
+      "frame": 71543,
+      "positive": true,
+      "accepted": true,
+      "error_px": 7.0,
+      "score": 0.999966502
+    },
+    {
+      "frame": 71574,
+      "positive": true,
+      "accepted": false,
+      "error_px": 148.49242404917499,
+      "score": 0.940231383
+    },
+    {
+      "frame": 71614,
+      "positive": true,
+      "accepted": true,
+      "error_px": 12.165525060596439,
+      "score": 0.99999845
+    },
+    {
+      "frame": 71615,
+      "positive": true,
+      "accepted": true,
+      "error_px": 65.5133574166368,
+      "score": 0.999901772
+    },
+    {
+      "frame": 71657,
+      "positive": true,
+      "accepted": true,
+      "error_px": 8.54400374531753,
+      "score": 0.990766525
+    },
+    {
+      "frame": 71658,
+      "positive": true,
+      "accepted": true,
+      "error_px": 12.083045973594572,
+      "score": 0.995099604
+    },
+    {
+      "frame": 71686,
+      "positive": true,
+      "accepted": false,
+      "error_px": 143.68368035375485,
+      "score": 0.721728206
+    },
+    {
+      "frame": 71727,
+      "positive": true,
+      "accepted": true,
+      "error_px": 24.08318915758459,
+      "score": 0.999950409
+    },
+    {
+      "frame": 71728,
+      "positive": true,
+      "accepted": true,
+      "error_px": 72.56031973468694,
+      "score": 0.956564009
+    },
+    {
+      "frame": 71836,
+      "positive": true,
+      "accepted": true,
+      "error_px": 143.54441821262157,
+      "score": 0.997670949
+    },
+    {
+      "frame": 71840,
+      "positive": true,
+      "accepted": true,
+      "error_px": 38.05259518088089,
+      "score": 0.999984026
+    },
+    {
+      "frame": 71878,
+      "positive": true,
+      "accepted": true,
+      "error_px": 11.045361017187261,
+      "score": 0.997895479
+    },
+    {
+      "frame": 72239,
+      "positive": true,
+      "accepted": true,
+      "error_px": 14.142135623730951,
+      "score": 0.999978065
+    },
+    {
+      "frame": 72243,
+      "positive": true,
+      "accepted": true,
+      "error_px": 15.231546211727817,
+      "score": 0.998837411
+    },
+    {
+      "frame": 72357,
+      "positive": true,
+      "accepted": true,
+      "error_px": 9.486832980505138,
+      "score": 0.993972242
+    },
+    {
+      "frame": 72485,
+      "positive": true,
+      "accepted": true,
+      "error_px": 12.206555615733702,
+      "score": 0.994190693
+    },
+    {
+      "frame": 72486,
+      "positive": true,
+      "accepted": true,
+      "error_px": 12.083045973594572,
+      "score": 0.9977507
+    },
+    {
+      "frame": 72487,
+      "positive": true,
+      "accepted": true,
+      "error_px": 21.2602916254693,
+      "score": 0.983346999
+    },
+    {
+      "frame": 72488,
+      "positive": false,
+      "accepted": false,
+      "error_px": null,
+      "score": 0.884674072
+    },
+    {
+      "frame": 72605,
+      "positive": true,
+      "accepted": true,
+      "error_px": 5.0,
+      "score": 0.99014765
+    },
+    {
+      "frame": 72606,
+      "positive": true,
+      "accepted": true,
+      "error_px": 4.123105625617661,
+      "score": 0.985693574
+    },
+    {
+      "frame": 72607,
+      "positive": true,
+      "accepted": false,
+      "error_px": 13.601470508735444,
+      "score": 0.794519007
+    },
+    {
+      "frame": 72608,
+      "positive": true,
+      "accepted": false,
+      "error_px": 34.058772731852805,
+      "score": 0.471077561
+    },
+    {
+      "frame": 72716,
+      "positive": true,
+      "accepted": true,
+      "error_px": 13.892443989449804,
+      "score": 0.999155879
+    },
+    {
+      "frame": 72717,
+      "positive": true,
+      "accepted": false,
+      "error_px": 18.027756377319946,
+      "score": 0.927371144
+    },
+    {
+      "frame": 72724,
+      "positive": true,
+      "accepted": false,
+      "error_px": 5.0,
+      "score": 0.919706583
+    },
+    {
+      "frame": 73445,
+      "positive": true,
+      "accepted": true,
+      "error_px": 13.416407864998739,
+      "score": 0.99724102
+    },
+    {
+      "frame": 73450,
+      "positive": true,
+      "accepted": true,
+      "error_px": 7.615773105863909,
+      "score": 0.985228658
+    },
+    {
+      "frame": 73451,
+      "positive": true,
+      "accepted": true,
+      "error_px": 46.09772228646444,
+      "score": 0.972518623
+    },
+    {
+      "frame": 73567,
+      "positive": true,
+      "accepted": true,
+      "error_px": 7.810249675906654,
+      "score": 0.99997735
+    },
+    {
+      "frame": 73580,
+      "positive": true,
+      "accepted": false,
+      "error_px": 82.37718130647589,
+      "score": 0.647796154
+    },
+    {
+      "frame": 73682,
+      "positive": true,
+      "accepted": true,
+      "error_px": 4.47213595499958,
+      "score": 0.993890882
+    },
+    {
+      "frame": 73683,
+      "positive": true,
+      "accepted": true,
+      "error_px": 10.770329614269007,
+      "score": 0.998575211
+    },
+    {
+      "frame": 73689,
+      "positive": true,
+      "accepted": false,
+      "error_px": 2.8284271247461903,
+      "score": 0.919885933
+    },
+    {
+      "frame": 73793,
+      "positive": true,
+      "accepted": true,
+      "error_px": 21.587033144922902,
+      "score": 0.995204329
+    },
+    {
+      "frame": 73798,
+      "positive": true,
+      "accepted": true,
+      "error_px": 12.041594578792296,
+      "score": 0.993474424
+    },
+    {
+      "frame": 73799,
+      "positive": true,
+      "accepted": true,
+      "error_px": 1.4142135623730951,
+      "score": 0.997474134
+    },
+    {
+      "frame": 73903,
+      "positive": true,
+      "accepted": true,
+      "error_px": 7.810249675906654,
+      "score": 0.999895692
+    },
+    {
+      "frame": 73907,
+      "positive": true,
+      "accepted": true,
+      "error_px": 17.0,
+      "score": 0.977449358
+    },
+    {
+      "frame": 73909,
+      "positive": true,
+      "accepted": false,
+      "error_px": 13.601470508735444,
+      "score": 0.914202988
+    },
+    {
+      "frame": 74029,
+      "positive": true,
+      "accepted": false,
+      "error_px": 25.709920264364882,
+      "score": 0.457989484
+    },
+    {
+      "frame": 75234,
+      "positive": true,
+      "accepted": true,
+      "error_px": 5.385164807134504,
+      "score": 0.999972582
+    },
+    {
+      "frame": 75265,
+      "positive": true,
+      "accepted": true,
+      "error_px": 11.313708498984761,
+      "score": 0.970004976
+    },
+    {
+      "frame": 75267,
+      "positive": true,
+      "accepted": true,
+      "error_px": 1.4142135623730951,
+      "score": 0.993996978
+    },
+    {
+      "frame": 75331,
+      "positive": true,
+      "accepted": false,
+      "error_px": 129.71121771072848,
+      "score": 0.634809256
+    },
+    {
+      "frame": 75370,
+      "positive": true,
+      "accepted": false,
+      "error_px": 7.0,
+      "score": 0.891829133
+    },
+    {
+      "frame": 75371,
+      "positive": true,
+      "accepted": true,
+      "error_px": 9.055385138137417,
+      "score": 0.994970024
+    },
+    {
+      "frame": 75372,
+      "positive": true,
+      "accepted": false,
+      "error_px": 63.97655820689325,
+      "score": 0.876391649
+    },
+    {
+      "frame": 75374,
+      "positive": true,
+      "accepted": false,
+      "error_px": 14.142135623730951,
+      "score": 0.899621785
+    },
+    {
+      "frame": 75427,
+      "positive": true,
+      "accepted": false,
+      "error_px": 131.0267148332736,
+      "score": 0.931856334
+    },
+    {
+      "frame": 75452,
+      "positive": true,
+      "accepted": true,
+      "error_px": 6.4031242374328485,
+      "score": 0.999986053
+    },
+    {
+      "frame": 75465,
+      "positive": true,
+      "accepted": false,
+      "error_px": 7.280109889280518,
+      "score": 0.936657727
+    },
+    {
+      "frame": 75466,
+      "positive": true,
+      "accepted": true,
+      "error_px": 8.06225774829855,
+      "score": 0.981488645
+    },
+    {
+      "frame": 75469,
+      "positive": true,
+      "accepted": true,
+      "error_px": 34.828149534535996,
+      "score": 0.972878039
+    },
+    {
+      "frame": 75470,
+      "positive": true,
+      "accepted": false,
+      "error_px": 43.41658669218482,
+      "score": 0.68404597
+    },
+    {
+      "frame": 75471,
+      "positive": true,
+      "accepted": true,
+      "error_px": 67.68308503607086,
+      "score": 0.950712919
+    },
+    {
+      "frame": 75472,
+      "positive": true,
+      "accepted": false,
+      "error_px": 65.19202405202648,
+      "score": 0.814944565
+    },
+    {
+      "frame": 75522,
+      "positive": true,
+      "accepted": false,
+      "error_px": 135.95955280891445,
+      "score": 0.784702897
+    },
+    {
+      "frame": 75559,
+      "positive": true,
+      "accepted": true,
+      "error_px": 3.605551275463989,
+      "score": 0.99289155
+    },
+    {
+      "frame": 75563,
+      "positive": true,
+      "accepted": true,
+      "error_px": 1.4142135623730951,
+      "score": 0.979147792
+    },
+    {
+      "frame": 75564,
+      "positive": true,
+      "accepted": true,
+      "error_px": 35.4682957019364,
+      "score": 0.963457525
+    },
+    {
+      "frame": 75612,
+      "positive": true,
+      "accepted": true,
+      "error_px": 140.6840431605518,
+      "score": 0.95453757
+    },
+    {
+      "frame": 75651,
+      "positive": true,
+      "accepted": false,
+      "error_px": 4.0,
+      "score": 0.765741289
+    },
+    {
+      "frame": 75652,
+      "positive": true,
+      "accepted": true,
+      "error_px": 2.0,
+      "score": 0.997211039
+    },
+    {
+      "frame": 75653,
+      "positive": true,
+      "accepted": false,
+      "error_px": 31.38470965295043,
+      "score": 0.75123471
+    },
+    {
+      "frame": 75654,
+      "positive": true,
+      "accepted": false,
+      "error_px": 32.28002478313795,
+      "score": 0.643477559
+    },
+    {
+      "frame": 75703,
+      "positive": true,
+      "accepted": true,
+      "error_px": 131.40015220691336,
+      "score": 0.963301659
+    },
+    {
+      "frame": 75717,
+      "positive": true,
+      "accepted": true,
+      "error_px": 5.830951894845301,
+      "score": 0.999691844
+    },
+    {
+      "frame": 75718,
+      "positive": true,
+      "accepted": true,
+      "error_px": 7.211102550927978,
+      "score": 0.999977112
+    },
+    {
+      "frame": 75720,
+      "positive": true,
+      "accepted": true,
+      "error_px": 4.242640687119285,
+      "score": 0.999993086
+    },
+    {
+      "frame": 75740,
+      "positive": true,
+      "accepted": true,
+      "error_px": 2.8284271247461903,
+      "score": 0.972653568
+    },
+    {
+      "frame": 75749,
+      "positive": true,
+      "accepted": false,
+      "error_px": 85.28774824088158,
+      "score": 0.824819267
+    },
+    {
+      "frame": 75792,
+      "positive": true,
+      "accepted": false,
+      "error_px": 115.80155439371269,
+      "score": 0.832624555
+    },
+    {
+      "frame": 75832,
+      "positive": true,
+      "accepted": true,
+      "error_px": 5.0,
+      "score": 0.99819392
+    },
+    {
+      "frame": 75834,
+      "positive": true,
+      "accepted": true,
+      "error_px": 9.486832980505138,
+      "score": 0.991894066
+    },
+    {
+      "frame": 75835,
+      "positive": true,
+      "accepted": false,
+      "error_px": 2.0,
+      "score": 0.763733804
+    },
+    {
+      "frame": 75864,
+      "positive": false,
+      "accepted": true,
+      "error_px": null,
+      "score": 0.961456299
+    },
+    {
+      "frame": 75865,
+      "positive": false,
+      "accepted": false,
+      "error_px": null,
+      "score": 0.907130837
+    },
+    {
+      "frame": 75866,
+      "positive": false,
+      "accepted": false,
+      "error_px": null,
+      "score": 0.594183087
+    },
+    {
+      "frame": 75867,
+      "positive": false,
+      "accepted": false,
+      "error_px": null,
+      "score": 0.88968426
+    },
+    {
+      "frame": 77068,
+      "positive": true,
+      "accepted": true,
+      "error_px": 4.123105625617661,
+      "score": 0.999886751
+    },
+    {
+      "frame": 77098,
+      "positive": true,
+      "accepted": true,
+      "error_px": 9.219544457292887,
+      "score": 0.977333546
+    },
+    {
+      "frame": 77100,
+      "positive": true,
+      "accepted": false,
+      "error_px": 6.0,
+      "score": 0.648117721
+    },
+    {
+      "frame": 77101,
+      "positive": true,
+      "accepted": false,
+      "error_px": 3.0,
+      "score": 0.857643425
+    },
+    {
+      "frame": 77162,
+      "positive": true,
+      "accepted": false,
+      "error_px": 118.84864324004712,
+      "score": 0.923687577
+    },
+    {
+      "frame": 77194,
+      "positive": true,
+      "accepted": true,
+      "error_px": 4.123105625617661,
+      "score": 0.958605468
+    },
+    {
+      "frame": 77299,
+      "positive": true,
+      "accepted": true,
+      "error_px": 13.416407864998739,
+      "score": 0.98122853
+    },
+    {
+      "frame": 77300,
+      "positive": true,
+      "accepted": true,
+      "error_px": 36.6742416417845,
+      "score": 0.979103804
+    },
+    {
+      "frame": 77301,
+      "positive": true,
+      "accepted": false,
+      "error_px": 6.708203932499369,
+      "score": 0.759046793
+    },
+    {
+      "frame": 77302,
+      "positive": true,
+      "accepted": false,
+      "error_px": 26.68332812825267,
+      "score": 0.685838878
+    },
+    {
+      "frame": 77355,
+      "positive": true,
+      "accepted": false,
+      "error_px": 83.6301381082203,
+      "score": 0.819596827
+    },
+    {
+      "frame": 77358,
+      "positive": true,
+      "accepted": false,
+      "error_px": 146.75830470538966,
+      "score": 0.543783247
+    },
+    {
+      "frame": 77392,
+      "positive": true,
+      "accepted": true,
+      "error_px": 5.385164807134504,
+      "score": 0.998261273
+    },
+    {
+      "frame": 77393,
+      "positive": true,
+      "accepted": true,
+      "error_px": 5.830951894845301,
+      "score": 0.974748552
+    },
+    {
+      "frame": 77395,
+      "positive": true,
+      "accepted": true,
+      "error_px": 3.1622776601683795,
+      "score": 0.967594981
+    },
+    {
+      "frame": 77396,
+      "positive": true,
+      "accepted": true,
+      "error_px": 8.0,
+      "score": 0.984835684
+    },
+    {
+      "frame": 77454,
+      "positive": false,
+      "accepted": false,
+      "error_px": null,
+      "score": 0.718694448
+    },
+    {
+      "frame": 77470,
+      "positive": true,
+      "accepted": true,
+      "error_px": 17.029386365926403,
+      "score": 0.999999404
+    },
+    {
+      "frame": 77493,
+      "positive": true,
+      "accepted": false,
+      "error_px": 44.01136216933077,
+      "score": 0.74744904
+    },
+    {
+      "frame": 77496,
+      "positive": true,
+      "accepted": false,
+      "error_px": 35.0,
+      "score": 0.890718162
+    },
+    {
+      "frame": 77497,
+      "positive": true,
+      "accepted": false,
+      "error_px": 70.57619995437555,
+      "score": 0.899191737
+    },
+    {
+      "frame": 77499,
+      "positive": true,
+      "accepted": false,
+      "error_px": 21.840329667841555,
+      "score": 0.940483391
+    },
+    {
+      "frame": 77549,
+      "positive": true,
+      "accepted": false,
+      "error_px": 30.4138126514911,
+      "score": 0.902658999
+    },
+    {
+      "frame": 77567,
+      "positive": true,
+      "accepted": true,
+      "error_px": 4.0,
+      "score": 0.999999404
+    },
+    {
+      "frame": 77590,
+      "positive": true,
+      "accepted": false,
+      "error_px": 97.0051545022222,
+      "score": 0.76756525
+    },
+    {
+      "frame": 77591,
+      "positive": true,
+      "accepted": false,
+      "error_px": 9.486832980505138,
+      "score": 0.681743681
+    },
+    {
+      "frame": 77592,
+      "positive": true,
+      "accepted": false,
+      "error_px": 68.9492567037528,
+      "score": 0.225222483
+    },
+    {
+      "frame": 77593,
+      "positive": true,
+      "accepted": false,
+      "error_px": 152.12166183683374,
+      "score": 0.242096916
+    },
+    {
+      "frame": 77595,
+      "positive": true,
+      "accepted": true,
+      "error_px": 17.11724276862369,
+      "score": 0.965083718
+    },
+    {
+      "frame": 77619,
+      "positive": true,
+      "accepted": true,
+      "error_px": 15.297058540778355,
+      "score": 0.999999404
+    },
+    {
+      "frame": 77646,
+      "positive": true,
+      "accepted": false,
+      "error_px": 92.13034245024816,
+      "score": 0.936959028
+    },
+    {
+      "frame": 77649,
+      "positive": true,
+      "accepted": false,
+      "error_px": 22.80350850198276,
+      "score": 0.744235337
+    },
+    {
+      "frame": 77665,
+      "positive": true,
+      "accepted": true,
+      "error_px": 17.0,
+      "score": 0.999996424
+    },
+    {
+      "frame": 77687,
+      "positive": true,
+      "accepted": false,
+      "error_px": 7.615773105863909,
+      "score": 0.741286039
+    },
+    {
+      "frame": 77688,
+      "positive": true,
+      "accepted": false,
+      "error_px": 2.23606797749979,
+      "score": 0.932735264
+    },
+    {
+      "frame": 77788,
+      "positive": true,
+      "accepted": true,
+      "error_px": 15.0,
+      "score": 0.995976269
+    },
+    {
+      "frame": 77789,
+      "positive": true,
+      "accepted": false,
+      "error_px": 6.4031242374328485,
+      "score": 0.869137168
+    },
+    {
+      "frame": 77790,
+      "positive": true,
+      "accepted": false,
+      "error_px": 53.600373133029585,
+      "score": 0.469685525
+    },
+    {
+      "frame": 77791,
+      "positive": true,
+      "accepted": false,
+      "error_px": 61.40032573203501,
+      "score": 0.455507904
+    },
+    {
+      "frame": 77844,
+      "positive": true,
+      "accepted": false,
+      "error_px": 125.59060474414477,
+      "score": 0.594383359
+    },
+    {
+      "frame": 77846,
+      "positive": true,
+      "accepted": false,
+      "error_px": 233.173754955398,
+      "score": 0.476154
+    },
+    {
+      "frame": 77885,
+      "positive": true,
+      "accepted": true,
+      "error_px": 9.055385138137417,
+      "score": 0.997313201
+    },
+    {
+      "frame": 77886,
+      "positive": true,
+      "accepted": false,
+      "error_px": 40.024992192379,
+      "score": 0.823871911
+    },
+    {
+      "frame": 77887,
+      "positive": true,
+      "accepted": true,
+      "error_px": 5.656854249492381,
+      "score": 0.983332634
+    },
+    {
+      "frame": 77888,
+      "positive": true,
+      "accepted": true,
+      "error_px": 28.284271247461902,
+      "score": 0.966816127
+    },
+    {
+      "frame": 77940,
+      "positive": true,
+      "accepted": false,
+      "error_px": 94.42986815621421,
+      "score": 0.814925313
+    },
+    {
+      "frame": 79076,
+      "positive": true,
+      "accepted": true,
+      "error_px": 8.54400374531753,
+      "score": 0.996923149
+    },
+    {
+      "frame": 79131,
+      "positive": true,
+      "accepted": false,
+      "error_px": 92.19544457292888,
+      "score": 0.91122216
+    },
+    {
+      "frame": 79297,
+      "positive": true,
+      "accepted": true,
+      "error_px": 5.830951894845301,
+      "score": 0.9987275
+    },
+    {
+      "frame": 79299,
+      "positive": true,
+      "accepted": true,
+      "error_px": 5.0,
+      "score": 0.998353243
+    },
+    {
+      "frame": 79300,
+      "positive": true,
+      "accepted": true,
+      "error_px": 4.242640687119285,
+      "score": 0.968597472
+    },
+    {
+      "frame": 79358,
+      "positive": false,
+      "accepted": true,
+      "error_px": null,
+      "score": 0.999802649
+    },
+    {
+      "frame": 79359,
+      "positive": false,
+      "accepted": true,
+      "error_px": null,
+      "score": 0.998712182
+    },
+    {
+      "frame": 79360,
+      "positive": false,
+      "accepted": true,
+      "error_px": null,
+      "score": 0.99873656
+    },
+    {
+      "frame": 79361,
+      "positive": false,
+      "accepted": false,
+      "error_px": null,
+      "score": 0.594987273
+    },
+    {
+      "frame": 79410,
+      "positive": true,
+      "accepted": false,
+      "error_px": 3.1622776601683795,
+      "score": 0.548476458
+    },
+    {
+      "frame": 79411,
+      "positive": true,
+      "accepted": false,
+      "error_px": 79.55501241279521,
+      "score": 0.13240099
+    },
+    {
+      "frame": 79412,
+      "positive": true,
+      "accepted": false,
+      "error_px": 80.77747210701756,
+      "score": 0.229198039
+    },
+    {
+      "frame": 79413,
+      "positive": false,
+      "accepted": false,
+      "error_px": null,
+      "score": 0.188735247
+    }
+  ]
+}

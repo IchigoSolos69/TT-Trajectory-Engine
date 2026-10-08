@@ -1,0 +1,78 @@
+{
+    "checks":  [
+                   "healthy live standby reused",
+                   "explicit owned restart",
+                   "unrelated port owner preserved under restart",
+                   "camera never authorized"
+               ],
+    "restarted":  {
+                      "value":  [
+                                    {
+                                        "Port":  9122,
+                                        "Kind":  "backend",
+                                        "State":  "HEALTHY",
+                                        "ProcessId":  16980,
+                                        "Mode":  "live",
+                                        "Executable":  "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\backend_cpp\\build\\Release\\tt_trajectory_engine.exe",
+                                        "CreationTicks":  "639262470376219470"
+                                    },
+                                    {
+                                        "Port":  3122,
+                                        "Kind":  "frontend",
+                                        "State":  "HEALTHY",
+                                        "ProcessId":  23180,
+                                        "Mode":  "",
+                                        "Executable":  "C:\\Program Files\\nodejs\\node.exe",
+                                        "CreationTicks":  "639262470376460870"
+                                    }
+                                ],
+                      "Count":  2
+                  },
+    "before":  {
+                   "value":  [
+                                 {
+                                     "Port":  9122,
+                                     "Kind":  "backend",
+                                     "State":  "HEALTHY",
+                                     "ProcessId":  25184,
+                                     "Mode":  "live",
+                                     "Executable":  "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\backend_cpp\\build\\Release\\tt_trajectory_engine.exe",
+                                     "CreationTicks":  "639262468738165600"
+                                 },
+                                 {
+                                     "Port":  3122,
+                                     "Kind":  "frontend",
+                                     "State":  "HEALTHY",
+                                     "ProcessId":  10348,
+                                     "Mode":  "",
+                                     "Executable":  "C:\\Program Files\\nodejs\\node.exe",
+                                     "CreationTicks":  "639262468738429510"
+                                 }
+                             ],
+                   "Count":  2
+               },
+    "reused":  {
+                   "value":  [
+                                 {
+                                     "Port":  9122,
+                                     "Kind":  "backend",
+                                     "State":  "HEALTHY",
+                                     "ProcessId":  25184,
+                                     "Mode":  "live",
+                                     "Executable":  "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\backend_cpp\\build\\Release\\tt_trajectory_engine.exe",
+                                     "CreationTicks":  "639262468738165600"
+                                 },
+                                 {
+                                     "Port":  3122,
+                                     "Kind":  "frontend",
+                                     "State":  "HEALTHY",
+                                     "ProcessId":  10348,
+                                     "Mode":  "",
+                                     "Executable":  "C:\\Program Files\\nodejs\\node.exe",
+                                     "CreationTicks":  "639262468738429510"
+                                 }
+                             ],
+                   "Count":  2
+               },
+    "passed":  true
+}

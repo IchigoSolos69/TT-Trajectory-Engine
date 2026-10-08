@@ -1,0 +1,169 @@
+{
+  "sample_count": 32,
+  "sampling": "32 evenly spaced C++ predictions above 0.1",
+  "max_center_delta_px": 0.6106364669667568,
+  "max_confidence_delta": 0.0018686948956756488,
+  "frames": [
+    {
+      "frame": 1,
+      "center_delta_px": 0.40036946093904013,
+      "confidence_delta": 3.716387101743157e-05
+    },
+    {
+      "frame": 102,
+      "center_delta_px": 0.44820209398661404,
+      "confidence_delta": 0.000111341226440409
+    },
+    {
+      "frame": 177,
+      "center_delta_px": 0.27140992986217977,
+      "confidence_delta": 0.00010544111660770739
+    },
+    {
+      "frame": 250,
+      "center_delta_px": 0.08092686904586374,
+      "confidence_delta": 0.00024926612445069773
+    },
+    {
+      "frame": 338,
+      "center_delta_px": 0.452639600489768,
+      "confidence_delta": 0.0006069094567642264
+    },
+    {
+      "frame": 409,
+      "center_delta_px": 0.23200351664944444,
+      "confidence_delta": 0.00022661660943601447
+    },
+    {
+      "frame": 487,
+      "center_delta_px": 0.594764727039729,
+      "confidence_delta": 0.0008224846182556256
+    },
+    {
+      "frame": 559,
+      "center_delta_px": 0.37773180649336796,
+      "confidence_delta": 0.00047856569290161133
+    },
+    {
+      "frame": 640,
+      "center_delta_px": 0.09807927182494733,
+      "confidence_delta": 0.0008729696273803711
+    },
+    {
+      "frame": 724,
+      "center_delta_px": 0.5031477870810953,
+      "confidence_delta": 0.0004374086856842041
+    },
+    {
+      "frame": 803,
+      "center_delta_px": 0.21436970604818736,
+      "confidence_delta": 0.0018059611320495605
+    },
+    {
+      "frame": 903,
+      "center_delta_px": 0.6106364669667568,
+      "confidence_delta": 0.0006254618399505474
+    },
+    {
+      "frame": 1004,
+      "center_delta_px": 0.22605463294695718,
+      "confidence_delta": 0.0012485677964325093
+    },
+    {
+      "frame": 1083,
+      "center_delta_px": 0.3024132505921279,
+      "confidence_delta": 8.910844393916761e-05
+    },
+    {
+      "frame": 1180,
+      "center_delta_px": 0.46273376657808235,
+      "confidence_delta": 0.00047475099563598633
+    },
+    {
+      "frame": 1693,
+      "center_delta_px": 0.31282179645058067,
+      "confidence_delta": 0.001394138052635191
+    },
+    {
+      "frame": 2229,
+      "center_delta_px": 0.13744517189603694,
+      "confidence_delta": 0.00031700705323789435
+    },
+    {
+      "frame": 2295,
+      "center_delta_px": 0.2365259178277273,
+      "confidence_delta": 0.0004409546620482985
+    },
+    {
+      "frame": 2369,
+      "center_delta_px": 0.2900879539180095,
+      "confidence_delta": 0.001076459634643534
+    },
+    {
+      "frame": 2452,
+      "center_delta_px": 0.29756389983550957,
+      "confidence_delta": 0.00044459154537968004
+    },
+    {
+      "frame": 2517,
+      "center_delta_px": 0.25450963440586566,
+      "confidence_delta": 0.0016571284590454205
+    },
+    {
+      "frame": 2594,
+      "center_delta_px": 0.1880717185251975,
+      "confidence_delta": 0.0002861917018890381
+    },
+    {
+      "frame": 2670,
+      "center_delta_px": 0.35682805712015925,
+      "confidence_delta": 0.00032109047140505
+    },
+    {
+      "frame": 2734,
+      "center_delta_px": 0.2923831427501579,
+      "confidence_delta": 0.0011847615242004395
+    },
+    {
+      "frame": 2817,
+      "center_delta_px": 0.19202160165072846,
+      "confidence_delta": 0.00030776870829773983
+    },
+    {
+      "frame": 3160,
+      "center_delta_px": 0.5415101821809842,
+      "confidence_delta": 0.0006054048769836284
+    },
+    {
+      "frame": 3223,
+      "center_delta_px": 0.3566063621604158,
+      "confidence_delta": 0.000702769064224229
+    },
+    {
+      "frame": 3291,
+      "center_delta_px": 0.4199684294687974,
+      "confidence_delta": 0.0006964802742004395
+    },
+    {
+      "frame": 3373,
+      "center_delta_px": 0.5419299528115332,
+      "confidence_delta": 0.0009824339325103515
+    },
+    {
+      "frame": 3450,
+      "center_delta_px": 0.15907186823463954,
+      "confidence_delta": 0.0013084416621094164
+    },
+    {
+      "frame": 3530,
+      "center_delta_px": 0.2987532082465629,
+      "confidence_delta": 0.0009906294461670129
+    },
+    {
+      "frame": 3600,
+      "center_delta_px": 0.3129285853643536,
+      "confidence_delta": 0.0018686948956756488
+    }
+  ],
+  "passed": true
+}

@@ -1,0 +1,13 @@
+{
+  "game_2_added": {
+    "train": 4902,
+    "val": 910,
+    "negative": 55
+  },
+  "total": {
+    "train": 9226,
+    "val": 3377
+  },
+  "test_sequences_used": false,
+  "game_2_cutoff": 137760
+}

@@ -1,156 +1,38 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import type { TrajectorySample } from '../types/telemetry';
 
 interface RadarProps {
-  x: number; // 0.0 to 1.525 meters
-  y: number; // 0.0 to 2.74 meters
-  speedKmh?: number;
-  isBounce?: boolean;
+  x: number; y: number; speedKmh?: number; isBounce?: boolean;
   impactPoints?: Array<{ x: number; y: number }>;
+  hasBall?: boolean; frameId?: number;
+  trajectory?: TrajectorySample[];
 }
 
-export default function TacticalRadar({ x, y, speedKmh = 0, isBounce = false, impactPoints = [] }: RadarProps) {
-  // Convert physical ITTF meters (1.525m width x 2.74m length) to CSS percentage coordinates
-  const leftPercent = Math.max(0, Math.min(100, (x / 1.525) * 100));
-  const topPercent = Math.max(0, Math.min(100, (y / 2.74) * 100));
-
-  return (
-    <div className="w-full max-w-lg mx-auto p-4 bg-slate-950/80 backdrop-blur-md rounded-2xl border border-slate-800 shadow-2xl flex flex-col items-center">
-      {/* Header Info Banner */}
-      <div className="w-full flex items-center justify-between mb-3 px-2 text-xs font-mono">
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-          <span className="text-cyan-400 font-bold tracking-widest">2D TACTICAL RADAR & HEATMAP</span>
-        </div>
-        <div className="text-slate-400">
-          X: <span className="text-cyan-300 font-bold">{x.toFixed(2)}m</span> | Y: <span className="text-cyan-300 font-bold">{y.toFixed(2)}m</span>
-        </div>
-      </div>
-
-      {/* ITTF Standard Ratio Radar Canvas Container */}
-      <div className="relative w-full aspect-[1.525/2.74] bg-slate-900/90 rounded-xl border-2 border-cyan-500/40 overflow-hidden shadow-[0_0_30px_rgba(6,182,212,0.15)]">
-        {/* Table Surface Grid Lines */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:10%_10%] opacity-40" />
-
-        {/* Outer Table Boundary Border */}
-        <div className="absolute inset-2 border border-cyan-500/30 rounded-sm pointer-events-none" />
-
-        {/* ITTF Net Line (Horizontal Midline) */}
-        <div className="absolute top-1/2 left-0 w-full h-[2px] bg-white/60 -translate-y-1/2 shadow-[0_0_12px_rgba(255,255,255,0.8)] z-10" />
-        <div className="absolute top-1/2 left-2 px-2 py-0.5 -translate-y-1/2 bg-slate-950/90 border border-slate-700 text-[9px] font-mono text-slate-300 rounded z-20">
-          NET (y = 1.37m)
-        </div>
-
-        {/* ITTF Center Service Line (Vertical Midline) */}
-        <div className="absolute top-0 left-1/2 w-[2px] h-full bg-white/20 -translate-x-1/2 z-0" />
-
-        {/* Player Zone Indicators */}
-        <div className="absolute top-3 left-1/2 -translate-x-1/2 text-[9px] font-mono tracking-widest text-slate-500 uppercase">
-          PLAYER B (FAR ZONE)
-        </div>
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 text-[9px] font-mono tracking-widest text-slate-500 uppercase">
-          PLAYER A (NEAR ZONE)
-        </div>
-
-        {/* Binned 2D Density Heatmap Overlay */}
-        {(() => {
-          // Bin impact points into 16 x 28 spatial grid cells (~10cm x 10cm over 1.525m x 2.74m table)
-          const gridCols = 16;
-          const gridRows = 28;
-          const grid: number[][] = Array.from({ length: gridRows }, () => Array(gridCols).fill(0));
-          let maxHits = 0;
-
-          impactPoints.forEach((pt) => {
-            if (pt.x < 0 || pt.x > 1.525 || pt.y < 0 || pt.y > 2.74) return; // Ignore out-of-bounds impacts
-            const col = Math.max(0, Math.min(gridCols - 1, Math.floor((pt.x / 1.525) * gridCols)));
-            const row = Math.max(0, Math.min(gridRows - 1, Math.floor((pt.y / 2.74) * gridRows)));
-            grid[row][col] += 1;
-            if (grid[row][col] > maxHits) maxHits = grid[row][col];
-          });
-
-          if (maxHits === 0) return null;
-
-          const cells = [];
-          for (let r = 0; r < gridRows; r++) {
-            for (let c = 0; c < gridCols; c++) {
-              const hits = grid[r][c];
-              if (hits === 0) continue;
-              const intensity = hits / maxHits; // 0.0 to 1.0
-              const left = (c / gridCols) * 100;
-              const top = (r / gridRows) * 100;
-              const width = (1 / gridCols) * 100;
-              const height = (1 / gridRows) * 100;
-
-              let color = 'bg-cyan-400/50 shadow-[0_0_8px_rgba(6,182,212,0.6)]';
-              if (intensity > 0.66) {
-                color = 'bg-rose-500/80 shadow-[0_0_12px_rgba(244,63,94,0.9)]';
-              } else if (intensity > 0.33) {
-                color = 'bg-amber-400/70 shadow-[0_0_10px_rgba(251,191,36,0.8)]';
-              }
-
-              cells.push(
-                <div
-                  key={`${r}-${c}`}
-                  className={`absolute rounded-sm transition-all ${color} pointer-events-none z-20`}
-                  style={{
-                    left: `${left}%`,
-                    top: `${top}%`,
-                    width: `${width}%`,
-                    height: `${height}%`,
-                  }}
-                />
-              );
-            }
-          }
-          return cells;
-        })()}
-
-        {/* Impact Bounce Ripple Effect */}
-        {isBounce && (
-          <motion.div
-            className="absolute w-8 h-8 rounded-full border-2 border-emerald-400"
-            initial={{ scale: 0.2, opacity: 1 }}
-            animate={{ scale: 2.5, opacity: 0 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
-            style={{
-              left: `${leftPercent}%`,
-              top: `${topPercent}%`,
-              transform: 'translate(-50%, -50%)',
-            }}
-          />
-        )}
-
-        {/* Animated Trajectory Telemetry Ball */}
-        <motion.div
-          className="absolute w-4 h-4 bg-gradient-to-tr from-amber-500 to-orange-400 rounded-full shadow-[0_0_18px_rgba(249,115,22,0.9)] z-30"
-          animate={{
-            left: `${leftPercent}%`,
-            top: `${topPercent}%`,
-            x: '-50%',
-            y: '-50%',
-          }}
-          transition={{
-            type: 'spring',
-            stiffness: 800,
-            damping: 40,
-            mass: 0.5,
-          }}
-        >
-          {/* Inner Glow Core */}
-          <div className="w-full h-full rounded-full bg-yellow-300 animate-pulse opacity-80" />
-        </motion.div>
-      </div>
-
-      {/* Radar Footer Legend */}
-      <div className="w-full mt-3 flex items-center justify-between text-[10px] font-mono text-slate-400 px-2">
-        <span className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-amber-500" />
-          Ball Position (2D Meters)
-        </span>
-        <span className="text-cyan-400 font-bold">
-          Speed: {speedKmh > 0 ? speedKmh.toFixed(1) : '72.4'} km/h
-        </span>
-      </div>
-    </div>
-  );
+export default function TacticalRadar({ x, y, speedKmh = 0, impactPoints = [], hasBall = false, frameId = 0, trajectory=[] }: RadarProps) {
+  const left = Math.min(0, hasBall ? x : 0) - .2;
+  const top = Math.min(0, hasBall ? y : 0) - .2;
+  const width = Math.max(1.525, hasBall ? x : 0) + .2 - left;
+  const height = Math.max(2.74, hasBall ? y : 0) + .2 - top;
+  return <div aria-label="2D table plane projection" data-frame-id={frameId} data-ball-x={hasBall ? x : ''} data-ball-y={hasBall ? y : ''} className="w-full p-4 bg-slate-950/80 rounded-2xl border border-slate-800 flex flex-col items-center">
+    <div className="w-full text-xs font-mono text-cyan-300 mb-3">TOP-DOWN TABLE PROJECTION · FRAME {frameId}</div>
+    <svg className="w-full h-[390px]" viewBox={`${left} ${top} ${width} ${height}`} role="img" aria-label="Ball projected onto the table plane">
+      <rect x="0" y="0" width="1.525" height="2.74" fill="#115e59" stroke="#e2e8f0" strokeWidth=".012" />
+      <path d="M .7625 0 V 2.74" stroke="#cbd5e1" strokeWidth=".006" />
+      <path d="M -.08 1.37 H 1.605" stroke="#f8fafc" strokeWidth=".018" />
+      <text x=".7625" y=".16" textAnchor="middle" fontSize=".07" fill="#a5f3fc">END A · y = 0 m</text>
+      <text x=".7625" y="2.63" textAnchor="middle" fontSize=".07" fill="#a5f3fc">END B · y = 2.74 m</text>
+      {impactPoints.filter(p => p.x >= 0 && p.x <= 1.525 && p.y >= 0 && p.y <= 2.74).map((p, i) => <circle key={i} cx={p.x} cy={p.y} r=".045" fill="#fb923c" opacity=".3" />)}
+      {trajectory.map((s,i)=>{
+        const p=s.table_position,previous=trajectory[i-1];if(!p||s.state==='LOST')return null;
+        const color=s.state==='REACQUIRED'?'#34d399':s.accepted?'#22d3ee':'#fbbf24';
+        return <g key={`${s.segment_id}:${s.frame_id}`}>
+          {s.ellipse&&i%3===0&&<ellipse cx={p[0]} cy={p[1]} rx={s.ellipse[0]} ry={s.ellipse[1]} transform={`rotate(${s.ellipse[2]*180/Math.PI} ${p[0]} ${p[1]})`} fill={color} opacity=".08"/>}
+          {previous?.table_position&&previous.segment_id===s.segment_id&&<line x1={previous.table_position[0]} y1={previous.table_position[1]} x2={p[0]} y2={p[1]} stroke={color} strokeWidth=".012" strokeDasharray={s.accepted?undefined:'.035 .025'}/>}
+        </g>;
+      })}
+      {hasBall && <circle data-testid="radar-ball" cx={x} cy={y} r=".035" fill="#fbbf24" stroke="#fff7ed" strokeWidth=".012" />}
+    </svg>
+    <p className="text-xs text-slate-400 mt-3">{hasBall ? `x ${x.toFixed(2)} m · y ${y.toFixed(2)} m · ~${speedKmh.toFixed(1)} km/h` : 'Waiting for a detected ball and table surface'}</p>
+    <p className="text-xs text-slate-500 mt-2">Same frame and projection as 3D. Airborne height is unknown; its image can project outside the table.</p>
+  </div>;
 }

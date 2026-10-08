@@ -11,7 +11,8 @@ bool HomographyCalibrator::calibrateTable(
     float brX, float brY,
     float blX, float blY,
     float tableWidthMeters,
-    float tableLengthMeters
+    float tableLengthMeters,
+    bool isDefaultGrid
 ) {
     tableW_ = tableWidthMeters;
     tableL_ = tableLengthMeters;
@@ -34,7 +35,11 @@ bool HomographyCalibrator::calibrateTable(
     isCalibrated_ = !homographyMatrix_.empty();
     
     if (isCalibrated_) {
-        std::cout << "[HomographyCalibrator] Table calibrated successfully (1.525m x 2.74m grid)." << std::endl;
+        if (isDefaultGrid) {
+            std::cout << "[HomographyCalibrator] Default ITTF grid perspective matrix initialized (Standby)." << std::endl;
+        } else {
+            std::cout << "[HomographyCalibrator] Table calibrated successfully from live camera frame (1.525m x 2.74m grid)." << std::endl;
+        }
     }
     return isCalibrated_;
 #else

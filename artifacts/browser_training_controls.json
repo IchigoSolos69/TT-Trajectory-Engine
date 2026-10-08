@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "fixture": true,
+  "real_camera_opened": false,
+  "commands": [
+    "START_CAMERA",
+    "START_TRAINING_RECORDING",
+    "STOP_TRAINING_RECORDING"
+  ],
+  "text": "Record training clip\n0 clean frames saved\n\nSaves camera images locally at up to 5 frames/s for 60 seconds, without overlays. Stops when the camera closes or switches. Nothing is uploaded.\n\nCapture separate clips with the ball visible, moving, partly hidden, and absent. Include people and empty room backgrounds. Images need reviewed labels before training.",
+  "button": "Record training clip",
+  "disabled": true,
+  "exceptions": []
+}

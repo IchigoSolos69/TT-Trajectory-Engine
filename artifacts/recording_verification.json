@@ -1,0 +1,43 @@
+{
+  "native_build": "passed",
+  "next_production_build": "passed",
+  "recorder_test": {
+    "passed": true,
+    "source": "synthetic full-resolution frames",
+    "checks": [
+      "no storage before start",
+      "source frame clone",
+      "JPEG decode and resolution",
+      "frame manifest",
+      "flush on stop",
+      "unique clip directories",
+      "duration limit",
+      "write error surfaced"
+    ]
+  },
+  "source_routing": {
+    "passed": true,
+    "evidence": "detector_improvement/source_routing.json",
+    "checks": [
+      "simulation cannot record",
+      "unauthorized live camera cannot record"
+    ]
+  },
+  "data_tests": {
+    "passed": true,
+    "count": 3,
+    "checks": [
+      "unknown frames excluded",
+      "boxes validated",
+      "recording and hash leakage rejected"
+    ]
+  },
+  "real_camera_recording_tested": false,
+  "new_model_trained": false,
+  "browser_ui": {
+    "passed": true,
+    "fixture": true,
+    "evidence": "browser_training_controls.json",
+    "real_camera_opened": false
+  }
+}

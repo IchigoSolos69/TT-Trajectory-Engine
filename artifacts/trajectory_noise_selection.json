@@ -1,0 +1,9 @@
+{
+  "selected_on": "game_1 chronological validation only, source frames 70999 through 88599",
+  "acceleration_sigma": 40000,
+  "measurement_sigma_scale": 1,
+  "criterion": "Lowest measured-point RMSE among nine predefined candidates; requires regression and negative-frame checks before any promotion",
+  "caveat": "State populations differ; prediction coverage and false tracks remain poor. Selection is experimental, not a deployment approval.",
+  "validation_samples_sha256": "3af25829f91973e7b835fb8074aa518cdd564711dff30a783fb581d01f192813",
+  "selected_at": "2026-09-25T16:38:42.077Z"
+}

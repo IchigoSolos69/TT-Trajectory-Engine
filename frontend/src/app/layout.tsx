@@ -3,7 +3,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Table Tennis Trajectory Engine | TensorRT & Next.js Analytics',
-  description: 'High-speed ping pong ball tracking, 120 FPS WebSocket telemetry, and Magnus spin physics sandbox built with C++ TensorRT and Next.js.',
+  description: 'Table tennis footage analysis with TensorRT ball and scene detection, measured WebSocket telemetry, and a Magnus spin physics sandbox.',
 };
 
 export default function RootLayout({

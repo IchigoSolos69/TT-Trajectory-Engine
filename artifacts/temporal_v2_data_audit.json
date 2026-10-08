@@ -1,0 +1,65 @@
+{
+  "conditional_roi_evaluation": true,
+  "test_sequences_used": false,
+  "input": [
+    15,
+    128,
+    128
+  ],
+  "crop_side_pixels": 192,
+  "splits": {
+    "train": {
+      "samples": 2572,
+      "positive": 1953
+    },
+    "val": {
+      "samples": 921,
+      "positive": 691
+    }
+  },
+  "sources": [
+    {
+      "split": "train",
+      "game": "game_1",
+      "first": 5,
+      "last": 20000,
+      "selected_frames": 800,
+      "markup_sha256": "d43d421ad63a3c64f6d4ac6324759ed4f1c1eaa0f3e4ad0ecc5a1b6e4ad7ccfc"
+    },
+    {
+      "split": "train",
+      "game": "game_2",
+      "first": 5,
+      "last": 20000,
+      "selected_frames": 1000,
+      "markup_sha256": "b350119e322e605109233182768ed2f7583b075c7ee226bae6b25179593c662b"
+    },
+    {
+      "split": "val",
+      "game": "game_1",
+      "first": 70999,
+      "last": 79416,
+      "selected_frames": 700,
+      "markup_sha256": "d43d421ad63a3c64f6d4ac6324759ed4f1c1eaa0f3e4ad0ecc5a1b6e4ad7ccfc"
+    }
+  ],
+  "causal_hard_cases": [
+    {
+      "game": "game_1",
+      "positive": 53,
+      "negative": 14,
+      "request_sha256": "5d4192cec37c156b17b3d4e94ed397235b4bcd685064a1112ceee592136f765e",
+      "markup_sha256": "d43d421ad63a3c64f6d4ac6324759ed4f1c1eaa0f3e4ad0ecc5a1b6e4ad7ccfc"
+    },
+    {
+      "game": "game_2",
+      "positive": 105,
+      "negative": 13,
+      "request_sha256": "76f07d6acc53d6ac21382cf912b5b1a6090416d3dcfab4b9ce974fce8256973e",
+      "markup_sha256": "b350119e322e605109233182768ed2f7583b075c7ee226bae6b25179593c662b"
+    }
+  ],
+  "detector_engine_sha256": "2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9",
+  "base_dataset_sha256": "1e4142292a7e0f8560dc850dab80e2318bd6309fff9d6047ab251cf0a1ee9cd0",
+  "validation_unchanged": true
+}

@@ -1,0 +1,6 @@
+{
+  "frame_id": 922,
+  "source_video": "test_2.mp4",
+  "jpeg_mean_absolute_pixel_error": 0.0,
+  "passed": true
+}

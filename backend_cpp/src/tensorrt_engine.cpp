@@ -5,6 +5,15 @@
 #include <cmath>
 #include <cstring>
 #include <chrono>
+#include <stdexcept>
+#ifdef _WIN32
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <windows.h>
+#include <wincrypt.h>
+#pragma comment(lib, "advapi32.lib")
+#endif
 
 #ifdef HAS_TENSORRT
 #include <NvInfer.h>
@@ -27,103 +36,37 @@ public:
 #include <cstdlib>
 
 static std::string computeSha256(const std::string& filePath) {
+#ifdef _WIN32
+    HCRYPTPROV provider = 0;
+    HCRYPTHASH hash = 0;
+    if (!CryptAcquireContext(&provider, nullptr, nullptr, PROV_RSA_AES, CRYPT_VERIFYCONTEXT))
+        throw std::runtime_error("Cannot initialize Windows SHA-256 provider.");
+    if (!CryptCreateHash(provider, CALG_SHA_256, 0, 0, &hash)) {
+        CryptReleaseContext(provider, 0);
+        throw std::runtime_error("Cannot initialize SHA-256 hash.");
+    }
     std::ifstream file(filePath, std::ios::binary);
-    if (!file) return "HASH_ERROR_READ";
-
-    static const uint32_t K[64] = {
-        0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
-        0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
-        0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
-        0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
-        0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
-        0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
-        0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
-        0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef4a394, 0x1e63d01e
-    };
-
-    uint32_t H[8] = {
-        0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
-        0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
-    };
-
-    auto rightRotate = [](uint32_t val, uint32_t bits) {
-        return (val >> bits) | (val << (32 - bits));
-    };
-
-    uint64_t totalBits = 0;
-    uint8_t buffer[64];
-    size_t bytesRead = 0;
-    bool padded = false;
-
-    while (!padded) {
-        file.read(reinterpret_cast<char*>(buffer), 64);
-        bytesRead = file.gcount();
-        totalBits += bytesRead * 8;
-
-        if (bytesRead < 64) {
-            buffer[bytesRead] = 0x80;
-            bytesRead++;
-            if (bytesRead <= 56) {
-                std::memset(buffer + bytesRead, 0, 56 - bytesRead);
-            } else {
-                std::memset(buffer + bytesRead, 0, 64 - bytesRead);
-                uint32_t W[64];
-                for (int t = 0; t < 16; t++) {
-                    W[t] = (buffer[t*4] << 24) | (buffer[t*4+1] << 16) | (buffer[t*4+2] << 8) | (buffer[t*4+3]);
-                }
-                for (int t = 16; t < 64; t++) {
-                    uint32_t s0 = rightRotate(W[t-15], 7) ^ rightRotate(W[t-15], 18) ^ (W[t-15] >> 3);
-                    uint32_t s1 = rightRotate(W[t-2], 17) ^ rightRotate(W[t-2], 19) ^ (W[t-2] >> 10);
-                    W[t] = W[t-16] + s0 + W[t-7] + s1;
-                }
-                uint32_t a = H[0], b = H[1], c = H[2], d = H[3], e = H[4], f = H[5], g = H[6], h = H[7];
-                for (int t = 0; t < 64; t++) {
-                    uint32_t S1 = rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25);
-                    uint32_t ch = (e & f) ^ ((~e) & g);
-                    uint32_t temp1 = h + S1 + ch + K[t] + W[t];
-                    uint32_t S0 = rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22);
-                    uint32_t maj = (a & b) ^ (a & c) ^ (b & c);
-                    uint32_t temp2 = S0 + maj;
-                    h = g; g = f; f = e; e = d + temp1; d = c; c = b; b = a; a = temp1 + temp2;
-                }
-                H[0] += a; H[1] += b; H[2] += c; H[3] += d; H[4] += e; H[5] += f; H[6] += g; H[7] += h;
-                std::memset(buffer, 0, 56);
-            }
-            for (int i = 0; i < 8; i++) {
-                buffer[56 + i] = (totalBits >> (56 - i * 8)) & 0xFF;
-            }
-            padded = true;
-        }
-
-        uint32_t W[64];
-        for (int t = 0; t < 16; t++) {
-            W[t] = (buffer[t*4] << 24) | (buffer[t*4+1] << 16) | (buffer[t*4+2] << 8) | (buffer[t*4+3]);
-        }
-        for (int t = 16; t < 64; t++) {
-            uint32_t s0 = rightRotate(W[t-15], 7) ^ rightRotate(W[t-15], 18) ^ (W[t-15] >> 3);
-            uint32_t s1 = rightRotate(W[t-2], 17) ^ rightRotate(W[t-2], 19) ^ (W[t-2] >> 10);
-            W[t] = W[t-16] + s0 + W[t-7] + s1;
-        }
-        uint32_t a = H[0], b = H[1], c = H[2], d = H[3], e = H[4], f = H[5], g = H[6], h = H[7];
-        for (int t = 0; t < 64; t++) {
-            uint32_t S1 = rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25);
-            uint32_t ch = (e & f) ^ ((~e) & g);
-            uint32_t temp1 = h + S1 + ch + K[t] + W[t];
-            uint32_t S0 = rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22);
-            uint32_t maj = (a & b) ^ (a & c) ^ (b & c);
-            uint32_t temp2 = S0 + maj;
-            h = g; g = f; f = e; e = d + temp1; d = c; c = b; b = a; a = temp1 + temp2;
-        }
-        H[0] += a; H[1] += b; H[2] += c; H[3] += d; H[4] += e; H[5] += f; H[6] += g; H[7] += h;
+    bool valid = file.good();
+    char buffer[65536];
+    while (valid && file.read(buffer, sizeof(buffer))) {
+        valid = CryptHashData(hash, reinterpret_cast<const BYTE*>(buffer), static_cast<DWORD>(file.gcount()), 0);
     }
-
-    std::ostringstream ss;
-    for (int i = 0; i < 8; i++) {
-        ss << std::hex << std::setw(8) << std::setfill('0') << H[i];
-    }
-    return ss.str();
+    if (valid && file.gcount() > 0)
+        valid = CryptHashData(hash, reinterpret_cast<const BYTE*>(buffer), static_cast<DWORD>(file.gcount()), 0);
+    valid = valid && file.eof();
+    BYTE digest[32];
+    DWORD length = sizeof(digest);
+    valid = valid && CryptGetHashParam(hash, HP_HASHVAL, digest, &length, 0);
+    CryptDestroyHash(hash);
+    CryptReleaseContext(provider, 0);
+    if (!valid) throw std::runtime_error("Cannot hash model file: " + filePath);
+    std::ostringstream result;
+    for (BYTE byte : digest) result << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(byte);
+    return result.str();
+#else
+    return "SHA256_UNAVAILABLE_ON_THIS_PLATFORM";
+#endif
 }
-
 static std::string getFileLastModifiedIso(const std::string& filePath) {
     try {
         namespace fs = std::filesystem;
@@ -145,6 +88,13 @@ static std::string getFileLastModifiedIso(const std::string& filePath) {
 std::string TensorRTEngine::resolveEnginePath(const std::string& userPath) {
     if (!userPath.empty() && std::ifstream(userPath).good()) {
         return userPath;
+    }
+    if (!userPath.empty()) {
+        for (const auto& prefix : {"../", "../../", "../../../"}) {
+            const auto path = std::string(prefix) + userPath;
+            if (std::ifstream(path).good()) return path;
+        }
+        throw std::runtime_error("Requested engine was not found: " + userPath);
     }
     const char* envPath = std::getenv("TT_ENGINE_PATH");
     if (envPath && std::ifstream(envPath).good()) {
@@ -191,8 +141,8 @@ std::string TensorRTEngine::resolveEnginePath(const std::string& userPath) {
             uint64_t fSize = 0;
             try { fSize = fs::file_size(existingPaths[i]); } catch(...) {}
             std::string sha = computeSha256(existingPaths[i]);
-            std::cerr << "  [" << (i + 1) << "] Relative: " << existingPaths[i] 
-                      << " | Canonical: " << canonicalPaths[i] 
+            std::cerr << "  [" << (i + 1) << "] Relative: " << existingPaths[i]
+                      << " | Canonical: " << canonicalPaths[i]
                       << " | Size: " << fSize << " bytes"
                       << " | SHA-256: " << sha << "\n";
         }
@@ -208,8 +158,9 @@ std::string TensorRTEngine::resolveEnginePath(const std::string& userPath) {
     return "models/yolov11_ttgames.engine";
 }
 
-TensorRTEngine::TensorRTEngine(const std::string& enginePath, int inputWidth, int inputHeight)
+TensorRTEngine::TensorRTEngine(const std::string& enginePath, int inputWidth, int inputHeight, int classes)
     : enginePath_(resolveEnginePath(enginePath)),
+      classes_(classes),
       inputW_(inputWidth),
       inputH_(inputHeight),
       isInitialized_(false),
@@ -221,8 +172,7 @@ TensorRTEngine::TensorRTEngine(const std::string& enginePath, int inputWidth, in
       deviceInputBuffer_(nullptr),
       deviceOutputBuffer_(nullptr) {
     inputSize_ = 1 * 3 * inputW_ * inputH_ * sizeof(float);
-    // Allocate space for up to 84 channels x 8400 anchors (supports both 5-channel ball and 84-channel COCO engines)
-    outputSize_ = 1 * 84 * 8400 * sizeof(float); 
+    outputSize_ = (4 + classes_) * 8400 * sizeof(float);
 }
 
 TensorRTEngine::~TensorRTEngine() {
@@ -281,7 +231,7 @@ bool TensorRTEngine::init() {
 
     std::ifstream file(enginePath_, std::ios::binary);
     if (!file.good()) {
-        std::cerr << "[TensorRTEngine] CRITICAL FATAL ERROR: Cannot open engine file at '" 
+        std::cerr << "[TensorRTEngine] CRITICAL FATAL ERROR: Cannot open engine file at '"
                   << enginePath_ << "'. Exiting program with code 1." << std::endl;
         std::exit(1);
     }
@@ -315,8 +265,19 @@ bool TensorRTEngine::init() {
     }
 
     engine_ = engine;
+    if (engine->getNbIOTensors() != 2) throw std::runtime_error("Expected exactly one model input and output.");
+    for (int i = 0; i < engine->getNbIOTensors(); ++i) {
+        const char* name = engine->getIOTensorName(i);
+        auto dims = engine->getTensorShape(name);
+        bool input = engine->getTensorIOMode(name) == nvinfer1::TensorIOMode::kINPUT;
+        bool shapeOk = input ? (dims.nbDims == 4 && dims.d[0] == 1 && dims.d[1] == 3 && dims.d[2] == inputH_ && dims.d[3] == inputW_)
+                             : (dims.nbDims == 3 && dims.d[0] == 1 && dims.d[1] == 4 + classes_ && dims.d[2] == 8400);
+        if (!shapeOk || engine->getTensorDataType(name) != nvinfer1::DataType::kFLOAT)
+            throw std::runtime_error("Unexpected detector I/O shape or precision for configured class count.");
+    }
     nvinfer1::IExecutionContext* context = engine->createExecutionContext();
     context_ = context;
+    if (!context) throw std::runtime_error("Cannot create TensorRT execution context.");
 
     // Allocate Pinned Host Memory for zero-copy DMA execution
     cudaMallocHost(&hostInputBuffer_, inputSize_);
@@ -362,13 +323,11 @@ bool TensorRTEngine::init() {
 
     std::cout << "[TensorRTEngine] CUDA buffers allocated successfully on Device GPU (Pinned Host Memory Enabled)." << std::endl;
     std::cout << "[TensorRTEngine] Input Tensor Shape  : [1, 3, " << inputW_ << ", " << inputH_ << "] (Float32 CHW)" << std::endl;
-    std::cout << "[TensorRTEngine] Output Tensor Shape : [1, 5, 8400] (1-class ball detector FP16 engine)" << std::endl;
+    std::cout << "[TensorRTEngine] Validated static detector output (FP32 I/O, FP16 compute)" << std::endl;
     delete runtime;
 #else
-    hostInputBuffer_ = malloc(inputSize_);
-    hostOutputBuffer_ = malloc(outputSize_);
-    std::cout << "[TensorRTEngine] Input Tensor Shape  : [1, 3, " << inputW_ << ", " << inputH_ << "] (Float32 CHW)" << std::endl;
-    std::cout << "[TensorRTEngine] Output Tensor Shape : [1, 5, 8400] (Host CPU buffer allocated)" << std::endl;
+    std::cerr << "[TensorRTEngine] TensorRT support is required for analysis." << std::endl;
+    return false;
 #endif
 
     isInitialized_ = true;
@@ -398,6 +357,8 @@ std::vector<float> TensorRTEngine::preprocessBGRtoCHW(const unsigned char* bgrDa
 }
 
 std::vector<float> TensorRTEngine::preprocessOpenCVFrame(const cv::Mat& inputFrame, int inputWidth, int inputHeight) {
+    if (inputFrame.empty() || inputFrame.type() != CV_8UC3 || inputWidth <= 0 || inputHeight <= 0)
+        throw std::invalid_argument("Preprocessing requires a nonempty BGR8 frame and positive input dimensions.");
     // 1. Calculate letterbox scale ratio and padding for aspect ratio preservation (e.g. 1920x1080 -> 640x640)
     float scaleR = std::min(static_cast<float>(inputWidth) / inputFrame.cols, static_cast<float>(inputHeight) / inputFrame.rows);
     int unpadW = static_cast<int>(std::round(inputFrame.cols * scaleR)); // 640
@@ -407,7 +368,8 @@ std::vector<float> TensorRTEngine::preprocessOpenCVFrame(const cv::Mat& inputFra
 
     cv::Mat resizedImage, paddedImage;
     cv::resize(inputFrame, resizedImage, cv::Size(unpadW, unpadH), 0, 0, cv::INTER_LINEAR);
-    cv::copyMakeBorder(resizedImage, paddedImage, padH, padH, padW, padW, cv::BORDER_CONSTANT, cv::Scalar(114, 114, 114));
+    cv::copyMakeBorder(resizedImage, paddedImage, padH, inputHeight - unpadH - padH,
+                      padW, inputWidth - unpadW - padW, cv::BORDER_CONSTANT, cv::Scalar(114, 114, 114));
 
     // 2. Convert BGR (OpenCV default) to RGB (YOLO default)
     cv::Mat rgbImage, floatImage;
@@ -420,8 +382,8 @@ std::vector<float> TensorRTEngine::preprocessOpenCVFrame(const cv::Mat& inputFra
     chw[0] = cv::Mat(inputHeight, inputWidth, CV_32FC1, inputData.data());
     chw[1] = cv::Mat(inputHeight, inputWidth, CV_32FC1, inputData.data() + inputHeight * inputWidth);
     chw[2] = cv::Mat(inputHeight, inputWidth, CV_32FC1, inputData.data() + 2 * inputHeight * inputWidth);
-    cv::split(floatImage, chw); 
-    
+    cv::split(floatImage, chw);
+
     return inputData;
 }
 
@@ -432,7 +394,7 @@ std::vector<Detection> TensorRTEngine::inferFrame(const std::vector<float>& rgbN
         return detections;
     }
 
-    std::vector<float> rawOutput(84 * 8400, 0.0f);
+    std::vector<float> rawOutput(outputSize_ / sizeof(float), 0.0f);
     executeInference(rgbNormalizedBuffer, rawOutput);
     detections = postProcess(rawOutput, origImgWidth, origImgHeight, confThreshold, nmsThreshold);
 
@@ -446,7 +408,7 @@ std::vector<Detection> TensorRTEngine::inferFrameDetailed(const std::vector<floa
         return detections;
     }
 
-    std::vector<float> rawOutput(84 * 8400, 0.0f);
+    std::vector<float> rawOutput(outputSize_ / sizeof(float), 0.0f);
     executeInferenceDetailed(rgbNormalizedBuffer, rawOutput, timing.h2dMs, timing.gpuComputeMs, timing.d2hMs);
 
     auto tDecodeStart = std::chrono::high_resolution_clock::now();
@@ -502,7 +464,7 @@ std::vector<Detection> TensorRTEngine::inferFrameGPUDetailed(const cv::Mat& fram
 
     // 4. Device to Host Output Copy (into Pinned Host Memory)
     cudaEventRecord(startD2H, stream);
-    std::vector<float> rawOutput(84 * 8400, 0.0f);
+    std::vector<float> rawOutput(outputSize_ / sizeof(float), 0.0f);
     size_t copyBytes = std::min(outputSize_, rawOutput.size() * sizeof(float));
     cudaMemcpyAsync(hostOutputBuffer_ ? hostOutputBuffer_ : rawOutput.data(), deviceOutputBuffer_, copyBytes, cudaMemcpyDeviceToHost, stream);
     cudaEventRecord(stopD2H, stream);
@@ -534,27 +496,31 @@ std::vector<Detection> TensorRTEngine::inferFrameGPU(const cv::Mat& frame, float
 }
 
 void TensorRTEngine::executeInference(const std::vector<float>& inputCPU, std::vector<float>& outputCPU) {
+    if (inputCPU.size() * sizeof(float) != inputSize_) throw std::invalid_argument("Unexpected inference input size.");
 #ifdef HAS_TENSORRT
     if (context_ && stream_) {
         cudaStream_t stream = static_cast<cudaStream_t>(stream_);
+        auto checkCuda = [](cudaError_t status) {
+            if (status != cudaSuccess) throw std::runtime_error(std::string("CUDA inference failed: ") + cudaGetErrorString(status));
+        };
 
         if (hostInputBuffer_) {
             std::memcpy(hostInputBuffer_, inputCPU.data(), inputSize_);
         }
 
         // 1. Host to Device (CPU -> GPU)
-        cudaMemcpyAsync(deviceInputBuffer_, hostInputBuffer_ ? hostInputBuffer_ : inputCPU.data(), inputSize_, cudaMemcpyHostToDevice, stream);
+        checkCuda(cudaMemcpyAsync(deviceInputBuffer_, hostInputBuffer_ ? hostInputBuffer_ : inputCPU.data(), inputSize_, cudaMemcpyHostToDevice, stream));
 
         // 2. Execute TRT inference
         auto* ctx = static_cast<nvinfer1::IExecutionContext*>(context_);
-        ctx->enqueueV3(stream);
+        if (!ctx->enqueueV3(stream)) throw std::runtime_error("TensorRT enqueueV3 failed.");
 
         // 3. Device to Host (GPU -> CPU)
         size_t copyBytes = std::min(outputSize_, outputCPU.size() * sizeof(float));
-        cudaMemcpyAsync(hostOutputBuffer_ ? hostOutputBuffer_ : outputCPU.data(), deviceOutputBuffer_, copyBytes, cudaMemcpyDeviceToHost, stream);
+        checkCuda(cudaMemcpyAsync(hostOutputBuffer_ ? hostOutputBuffer_ : outputCPU.data(), deviceOutputBuffer_, copyBytes, cudaMemcpyDeviceToHost, stream));
 
         // 4. Block CPU until stream finishes
-        cudaStreamSynchronize(stream);
+        checkCuda(cudaStreamSynchronize(stream));
 
         if (hostOutputBuffer_) {
             std::memcpy(outputCPU.data(), hostOutputBuffer_, copyBytes);
@@ -629,24 +595,24 @@ std::vector<Detection> TensorRTEngine::postProcess(const std::vector<float>& raw
     const int totalOutputElements = static_cast<int>(rawOutput.size());
     const int numChannels = totalOutputElements / numAnchors; // 5 for 1-class ball model, 84 for COCO model
 
-    if (numChannels != 5 && numChannels != 84) {
-        std::cerr << "[TensorRTEngine] Warning: Unexpected output channels: " << numChannels << std::endl;
+    if (numChannels < 5 || numChannels > 84 || totalOutputElements % numAnchors != 0) {
+        throw std::runtime_error("Malformed YOLO output tensor");
     }
 
     const int numClasses = numChannels - 4; // 1 class (ball) for 5-channel layout
 
     // Un-letterboxing parameters based on target input shape (640x640)
     float scaleR = std::min(640.0f / imgWidth, 640.0f / imgHeight);
-    float padW = (640.0f - imgWidth * scaleR) / 2.0f;
-    float padH = (640.0f - imgHeight * scaleR) / 2.0f;
+    float padW = static_cast<float>((640 - static_cast<int>(std::round(imgWidth * scaleR))) / 2);
+    float padH = static_cast<float>((640 - static_cast<int>(std::round(imgHeight * scaleR))) / 2);
 
     // Loop through all 8400 predictions
     for (int i = 0; i < numAnchors; ++i) {
         float maxProb = 0.0f;
         int maxClassId = -1;
-        
+
         for (int c = 0; c < numClasses; ++c) {
-            float prob = rawOutput[(4 + c) * numAnchors + i]; 
+            float prob = rawOutput[(4 + c) * numAnchors + i];
             if (prob > maxProb) {
                 maxProb = prob;
                 maxClassId = c;
@@ -679,7 +645,16 @@ std::vector<Detection> TensorRTEngine::postProcess(const std::vector<float>& raw
 
     // Perform Non-Maximum Suppression (NMS) to remove overlapping duplicate boxes
     std::vector<int> nmsIndices;
-    cv::dnn::NMSBoxes(boxes, confidences, confThreshold, nmsThreshold, nmsIndices);
+    // Class-aware NMS: a person overlapping the table must survive.
+    for (int cls = 0; cls < numClasses; ++cls) {
+        std::vector<cv::Rect2d> cb; std::vector<float> cs; std::vector<int> ids, kept;
+        for (size_t j = 0; j < boxes.size(); ++j) if (classIds[j] == cls) {
+            cb.push_back(boxes[j]); cs.push_back(confidences[j]); ids.push_back(static_cast<int>(j));
+        }
+        cv::dnn::NMSBoxes(cb, cs, confThreshold, nmsThreshold, kept);
+        for (int j : kept) nmsIndices.push_back(ids[j]);
+    }
+    std::sort(nmsIndices.begin(), nmsIndices.end(), [&](int a, int b){return confidences[a] > confidences[b];});
 
     // Package the final filtered detections
     for (int idx : nmsIndices) {

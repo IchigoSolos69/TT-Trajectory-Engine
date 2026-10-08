@@ -1,0 +1,11 @@
+{
+  "counts": {
+    "train": 6349,
+    "val": 1733
+  },
+  "mask_channels_bgr": {
+    "person": 1,
+    "table": 2
+  },
+  "test_sequences_used": false
+}
