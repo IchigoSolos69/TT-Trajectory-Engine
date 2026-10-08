@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "scope": "HTTP targeted capture availability, lineage, unreviewed labels and unchanged deployed engine; not model accuracy",
+  "clip": "phone_c343f0cdb72df492_2",
+  "sourceFrames": [
+    1680,
+    1694
+  ],
+  "targetFrame": {
+    "file": "frame_6.jpg",
+    "source_frame": 1685,
+    "elapsed_ms": 28106.666666666668,
+    "burst_id": 2,
+    "burst_index": 0,
+    "burst_length": 5,
+    "review_metadata": {
+      "reasons": [
+        "USER_REPORTED_DETECTION_FAILURE"
+      ],
+      "capture_note": "Ceiling-light false positive and missed ball near frame 1685"
+    }
+  },
+  "unreviewedFrames": 15,
+  "imageBytes": 298164,
+  "engineSha256": "2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9"
+}

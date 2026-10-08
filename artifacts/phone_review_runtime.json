@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "scope": "Local HTTP capture metadata and image availability, not browser interaction or accuracy",
+  "recordings": 10,
+  "unreviewed_frames": 300,
+  "original_names": {
+    "phone_fa4e98c1cc92b86c_1": "IMG_7940.MOV",
+    "phone_e23544b0c4c1a850_1": "IMG_7944.MOV",
+    "phone_e197222a3322d1af_1": "IMG_7939.MOV",
+    "phone_c343f0cdb72df492_1": "IMG_7943.MOV",
+    "phone_8b5ea69a091d17fd_1": "IMG_7936.MOV",
+    "phone_61f027143f6c8d57_1": "IMG_7941.MOV",
+    "phone_3adaa646b1413bfa_1": "IMG_7945.MOV",
+    "phone_211157624ce0f530_1": "IMG_7937.MOV",
+    "phone_1383e588b7ee3783_1": "IMG_7938.MOV",
+    "phone_031b178c51bfae75_1": "IMG_7942.MOV"
+  }
+}

@@ -31,6 +31,10 @@ Status is evidence-based: verified means the stated check passed, not universal 
 | MODEL-2 | Complete next temporal training experiment | Experiment verified; promotion rejected | v2 native parity passes; recovery precision 83.33%, below 95%; `artifacts/temporal_pipeline_v2_matched.json` |
 | DATA-1 | Explicit training recording control | Implemented | Camera recording/release/disk failure tests and reviewed live data |
 | DATA-2 | Exact live-training capture steps and warnings in GUI | Implemented; component runtime/build verified | Optional setup checklist, ordered coverage routine, mode limits and labeling/split warnings; `artifacts/training_capture_guide_checks.json`. Desktop visual check pending: app approval timed out |
+| DATA-3 | Original phone recordings imported for review | Implemented; HTTP/data integrity verified | Ten MOVs, 300 unreviewed frames, source hashes/PTS, filename selection and same-session split guard; `artifacts/phone_recordings_import.json`, `artifacts/phone_review_runtime.json`. Reviewed labels and independent sessions remain required |
+| MODEL-3 | Automatic background-dependent preprocessing | Experiment evaluated; not promoted | Nine sequential TensorRT frames compared across raw/gamma/CLAHE/adaptive inputs; all scores below 0.25. No accuracy labels, no default/filter/threshold change; `artifacts/phone_lighting_sequential/report.json` |
+| DATA-4 | Review dimmed-footage ball misses and ceiling false positives | Diagnostic reproduced; targeted review implemented and browser verified | IMG_7943 frame 1685 approximately 0.376 ceiling score; filters/grid fail recovery. 15 unreviewed frames 1680–1694, Fit/100%/200% source-coordinate checks and browser zoom/scroll evidence; `artifacts/phone_dim_ball_diagnosis/report.json`, `artifacts/phone_failure_review_browser.json`. Reviewed labels, candidate training and accuracy gates remain unfinished |
+| SYNC-MOV | Exact native MOV seek/frame/timestamp integrity | Remaining; issue identified | Python OpenCV random seeking disagrees with sequential frame/PTS mapping; metadata frame count differs from decode on IMG_7936. Native replay and true-PTS velocity acceptance required |
 | CONTRACT-1 | C++ authoritative analytics; provenance and null unknowns | Partial | Versioned contract and removal of frontend analytical fallbacks |
 | PERF-1 | Distinguish offline GPU throughput from live end-to-end | Documented | Per-stage timings, 30-minute soak, no unmeasured 120 FPS claim |
 | AUDIT-1 | Re-read whole chat and all attachments after integration | Pending final closure | Requirement → implementation → test → result → limitation matrix |
@@ -41,7 +45,7 @@ Single camera first; conditional motion-based spin estimates; precision-first re
 
 ## Data dependency
 
-No live capture directory was present at the last inspection. Representative room/rally clips and reviewed labels are required before claiming live accuracy. Existing test_1/test_2 sequences are development/regression material, not fresh blind tests.
+Ten same-session iPhone gameplay recordings were imported as 300 initially unreviewed frames, plus 15 targeted dimmed-footage failure frames. Review progress is stored separately and is never overwritten by import. Independent later sessions, representative webcam/room clips and reviewed labels are still required before claiming live accuracy. Existing test_1/test_2 sequences are development/regression material, not fresh blind tests. The grey tabletop also exposes the current blue/green-only tabletop refinement constraint; independent landmark calibration remains unfinished.
 
 ## Evidence retained
 

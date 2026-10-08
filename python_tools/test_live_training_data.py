@@ -2,14 +2,28 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
-from prepare_live_training import load_reviewed, validate_annotation
+from prepare_live_training import load_reviewed, validate_annotation, check_capture_session
 
 
 class LiveDataTests(unittest.TestCase):
+    def test_phone_session_leakage(self):
+        sessions = {}
+        manifest = {'source': 'recorded_camera', 'session_id': 'iphone_session_1'}
+        check_capture_session(manifest, 'train', sessions)
+        check_capture_session(manifest, 'train', sessions)
+        with self.assertRaisesRegex(ValueError, 'session overlaps'):
+            check_capture_session(manifest, 'test', sessions)
+        with self.assertRaisesRegex(ValueError, 'session ID'):
+            check_capture_session({'source': 'recorded_camera'}, 'train', {})
+        with self.assertRaisesRegex(ValueError, 'real camera'):
+            check_capture_session({'source': 'dataset'}, 'train', {})
+
     def test_unknown_is_not_negative(self):
         self.assertIsNone(validate_annotation({}))
         self.assertIsNone(validate_annotation({'reviewed':False,'ball':[]}))
         self.assertEqual(validate_annotation({'reviewed':True,'ball':[],'person':[],'table':[]})['ball'],[])
+        for visibility in ('occluded','partial'):
+            self.assertIsNone(validate_annotation({'reviewed':True,'ball':[],'person':[],'table':[], 'geometry':{'visibility':visibility}}))
         with self.assertRaises(ValueError):validate_annotation({'reviewed':True,'ball':[]})
 
     def test_box_validation(self):

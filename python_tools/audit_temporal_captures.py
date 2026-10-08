@@ -4,14 +4,14 @@ from collections import defaultdict
 import hashlib
 import json
 from pathlib import Path
-from prepare_live_training import validate_annotation
+from prepare_live_training import validate_annotation, check_capture_session
 
 
 def audit(root, split_file):
     splits = json.loads(split_file.read_text())
     if set(splits) != {'train', 'val', 'test'}:
         raise ValueError('Separate train, val and test recording lists are required')
-    seen_clips, image_splits, accepted, excluded = set(), {}, [], []
+    seen_clips, image_splits, accepted, excluded, sessions = set(), {}, [], [], {}
     root = root.resolve()
     for split, clips in splits.items():
         if not isinstance(clips, list) or not clips:
@@ -21,6 +21,9 @@ def audit(root, split_file):
             if directory.parent != root or clip in seen_clips:
                 raise ValueError('A recording must remain inside the capture root and in exactly one split')
             seen_clips.add(clip)
+            manifest_file = directory/'capture.json'
+            if manifest_file.exists():
+                check_capture_session(json.loads(manifest_file.read_text()), split, sessions)
             annotations = json.loads((directory/'annotations.json').read_text())
             groups = defaultdict(list)
             manifest = (directory/'frames.jsonl').read_text()

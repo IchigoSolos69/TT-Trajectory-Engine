@@ -20,6 +20,11 @@ class BurstAuditTests(unittest.TestCase):
                 (directory/'annotations.json').write_text(json.dumps(labels))
             result=audit(root,splitfile)
             self.assertTrue(result['ready_for_training']);self.assertEqual(len(result['accepted']),3)
+            for key in ('train','val'):
+                (root/key/'capture.json').write_text(json.dumps({'source':'recorded_camera','session_id':'same_phone_session'}))
+            with self.assertRaisesRegex(ValueError,'session overlaps'):
+                audit(root,splitfile)
+            (root/'val'/'capture.json').write_text(json.dumps({'source':'recorded_camera','session_id':'separate_session'}))
             (root/'val'/'annotations.json').write_text('{}')
             result=audit(root,splitfile);self.assertFalse(result['ready_for_training'])
             self.assertEqual(result['excluded'][0]['reason'],'UNREVIEWED_FRAME')

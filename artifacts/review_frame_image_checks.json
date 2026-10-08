@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "scope": "Production component execution; source-coordinate and stale-image checks, not browser layout/render evidence",
+  "checks": [
+    "Fit/native/2x scrolled coordinate equivalence",
+    "native dimension propagation",
+    "overlay coordinate basis",
+    "unloaded/failed/busy image guards",
+    "source/zoom/cancel invalidation",
+    "late old-image failure isolation"
+  ]
+}

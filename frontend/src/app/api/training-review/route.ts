@@ -8,11 +8,12 @@ export const runtime='nodejs';
 export const dynamic='force-dynamic';
 const root=process.env.TT_TRAINING_ROOT?path.resolve(process.env.TT_TRAINING_ROOT):path.resolve(process.cwd(),'..','training_data','live');
 const classes=['ball','person','table'] as const;
+const validClip=(clip:string)=>/^(?:live_[0-9]+_[0-9]+|phone_[0-9a-f]{16}_[0-9]+)$/.test(clip);
 type Box=[number,number,number,number];
 type Annotation={reviewed:boolean;ball:Box[];person:Box[];table:Box[];reviewed_at?:string;geometry?:ReviewGeometry;source_frame?:number;elapsed_ms?:number};
 const revision=(text:string)=>createHash('sha256').update(text).digest('hex');
 async function directory(clip:string){
-  if(!/^live_[0-9]+_[0-9]+$/.test(clip))throw Error('Invalid clip');
+  if(!validClip(clip))throw Error('Invalid clip');
   const base=await fs.realpath(root),resolved=await fs.realpath(path.join(root,clip));
   if(path.dirname(resolved).toLowerCase()!==base.toLowerCase())throw Error('Clip escapes capture directory');
   return resolved;
@@ -35,7 +36,13 @@ export async function GET(req:NextRequest){
     localRequest(req);const clip=req.nextUrl.searchParams.get('clip');
     if(!clip){
       let entries;try{entries=await fs.readdir(root,{withFileTypes:true});}catch(e){if((e as NodeJS.ErrnoException).code==='ENOENT')return NextResponse.json({clips:[]});throw e;}
-      return NextResponse.json({clips:entries.filter(e=>e.isDirectory()&&/^live_[0-9]+_[0-9]+$/.test(e.name)).map(e=>e.name).sort().reverse()});
+      const clips=entries.filter(e=>e.isDirectory()&&validClip(e.name)).map(e=>e.name).sort().reverse();
+      const names:Record<string,string>={};
+      for(const name of clips.filter(c=>c.startsWith('phone_'))){
+        const dir=await directory(name),manifest=JSON.parse(await fs.readFile(path.join(dir,'capture.json'),'utf8'));
+        if(typeof manifest.original_path==='string')names[name]=path.basename(manifest.original_path)+(typeof manifest.capture_note==='string'&&manifest.capture_note?' · '+manifest.capture_note:'');
+      }
+      return NextResponse.json({clips,clip_names:names});
     }
     const dir=await directory(clip),file=req.nextUrl.searchParams.get('file');
     if(file){
@@ -45,7 +52,10 @@ export async function GET(req:NextRequest){
       return new NextResponse(new Uint8Array(await fs.readFile(resolved)),{headers:{'Content-Type':'image/jpeg','Cache-Control':'no-store'}});
     }
     const raw=await readAnnotations(dir);
-    return NextResponse.json({frames:await frameIndex(dir),annotations:JSON.parse(raw),revision:revision(raw)});
+    let capture=null;
+    try { const manifest=JSON.parse(await fs.readFile(path.join(dir,'capture.json'),'utf8')); capture={source:manifest.source,original_name:typeof manifest.original_path==='string'?path.basename(manifest.original_path):undefined,session_id:manifest.session_id,source_fps_average:manifest.source_fps_average,frame_count_discrepancy:manifest.frame_count_discrepancy,capture_note:manifest.capture_note}; }
+    catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;}
+    return NextResponse.json({frames:await frameIndex(dir),annotations:JSON.parse(raw),revision:revision(raw),capture});
   }catch(error){console.error('[training-review]',error);return NextResponse.json({error:'Cannot read this local capture. Check the server log.'},{status:400});}
 }
 export async function POST(req:NextRequest){

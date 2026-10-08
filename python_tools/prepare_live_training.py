@@ -19,6 +19,11 @@ CLASSES = ('ball', 'person', 'table')
 def validate_annotation(annotation):
     if annotation.get('reviewed') is not True:
         return None
+    visibility = annotation.get('geometry', {}).get('visibility')
+    # A hidden ball is not a verified absent-ball negative, even if someone
+    # saved the scene boxes as reviewed. Keep such examples out of this dataset.
+    if visibility == 'occluded' or (visibility == 'partial' and not annotation.get('ball')):
+        return None
     result = {}
     for name in CLASSES:
         boxes = annotation.get(name)
@@ -47,10 +52,24 @@ def initialize(clip):
     print(f'Created {len(records)} UNREVIEWED entries: {target}')
 
 
+def check_capture_session(manifest, split, sessions):
+    if manifest.get('source') not in ('live', 'recorded_camera'):
+        raise ValueError('Only real camera captures/recordings belong in this dataset')
+    session = manifest.get('session_id')
+    if manifest.get('source') == 'recorded_camera' and (not isinstance(session, str) or not session.strip()):
+        raise ValueError('Imported camera recordings require a session ID')
+    if session is not None:
+        if not isinstance(session, str) or not session.strip():
+            raise ValueError('Invalid capture session ID')
+        if session in sessions and sessions[session] != split:
+            raise ValueError('Capture session overlaps dataset splits')
+        sessions[session] = split
+
+
 def load_reviewed(captures, splits):
     if set(splits) != {'train', 'val', 'test'}:
         raise ValueError('Provide train, val and test recording lists')
-    seen_clips, hashes, rows = set(), {}, {key: [] for key in splits}
+    seen_clips, hashes, rows, sessions = set(), {}, {key: [] for key in splits}, {}
     skipped = 0
     for split, clips in splits.items():
         if not isinstance(clips, list) or not clips:
@@ -62,8 +81,7 @@ def load_reviewed(captures, splits):
             directory = (captures/clip).resolve()
             if not directory.is_relative_to(captures.resolve()):
                 raise ValueError('Recording path escapes capture directory')
-            if json.loads((directory/'capture.json').read_text())['source'] != 'live':
-                raise ValueError('Only real live-camera captures belong in this dataset')
+            check_capture_session(json.loads((directory/'capture.json').read_text()), split, sessions)
             annotations = json.loads((directory/'annotations.json').read_text())
             frames = [json.loads(line) for line in (directory/'frames.jsonl').read_text().splitlines()]
             for row in frames:

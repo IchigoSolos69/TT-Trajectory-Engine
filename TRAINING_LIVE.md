@@ -106,8 +106,86 @@ Candidate weights are saved separately. Before replacing either deployed engine:
 ## Current status
 
 Recording and data preparation are implemented. No model has been newly trained or
-promoted for these room examples yet. Clean recordings and reviewed labels are
-still required. As of the latest workspace inspection, no `training_data/live`
-capture directory exists. The separately trained temporal-recovery research
-candidate uses match footage only; it does not establish an improvement in this
-room. See `INTELLIGENCE_ROADMAP.md` for its failed promotion gates.
+promoted for these room examples yet. The October 8 iPhone import adds ten original
+camera recordings from one venue/session as 300 initially unreviewed frames,
+plus 15 focused failure frames from IMG_7943. Reviewed labels
+and independent later sessions are still required. The separately trained temporal
+research candidate uses match footage only; it does not establish venue accuracy.
+See `INTELLIGENCE_ROADMAP.md` for its failed promotion gates.
+
+## Imported iPhone recordings and lighting experiments
+
+Open [Training review](http://localhost:3000/training-review), choose an original
+filename such as `IMG_7944.MOV`, and review all visible ball/person/table boxes.
+Mark uncertain frames unreviewed. A fully hidden ball is not an absent-ball
+negative; reviewed frames tagged occluded, or partial with no observable ball box,
+are excluded by the preparation/audit tools. Label table/net landmarks only when
+visible. Save labels explicitly; the import never supplies ground truth.
+
+The local importer preserves originals, fingerprints them and extracts evenly
+spaced bursts of five consecutive frames into `training_data/live/phone_*`.
+It counts decoded frames and records source PTS. It publishes a capture only
+after its manifest and images are complete. Failed partial imports remain under
+dot-prefixed directories and are not listed by the review API. `--resume` verifies
+the source/session and reuses completed imports without overwriting annotations.
+
+```powershell
+python python_tools/import_phone_recordings.py "C:\Users\Adi\Downloads\recordings" training_data/live --session iphone_same_venue_session_1 --bursts 6 --resume --report artifacts/phone_recordings_import.json
+```
+
+All ten clips belong to the same known session. No train/validation/test split was
+assigned. Session-aware guards now reject splitting these clips across partitions.
+The first four clips are about 30 FPS, the remaining six about 60 FPS. All decoded
+images are 1920×1080. `IMG_7936.MOV` reports two more frames than the decoder yields;
+random frame seeking in `IMG_7944.MOV` also disagrees with sequential source timing.
+Phone imports use sequential timestamps; native recording replay/velocity timing
+still needs dedicated MOV acceptance tests. HDR/color metadata is not established
+by the current OpenCV audit; do not assume an appropriate HDR tone mapping.
+
+`compare_lighting_filters.py` tests raw, bounded luminance gamma, CLAHE and an
+adaptive combined candidate on identical decoded frames with the deployed
+TensorRT engine. The authoritative experiment uses sequential decoding:
+
+```powershell
+python python_tools/compare_lighting_filters.py "C:\Users\Adi\Downloads\recordings\IMG_7944.MOV" models/yolov11_ttgames.engine artifacts/new_lighting_comparison
+```
+
+In the nine-frame sequential comparison, all variants remained below the current
+0.25 threshold. These are unlabeled responses, not precision/recall measurements.
+No preprocessing candidate was integrated into the deployed detector and no
+confidence threshold/model was changed. Improved venue coverage, carefully
+reviewed small-ball labels and controlled raw/filtered/ROI comparisons come next.
+CLAHE is an experimental local contrast method, not proof of detection accuracy;
+see [OpenCV's documentation](https://docs.opencv.org/4.13.0/d2/d74/tutorial_js_histogram_equalization.html).
+
+## Review the dimmed recording failure
+
+Choose **IMG_7943.MOV · Ceiling-light false positive and missed ball near frame
+1685** in Training review. Its 15 frames cover source frames 1680–1694 in three
+adjacent five-frame bursts. Frame 1685 is the sixth image. All start unreviewed,
+retain the original source hash/timestamps and belong to `iphone_same_venue_session_1`.
+These targeted frames cannot be treated as a new independent validation session.
+
+Use **100%** for native pixels or **200%** for inspection, scrolling within the
+image. Drag the real ball's visible extent; a click's initial 12-pixel box is only
+a starting point. Check every visible person and the table too. The ceiling light
+is background, so do not give it a ball box. Set visibility and blur tags only
+when you can judge them. Leave uncertain positions unreviewed and distinguish
+occlusion from verified absence. Save reviewed labels explicitly. Zoom changes
+presentation; saved boxes remain normalized to the original image.
+
+The deployed detector reproduced the approximately 38% ceiling-feature score at
+sequential frame 1685. Gamma, local contrast and a fixed overlapping crop grid did
+not recover the user-marked ball in this experiment. Dimming alone is therefore
+not a verified solution to this failure. No filter or confidence threshold was
+promoted. Use reviewed small/blurred balls and lamp/wall backgrounds in the next
+training comparison; preserve originals rather than darkening them destructively.
+
+To import another reported failure without overwriting earlier annotations:
+
+```powershell
+python python_tools/import_phone_recordings.py "C:\Users\Adi\Downloads\recordings\IMG_7943.MOV" training_data/live --session iphone_same_venue_session_1 --bursts 3 --start-frame 1680 --capture-sequence 2 --note "Ceiling-light false positive and missed ball near frame 1685" --resume --report artifacts/phone_dim_failure_import.json
+```
+
+Use a new capture sequence for a different target interval. Sampling remains
+sequential, and an out-of-range request is rejected rather than silently shortened.

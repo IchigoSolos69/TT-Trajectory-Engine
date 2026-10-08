@@ -87,7 +87,9 @@ npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-On Windows, `launch_engine.bat` starts both services after checking ports 9002 and 3000. If either port is occupied, it names the conflicting port and waits for you to close the previous service window; press R to retry the checks or C to cancel. If the dashboard is already serving on port 3000, you can use that window instead. The TensorRT CUDA lazy-loading message is an optional startup/memory optimization suggestion; this launcher deliberately loads CUDA modules at startup with `CUDA_MODULE_LOADING=EAGER`.
+On Windows, `launch_engine.bat` checks ports 9002 and 3000, reuses healthy compatible project services, and offers a controlled restart for stale or incompatible project services. Unrelated port owners are reported and preserved. Frontend health includes the CSS and JavaScript referenced by the served page: a responsive health endpoint alone does not make a stale build healthy.
+
+Stop the project frontend before running `npm run build`, then start it again after the build succeeds. Rebuilding `.next` underneath `next start` leaves the old process serving HTML that references deleted assets, producing CSS/JavaScript 400 responses. After a rebuild/restart, reload the browser with Ctrl+Shift+R to replace the previous page's asset URLs. The TensorRT CUDA lazy-loading message is an optional startup/memory optimization suggestion; this launcher deliberately loads CUDA modules at startup with `CUDA_MODULE_LOADING=EAGER`.
 
 ### 2. Build C++ Inference Engine (Windows MSVC)
 ```powershell

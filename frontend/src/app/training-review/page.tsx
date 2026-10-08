@@ -1,17 +1,21 @@
 'use client';
-import {useEffect,useRef,useState} from 'react';
+import {useEffect,useState} from 'react';
 import {landmarkNames,eventNames,emptyGeometry,LandmarkName,ReviewGeometry} from '../../lib/reviewGeometry';
+import {ReviewFrameImage} from '../../components/ReviewFrameImage';
 type Kind='ball'|'person'|'table';
 type Box=[number,number,number,number];
 type Labels=Record<Kind,Box[]>&{geometry?:ReviewGeometry};
 type Frame={file:string;source_frame:number;review_metadata?:{reasons?:string[];suggestions?:Labels;ball_model_sha256?:string}};
+type Capture={source?:string;original_name?:string;session_id?:string;source_fps_average?:number;frame_count_discrepancy?:number;capture_note?:string};
 const empty=():Labels=>({ball:[],person:[],table:[]});
 export default function TrainingReview(){
   const [clips,setClips]=useState<string[]>([]),[clip,setClip]=useState(''),[frames,setFrames]=useState<Frame[]>([]),[index,setIndex]=useState(0);
   const [drafts,setDrafts]=useState<Record<string,Labels>>({}),[annotations,setAnnotations]=useState<Record<string,Labels&{reviewed:boolean}>>({});
   const [revision,setRevision]=useState(''),[message,setMessage]=useState(''),[kind,setKind]=useState<Kind>('ball'),[busy,setBusy]=useState(false);
+  const [capture,setCapture]=useState<Capture|null>(null);
+  const [clipNames,setClipNames]=useState<Record<string,string>>({});
   const [landmark,setLandmark]=useState<LandmarkName|''>('');
-  const image=useRef<HTMLImageElement>(null),start=useRef<[number,number]|null>(null);const frame=frames[index];
+  const frame=frames[index];
   const key=clip+'/'+(frame?.file??''),labels=drafts[key]??annotations[frame?.file??'']??empty();
   function setLabels(value:Labels|((previous:Labels)=>Labels)){
     setDrafts(previous=>({...previous,[key]:typeof value==='function'?value(previous[key]??annotations[frame?.file??'']??empty()):value}));
@@ -21,19 +25,18 @@ export default function TrainingReview(){
     const warn=(event:BeforeUnloadEvent)=>{event.preventDefault();event.returnValue='';};
     window.addEventListener('beforeunload',warn);return()=>window.removeEventListener('beforeunload',warn);
   },[drafts]);
-  useEffect(()=>{fetch('/api/training-review').then(r=>r.json()).then(d=>{if(d.error)throw Error(d.error);setClips(d.clips);}).catch(e=>setMessage(e.message));},[]);
+  useEffect(()=>{fetch('/api/training-review').then(r=>r.json()).then(d=>{if(d.error)throw Error(d.error);setClips(d.clips);setClipNames(d.clip_names??{});}).catch(e=>setMessage(e.message));},[]);
   async function load(value:string){
     setBusy(true);setMessage('');
     try{const r=await fetch('/api/training-review?clip='+encodeURIComponent(value)),d=await r.json();if(!r.ok)throw Error(d.error);
-      setClip(value);setFrames(d.frames);setAnnotations(d.annotations);setRevision(d.revision);setIndex(0);
+      setClip(value);setFrames(d.frames);setAnnotations(d.annotations);setRevision(d.revision);setIndex(0);setCapture(d.capture??null);
     }catch(e){setMessage(String(e));}finally{setBusy(false);}
   }
-  const point=(e:React.PointerEvent)=>{const rect=e.currentTarget.getBoundingClientRect();return [Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width)),Math.max(0,Math.min(1,(e.clientY-rect.top)/rect.height))] as [number,number];};
-  function finish(e:React.PointerEvent){
-    if(!start.current||busy)return;const a=start.current,b=point(e);start.current=null;
+  function finish(a:[number,number],b:[number,number],size:{width:number;height:number}){
+    if(busy)return;
     if(landmark){setLabels(previous=>({...previous,geometry:{...(previous.geometry??emptyGeometry()),landmarks:{...previous.geometry?.landmarks,[landmark]:b},landmarks_reviewed:false}}));return;}
     let box:Box=[Math.min(a[0],b[0]),Math.min(a[1],b[1]),Math.abs(a[0]-b[0]),Math.abs(a[1]-b[1])];
-    if(kind==='ball'&&box[2]<.003&&box[3]<.003){const w=12/(image.current?.naturalWidth||640),h=12/(image.current?.naturalHeight||480);box=[Math.max(0,Math.min(1-w,b[0]-w/2)),Math.max(0,Math.min(1-h,b[1]-h/2)),w,h];}
+    if(kind==='ball'&&box[2]<.003&&box[3]<.003){const w=Math.min(1,12/size.width),h=Math.min(1,12/size.height);box=[Math.max(0,Math.min(1-w,b[0]-w/2)),Math.max(0,Math.min(1-h,b[1]-h/2)),w,h];}
     if(box[2]>0&&box[3]>0)setLabels(previous=>({...previous,[kind]:[...previous[kind],box]}));
   }
   async function save(reviewed:boolean){
@@ -45,20 +48,22 @@ export default function TrainingReview(){
   return <main className="min-h-screen bg-slate-950 text-slate-200 p-6 space-y-5 max-w-6xl mx-auto">
     <a href="/" className="text-cyan-300 text-sm">← Dashboard</a><h1 className="text-2xl font-bold">Training review</h1>
     <p className="text-slate-400 text-sm">Draw boxes around every visible ball, person and table. Click a ball for an initial 12-pixel box, or drag its full extent. Empty class lists mean you verified that class is absent. Predictions remain suggestions until you explicitly save reviewed labels.</p>
-    <select aria-label="Capture clip" value={clip} disabled={busy} onChange={e=>load(e.target.value)} className="bg-slate-900 border border-slate-700 rounded-lg p-2"><option value="">Select a captured clip</option>{clips.map(c=><option key={c}>{c}</option>)}</select>
-    {!clips.length&&<p>No local training captures yet. Use the live-camera recording controls first.</p>}
+    <select aria-label="Capture clip" value={clip} disabled={busy} onChange={e=>load(e.target.value)} className="bg-slate-900 border border-slate-700 rounded-lg p-2"><option value="">Select a captured clip</option>{clips.map(c=><option key={c} value={c}>{clipNames[c]??c}</option>)}</select>
+    {!clips.length&&<p>No local training captures yet. Use the live-camera recording controls or import original camera recordings first.</p>}
+    {capture?.source==='recorded_camera'&&<div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4 text-sm space-y-2">
+      <p className="text-cyan-300">{capture.original_name} · {capture.source_fps_average?.toFixed(2)} average FPS · session {capture.session_id}</p>
+      {capture.capture_note&&<p className="text-amber-200">Review focus: {capture.capture_note}</p>}
+      <p className="text-amber-200">Original camera footage imported as unreviewed consecutive-frame bursts. Keep every clip from this session in the same dataset split. These frames do not become training labels until you explicitly review and save them.</p>
+      {!!capture.frame_count_discrepancy&&<p className="text-amber-200">Reported and decoded frame counts differ by {capture.frame_count_discrepancy}. Imported frames use sequential decoding and source timestamps; recording playback timing still needs separate verification.</p>}
+    </div>}
     {!!Object.keys(drafts).length&&<p className="text-amber-300 text-sm">{Object.keys(drafts).length} frame(s) have unsaved edits. Drafts stay while changing frames or clips; save each before leaving this page.</p>}
     {frame&&<>
       <div className="flex gap-3 flex-wrap items-center font-mono text-xs"><button disabled={busy||index===0} onClick={()=>setIndex(index-1)}>Previous</button><span>{index+1} / {frames.length} · source frame {frame.source_frame} · {annotations[frame.file]?.reviewed?'REVIEWED':'UNREVIEWED'}</span><button disabled={busy||index===frames.length-1} onClick={()=>setIndex(index+1)}>Next</button></div>
       <p className="text-amber-300 text-xs font-mono">{frame.review_metadata?.reasons?.join(' · ')??'Explicit training capture'}</p>
-      <div className="relative w-fit max-w-full mx-auto select-none touch-none" onPointerDown={e=>{e.currentTarget.setPointerCapture(e.pointerId);start.current=point(e);}} onPointerUp={finish} onPointerCancel={()=>{start.current=null;}}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img ref={image} draggable={false} src={'/api/training-review?clip='+encodeURIComponent(clip)+'&file='+encodeURIComponent(frame.file)} alt="Clean source frame for annotation" className="max-h-[600px] max-w-full block"/>
-        <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <ReviewFrameImage enabled={!busy} src={'/api/training-review?clip='+encodeURIComponent(clip)+'&file='+encodeURIComponent(frame.file)} onAnnotation={finish}>
           {(['ball','person','table'] as Kind[]).flatMap(k=>labels[k].map((b,i)=><rect key={k+i} x={b[0]*100} y={b[1]*100} width={b[2]*100} height={b[3]*100} fill="none" stroke={k==='ball'?'#fbbf24':k==='person'?'#a78bfa':'#34d399'} strokeWidth=".25"/>))}
           {Object.entries(labels.geometry?.landmarks??{}).map(([name,p])=><g key={name}><circle cx={p[0]*100} cy={p[1]*100} r=".65" fill="#34d399"/><text x={p[0]*100+1} y={p[1]*100} fontSize="1.8" fill="white">{name}</text></g>)}
-        </svg>
-      </div>
+      </ReviewFrameImage>
       <div className="flex flex-wrap gap-3 text-sm">{(['ball','person','table'] as Kind[]).map(k=><button key={k} onClick={()=>{setKind(k);setLandmark('');}} className={'px-3 py-2 rounded-lg border '+(kind===k&&!landmark?'border-cyan-400 text-cyan-300':'border-slate-700')}>{k} · {labels[k].length}</button>)}
         <button disabled={busy} onClick={()=>setLabels(l=>({...l,[kind]:l[kind].slice(0,-1)}))}>Undo {kind}</button>
         <button disabled={busy} onClick={()=>setLabels(l=>({...l,[kind]:[]}))}>Clear {kind}</button>

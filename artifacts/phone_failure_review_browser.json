@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "scope": "Browser selection, frame navigation, image zoom and bounded scrolling; annotation accuracy and model accuracy not evaluated",
+  "sourceFrame": 1685,
+  "reviewed": false,
+  "geometry": {
+    "naturalHeight": 1080,
+    "naturalWidth": 1920,
+    "renderedHeight": 2159.994384765625,
+    "renderedWidth": 3839.991455078125,
+    "scrollLeft": 1655.8558349609375,
+    "scrollTop": 960.3603515625,
+    "scrollWidth": 3840,
+    "viewportWidth": 1097
+  },
+  "existingUnsavedReviewTabPreserved": true,
+  "screenshot": "phone_failure_review_zoom.jpg"
+}

@@ -12,6 +12,17 @@ async function main(){
  try{
   for(let i=0;i<150&&!log.includes('Ready');i++)await delay(100);assert(log.includes('Ready'),log);
   const clips=await(await fetch(base)).json();assert.deepEqual(clips.clips,[clip]);
+  const phone='phone_0123456789abcdef_1',phoneDir=path.join(root,phone);fs.mkdirSync(phoneDir);
+  fs.writeFileSync(path.join(phoneDir,'capture.json'),JSON.stringify({source:'recorded_camera',original_path:'C:\\recordings\\IMG_7944.MOV',session_id:'phone_session_1',source_fps_average:59.8,frame_count_discrepancy:2,capture_note:'Reported missed ball'}));
+  fs.writeFileSync(path.join(phoneDir,'frames.jsonl'),'{"file":"frame_1.jpg","source_frame":5202,"elapsed_ms":86905}\n');
+  fs.writeFileSync(path.join(phoneDir,'frame_1.jpg'),Buffer.from([255,216,255,217]));
+  const phoneList=await(await fetch(base)).json();assert(phoneList.clips.includes(phone));
+  assert.equal(phoneList.clip_names[phone],'IMG_7944.MOV · Reported missed ball');
+  const phoneDetail=await(await fetch(base+'?clip='+phone)).json();
+  assert.equal(phoneDetail.capture.original_name,'IMG_7944.MOV');assert.equal(phoneDetail.capture.session_id,'phone_session_1');
+  assert.equal(phoneDetail.capture.capture_note,'Reported missed ball');
+  assert.equal(phoneDetail.frames[0].source_frame,5202);assert.deepEqual(phoneDetail.annotations,{});
+  assert.equal((await fetch(base+'?clip='+phone+'&file=frame_1.jpg')).status,200);
   let detail=await(await fetch(base+'?clip='+clip)).json();assert.equal(detail.frames.length,2);
   assert.equal((await fetch(base+'?clip=..')).status,400);
   assert.equal((await fetch(base+'?clip='+clip+'&file=..%2Fcapture.json')).status,400);

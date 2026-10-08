@@ -1,0 +1,379 @@
+{
+  "video": "C:\\Users\\Adi\\Downloads\\recordings\\IMG_7944.MOV",
+  "engine_sha256": "2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9",
+  "scope": "Unlabeled offline TensorRT response comparison, not native C++ parity, precision/recall or live performance",
+  "promoted": false,
+  "accuracy": null,
+  "accuracy_reason": "No reviewed ground truth for these frames",
+  "frames": [
+    {
+      "frame_id": 1000,
+      "source_pts_ms": 16700.000000000004,
+      "median_luma": 188.0,
+      "gamma": 1.35,
+      "adaptive_applied": true,
+      "variants": {
+        "raw": {
+          "score": 0.07977294921875,
+          "center_px": [
+            478.5,
+            312.0
+          ],
+          "accepted_at_0_25": false
+        },
+        "gamma": {
+          "score": 0.13525390625,
+          "center_px": [
+            479.25,
+            312.0
+          ],
+          "accepted_at_0_25": false
+        },
+        "clahe": {
+          "score": 0.0263519287109375,
+          "center_px": [
+            1464.0,
+            292.875
+          ],
+          "accepted_at_0_25": false
+        },
+        "adaptive": {
+          "score": 0.061431884765625,
+          "center_px": [
+            478.875,
+            311.25
+          ],
+          "accepted_at_0_25": false
+        }
+      }
+    },
+    {
+      "frame_id": 2500,
+      "source_pts_ms": 41748.333333333336,
+      "median_luma": 185.0,
+      "gamma": 1.35,
+      "adaptive_applied": true,
+      "variants": {
+        "raw": {
+          "score": 0.0517578125,
+          "center_px": [
+            1375.5,
+            297.75
+          ],
+          "accepted_at_0_25": false
+        },
+        "gamma": {
+          "score": 0.061431884765625,
+          "center_px": [
+            1375.5,
+            297.75
+          ],
+          "accepted_at_0_25": false
+        },
+        "clahe": {
+          "score": 0.060302734375,
+          "center_px": [
+            1375.5,
+            296.25
+          ],
+          "accepted_at_0_25": false
+        },
+        "adaptive": {
+          "score": 0.07891845703125,
+          "center_px": [
+            1375.5,
+            297.375
+          ],
+          "accepted_at_0_25": false
+        }
+      }
+    },
+    {
+      "frame_id": 5202,
+      "source_pts_ms": 86905.0,
+      "median_luma": 185.0,
+      "gamma": 1.35,
+      "adaptive_applied": true,
+      "variants": {
+        "raw": {
+          "score": 0.092041015625,
+          "center_px": [
+            1662.0,
+            1042.5
+          ],
+          "accepted_at_0_25": false
+        },
+        "gamma": {
+          "score": 0.1044921875,
+          "center_px": [
+            1662.0,
+            1041.75
+          ],
+          "accepted_at_0_25": false
+        },
+        "clahe": {
+          "score": 0.04510498046875,
+          "center_px": [
+            1662.0,
+            1043.25
+          ],
+          "accepted_at_0_25": false
+        },
+        "adaptive": {
+          "score": 0.07861328125,
+          "center_px": [
+            1662.0,
+            1042.5
+          ],
+          "accepted_at_0_25": false
+        }
+      }
+    },
+    {
+      "frame_id": 5203,
+      "source_pts_ms": 86921.66666666667,
+      "median_luma": 185.0,
+      "gamma": 1.35,
+      "adaptive_applied": true,
+      "variants": {
+        "raw": {
+          "score": 0.1263427734375,
+          "center_px": [
+            1665.0,
+            1050.75
+          ],
+          "accepted_at_0_25": false
+        },
+        "gamma": {
+          "score": 0.1026611328125,
+          "center_px": [
+            1662.0,
+            1048.5
+          ],
+          "accepted_at_0_25": false
+        },
+        "clahe": {
+          "score": 0.07342529296875,
+          "center_px": [
+            1686.0,
+            1065.0
+          ],
+          "accepted_at_0_25": false
+        },
+        "adaptive": {
+          "score": 0.106689453125,
+          "center_px": [
+            1686.0,
+            1065.0
+          ],
+          "accepted_at_0_25": false
+        }
+      }
+    },
+    {
+      "frame_id": 5204,
+      "source_pts_ms": 86938.33333333333,
+      "median_luma": 185.0,
+      "gamma": 1.35,
+      "adaptive_applied": true,
+      "variants": {
+        "raw": {
+          "score": 0.07501220703125,
+          "center_px": [
+            478.875,
+            312.0
+          ],
+          "accepted_at_0_25": false
+        },
+        "gamma": {
+          "score": 0.1259765625,
+          "center_px": [
+            479.25,
+            311.25
+          ],
+          "accepted_at_0_25": false
+        },
+        "clahe": {
+          "score": 0.0321044921875,
+          "center_px": [
+            1659.0,
+            1048.5
+          ],
+          "accepted_at_0_25": false
+        },
+        "adaptive": {
+          "score": 0.10302734375,
+          "center_px": [
+            479.25,
+            311.25
+          ],
+          "accepted_at_0_25": false
+        }
+      }
+    },
+    {
+      "frame_id": 5205,
+      "source_pts_ms": 86955.00000000001,
+      "median_luma": 185.0,
+      "gamma": 1.35,
+      "adaptive_applied": true,
+      "variants": {
+        "raw": {
+          "score": 0.0755615234375,
+          "center_px": [
+            1656.0,
+            1051.5
+          ],
+          "accepted_at_0_25": false
+        },
+        "gamma": {
+          "score": 0.10595703125,
+          "center_px": [
+            479.25,
+            311.25
+          ],
+          "accepted_at_0_25": false
+        },
+        "clahe": {
+          "score": 0.03643798828125,
+          "center_px": [
+            1680.0,
+            1050.0
+          ],
+          "accepted_at_0_25": false
+        },
+        "adaptive": {
+          "score": 0.07366943359375,
+          "center_px": [
+            479.25,
+            311.25
+          ],
+          "accepted_at_0_25": false
+        }
+      }
+    },
+    {
+      "frame_id": 9000,
+      "source_pts_ms": 150363.33333333334,
+      "median_luma": 185.0,
+      "gamma": 1.35,
+      "adaptive_applied": true,
+      "variants": {
+        "raw": {
+          "score": 0.097412109375,
+          "center_px": [
+            479.25,
+            312.0
+          ],
+          "accepted_at_0_25": false
+        },
+        "gamma": {
+          "score": 0.1365966796875,
+          "center_px": [
+            479.25,
+            312.0
+          ],
+          "accepted_at_0_25": false
+        },
+        "clahe": {
+          "score": 0.018341064453125,
+          "center_px": [
+            478.5,
+            311.25
+          ],
+          "accepted_at_0_25": false
+        },
+        "adaptive": {
+          "score": 0.048675537109375,
+          "center_px": [
+            479.625,
+            312.0
+          ],
+          "accepted_at_0_25": false
+        }
+      }
+    },
+    {
+      "frame_id": 15000,
+      "source_pts_ms": 250611.6666666667,
+      "median_luma": 183.0,
+      "gamma": 1.35,
+      "adaptive_applied": true,
+      "variants": {
+        "raw": {
+          "score": 0.11395263671875,
+          "center_px": [
+            478.5,
+            312.0
+          ],
+          "accepted_at_0_25": false
+        },
+        "gamma": {
+          "score": 0.220703125,
+          "center_px": [
+            478.5,
+            312.0
+          ],
+          "accepted_at_0_25": false
+        },
+        "clahe": {
+          "score": 0.06982421875,
+          "center_px": [
+            824.25,
+            685.5
+          ],
+          "accepted_at_0_25": false
+        },
+        "adaptive": {
+          "score": 0.12249755859375,
+          "center_px": [
+            478.5,
+            312.375
+          ],
+          "accepted_at_0_25": false
+        }
+      }
+    },
+    {
+      "frame_id": 20000,
+      "source_pts_ms": 334160.0,
+      "median_luma": 184.0,
+      "gamma": 1.35,
+      "adaptive_applied": true,
+      "variants": {
+        "raw": {
+          "score": 0.2386474609375,
+          "center_px": [
+            479.25,
+            312.375
+          ],
+          "accepted_at_0_25": false
+        },
+        "gamma": {
+          "score": 0.356689453125,
+          "center_px": [
+            478.5,
+            312.75
+          ],
+          "accepted_at_0_25": true
+        },
+        "clahe": {
+          "score": 0.154541015625,
+          "center_px": [
+            793.5,
+            689.25
+          ],
+          "accepted_at_0_25": false
+        },
+        "adaptive": {
+          "score": 0.2330322265625,
+          "center_px": [
+            479.25,
+            312.75
+          ],
+          "accepted_at_0_25": false
+        }
+      }
+    }
+  ]
+}

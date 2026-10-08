@@ -1,0 +1,46 @@
+{
+  "session_id": "iphone_same_venue_session_1",
+  "split": null,
+  "contains_ground_truth": false,
+  "scope": "Full sequential decoder count/timestamps plus sampled image import; not accuracy evaluation or independent codec validation",
+  "recordings": [
+    {
+      "clip": "phone_c343f0cdb72df492_2",
+      "source": "recorded_camera",
+      "capture_origin": "iphone",
+      "session_id": "iphone_same_venue_session_1",
+      "original_path": "C:\\Users\\Adi\\Downloads\\recordings\\IMG_7943.MOV",
+      "original_sha256": "c343f0cdb72df492b3de2a69278e4d9c6884e9a22e80a5db69b903a2a9129e7f",
+      "original_bytes": 62669919,
+      "source_frames": 2114,
+      "reported_source_frames": 2114,
+      "frame_count_discrepancy": 0,
+      "source_fps_average": 59.91214397052572,
+      "full_source_decode_counted": true,
+      "source_interval_ms_p50": 16.666666666666686,
+      "source_interval_ms_min": 16.66666666666424,
+      "source_interval_ms_max": 18.33333333333576,
+      "codec_fourcc": "hevc",
+      "width": 1920,
+      "height": 1080,
+      "burst_frames": 5,
+      "timestamp_basis": "opencv_ffmpeg_source_pts_ms",
+      "opencv_version": "5.0.0",
+      "sampled_interval_ms_min": 16.66666666666424,
+      "sampled_interval_ms_max": 16.666666666671517,
+      "sampled_frames": 15,
+      "contains_ground_truth": false,
+      "split": null,
+      "sampling": "3 adjacent five-consecutive-frame bursts from source frame 1680",
+      "selection": {
+        "method": "targeted_failure",
+        "start_source_frame": 1680,
+        "requested_bursts": 3
+      },
+      "capture_note": "Ceiling-light false positive and missed ball near frame 1685",
+      "rotation_handling": "decoder default; inspect imported orientation",
+      "hdr_metadata": null,
+      "hdr_metadata_reason": "Not exposed by this OpenCV decoder"
+    }
+  ]
+}

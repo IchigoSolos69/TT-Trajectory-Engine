@@ -2,9 +2,8 @@
 const kind=process.argv[2],port=Number(process.argv[3]);
 async function main(){
  if(kind==='frontend'){
-  const response=await fetch(`http://127.0.0.1:${port}/api/health`,{signal:AbortSignal.timeout(4000)});
-  if(!response.ok)throw Error('Dashboard health endpoint unavailable');
-  console.log(JSON.stringify(await response.json()));return;
+  const {checkFrontend}=require('./frontend_health.cjs');
+  console.log(JSON.stringify(await checkFrontend(`http://127.0.0.1:${port}`)));return;
  }
  await new Promise((resolve,reject)=>{
   const socket=new WebSocket(`ws://127.0.0.1:${port}`);
@@ -19,4 +18,4 @@ async function main(){
 // Bound process lifetime even when an unrelated TCP listener never completes
 // the WebSocket handshake or acknowledges close. Allow queued shutdown bytes
 // to flush before exiting a successful local probe.
-main().then(()=>setTimeout(()=>process.exit(0),100)).catch(error=>{console.error(error.message);process.exit(1);});
+main().then(()=>{if(kind!=='frontend')setTimeout(()=>process.exit(0),100);}).catch(error=>{console.error(error.message);if(kind==='frontend')process.exitCode=1;else process.exit(1);});
