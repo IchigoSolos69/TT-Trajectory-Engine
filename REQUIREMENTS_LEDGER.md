@@ -30,6 +30,7 @@ Status is evidence-based: verified means the stated check passed, not universal 
 | MODEL-1 | Better ball/person/table precision, recall and confidence quality | Dataset detector improved; live unverified | Fixed match/live/blur/occlusion/furniture comparison and calibration |
 | MODEL-2 | Complete next temporal training experiment | Experiment verified; promotion rejected | v2 native parity passes; recovery precision 83.33%, below 95%; `artifacts/temporal_pipeline_v2_matched.json` |
 | DATA-1 | Explicit training recording control | Implemented | Camera recording/release/disk failure tests and reviewed live data |
+| DATA-2 | Exact live-training capture steps and warnings in GUI | Implemented; component runtime/build verified | Optional setup checklist, ordered coverage routine, mode limits and labeling/split warnings; `artifacts/training_capture_guide_checks.json`. Desktop visual check pending: app approval timed out |
 | CONTRACT-1 | C++ authoritative analytics; provenance and null unknowns | Partial | Versioned contract and removal of frontend analytical fallbacks |
 | PERF-1 | Distinguish offline GPU throughput from live end-to-end | Documented | Per-stage timings, 30-minute soak, no unmeasured 120 FPS claim |
 | AUDIT-1 | Re-read whole chat and all attachments after integration | Pending final closure | Requirement → implementation → test → result → limitation matrix |

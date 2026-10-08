@@ -111,3 +111,13 @@ This checkpoint supersedes the old playback-skipping behavior described above. I
 - Native production/candidate builds and the frontend production build passed. Next.js emitted a webpack cache snapshot warning but completed compile, type checking and route generation.
 
 Remaining release gates include full-length recording/disk-fault tests, browser alignment under rapid seeking, deterministic Windows picker selection, a 30-minute soak, reviewed live datasets, uncertainty/event/calibration accuracy, and the remaining advanced analytics described in REQUIREMENTS_LEDGER.md. No candidate was promoted solely because it compiled or improved recall.
+
+## October 8: live training recording guide
+
+The live Visualizer's capture panel now contains an expandable Recording checklist, gameplay steps & warnings guide. It provides four optional setup checks, an ordered six-step collection routine, post-capture annotation/split steps, and warnings about sampled images, camera-property verification, 60-second/disconnect termination, incomplete bursts and unreviewed suggestions. Compact warnings and mode descriptions remain visible outside the expanded guide. Checklist state is keyed to the camera/source session and is explicitly a human reminder, not an image-quality score or recording permission gate.
+
+The production frontend build passed compile, lint/type checking and route generation. The initial non-elevated build failed with EPERM in the existing administrator-owned .next output tree; building with access to that tree passed. No global filesystem or Git trust settings were changed.
+
+`node frontend/tests/training_capture_guide.test.cjs` passed execution/server-render checks against the production components: disabled capture before camera authorization, all three mode commands, active stop behavior, failure/drop warnings, checklist toggles, and capture/annotation/split guidance. Evidence: `artifacts/training_capture_guide_checks.json`. No real camera was opened and no training data or model was changed. These are component checks, not desktop browser visual evidence.
+
+Desktop inspection was attempted using the computer-use skill. Chrome launch returned `Computer Use app approval timed out`; the rendered desktop check remains pending. No UI-permission bypass or alternate desktop automation was used.

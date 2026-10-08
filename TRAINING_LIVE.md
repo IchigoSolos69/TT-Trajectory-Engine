@@ -7,6 +7,12 @@ been added as ground truth or used to train the deployed models.
 
 ## Collect clean examples
 
+The live Visualizer now includes **Recording checklist, gameplay steps & warnings** below its recording controls. Expand it for an optional four-item setup checklist, an ordered collection routine (verified absence → clear ball examples → normal rallies → temporal bursts → difficult cases), and post-capture labeling/split instructions. The checklist records your observations only; it does not certify image quality or block recording. Recheck the setup after changing the camera or session.
+
+Keep every clip from the same capture session together when assigning train/validation/test splits. Include both players and the full table/net, check saved near/far ball images, and collect clear examples alongside blur/occlusion cases. Hidden balls are not automatically absent-ball negatives. The visible mode cards distinguish sparse detector images, five-frame temporal bursts and selected difficult examples. These controls do not save continuous match video; keep a separate original recording for full-rally/event evaluation or highlights.
+
+The collection routine is practical guidance, not a measured optimum for this camera. Its diversity, complete-label and held-out-evaluation principles follow [Ultralytics dataset guidance](https://docs.ultralytics.com/yolov5/tutorials/tips-for-best-training-results). Camera property behavior depends on the hardware, driver and capture backend, as described by [OpenCV's video I/O documentation](https://docs.opencv.org/4.13.0/d4/d15/group__videoio__flags__base.html). The current app does not configure or verify exposure, focus, resolution or sensor FPS.
+
 1. Launch live mode and authorize the selected camera.
 2. In Visualizer, click **Record training clip**. The backend saves original camera
    images without annotations at up to 5 samples/second. Each recording stops
