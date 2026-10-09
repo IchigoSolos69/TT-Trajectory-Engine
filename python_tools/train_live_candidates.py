@@ -15,13 +15,17 @@ if __name__=='__main__':
     parser.add_argument('--epochs',type=int,default=12)
     args=parser.parse_args()
     audit=json.loads((args.prepared/'audit.json').read_text())
-    if audit['contains_test_in_training'] or min(audit['reviewed_counts'].values())<30:
+    kinds = ('ball','scene') if args.kind=='both' else (args.kind,)
+    counts = audit.get('reviewed_counts_by_kind')
+    if counts is None: counts = {kind: audit['reviewed_counts'] for kind in kinds}
+    if audit['contains_test_in_training'] or any(kind not in counts or min(counts[kind].values())<30 for kind in kinds):
         raise ValueError('Need at least 30 reviewed frames per independent split; test recordings must stay held out')
     for split in ('train','val','test'):
-        frames=[row for row in audit['frames'] if row['split']==split]
-        if args.kind in ('ball','both') and (sum(row['objects']['ball']>0 for row in frames)<5 or sum(row['objects']['ball']==0 for row in frames)<5):
+        ball_frames=[row for row in audit['frames'] if row['split']==split and row.get('kind','ball')=='ball']
+        scene_frames=[row for row in audit['frames'] if row['split']==split and (row.get('kind')=='scene' or 'kind' not in row)]
+        if args.kind in ('ball','both') and (sum(row['objects']['ball']>0 for row in ball_frames)<5 or sum(row['objects']['ball']==0 for row in ball_frames)<5):
             raise ValueError(f'{split} needs at least five ball-positive and five reviewed absent-ball examples')
-        if args.kind in ('scene','both') and sum(row['objects']['person']>0 for row in frames)<5:
+        if args.kind in ('scene','both') and sum(row['objects']['person']>0 for row in scene_frames)<5:
             raise ValueError(f'{split} needs real people examples as well as room backgrounds')
     if args.epochs<4:raise ValueError('Use at least four epochs for this training schedule')
     if args.output.exists():raise FileExistsError('Choose a new candidate output directory')

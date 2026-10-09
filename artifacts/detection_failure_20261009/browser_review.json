@@ -1,0 +1,11 @@
+{
+  "image": [
+    {
+      "alt": "Clean source frame for annotation",
+      "height": 1080,
+      "width": 1920
+    }
+  ],
+  "selected_capture": "phone_c343f0cdb72df492_3",
+  "text": "← Dashboard\nTraining review\n\nBall-only review: click the ball, adjust its box if needed, then Save & next. You do not need to label people, table corners or events to train the ball detector. A click starts a 12-pixel box or reuses the previous reviewed size; drag to correct a blurred ball’s extent.\n\nBall only · faster\nFull scene & advanced\nSelect a captured clip\nIMG_7940.MOV\nIMG_7944.MOV\nIMG_7939.MOV\nIMG_7943.MOV · Ceiling false ball and duplicate leg: frames 1840–1854\nIMG_7943.MOV · Ceiling-light false positive and missed ball near frame 1685\nIMG_7943.MOV\nIMG_7936.MOV\nIMG_7941.MOV\nIMG_7945.MOV\nIMG_7937.MOV\nIMG_7938.MOV\nIMG_7942.MOV\n\nIMG_7943.MOV · 59.91 average FPS · session iphone_same_venue_session_1\n\nReview focus: Ceiling false ball and duplicate leg: frames 1840–1854\n\nOriginal camera footage imported as unreviewed consecutive-frame bursts. Keep every clip from this session in the same dataset split. These frames do not become training labels until you explicitly review and save them.\n\nPrevious\n1 / 15 · source frame 1840 · BALL UNREVIEWED\nNext\nNext needing review\nSave & next\nSave this frame\nSkip / keep unreviewed\nReuse previous ball box\nVisible\nPartly visible\nNot in frame\nHidden / unsure\n\nClick the ball, mark “Not in frame”, or skip if you cannot tell.\n\nEnter: Save & next · ← / →: change frame. Previous boxes and model predictions are suggestions; inspect each frame. Reuse is limited to adjacent frames in the same burst.\n\nUSER_REPORTED_DETECTION_FAILURE\n\nImage zoom\nFit\n100%\n200%\nUse 100% or 200% for tiny balls. Scroll to move around the image; drag the ball’s visible extent.\nball · 0\nUndo ball\nClear ball\nLoad model suggestions\n\nReview does not assign dataset splits or train/deploy a model. Keep complete recording sessions in separate train, validation and test groups using TRAINING_LIVE.md."
+}

@@ -10,7 +10,7 @@ const root=process.env.TT_TRAINING_ROOT?path.resolve(process.env.TT_TRAINING_ROO
 const classes=['ball','person','table'] as const;
 const validClip=(clip:string)=>/^(?:live_[0-9]+_[0-9]+|phone_[0-9a-f]{16}_[0-9]+)$/.test(clip);
 type Box=[number,number,number,number];
-type Annotation={reviewed:boolean;ball:Box[];person:Box[];table:Box[];reviewed_at?:string;geometry?:ReviewGeometry;source_frame?:number;elapsed_ms?:number};
+type Annotation={reviewed:boolean;reviewed_classes?:Record<typeof classes[number],boolean>;ball:Box[];person:Box[];table:Box[];reviewed_at?:string;geometry?:ReviewGeometry;source_frame?:number;elapsed_ms?:number};
 const revision=(text:string)=>createHash('sha256').update(text).digest('hex');
 async function directory(clip:string){
   if(!validClip(clip))throw Error('Invalid clip');
@@ -66,6 +66,8 @@ export async function POST(req:NextRequest){
     if(req.headers.get('origin')!==req.nextUrl.origin)return NextResponse.json({error:'Same-origin review required'},{status:403});
     const rawBody=await req.text();if(rawBody.length>100_000)throw Error('Review too large');
     const body=JSON.parse(rawBody),dir=await directory(body.clip);
+    if(body.scope!==undefined&&!['ball','all'].includes(body.scope))throw Error('Invalid review scope');
+    const selected=body.scope==='ball'?['ball'] as const:classes;
     if(!/^frame_[0-9]+\.jpg$/.test(body.file))throw Error('Invalid frame');
     const frames=await frameIndex(dir);if(!frames.some(f=>f.file===body.file))throw Error('Frame is not indexed');
     const labels:Annotation={reviewed:body.reviewed===true,ball:[],person:[],table:[]};
@@ -87,7 +89,24 @@ export async function POST(req:NextRequest){
     try{lock=await fs.open(lockPath,'wx');}catch(e){if((e as NodeJS.ErrnoException).code==='EEXIST')return NextResponse.json({error:'Another review is being saved; retry shortly.'},{status:409});throw e;}
     const raw=await readAnnotations(dir);
     if(body.revision!==revision(raw))return NextResponse.json({error:'Annotations changed. Reload this clip before saving.'},{status:409});
-    const annotations=JSON.parse(raw);annotations[body.file]=labels;
+    const annotations=JSON.parse(raw),previous=annotations[body.file] as Annotation|undefined;
+    if(body.scope!==undefined){
+      const flags={ball:previous?.reviewed_classes?.ball??previous?.reviewed===true,
+                   person:previous?.reviewed_classes?.person??previous?.reviewed===true,
+                   table:previous?.reviewed_classes?.table??previous?.reviewed===true};
+      for(const cls of selected)flags[cls]=body.reviewed===true;
+      if(body.scope==='ball'){
+        labels.person=previous?.person??[];labels.table=previous?.table??[];
+        const oldGeometry=previous?.geometry;
+        if(oldGeometry)labels.geometry={...oldGeometry,visibility:labels.geometry.visibility,blur:labels.geometry.blur};
+      }
+      if(flags.ball&&labels.geometry.visibility==='absent'&&labels.ball.length)throw Error('Absent-ball tag conflicts with reviewed ball boxes');
+      if(body.reviewed===true&&labels.geometry.visibility==='occluded'&&labels.ball.length)throw Error('A fully occluded ball cannot have an observed box');
+      if(body.reviewed===true&&!labels.ball.length&&['visible','partial'].includes(labels.geometry.visibility))throw Error('Visible ball needs a box. Use absent or hidden/unknown only when appropriate.');
+      if(body.reviewed===true&&!labels.ball.length&&labels.geometry.visibility==='unknown')throw Error('An empty ball label needs explicit absent or occluded visibility.');
+      labels.reviewed_classes=flags;labels.reviewed=Object.values(flags).some(Boolean);
+    }
+    annotations[body.file]=labels;
     // Preserve immutable prior revisions as well as the current optimistic lock.
     const history=path.join(dir,'annotation_history');await fs.mkdir(history,{recursive:true});
     const historical=path.join(history,revision(raw)+'.json');

@@ -1,0 +1,73 @@
+{
+  "started_at": "2026-10-09T06:34:31.668Z",
+  "packaged": false,
+  "electron": "44.7.0",
+  "checks": [
+    "Sandboxed native window with isolated, typed preload bridge",
+    "Launcher live control starts only live mode; camera remains unauthorized",
+    "End session releases its backend process",
+    "Native recording selection bridge handles Unicode/spaces and analyzes every frame",
+    "Desktop renders footage and native controls; review API, current assets and favicon load",
+    "Invalid video preserves the active recording",
+    "Canceling recording selection preserves the session",
+    "Closing the native window stops both application-owned services and frees their ports"
+  ],
+  "renderer_errors": [],
+  "security": {
+    "node": "undefined",
+    "bridge": "function",
+    "isolated": "undefined",
+    "launcher": true
+  },
+  "live": {
+    "pid": 32172,
+    "url": "ws://127.0.0.1:65336",
+    "camera_active": false
+  },
+  "recording": {
+    "pid": 28152,
+    "url": "ws://127.0.0.1:54376",
+    "analysis": {
+      "analyzed_frames": 360,
+      "coverage": "ALL_SOURCE_FRAMES",
+      "requested_frame": 0,
+      "status": "COMPLETE",
+      "total_frames": 360,
+      "waiting_for_analysis": false
+    },
+    "source_id": 1
+  },
+  "http": [
+    {
+      "endpoint": "/",
+      "status": 200
+    },
+    {
+      "endpoint": "/training-review",
+      "status": 200
+    },
+    {
+      "endpoint": "/api/training-review",
+      "status": 200
+    },
+    {
+      "endpoint": "/favicon.ico",
+      "status": 200
+    }
+  ],
+  "rendered": {
+    "toolbar": true,
+    "canvas": true,
+    "frame": 120,
+    "buttons": [
+      "Open recording…",
+      "Live camera",
+      "End session",
+      "Open recording…"
+    ]
+  },
+  "frontend_origin": "http://127.0.0.1:65323",
+  "data_root": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\desktop_test_1791527671475",
+  "ok": true,
+  "finished_at": "2026-10-09T06:34:40.290Z"
+}

@@ -21,6 +21,7 @@
 #include <cctype>
 #include <memory>
 #include <map>
+#include <cstdlib>
 #include <cmath>
 
 class TelemetryServer::Impl {
@@ -319,7 +320,7 @@ std::string TelemetryServer::serializeToJSON(int frameId, const std::vector<Trac
 
     ss << std::fixed << std::setprecision(4);
     ss << "{\n";
-    static const auto root=[] {auto path=std::filesystem::current_path();for(int i=0;i<5&&!std::filesystem::is_directory(path/"backend_cpp");++i)path=path.parent_path();return path.u8string();}();
+    static const auto root=[] {if(const char* data=std::getenv("TT_DATA_ROOT"))return std::filesystem::absolute(std::filesystem::u8path(data)).u8string();auto path=std::filesystem::current_path();for(int i=0;i<5&&!std::filesystem::is_directory(path/"backend_cpp");++i)path=path.parent_path();return path.u8string();}();
     ss << "\"service\":{\"application\":\"TT_TRAJECTORY_ENGINE\",\"mode\":"<<recording::quote(mode)<<",\"pid\":"<<GetCurrentProcessId()<<",\"root\":"<<recording::quote(root)<<"},\n";
     ss << "  \"mode\": \"" << mode << "\",\n";
     ss << "  \"source_video\": " << std::quoted(sourceVideo) << ",\n";
@@ -411,6 +412,8 @@ std::string TelemetryServer::serializeToJSON(int frameId, const std::vector<Trac
     if (presentation) {
         if(!presentation->intelligenceJson.empty())ss<<",\"intelligence\":"<<presentation->intelligenceJson;
         ss << ",\"source_id\":"<<presentation->sourceId
+           <<",\"ball_observation\":{\"state\":"<<std::quoted(presentation->ballObservationState)<<",\"reason\":"<<std::quoted(presentation->ballObservationReason)<<"}"
+           <<",\"scene_frame_id\":"<<presentation->sceneFrameId
            <<",\"position_basis\":\"table_plane_projection\",\"height_observed\":false"
            <<",\"video_picker_open\":"<<(presentation->videoPickerOpen?"true":"false")
            <<",\"video_error\":"<<std::quoted(presentation->videoError);
@@ -447,6 +450,12 @@ std::string TelemetryServer::serializeToJSON(int frameId, const std::vector<Trac
                << ",\"bbox\":[" << d.x << "," << d.y << "," << d.w << "," << d.h << "]}";
         }
         ss << "]\n";
+        ss << ",\"suppressed_scene_detections\":[";
+        for(size_t i=0;i<presentation->suppressedPersonParts.size();++i){
+            if(i)ss<<",";const auto& d=presentation->suppressedPersonParts[i];
+            ss<<"{\"class_id\":"<<d.class_id<<",\"confidence\":"<<d.confidence<<",\"reason\":\"CONTAINED_LOWER_PERSON_FRAGMENT\",\"bbox\":["<<d.x<<","<<d.y<<","<<d.w<<","<<d.h<<"]}";
+        }
+        ss<<"]";
         ss << ",\"impact_points\":[";
         for(size_t i=0;i<presentation->impacts.size();++i) {
             if(i)ss<<",";ss<<"["<<presentation->impacts[i].first<<","<<presentation->impacts[i].second<<"]";

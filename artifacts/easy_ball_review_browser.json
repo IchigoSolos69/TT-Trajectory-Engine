@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "scope": "Production browser workflow tested on isolated synthetic labels; real recording inspected read-only. Not detector accuracy or time-savings measurement.",
+  "checks": [
+    "ball-only default",
+    "Enter saves and advances",
+    "reuse previous reviewed box stays draft",
+    "one-click replaces rather than duplicates ball box",
+    "draft recovery in a fresh page load",
+    "skip leaves ball unreviewed",
+    "absent/hidden states remain distinct",
+    "optional scene/advanced controls",
+    "arrow-key navigation",
+    "review queue catches fully-occluded box and wraps to earlier visible-without-box labels"
+  ],
+  "actualRecording": "IMG_7944.MOV",
+  "actualSourceFrame": 1,
+  "actualRecordingLabelsModified": false,
+  "existingDraftTabReloaded": false,
+  "screenshot": "easy_ball_review.jpg",
+  "reviewQueueVisitedSourceFrames": [
+    19951,
+    24934,
+    24935,
+    24936,
+    24937,
+    24938,
+    1
+  ]
+}

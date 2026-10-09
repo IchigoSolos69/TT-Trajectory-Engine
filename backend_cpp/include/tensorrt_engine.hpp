@@ -8,7 +8,7 @@
 
 // Detection Box Structure for YOLO output
 struct Detection {
-    int class_id;        // 0: Ball, 1: Player Near, 2: Player Far, 3: Table
+    int class_id;        // Head-specific: ball head 0=ball; scene head 0=person, 1=table.
     float confidence;
     float x, y, w, h;    // Normalized coordinates (0..1)
 };

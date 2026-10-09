@@ -1,0 +1,40 @@
+{
+  "source_path": "C:\\Users\\Adi\\Downloads\\demo5.mp4",
+  "source_sha256": "9e71cc8ba7e303403b1b9f0ea60914f270e8a178cf9af4d5ecd25e98b88d54be",
+  "source_fps": 25.0,
+  "source_size": [
+    1920,
+    1080
+  ],
+  "decoded_frames": 106,
+  "exact_consecutive_duplicate_frames": [],
+  "duplicates_removed": false,
+  "analytical_frames_skipped": 0,
+  "blurball_checkpoint_sha256": "3545206c7155194ea654899d33579c88c9fd8e82c632cbdbae3b0c0ec3f2985f",
+  "blurball_network_source_sha256": "e5dbaf53f5ce146526a04325c0d35d1bf337b89f675a9806bab59a002a6ded43",
+  "yolo_engine_sha256": "2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9",
+  "settings": {
+    "heatmap_threshold": 0.7,
+    "yolo_threshold": 0.25,
+    "tracker_max_displacement_source_px": 300.0,
+    "preprocess": "Dataset RGB affine warp + ImageNet normalization"
+  },
+  "proposal_frames": {
+    "yolo": 88,
+    "blurball_offline": 96,
+    "blurball_causal": 87
+  },
+  "causal_warmup_frames": 2,
+  "offline_lookahead_limit_frames": 2,
+  "offline_gpu_forward_ms": {
+    "passes": 104,
+    "median": 17.972224235534668,
+    "p95": 18.426228046417236
+  },
+  "offline_wall_s": 5.34607070000493,
+  "live_capture_to_display_latency_ms": null,
+  "accuracy": null,
+  "accuracy_reason": "No independently reviewed ground truth for these source clips",
+  "promoted": false,
+  "trajectory_basis": "Image pixel proposals only; no physical 3D or spin inference"
+}

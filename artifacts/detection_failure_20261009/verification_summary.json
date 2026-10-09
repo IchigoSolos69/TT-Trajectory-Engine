@@ -1,0 +1,203 @@
+{
+  "scope": "Offline native detection/data-authority diagnostics and browser smoke test; not live accuracy or performance benchmarks.",
+  "ball_accuracy_resolved": false,
+  "models_changed": false,
+  "reported_frame": {
+    "frame": 1848,
+    "native_ball_score": 0.395996094,
+    "native_ball_center_px": [
+      1439.25012,
+      290.25
+    ],
+    "issue": "User-reported ceiling feature false positive, still present in deployed model output"
+  },
+  "scene_regression": {
+    "before": {
+      "frames": 779,
+      "confidence_threshold": 0.4,
+      "iou_threshold": 0.5,
+      "person": {
+        "tp": 2612,
+        "fp": 19,
+        "fn": 39,
+        "precision": 0.9927784112504751,
+        "recall": 0.985288570350811
+      },
+      "table": {
+        "tp": 779,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      "table_quad_frames": 779,
+      "table_quad_mean_mask_iou": 0.7973991860257017,
+      "limitation": "People include officials; table quad is color/contour refinement of a learned box. Test_2 is dataset footage, not a live camera evaluation."
+    },
+    "after": {
+      "frames": 779,
+      "confidence_threshold": 0.4,
+      "iou_threshold": 0.5,
+      "person": {
+        "tp": 2612,
+        "fp": 19,
+        "fn": 39,
+        "precision": 0.9927784112504751,
+        "recall": 0.985288570350811
+      },
+      "table": {
+        "tp": 779,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      "table_quad_frames": 779,
+      "table_quad_mean_mask_iou": 0.7973991860257017,
+      "limitation": "People include officials; table quad is color/contour refinement of a learned box. Test_2 is dataset footage, not a live camera evaluation."
+    },
+    "unchanged": true
+  },
+  "rejected_raw_bypass_cases_verified": 43,
+  "production_complete_coverage": {
+    "analyzed_frames": 2114,
+    "status": "COMPLETE",
+    "total_frames": 2114
+  },
+  "captures": [
+    {
+      "clip": "phone_031b178c51bfae75_1",
+      "source": "IMG_7942.MOV",
+      "session": "iphone_same_venue_session_1",
+      "reviewed_ball_frames": 0,
+      "usable_positive_frames": 0,
+      "usable_negative_frames": 0,
+      "excluded_ambiguous_frames": 0,
+      "annotation_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38"
+    },
+    {
+      "clip": "phone_1383e588b7ee3783_1",
+      "source": "IMG_7938.MOV",
+      "session": "iphone_same_venue_session_1",
+      "reviewed_ball_frames": 0,
+      "usable_positive_frames": 0,
+      "usable_negative_frames": 0,
+      "excluded_ambiguous_frames": 0,
+      "annotation_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38"
+    },
+    {
+      "clip": "phone_211157624ce0f530_1",
+      "source": "IMG_7937.MOV",
+      "session": "iphone_same_venue_session_1",
+      "reviewed_ball_frames": 0,
+      "usable_positive_frames": 0,
+      "usable_negative_frames": 0,
+      "excluded_ambiguous_frames": 0,
+      "annotation_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38"
+    },
+    {
+      "clip": "phone_3adaa646b1413bfa_1",
+      "source": "IMG_7945.MOV",
+      "session": "iphone_same_venue_session_1",
+      "reviewed_ball_frames": 0,
+      "usable_positive_frames": 0,
+      "usable_negative_frames": 0,
+      "excluded_ambiguous_frames": 0,
+      "annotation_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38"
+    },
+    {
+      "clip": "phone_61f027143f6c8d57_1",
+      "source": "IMG_7941.MOV",
+      "session": "iphone_same_venue_session_1",
+      "reviewed_ball_frames": 0,
+      "usable_positive_frames": 0,
+      "usable_negative_frames": 0,
+      "excluded_ambiguous_frames": 0,
+      "annotation_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38"
+    },
+    {
+      "clip": "phone_8b5ea69a091d17fd_1",
+      "source": "IMG_7936.MOV",
+      "session": "iphone_same_venue_session_1",
+      "reviewed_ball_frames": 0,
+      "usable_positive_frames": 0,
+      "usable_negative_frames": 0,
+      "excluded_ambiguous_frames": 0,
+      "annotation_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38"
+    },
+    {
+      "clip": "phone_c343f0cdb72df492_1",
+      "source": "IMG_7943.MOV",
+      "session": "iphone_same_venue_session_1",
+      "reviewed_ball_frames": 0,
+      "usable_positive_frames": 0,
+      "usable_negative_frames": 0,
+      "excluded_ambiguous_frames": 0,
+      "annotation_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38"
+    },
+    {
+      "clip": "phone_c343f0cdb72df492_2",
+      "source": "IMG_7943.MOV",
+      "session": "iphone_same_venue_session_1",
+      "reviewed_ball_frames": 0,
+      "usable_positive_frames": 0,
+      "usable_negative_frames": 0,
+      "excluded_ambiguous_frames": 0,
+      "annotation_sha256": "d51e0f6c248f078b728a7add29b3a0a3ab8f0ee6c43ad35b58b6023a4209dd3c"
+    },
+    {
+      "clip": "phone_c343f0cdb72df492_3",
+      "source": "IMG_7943.MOV",
+      "session": "iphone_same_venue_session_1",
+      "reviewed_ball_frames": 0,
+      "usable_positive_frames": 0,
+      "usable_negative_frames": 0,
+      "excluded_ambiguous_frames": 0,
+      "annotation_sha256": "d51e0f6c248f078b728a7add29b3a0a3ab8f0ee6c43ad35b58b6023a4209dd3c"
+    },
+    {
+      "clip": "phone_e197222a3322d1af_1",
+      "source": "IMG_7939.MOV",
+      "session": "iphone_same_venue_session_1",
+      "reviewed_ball_frames": 0,
+      "usable_positive_frames": 0,
+      "usable_negative_frames": 0,
+      "excluded_ambiguous_frames": 0,
+      "annotation_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38"
+    },
+    {
+      "clip": "phone_e23544b0c4c1a850_1",
+      "source": "IMG_7944.MOV",
+      "session": "iphone_same_venue_session_1",
+      "reviewed_ball_frames": 30,
+      "usable_positive_frames": 19,
+      "usable_negative_frames": 0,
+      "excluded_ambiguous_frames": 11,
+      "annotation_sha256": "2d561e8c9c53aed3a491d27e8a66115075011c5483f24345763cdcb44f6639df"
+    },
+    {
+      "clip": "phone_fa4e98c1cc92b86c_1",
+      "source": "IMG_7940.MOV",
+      "session": "iphone_same_venue_session_1",
+      "reviewed_ball_frames": 0,
+      "usable_positive_frames": 0,
+      "usable_negative_frames": 0,
+      "excluded_ambiguous_frames": 0,
+      "annotation_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38"
+    }
+  ],
+  "live_training_totals": {
+    "reviewed_ball_frames": 30,
+    "usable_positive_frames": 19,
+    "usable_negative_frames": 0,
+    "excluded_ambiguous_frames": 11
+  },
+  "independent_session_count": 1,
+  "remaining": [
+    "Reviewed difficult-ball positives and true absent-ball negatives",
+    "Separate validation/test sessions; the ten supplied recordings are one session",
+    "Venue-trained candidate, native export parity and fixed precision/recall promotion gates",
+    "Independent grey-table landmarks/calibration",
+    "Native MOV true source-PTS/seek acceptance"
+  ]
+}

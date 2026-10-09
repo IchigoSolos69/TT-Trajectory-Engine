@@ -1,5 +1,6 @@
 #include "tensorrt_engine.hpp"
 #include "scene_geometry.hpp"
+#include "scene_postprocess.hpp"
 #include <fstream>
 #include <set>
 #include <iomanip>
@@ -17,7 +18,8 @@ int main(int argc,char**argv) try {
         if(!cap.grab())throw std::runtime_error("Video ended before final requested frame");
         if(!wanted.count(frameId))continue;
         cv::Mat frame;if(!cap.retrieve(frame))throw std::runtime_error("Cannot retrieve frame");
-        const auto detections=model.inferFrame(TensorRTEngine::preprocessOpenCVFrame(frame),frame.cols,frame.rows,.05f);
+        const auto raw=model.inferFrame(TensorRTEngine::preprocessOpenCVFrame(frame),frame.cols,frame.rows,.05f);
+        const auto detections=postprocessScene(raw).accepted;
         const auto quad=findTableSurface(frame,detections);
         for(const auto& d:detections){
             out<<frameId<<","<<d.class_id<<","<<d.confidence<<","<<d.x<<","<<d.y<<","<<d.w<<","<<d.h;

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef, RefObject } from 'react';
 import { TelemetryFrame } from '../types/telemetry';
 import { decodedFrames } from '../lib/decodedFrames';
+import {useDesktop} from './useDesktop';
 
 export interface TelemetryStats {
   rallyStrokes: number;
@@ -17,6 +18,8 @@ export function useTelemetry(_videoRef?: RefObject<HTMLVideoElement>, _targetFps
   const [stats, setStats] = useState<TelemetryStats>(emptyStats);
   const [impactPoints, setImpactPoints] = useState<Array<{ x: number; y: number }>>([]);
   const socketRef = useRef<WebSocket | null>(null);
+  const {context:desktop,initialized}=useDesktop();
+  const backendUrl=desktop?.backendUrl??(desktop?null:'ws://127.0.0.1:9002');
 
   const sendCommand = useCallback((cmd: string) => {
     if (socketRef.current?.readyState === WebSocket.OPEN) socketRef.current.send(cmd);
@@ -27,6 +30,8 @@ export function useTelemetry(_videoRef?: RefObject<HTMLVideoElement>, _targetFps
   }, []);
 
   useEffect(() => {
+    setIsConnected(false);setCurrentFrame(null);setStats(emptyStats);setImpactPoints([]);
+    if(!initialized||!backendUrl)return;
     let cancelled = false;
     let lastFrame = -1;
     let lastMode = "";
@@ -51,7 +56,7 @@ export function useTelemetry(_videoRef?: RefObject<HTMLVideoElement>, _targetFps
       if (cancelled) return;
       let ws: WebSocket;
       try {
-        ws = new WebSocket('ws://localhost:9002');
+        ws = new WebSocket(backendUrl!);
       } catch (error) {
         console.error('[useTelemetry] Connection failed:', error);
         disconnected();
@@ -128,7 +133,7 @@ export function useTelemetry(_videoRef?: RefObject<HTMLVideoElement>, _targetFps
         ws.close();
       }
     };
-  }, []);
+  }, [backendUrl,initialized]);
 
   return { currentFrame, isSimulated, isConnected, sendCommand, stats, resetStats, impactPoints };
 }

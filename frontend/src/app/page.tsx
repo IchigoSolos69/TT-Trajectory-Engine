@@ -36,6 +36,12 @@ export default function DashboardPage() {
   const { currentFrame, isSimulated, isConnected, sendCommand, stats, resetStats, impactPoints } = useTelemetry();
   const [webcamEnabled, setWebcamEnabled] = useState<boolean>(false);
   const [selectedCamera, setSelectedCamera] = useState<number>(0);
+  const [recordingPickerError,setRecordingPickerError]=useState<string|null>(null);
+  const openRecording=async()=>{
+    setRecordingPickerError(null);
+    try{if(window.ttDesktop)await window.ttDesktop.openRecording();else sendCommand('OPEN_VIDEO_DIALOG');}
+    catch(error){setRecordingPickerError(error instanceof Error?error.message:String(error));}
+  };
   useEffect(() => {
     setWebcamEnabled(!!currentFrame?.camera_active);
   }, [currentFrame]);
@@ -160,7 +166,7 @@ export default function DashboardPage() {
                         DISCONNECTED : WAITING FOR ENGINE
                       </span>
                       <span className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-[9px] font-mono text-slate-400">
-                        RETRYING WS://LOCALHOST:9002...
+                        CONNECTING TO LOCAL ENGINE…
                       </span>
                     </div>
                   )}
@@ -355,7 +361,7 @@ export default function DashboardPage() {
               </AnimatePresence>
 
               {isSimulated && <div className="flex flex-wrap items-center gap-3 font-mono text-xs px-2" aria-label="Dataset playback controls">
-                <button disabled={currentFrame?.video_picker_open} className="px-3 py-2 rounded-lg border border-cyan-600 text-cyan-300 disabled:opacity-50" onClick={()=>sendCommand('OPEN_VIDEO_DIALOG')}>{currentFrame?.video_picker_open ? 'File picker open…' : 'Open recording…'}</button>
+                <button disabled={currentFrame?.video_picker_open} className="px-3 py-2 rounded-lg border border-cyan-600 text-cyan-300 disabled:opacity-50" onClick={openRecording}>{currentFrame?.video_picker_open ? 'File picker open…' : 'Open recording…'}</button>
                 <button className="px-4 py-2 rounded-lg bg-cyan-500 text-slate-950 font-bold" onClick={()=>sendCommand(currentFrame?.paused?'PLAY':'PAUSE')}>{currentFrame?.paused?'Play':'Pause'}</button>
                 <button className="px-3 py-2 rounded-lg border border-slate-700" onClick={()=>sendCommand('RESTART')}>Restart</button>
                 {currentFrame?.analysis && <><button aria-label="Previous frame" className="px-3 py-2 rounded-lg border border-slate-700" onClick={()=>sendCommand('STEP_BACK')}>−1 frame</button><button aria-label="Next frame" className="px-3 py-2 rounded-lg border border-slate-700" onClick={()=>sendCommand('STEP_FORWARD')}>+1 frame</button></>}
@@ -373,6 +379,7 @@ export default function DashboardPage() {
                 </div> : <span className="text-slate-500">{(currentFrame?.processing_fps??0).toFixed(0)} analyzed FPS · {currentFrame?.skipped_frames??0} frames skipped to keep pace</span>}
               </div>}
               {currentFrame?.video_error && <p role="alert" className="text-sm text-amber-300 px-2">{currentFrame.video_error}</p>}
+              {recordingPickerError && <p role="alert" className="text-sm text-amber-300 px-2">{recordingPickerError}</p>}
 
               {currentFrame?.mode === 'live' && <TrainingCaptureControls frame={currentFrame} sendCommand={sendCommand} />}
 

@@ -20,6 +20,11 @@ class BurstAuditTests(unittest.TestCase):
                 (directory/'annotations.json').write_text(json.dumps(labels))
             result=audit(root,splitfile)
             self.assertTrue(result['ready_for_training']);self.assertEqual(len(result['accepted']),3)
+            ball_only=json.loads((root/'train'/'annotations.json').read_text())
+            for label in ball_only.values():
+                label.update(reviewed_classes={'ball':True,'person':False,'table':False},geometry={'visibility':'absent'})
+            (root/'train'/'annotations.json').write_text(json.dumps(ball_only))
+            self.assertTrue(audit(root,splitfile)['ready_for_training'],'Ball-only review must support temporal bursts without scene labels')
             for key in ('train','val'):
                 (root/key/'capture.json').write_text(json.dumps({'source':'recorded_camera','session_id':'same_phone_session'}))
             with self.assertRaisesRegex(ValueError,'session overlaps'):

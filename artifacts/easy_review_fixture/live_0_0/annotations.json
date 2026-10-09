@@ -1,0 +1,116 @@
+{
+  "frame_1.jpg": {
+    "reviewed": true,
+    "ball": [
+      [
+        0.5,
+        0.4,
+        0.02,
+        0.02
+      ]
+    ],
+    "person": [],
+    "table": [],
+    "reviewed_at": "2026-10-08T18:53:39.504Z",
+    "geometry": {
+      "landmarks": {},
+      "landmarks_reviewed": false,
+      "visibility": "visible",
+      "blur": "unknown",
+      "events": [],
+      "events_reviewed": false
+    },
+    "source_frame": 100,
+    "elapsed_ms": 0,
+    "reviewed_classes": {
+      "ball": true,
+      "person": false,
+      "table": false
+    }
+  },
+  "frame_2.jpg": {
+    "reviewed": false,
+    "ball": [
+      [
+        0.48960380376361945,
+        0.49066319158683447,
+        0.02,
+        0.02
+      ]
+    ],
+    "person": [],
+    "table": [],
+    "reviewed_at": "2026-10-08T18:55:23.298Z",
+    "geometry": {
+      "landmarks": {},
+      "landmarks_reviewed": false,
+      "visibility": "visible",
+      "blur": "unknown",
+      "events": [],
+      "events_reviewed": false
+    },
+    "source_frame": 101,
+    "elapsed_ms": 16.67,
+    "reviewed_classes": {
+      "ball": false,
+      "person": false,
+      "table": false
+    }
+  },
+  "frame_3.jpg": {
+    "reviewed": true,
+    "ball": [],
+    "person": [],
+    "table": [],
+    "reviewed_at": "2026-10-08T18:55:23.850Z",
+    "geometry": {
+      "landmarks": {},
+      "landmarks_reviewed": false,
+      "visibility": "absent",
+      "blur": "unknown",
+      "events": [],
+      "events_reviewed": false
+    },
+    "source_frame": 102,
+    "elapsed_ms": 33.34,
+    "reviewed_classes": {
+      "ball": true,
+      "person": false,
+      "table": false
+    }
+  },
+  "frame_4.jpg": {
+    "reviewed": true,
+    "ball": [],
+    "person": [],
+    "table": [],
+    "reviewed_at": "2026-10-08T18:55:24.383Z",
+    "geometry": {
+      "landmarks": {},
+      "landmarks_reviewed": false,
+      "visibility": "occluded",
+      "blur": "unknown",
+      "events": [],
+      "events_reviewed": false
+    },
+    "source_frame": 103,
+    "elapsed_ms": 50.010000000000005,
+    "reviewed_classes": {
+      "ball": true,
+      "person": false,
+      "table": false
+    }
+  },
+  "frame_5.jpg": {
+    "reviewed": false,
+    "ball": [],
+    "person": [],
+    "table": []
+  },
+  "frame_6.jpg": {
+    "reviewed": false,
+    "ball": [],
+    "person": [],
+    "table": []
+  }
+}

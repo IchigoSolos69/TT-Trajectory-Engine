@@ -2,6 +2,12 @@
 node_modules/
 frontend/node_modules/
 frontend/.next/
+frontend/.next-desktop/
+desktop/build/
+desktop/dist/
+desktop/node_modules/
+artifacts/desktop/
+artifacts/desktop_test_*/
 frontend/out/
 
 # C++ Build outputs
@@ -72,4 +78,10 @@ artifacts/temporal_recovery_v*/
 artifacts/temporal_train_*.csv
 artifacts/temporal_pipeline_*.csv
 artifacts/analyses/
+artifacts/blurball_research/source/
+artifacts/blurball_research/blurball_best
+artifacts/blurball_research/*_page.html
+artifacts/blurball_research/*_listing.xml
+artifacts/blurball_research/*/predictions.jsonl
+artifacts/blurball_research/*/comparison.avi
 artifacts/replay fixture *.avi

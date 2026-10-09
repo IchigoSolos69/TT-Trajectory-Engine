@@ -1,6 +1,8 @@
-# 🏓 Table Tennis Trajectory Engine & Analytics Dashboard
+# 🏓 Table Tennis Trajectory Engine — Local Desktop Application
 
 A high-performance Table Tennis Match Analysis engine combining a low-latency C++ inference backend (TensorRT + OpenCV + ByteTrack-style tracking + WebSockets) and a modern Next.js TypeScript dashboard with real-time canvas visualization and Magnus spin aerodynamics simulation.
+
+**Run locally:** double-click `launch_engine.bat`, or `desktop/dist/TT Trajectory Engine/TT Trajectory Engine.exe`. The Windows application includes its own runtime, native recording picker and live/recording session controls. No external browser or internet connection is needed. See [DESKTOP_APP.md](DESKTOP_APP.md) and [DESKTOP_VERIFICATION.md](DESKTOP_VERIFICATION.md).
 
 ---
 
@@ -12,7 +14,7 @@ For room/camera adaptation, the live Visualizer now has an explicit **Record tra
 
 Simulation includes **Open recording…** for local game videos. The dashboard retains per-strike speed history. The 2D and 3D views share the same source-frame table-plane projection; airborne height is unknown. Rotation is estimated from visible ball markings when resolvable, otherwise shown as **UNRESOLVED**. It estimates the camera-axis component only.
 
-Recording analysis now runs in a separate C++ worker and saves every analyzed frame under `artifacts/analyses/`. Pause, speed, seek and frame-step controls operate on that indexed timeline. Seeking beyond the analyzed portion waits for progress. Compatible completed analyses are reused; source/model/runtime/settings hashes invalidate stale results. `launch_engine.bat` reuses healthy project services and offers a controlled restart when necessary, while preserving unrelated port owners.
+Recording analysis now runs in a separate C++ worker and saves every analyzed frame under `artifacts/analyses/`. Pause, speed, seek and frame-step controls operate on that indexed timeline. Seeking beyond the analyzed portion waits for progress. Compatible completed analyses are reused; source/model/runtime/settings hashes invalidate stale results. `launch_engine.bat` opens the desktop application, which selects available loopback ports and manages its own services. The older `tools/launch_services.ps1` remains a developer tool.
 
 An opt-in C++ intelligence prototype adds covariance/state telemetry, persistent table geometry, motion gates, a candidate event timeline and difficult-example capture/review. Its uncertainty coverage has not passed validation, so it is not enabled by the normal launcher. See [INTELLIGENCE_ROADMAP.md](INTELLIGENCE_ROADMAP.md) for the implementation status of all twelve requested features, evidence, limitations and remaining acceptance gates.
 

@@ -1,0 +1,6 @@
+{"file":"frame_1.jpg","source_frame":100,"elapsed_ms":0,"burst_id":1,"burst_index":0,"burst_length":5,"review_metadata":{"reasons":["SYNTHETIC_UI_TEST"],"suggestions":{"ball":[[0.5,0.4,0.02,0.02]],"person":[],"table":[]}}}
+{"file":"frame_2.jpg","source_frame":101,"elapsed_ms":16.67,"burst_id":1,"burst_index":1,"burst_length":5}
+{"file":"frame_3.jpg","source_frame":102,"elapsed_ms":33.34,"burst_id":1,"burst_index":2,"burst_length":5}
+{"file":"frame_4.jpg","source_frame":103,"elapsed_ms":50.010000000000005,"burst_id":1,"burst_index":3,"burst_length":5}
+{"file":"frame_5.jpg","source_frame":104,"elapsed_ms":66.68,"burst_id":1,"burst_index":4,"burst_length":5}
+{"file":"frame_6.jpg","source_frame":500,"elapsed_ms":8000,"burst_id":2,"burst_index":0,"burst_length":5}

@@ -1,0 +1,17 @@
+{
+  "name": "tt-trajectory-desktop",
+  "productName": "TT Trajectory Engine",
+  "version": "1.0.0",
+  "description": "Local table tennis footage analysis and live camera application",
+  "private": true,
+  "main": "main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "package": "node scripts/package.cjs",
+    "test": "node --test tests/*.test.cjs",
+    "smoke": "node tests/smoke.cjs"
+  },
+  "devDependencies": {
+    "electron": "44.7.0"
+  }
+}

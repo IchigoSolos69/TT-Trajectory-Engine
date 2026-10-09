@@ -16,6 +16,9 @@ struct FramePresentation {
     int sourceId=1;
     bool measuredBall=false,positionValid=false,videoPickerOpen=false;
     Detection observedBall{};
+    std::string ballObservationState="DETECTOR_ONLY",ballObservationReason="DETECTOR_SCORE_ONLY";
+    int sceneFrameId=0;
+    std::vector<Detection> suppressedPersonParts;
     ObservedSpin observedSpin;
     std::string videoError;
     std::vector<StrikeMeasurement> strikes;

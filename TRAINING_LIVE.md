@@ -47,7 +47,11 @@ python python_tools/audit_temporal_captures.py training_data/live live_splits.js
 
 The audit rejects cross-split duplicate images and recording reuse, excludes incomplete/nonconsecutive/unreviewed bursts, and records image hashes and timing. A nonempty audit is a data-integrity check, not sufficient sample size or live-accuracy acceptance. Actual reviewed room and table-rally captures are still required.
 
-The dashboard's **Review saved frames** link opens `/training-review`. Select a local capture, draw ball/person/table boxes, correct model suggestions, then choose **Save reviewed labels**. A ball click creates an initial 12-pixel box; drag or correct its extent when necessary. Check all three classes, including explicit absence. **Exclude / mark unreviewed** keeps ambiguous frames out of training. Draft edits survive frame/clip navigation but must be saved before leaving the page. Conflicting edits from another review tab are rejected instead of overwritten. Files remain local.
+The dashboard's **Review saved frames** link opens `/training-review`. **Ball only · faster** is the default: click the ball, correct its visible extent if needed, then use **Save & next** or Enter. A click creates an initial 12-pixel box or reuses the current/previous reviewed box size; it replaces the ball box rather than adding duplicates. You do not need people, table geometry or event labels for ball-detector training. **Full scene & advanced** exposes separate scene boxes and optional geometry/events.
+
+**Reuse previous ball box** copies a reviewed box from the adjacent source frame in the same burst into a draft. Move/check it before saving; no motion is inferred and no boxes are automatically approved. **Not in frame** explicitly confirms absence. **Hidden / unsure** excludes the frame from ball-detector training, instead of treating occlusion as absence. **Skip / keep unreviewed** advances without approving the selected review scope. Arrow keys navigate frames, and **Next needing review** wraps to earlier unchecked/conflicting labels.
+
+Drafts are stored locally in this browser and recovered on a fresh page load. They remain outside training until explicitly saved. If browser storage fails, the UI warns you to save before leaving. Conflicting server revisions are rejected instead of overwritten. Ball-only saves preserve previously saved scene boxes, landmarks and events; unchecked scene classes cannot become scene-model negatives. Existing old-page drafts must be saved before reloading to upgrade to this version.
 
 With the experimental backend enabled, **Capture difficult examples** selects frames for low confidence, missing expected balls, motion disagreement, competing detections, low ROI sharpness, uncertain person candidates or unavailable calibration. It saves at most five frames per second, rejects similar reason/location/image descriptors and stops after 60 seconds even if nothing qualifies. This is a heuristic selector, not a trained uncertainty sampler; it cannot know by itself that furniture is a false person. Model hashes and selection reasons are stored beside suggestions. Use the ordinary recording control to collect representative positive and negative coverage too.
 
@@ -58,15 +62,19 @@ python python_tools/prepare_live_training.py init training_data/live/<clip>
 ```
 
 This creates `annotations.json` with every frame marked `reviewed: false`.
-For each reviewed frame, record **all** visible balls, people and table-tennis
-tables as `[left, top, width, height]` boxes normalized to the source image.
-Explicit empty arrays mean the class was checked and is absent. Keep unclear or
-unreviewed frames excluded. Predictions are suggestions, never ground truth.
+For every class you mark reviewed, record **all** its visible instances as
+`[left, top, width, height]` boxes normalized to the source image. New annotations
+carry explicit `reviewed_classes` flags. An unchecked class's empty array means
+unknown, not absent. Reviewed ball negatives also require an explicit absent tag.
+Keep unclear or unreviewed frames excluded. Predictions are suggestions, never
+ground truth. Legacy full-review annotations remain readable, but a visible or
+partly visible ball with no box is excluded from ball training.
 
 ```json
 {
   "frame_1.jpg": {
     "reviewed": true,
+    "reviewed_classes": {"ball": true, "person": false, "table": false},
     "ball": [[0.45, 0.55, 0.04, 0.05]],
     "person": [],
     "table": []
@@ -93,6 +101,19 @@ Training requires at least 30 reviewed frames in each independent split; this is
 only a minimum input check, not a sufficient dataset-size recommendation. Include
 both ball-positive and verified absent frames, plus real people examples.
 
+For the simpler ball-only workflow, prepare and train only the ball candidate:
+
+```powershell
+python python_tools/prepare_live_training.py prepare training_data/live/splits.json training_data/prepared_ball_v1 --kind ball
+python python_tools/train_live_candidates.py training_data/prepared_ball_v1 training_data/candidates_ball_v1 --kind ball
+```
+
+The version-2 preparation audit records separate counts and exclusions per model.
+Scene training requires both person and table classes to be reviewed; ball-only
+labels never create a scene dataset. Temporal-burst audits require ball review
+only. The existing independent-session, duplicate and held-out test safeguards
+apply to every preparation kind.
+
 Candidate weights are saved separately. Before replacing either deployed engine:
 
 - Compare baseline/candidate ball precision, recall, localization error, and false
@@ -112,6 +133,13 @@ plus 15 focused failure frames from IMG_7943. Reviewed labels
 and independent later sessions are still required. The separately trained temporal
 research candidate uses match footage only; it does not establish venue accuracy.
 See `INTELLIGENCE_ROADMAP.md` for its failed promotion gates.
+
+On October 9, IMG_7944 has 30 saved full reviews. The readiness audit accepts 19
+ball-positive frames for ball-detector preparation. Five empty-ball entries
+are tagged visible, five have unknown visibility, and another box is tagged fully occluded. Those eleven need
+clarification and are excluded from detector preparation without changing the
+saved annotations. This is a consistency audit, not proof that the other boxes
+are accurate ground truth. See `artifacts/easy_review_data_audit.json`.
 
 ## Imported iPhone recordings and lighting experiments
 

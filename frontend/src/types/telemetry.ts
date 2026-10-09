@@ -53,6 +53,9 @@ export interface TelemetryFrame {
   table_position?: [number, number];
   table_calibration_status?: string;
   scene_detections?: Array<{ class_id: number; confidence: number; bbox: [number, number, number, number] }>;
+  scene_frame_id?: number;
+  suppressed_scene_detections?: Array<{class_id: number; confidence: number; reason: string; bbox: [number,number,number,number]}>;
+  ball_observation?: {state: 'DETECTOR_ONLY'|'MEASURED'|'PREDICTED'|'REACQUIRED'|'REJECTED'|'LOST';reason: string};
   source_video?: string;
   mode?: 'live' | 'simulation' | string;
   bounce_detector_status?: string;

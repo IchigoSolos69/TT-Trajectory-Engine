@@ -17,7 +17,7 @@ const image=()=>nodes().find(n=>n.type==='img');
 const wrapper=()=>nodes().find(n=>n.props?.onPointerDown);
 const button=name=>nodes().find(n=>n.type==='button'&&n.props.children===name);
 const load=()=>image().props.onLoad({currentTarget:{naturalWidth:1920,naturalHeight:1080}});
-const event=(rect,x,y)=>({pointerId:1,clientX:rect.left+x*rect.width,clientY:rect.top+y*rect.height,currentTarget:{getBoundingClientRect:()=>rect,setPointerCapture(){}}});
+const event=(rect,x,y)=>({pointerId:1,clientX:rect.left+x*rect.width,clientY:rect.top+y*rect.height,currentTarget:{getBoundingClientRect:()=>rect,setPointerCapture(){},focus(){}}});
 const drag=(rect)=>{const node=wrapper();node.props.onPointerDown(event(rect,.56,.53));node.props.onPointerUp(event(rect,.575,.54));};
 drag({left:0,top:0,width:960,height:540});assert.equal(annotations.length,0,'Cannot annotate an unloaded image');
 assert(button('100%').props.disabled);

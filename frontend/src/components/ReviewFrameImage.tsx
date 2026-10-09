@@ -31,8 +31,8 @@ export function ReviewFrameImage({src,enabled,children,onAnnotation}:Props){
     </div>
     {failed===src&&<p role="alert" className="text-amber-300 text-sm">Frame image failed to load. Annotation is disabled; reload this capture.</p>}
     <div className="overflow-auto max-h-[640px] rounded-lg border border-slate-800 bg-black/30" aria-label="Scrollable annotation image">
-      <div className={'relative w-fit select-none touch-none '+(zoom==='fit'?'max-w-full mx-auto':'')}
-        onPointerDown={event=>{if(!ready||!enabled)return;event.currentTarget.setPointerCapture(event.pointerId);start.current={point:point(event),src,zoom};}}
+      <div tabIndex={0} aria-label="Frame annotation area" className={'relative w-fit select-none touch-none outline-cyan-500 '+(zoom==='fit'?'max-w-full mx-auto':'')}
+        onPointerDown={event=>{if(!ready||!enabled)return;event.currentTarget.focus();event.currentTarget.setPointerCapture(event.pointerId);start.current={point:point(event),src,zoom};}}
         onPointerUp={event=>{const initial=start.current;start.current=null;if(!ready||!enabled||!initial||initial.src!==src||initial.zoom!==zoom||!loaded)return;onAnnotation(initial.point,point(event),loaded);}}
         onPointerCancel={()=>{start.current=null;}}>
         {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -16,16 +16,29 @@ ROOT = Path(__file__).resolve().parents[1]
 CLASSES = ('ball', 'person', 'table')
 
 
-def validate_annotation(annotation):
-    if annotation.get('reviewed') is not True:
+def validate_annotation(annotation, classes=CLASSES):
+    if not classes or any(name not in CLASSES for name in classes):
+        raise ValueError('Invalid annotation classes')
+    reviewed = annotation.get('reviewed_classes')
+    if reviewed is not None:
+        if not isinstance(reviewed, dict) or any(type(reviewed.get(name)) is not bool for name in CLASSES):
+            raise ValueError('Explicit review status is required for every class')
+        if any(reviewed[name] is not True for name in classes):
+            return None
+    elif annotation.get('reviewed') is not True:
         return None
     visibility = annotation.get('geometry', {}).get('visibility')
     # A hidden ball is not a verified absent-ball negative, even if someone
     # saved the scene boxes as reviewed. Keep such examples out of this dataset.
-    if visibility == 'occluded' or (visibility == 'partial' and not annotation.get('ball')):
-        return None
+    if 'ball' in classes:
+        if visibility == 'occluded' or (visibility in ('visible', 'partial', 'unknown') and not annotation.get('ball')):
+            return None
+        if reviewed is not None and not annotation.get('ball') and visibility != 'absent':
+            return None
+        if visibility == 'absent' and annotation.get('ball'):
+            raise ValueError('Absent-ball tag conflicts with ball boxes')
     result = {}
-    for name in CLASSES:
+    for name in classes:
         boxes = annotation.get(name)
         if not isinstance(boxes, list):
             raise ValueError(f'Reviewed annotations must explicitly label {name}; [] means confirmed absent')
@@ -66,7 +79,7 @@ def check_capture_session(manifest, split, sessions):
         sessions[session] = split
 
 
-def load_reviewed(captures, splits):
+def load_reviewed(captures, splits, classes=CLASSES):
     if set(splits) != {'train', 'val', 'test'}:
         raise ValueError('Provide train, val and test recording lists')
     seen_clips, hashes, rows, sessions = set(), {}, {key: [] for key in splits}, {}
@@ -88,7 +101,7 @@ def load_reviewed(captures, splits):
                 filename = row['file']
                 if not re.fullmatch(r'frame_[0-9]+\.jpg', filename):
                     raise ValueError('Invalid capture filename')
-                labels = validate_annotation(annotations.get(filename, {}))
+                labels = validate_annotation(annotations.get(filename, {}), classes)
                 if labels is None:
                     skipped += 1
                     continue
@@ -107,14 +120,23 @@ def load_reviewed(captures, splits):
     return rows, skipped
 
 
-def prepare(captures, split_file, output):
+def prepare(captures, split_file, output, kind='both'):
     splits = json.loads(split_file.read_text())
-    rows, skipped = load_reviewed(captures, splits)
+    kinds = [('ball', ('ball',)), ('scene', ('person', 'table'))]
+    if kind not in ('both', 'ball', 'scene'):
+        raise ValueError('Invalid preparation kind')
+    kinds = [entry for entry in kinds if kind == 'both' or entry[0] == kind]
+    # Each model uses only the classes actually reviewed for it. Unchecked
+    # scene boxes never become scene-model negatives in ball-only review.
+    datasets = {name: load_reviewed(captures, splits, classes) for name, classes in kinds}
     if output.exists():
         raise FileExistsError(f'Use a new output directory: {output}')
-    audit = {'splits': splits, 'unreviewed_excluded': skipped, 'contains_test_in_training': False,
-             'reviewed_counts': {k:len(v) for k,v in rows.items()}, 'frames': []}
-    for kind, classes in [('ball', ('ball',)), ('scene', ('person', 'table'))]:
+    audit = {'schema_version': 2, 'splits': splits, 'prepared_kinds': [name for name, _ in kinds],
+             'unreviewed_excluded_by_kind': {name: skipped for name, (_, skipped) in datasets.items()},
+             'contains_test_in_training': False,
+             'reviewed_counts_by_kind': {name: {split: len(items) for split, items in rows.items()} for name, (rows, _) in datasets.items()}, 'frames': []}
+    for kind, classes in kinds:
+        rows, _ = datasets[kind]
         lists = {}
         for split in rows:
             images, labels_dir = output/kind/'images'/split, output/kind/'labels'/split
@@ -129,9 +151,8 @@ def prepare(captures, split_file, output):
                         lines.append(f'{class_id} {x+w/2:.8f} {y+h/2:.8f} {w:.8f} {h:.8f}')
                 (labels_dir/f'{destination.stem}.txt').write_text('\n'.join(lines), encoding='utf-8')
                 paths.append(destination.resolve().as_posix())
-                if kind == 'ball':
-                    audit['frames'].append({'split':split, 'clip':clip, 'file':image.name, 'sha256':digest,
-                                            'objects':{k:len(v) for k,v in labels.items()}})
+                audit['frames'].append({'kind':kind, 'split':split, 'clip':clip, 'file':image.name, 'sha256':digest,
+                                        'objects':{k:len(v) for k,v in labels.items()}})
             lists[split] = paths
             (output/kind/f'live_{split}.txt').write_text('\n'.join(paths)+'\n', encoding='utf-8')
         # Preserve original chronological match splits; never import test_* footage.
@@ -162,6 +183,7 @@ if __name__ == '__main__':
     init=commands.add_parser('init');init.add_argument('clip',type=Path)
     prep=commands.add_parser('prepare');prep.add_argument('splits',type=Path);prep.add_argument('output',type=Path)
     prep.add_argument('--captures',type=Path,default=ROOT/'training_data/live')
+    prep.add_argument('--kind', choices=['ball','scene','both'], default='both')
     args=parser.parse_args()
     if args.command=='init':initialize(args.clip)
-    else:prepare(args.captures,args.splits,args.output)
+    else:prepare(args.captures,args.splits,args.output,args.kind)

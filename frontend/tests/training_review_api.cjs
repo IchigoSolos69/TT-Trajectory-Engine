@@ -45,11 +45,27 @@ async function main(){
   assert.equal(JSON.parse(fs.readFileSync(path.join(dir,'annotations.json'),'utf8'))['frame_1.jpg'].reviewed,false);
   const versions=fs.readdirSync(path.join(dir,'annotation_history')).map(file=>JSON.parse(fs.readFileSync(path.join(dir,'annotation_history',file),'utf8')));
   assert(versions.some(v=>v['frame_1.jpg']?.reviewed===true),'Prior reviewed revision must remain recoverable');
+  detail=await(await fetch(base+'?clip='+clip)).json();
+  const scoped={...body,file:'frame_2.jpg',scope:'ball',revision:detail.revision,labels:{ball:[[.3,.4,.01,.01]],person:[],table:[],geometry:{...geometry,visibility:'visible'}}};
+  const ballOnly=await post(scoped);assert.equal(ballOnly.status,200);const ballSaved=await ballOnly.json();
+  assert.deepEqual(ballSaved.annotation.reviewed_classes,{ball:true,person:false,table:false});
+  assert.equal(ballSaved.annotation.reviewed,true);
+  assert.equal((await post({...scoped,revision:ballSaved.revision,labels:{...scoped.labels,geometry:{...geometry,visibility:'occluded'}}})).status,400);
+  for(const visibility of ['visible','partial','unknown'])assert.equal((await post({...scoped,revision:ballSaved.revision,labels:{...scoped.labels,ball:[],geometry:{...geometry,visibility}}})).status,400);
+  const absent=await post({...scoped,revision:ballSaved.revision,labels:{...scoped.labels,ball:[],geometry:{...geometry,visibility:'absent'}}});
+  assert.equal(absent.status,200);const absentSaved=await absent.json();assert.deepEqual(absentSaved.annotation.ball,[]);
+  const sceneLabels={...body.labels,person:[[.2,.1,.2,.4]],table:[[.1,.6,.6,.2]]};
+  const full=await post({...body,revision:absentSaved.revision,labels:sceneLabels});assert.equal(full.status,200);const fullSaved=await full.json();
+  const ballUpdate=await post({...body,scope:'ball',revision:fullSaved.revision,labels:{ball:[[.4,.5,.02,.02]],person:[],table:[],geometry:{...geometry,landmarks:{},events:[],visibility:'visible'}}});
+  assert.equal(ballUpdate.status,200);const merged=await ballUpdate.json();
+  assert.deepEqual(merged.annotation.person,sceneLabels.person);assert.deepEqual(merged.annotation.table,sceneLabels.table);
+  assert.deepEqual(merged.annotation.geometry.landmarks,geometry.landmarks);assert.deepEqual(merged.annotation.geometry.events,geometry.events);
+  assert.deepEqual(merged.annotation.reviewed_classes,{ball:true,person:true,table:true});
   if(process.argv.includes('--browser'))await new Promise((resolve,reject)=>{
     const check=spawn(process.execPath,['frontend/tests/browser_intelligence.cjs'],{stdio:'inherit'});
     check.on('exit',code=>code===0?resolve():reject(Error('Browser check failed: '+code)));check.on('error',reject);
   });
-  fs.writeFileSync('artifacts/training_review_api.json',JSON.stringify({passed:true,fixture_root:root,checks:['indexed frames','jpeg','path confinement','origin guard','label bounds','revision conflict','reviewed save','exclude from training','landmarks and visibility/blur validation','source event timestamps','immutable annotation history'],log},null,2));
+  fs.writeFileSync('artifacts/training_review_api.json',JSON.stringify({passed:true,fixture_root:root,checks:['indexed frames','jpeg','path confinement','origin guard','label bounds','revision conflict','reviewed save','exclude from training','landmarks and visibility/blur validation','source event timestamps','immutable annotation history','ball-only review does not approve scene classes','explicit absent-ball confirmation','visible/unknown empty-label rejection','ball-only save preserves reviewed scene and landmark/event data'],log},null,2));
   console.log('PASS: local review API, path/origin guards, valid labels, stale-write protection, reviewed/excluded persistence.');
  }finally{server.kill();if(server.exitCode===null)await new Promise(r=>server.once('exit',r));}
 }

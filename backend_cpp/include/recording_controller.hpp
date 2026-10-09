@@ -88,7 +88,7 @@ inline int runController(std::string video,const std::string& ballEngine,const s
         Object identity{{"schema_version","2"},{"algorithm_revision",quote("complete-recording-v1")},{"source_sha256",quote(sha256(source))},
             {"source_path",quote(source.u8string())},{"total_frames",std::to_string(count)},{"source_fps",std::to_string(rate)},
             {"ball_model_sha256",quote(ballHash)},{"scene_model_sha256",quote(sceneHash)},
-            {"runtime_sha256",quote(runtimeHash)},{"confidence_threshold",std::to_string(threshold)},{"experimental_intelligence",intelligence?"true":"false"},{"scene_interval_frames","4"}};
+            {"runtime_sha256",quote(runtimeHash)},{"confidence_threshold",std::to_string(threshold)},{"experimental_intelligence",intelligence?"true":"false"},{"scene_interval_frames","1"}};
         const auto request=json(identity);std::filesystem::path reusable;
         if(!maxFrames)for(const auto& entry:std::filesystem::directory_iterator(cacheRoot)){
             if(!entry.is_directory()||!std::filesystem::exists(entry.path()/"completion.json")||!std::filesystem::exists(entry.path()/"request.json"))continue;
@@ -111,6 +111,7 @@ inline int runController(std::string video,const std::string& ballEngine,const s
         displayed=0;playhead=1;pendingSeek=0;++epoch;shown.clear();jpeg.clear();error.clear();server.playbackPaused=false;
         if(reusable.empty()){
             std::vector<std::wstring> args{L"--sim",L"--video",source.wstring(),L"--analysis-worker",next.wstring(),
+                L"--data-root",root.wstring(),
                 std::filesystem::u8path(ballEngine).wstring(),L"--scene-engine",std::filesystem::u8path(sceneEngine).wstring(),L"--confidence",std::to_wstring(threshold)};
             if(intelligence)args.push_back(L"--experimental-intelligence");
             if(maxFrames){args.push_back(L"--max-frames");args.push_back(std::to_wstring(maxFrames));}

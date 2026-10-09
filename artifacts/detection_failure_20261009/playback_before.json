@@ -1,0 +1,12 @@
+{
+  "video": "C:\\Users\\Adi\\Downloads\\recordings\\IMG_7943.MOV",
+  "frame": 1848,
+  "paused": true,
+  "rate": 1,
+  "service": {
+    "application": "TT_TRAJECTORY_ENGINE",
+    "mode": "simulation",
+    "pid": 27820,
+    "root": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine"
+  }
+}

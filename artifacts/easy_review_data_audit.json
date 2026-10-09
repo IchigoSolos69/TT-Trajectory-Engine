@@ -1,0 +1,78 @@
+{
+  "scope": "Annotation readiness audit and isolated UI fixture persistence; not label correctness or detector accuracy",
+  "actual_clip": "phone_e23544b0c4c1a850_1",
+  "annotation_sha256": "2d561e8c9c53aed3a491d27e8a66115075011c5483f24345763cdcb44f6639df",
+  "saved_reviewed": 30,
+  "ready_ball_frames": 19,
+  "ready_ball_positive": 19,
+  "excluded": [
+    {
+      "file": "frame_1.jpg",
+      "source_frame": 1,
+      "visibility": "visible",
+      "ball_boxes": 0
+    },
+    {
+      "file": "frame_2.jpg",
+      "source_frame": 2,
+      "visibility": "visible",
+      "ball_boxes": 0
+    },
+    {
+      "file": "frame_3.jpg",
+      "source_frame": 3,
+      "visibility": "visible",
+      "ball_boxes": 0
+    },
+    {
+      "file": "frame_4.jpg",
+      "source_frame": 4,
+      "visibility": "visible",
+      "ball_boxes": 0
+    },
+    {
+      "file": "frame_5.jpg",
+      "source_frame": 5,
+      "visibility": "visible",
+      "ball_boxes": 0
+    },
+    {
+      "file": "frame_25.jpg",
+      "source_frame": 19951,
+      "visibility": "occluded",
+      "ball_boxes": 1
+    },
+    {
+      "file": "frame_26.jpg",
+      "source_frame": 24934,
+      "visibility": "unknown",
+      "ball_boxes": 0
+    },
+    {
+      "file": "frame_27.jpg",
+      "source_frame": 24935,
+      "visibility": "unknown",
+      "ball_boxes": 0
+    },
+    {
+      "file": "frame_28.jpg",
+      "source_frame": 24936,
+      "visibility": "unknown",
+      "ball_boxes": 0
+    },
+    {
+      "file": "frame_29.jpg",
+      "source_frame": 24937,
+      "visibility": "unknown",
+      "ball_boxes": 0
+    },
+    {
+      "file": "frame_30.jpg",
+      "source_frame": 24938,
+      "visibility": "unknown",
+      "ball_boxes": 0
+    }
+  ],
+  "fixture_persistence_passed": true,
+  "models_trained_or_promoted": false
+}

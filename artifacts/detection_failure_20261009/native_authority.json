@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "hashes": {
+    "source": "c343f0cdb72df492b3de2a69278e4d9c6884e9a22e80a5db69b903a2a9129e7f",
+    "ball": "2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9",
+    "scene": "5eb0ecbfe0cddb8631cc89fbf6e7a2145d2a4a6b10595034afd4ab8b1a454cee"
+  },
+  "baseline": {
+    "frames": 1854,
+    "accepted": 0,
+    "rejected": 0,
+    "suppressed": 90,
+    "reported_frame": {
+      "state": "DETECTOR_ONLY",
+      "reason": "DETECTOR_SCORE_ONLY"
+    },
+    "scope": "Native offline source-frame replay; validates data authority and duplicate postprocessing, not ball precision/recall or live latency."
+  },
+  "experimental": {
+    "frames": 1854,
+    "accepted": 1590,
+    "rejected": 72,
+    "suppressed": 90,
+    "reported_frame": {
+      "state": "MEASURED",
+      "reason": "ACCEPT_LOW_CONFIDENCE"
+    },
+    "scope": "Native offline source-frame replay; validates data authority and duplicate postprocessing, not ball precision/recall or live latency."
+  }
+}

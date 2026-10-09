@@ -105,10 +105,10 @@ export const TrajectoryCanvas: React.FC<TrajectoryCanvasProps> = ({ currentFrame
         if(f.ball) {
           const b=f.ball,x=b.x*w,y=b.y*h;
           ctx.strokeStyle='#fbbf24';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,8,0,Math.PI*2);ctx.stroke();
-          label(`BALL ${(b.confidence*100).toFixed(0)}%${f.table_position?` · ~${b.speed_kmh.toFixed(1)} km/h`:''}`,x+12,y-10,'#fbbf24');
-          if(o.showVelocityVector && trail.length>=2) {
-            const prev=trail[trail.length-2], dx=x-prev.x*w,dy=y-prev.y*h;
-            const scale=Math.min(3,65/Math.max(1,Math.hypot(dx,dy)));
+          label(`${f.ball_observation?.state==='DETECTOR_ONLY'||!f.ball_observation?'BALL CANDIDATE':'BALL'} ${(b.confidence*100).toFixed(0)}%${f.table_position?` · ~${b.speed_kmh.toFixed(1)} km/h`:''}`,x+12,y-10,'#fbbf24');
+          if(o.showVelocityVector && Math.hypot(b.vx,b.vy)>0) {
+            const dx=b.vx*w*.035,dy=b.vy*h*.035;
+            const scale=Math.min(1,65/Math.max(1,Math.hypot(dx,dy)));
             const ex=x+dx*scale,ey=y+dy*scale, angle=Math.atan2(dy,dx);
             ctx.strokeStyle='#fbbf24';ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(ex,ey);
             ctx.lineTo(ex-8*Math.cos(angle-.45),ey-8*Math.sin(angle-.45));ctx.moveTo(ex,ey);
@@ -134,7 +134,8 @@ export const TrajectoryCanvas: React.FC<TrajectoryCanvasProps> = ({ currentFrame
     </div>}
     {displayed && <div className="absolute top-3 left-3 right-3 flex flex-wrap gap-2 text-[10px] font-mono pointer-events-none">
       <span className="bg-slate-950/85 text-cyan-300 px-3 py-2 rounded-lg">{displayed.mode==='live'?'LIVE CAMERA':displayed.source_video} · FRAME {displayed.frame_id}</span>
-      <span className="bg-slate-950/85 text-amber-300 px-3 py-2 rounded-lg">{displayed.ball?'BALL DETECTED':'SEARCHING FOR BALL'}</span>
+      <span className="bg-slate-950/85 text-amber-300 px-3 py-2 rounded-lg">{displayed.ball?displayed.ball_observation?.state==='DETECTOR_ONLY'||!displayed.ball_observation?'BALL CANDIDATE · UNVALIDATED':'BALL '+displayed.ball_observation.state:'SEARCHING FOR BALL'}</span>
+      {displayed.scene_frame_id!==undefined&&displayed.scene_frame_id!==displayed.frame_id&&<span className="bg-slate-950/85 text-slate-300 px-3 py-2 rounded-lg">Scene observed at frame {displayed.scene_frame_id}</span>}
       <span className="bg-slate-950/85 text-emerald-300 px-3 py-2 rounded-lg">{displayed.table_corners?.length===4?'TABLE SURFACE ESTIMATED':'TABLE CALIBRATION UNAVAILABLE'}</span>
     </div>}
     {decodeError && <p role="alert" className="absolute bottom-3 left-3 text-rose-300 bg-slate-950 p-2">Source image could not be decoded.</p>}

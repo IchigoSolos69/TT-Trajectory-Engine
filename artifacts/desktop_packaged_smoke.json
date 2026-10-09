@@ -1,0 +1,89 @@
+{
+  "started_at": "2026-10-09T06:47:05.936Z",
+  "packaged": true,
+  "electron": "44.7.0",
+  "checks": [
+    "Sandboxed native window with isolated, typed preload bridge",
+    "Launcher live control starts only live mode; camera remains unauthorized",
+    "End session releases its backend process",
+    "Native recording selection bridge handles Unicode/spaces and analyzes every frame",
+    "Desktop renders footage and native controls; review API, current assets and favicon load",
+    "Footage, 2D and 3D retain the same paused frame and authoritative table coordinates",
+    "Review drafts persist in an application-owned file independent of the HTTP port",
+    "Invalid video preserves the active recording",
+    "Canceling recording selection preserves the session",
+    "Closing the native window stops both application-owned services and frees their ports"
+  ],
+  "renderer_errors": [],
+  "security": {
+    "node": "undefined",
+    "bridge": "function",
+    "isolated": "undefined",
+    "launcher": true
+  },
+  "live": {
+    "pid": 39052,
+    "url": "ws://127.0.0.1:50735",
+    "camera_active": false
+  },
+  "recording": {
+    "pid": 38296,
+    "url": "ws://127.0.0.1:55794",
+    "analysis": {
+      "analyzed_frames": 360,
+      "coverage": "ALL_SOURCE_FRAMES",
+      "requested_frame": 0,
+      "status": "COMPLETE",
+      "total_frames": 360,
+      "waiting_for_analysis": false
+    },
+    "source_id": 1
+  },
+  "http": [
+    {
+      "endpoint": "/",
+      "status": 200
+    },
+    {
+      "endpoint": "/training-review",
+      "status": 200
+    },
+    {
+      "endpoint": "/api/training-review",
+      "status": 200
+    },
+    {
+      "endpoint": "/favicon.ico",
+      "status": 200
+    }
+  ],
+  "rendered": {
+    "toolbar": true,
+    "canvas": true,
+    "frame": 120,
+    "buttons": [
+      "Open recording…",
+      "Live camera",
+      "End session",
+      "Open recording…"
+    ],
+    "painted_frame": 120
+  },
+  "spatial_views": {
+    "radar": {
+      "frame": "120",
+      "x": "-1.8386",
+      "y": "1.2105"
+    },
+    "volumetric": {
+      "frame": "120",
+      "x": "-1.8386",
+      "y": "1.2105"
+    }
+  },
+  "frontend_origin": "http://127.0.0.1:50695",
+  "data_root": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\desktop_test_1791528425370",
+  "ok": true,
+  "finished_at": "2026-10-09T06:47:21.861Z",
+  "clean_runtime_path": true
+}

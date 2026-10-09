@@ -52,7 +52,7 @@ def audit(root, split_file):
                         raise ValueError('Duplicate image across recording splits')
                     image_splits[digest] = split
                     hashes.append(digest)
-                    annotation = validate_annotation(annotations.get(frame['file'], {}))
+                    annotation = validate_annotation(annotations.get(frame['file'], {}), ('ball',))
                     if annotation is None:
                         reason = reason or 'UNREVIEWED_FRAME'
                     labels.append(annotation)

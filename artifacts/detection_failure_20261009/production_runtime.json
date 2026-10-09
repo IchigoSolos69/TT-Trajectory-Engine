@@ -1,0 +1,137 @@
+{
+  "analysis": {
+    "analyzed_frames": 1862,
+    "coverage": "CONSECUTIVE_PREFIX",
+    "requested_frame": 0,
+    "status": "RUNNING",
+    "total_frames": 2114,
+    "waiting_for_analysis": false
+  },
+  "analysis_id": "1791488389532454_28444",
+  "ball": {
+    "x": 0.7496,
+    "y": 0.2688,
+    "z": null,
+    "vx": 0,
+    "vy": 0,
+    "vz": null,
+    "speed_kmh": 0,
+    "confidence": 0.396,
+    "is_strike": false,
+    "is_bounce": false,
+    "bounce_x": 0,
+    "bounce_y": 0
+  },
+  "ball_observation": {
+    "state": "DETECTOR_ONLY",
+    "reason": "DETECTOR_SCORE_ONLY"
+  },
+  "bounce": false,
+  "bounce_detector_status": "EXPERIMENTAL (~15.5% F1 - Mode B Gated Raw Top-1)",
+  "bounce_x": 0,
+  "bounce_y": 0,
+  "camera_active": false,
+  "camera_index": 0,
+  "elapsed_time": 0,
+  "ended": false,
+  "fps": 59.9121,
+  "frame_id": 1848,
+  "height_observed": false,
+  "image_impact_points": [],
+  "impact_points": [],
+  "infer_ms": 4.8394,
+  "is_bounce": false,
+  "is_strike": false,
+  "latency_ms": 32.4362,
+  "max_speed_kmh": 0,
+  "max_velocity": 0,
+  "mode": "simulation",
+  "paused": true,
+  "playback_rate": 1,
+  "players": [],
+  "position_basis": "table_plane_projection",
+  "presentation_epoch": 3,
+  "preview_fps": 30.5308,
+  "processing_fps": 34.5063,
+  "rally": {
+    "in_progress": false,
+    "stroke_count": 0,
+    "rally_strokes": 0,
+    "rally_duration_s": 0,
+    "max_speed_kmh": 0
+  },
+  "rally_strokes": 0,
+  "scene_detections": [
+    {
+      "class_id": 1,
+      "confidence": 0.9624,
+      "bbox": [
+        0.2596,
+        0.6222,
+        0.4746,
+        0.0917
+      ]
+    },
+    {
+      "class_id": 0,
+      "confidence": 0.8193,
+      "bbox": [
+        0.7666,
+        0.383,
+        0.1074,
+        0.4396
+      ]
+    },
+    {
+      "class_id": 0,
+      "confidence": 0.8037,
+      "bbox": [
+        0.2012,
+        0.4115,
+        0.1117,
+        0.4771
+      ]
+    }
+  ],
+  "scene_frame_id": 1848,
+  "schema_version": 2,
+  "service": {
+    "application": "TT_TRAJECTORY_ENGINE",
+    "mode": "simulation",
+    "pid": 28444,
+    "root": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine"
+  },
+  "skipped_frames": 0,
+  "source_height": 1080,
+  "source_id": 3,
+  "source_time": 30.8285,
+  "source_video": "IMG_7943.MOV",
+  "source_width": 1920,
+  "spin": {
+    "rpm": null,
+    "status": "unavailable",
+    "type": "camera_axis",
+    "axis_deg": null,
+    "quality": 0,
+    "reason": "Ball too small or texture unresolved"
+  },
+  "strike": false,
+  "strikes": [],
+  "stroke_count": 0,
+  "suppressed_scene_detections": [],
+  "table_calibration_status": "UNAVAILABLE",
+  "table_corners": [],
+  "timestamp": 1791488438357,
+  "total_frames": 2114,
+  "training_recording": {
+    "active": false,
+    "failed": false,
+    "saved_frames": 0,
+    "dropped_frames": 0,
+    "clip": ""
+  },
+  "velocity": 0,
+  "video_error": "",
+  "video_picker_open": false,
+  "z": null
+}

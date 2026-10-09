@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import {DesktopControls} from '../components/DesktopControls';
 
 export const metadata: Metadata = {
   title: 'Table Tennis Trajectory Engine | TensorRT & Next.js Analytics',
@@ -14,6 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-[#07090e] text-slate-100 antialiased selection:bg-cyan-500 selection:text-slate-950">
+        <DesktopControls />
         {children}
       </body>
     </html>

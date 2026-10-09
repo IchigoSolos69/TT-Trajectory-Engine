@@ -3,6 +3,7 @@
 #include "telemetry_server.hpp"
 #include "physics_engine.hpp"
 #include "scene_geometry.hpp"
+#include "scene_postprocess.hpp"
 #include "training_recorder.hpp"
 #include "video_picker.hpp"
 #include "trajectory_intelligence.hpp"
@@ -41,6 +42,7 @@ int runEngine(int argc,char** argv) try {
     int serverPort=9002;
     bool experimentalIntelligence=false;
     std::filesystem::path analysisDirectory;
+    std::filesystem::path dataRoot;
     float confidenceThreshold = 0.25f;
 
     for (int i = 1; i < argc; ++i) {
@@ -51,6 +53,8 @@ int runEngine(int argc,char** argv) try {
             isLiveMode = arg == "--live";
         } else if (arg == "--experimental-intelligence") {
             experimentalIntelligence=true;
+        } else if(arg=="--data-root" && i+1<argc){
+            dataRoot=std::filesystem::absolute(std::filesystem::u8path(argv[++i]));
         } else if(arg=="--analysis-worker" && i+1<argc){
             analysisDirectory=std::filesystem::u8path(argv[++i]);
         } else if (arg == "--port" && i+1<argc) {
@@ -74,6 +78,13 @@ int runEngine(int argc,char** argv) try {
     }
     if (isLiveMode && !videoPath.empty()) throw std::runtime_error("--video is only permitted with --sim.");
     if(isLiveMode&&!analysisDirectory.empty())throw std::runtime_error("Recording analysis cannot open a live camera");
+    if(!dataRoot.empty()){
+#ifdef _WIN32
+        _putenv_s("TT_DATA_ROOT",dataRoot.u8string().c_str());
+#else
+        setenv("TT_DATA_ROOT",dataRoot.u8string().c_str(),1);
+#endif
+    }
 
 
     cv::VideoCapture cap;
@@ -89,6 +100,7 @@ int runEngine(int argc,char** argv) try {
     }
     auto projectRoot=std::filesystem::current_path();
     for(int depth=0;depth<5&&!std::filesystem::is_directory(projectRoot/"backend_cpp");++depth)projectRoot=projectRoot.parent_path();
+    if(!dataRoot.empty()){std::filesystem::create_directories(dataRoot);projectRoot=dataRoot;}
     if(!isLiveMode&&analysisDirectory.empty()){
         cap.release();
         return recording::runController(videoPath,TensorRTEngine::resolveEnginePath(enginePath),TensorRTEngine::resolveEnginePath(scenePath),serverPort,confidenceThreshold,experimentalIntelligence,maxFrames,projectRoot);
@@ -126,6 +138,7 @@ int runEngine(int argc,char** argv) try {
     auto recordingRoot=std::filesystem::current_path();
     for(int depth=0;depth<5 && !std::filesystem::is_directory(recordingRoot/"backend_cpp");++depth)
         recordingRoot=recordingRoot.parent_path();
+    if(!dataRoot.empty())recordingRoot=dataRoot;
     TrainingRecorder recorder(recordingRoot/"training_data"/"live");
     bool recordingSession=false;
     const auto refreshRecording=[&]{
@@ -294,16 +307,14 @@ int runEngine(int argc,char** argv) try {
         if(preview.measuredBall)preview.observedBall=detections.front();
         // Weak observations help association but never bypass the display threshold.
         tracks.erase(std::remove_if(tracks.begin(),tracks.end(),[&](const auto& t){return t.confidence<confidenceThreshold;}),tracks.end());
-        preview.imageVx=preview.imageVy=0;
-        if(!detections.empty() && detections.front().confidence>=confidenceThreshold) {
-            const auto& d=detections.front();const float x=d.x+d.w*.5f,y=d.y+d.h*.5f;
-            if(hadImageBall && dt>0 && dt<=.1f) {preview.imageVx=(x-previousImageX)/dt;preview.imageVy=(y-previousImageY)/dt;}
-            previousImageX=x;previousImageY=y;hadImageBall=true;
-        }else hadImageBall=false;
         const bool publish=analysisWorker||Clock::now()-lastPreview>=std::chrono::milliseconds(33) || (!isLiveMode && frameId==totalFrames);
-        const bool sceneDue=analysisWorker?(frameId-1)%4==0:publish;
+        // Offline analytics prioritize exact source-frame observations. Live
+        // scene cadence remains preview-bound and its frame age is published.
+        const bool sceneDue=analysisWorker||publish;
         if(sceneDue) {
-            preview.scene=sceneEngine.inferFrame(input,frame.cols,frame.rows,.4f);
+            const auto scene=postprocessScene(sceneEngine.inferFrame(input,frame.cols,frame.rows,.4f));
+            preview.scene=scene.accepted;preview.suppressedPersonParts=scene.suppressedPersonParts;
+            preview.sceneFrameId=frameId;
             const auto corners=findTableSurface(frame,preview.scene);
             if(experimentalIntelligence){
                 const int calibrationEpoch=tableCalibration.epoch;
@@ -331,6 +342,30 @@ int runEngine(int argc,char** argv) try {
             std::vector<cv::Point2f> points;cv::perspectiveTransform(std::vector<cv::Point2f>{trajectory.pixel},points,homography);
             trajectory.table=points.front();trajectory.positionValid=std::isfinite(trajectory.table.x)&&std::isfinite(trajectory.table.y);trajectory.accepted=true;
         }
+        preview.ballObservationState="DETECTOR_ONLY";preview.ballObservationReason="DETECTOR_SCORE_ONLY";
+        if(experimentalIntelligence){
+            preview.ballObservationState=intelligence::name(trajectory.state);
+            preview.ballObservationReason=trajectory.reason;
+            // A rejected raw top proposal must not bypass the authoritative
+            // tracker in the overlay, spatial views, spin or velocity readout.
+            preview.measuredBall=trajectory.accepted&&trajectory.observation.has_value();
+            if(preview.measuredBall){
+                const auto observed=*trajectory.observation;
+                const auto selected=std::find_if(detections.begin(),detections.end(),[&](const auto& d){
+                    return cv::norm(observed-cv::Point2f((d.x+d.w*.5f)*frame.cols,(d.y+d.h*.5f)*frame.rows))<.1f;
+                });
+                if(selected==detections.end())throw std::runtime_error("Accepted trajectory has no matching detector observation");
+                preview.observedBall=*selected;
+                preview.observedBall.x=trajectory.pixel.x/frame.cols-selected->w*.5f;
+                preview.observedBall.y=trajectory.pixel.y/frame.rows-selected->h*.5f;
+            }
+        }
+        preview.imageVx=preview.imageVy=0;
+        if(preview.measuredBall){
+            const auto& d=preview.observedBall;const float x=d.x+d.w*.5f,y=d.y+d.h*.5f;
+            if(hadImageBall && dt>0 && dt<=.1f){preview.imageVx=(x-previousImageX)/dt;preview.imageVy=(y-previousImageY)/dt;}
+            previousImageX=x;previousImageY=y;hadImageBall=true;
+        }else hadImageBall=false;
         if(experimentalIntelligence)rallyIntelligence.update(trajectory,preview.scene,frame.size());
         if(isLiveMode&&recordingSession&&server.activeLearningRequested){
             const auto metadata=hardSamples.select(frame,trajectory,detections,preview.scene,tableCalibration.valid(preview.sourceTime),ballEngine.getSha256Hash(),sceneEngine.getSha256Hash());

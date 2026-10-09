@@ -1,0 +1,14 @@
+{
+  "view": {
+    "canvases": [
+      {
+        "frame_id": "1848",
+        "height": 540,
+        "mode": "simulation",
+        "width": 960
+      }
+    ],
+    "text": "TABLE TENNIS TRAJECTORY ENGINE\nDATASET VIDEO ANALYSIS\n\nTensorRT C++ Inference • ByteTrack source-frame tracking • Magnus Spin Physics\n\nPRESS 'H' TO HIDE UI\nVIEW PIPELINE ARCHITECTURE\nCINEMATIC VIEW\nVISUALIZER\n2D RADAR\n3D VOLUMETRIC\nPHYSICS\nSTATS\nC++ ENGINE\nRALLY STROKES\n0\nLAST STRIKE · EST. SPEED\n—\nPlanar estimate · peak 0.0 km/h\nOBSERVED ROTATION · EST.\nUNRESOLVED\nBall too small or texture unresolved\nELAPSED TIME\n0.0 SEC\n\nSTRIKE SPEEDS · estimated table-plane motion · detected events may include errors\n\nWaiting for a detected strike and calibrated table.\n\nFOOTAGE & DETECTIONS\nVelocity Vectors (v)\nImpact Heatmap Overlay\nOpen recording…\nPlay\nRestart\n−1 frame\n+1 frame\nPlayback speed\n0.25×\n0.5×\n1×\n1.5×\n2×\n4×\n30.83 s / 35.3 s\n\nCOMPLETE · 2,114 / 2,114 frames analyzed · no analytical frame skipping\n\nSeek frame\n1848\nIMG_7943.MOV · FRAME 1848\nBALL CANDIDATE · UNVALIDATED\nTABLE CALIBRATION UNAVAILABLE\nAmber: ball · Violet: people · Green: table · Confidence is a model score"
+  },
+  "errors": []
+}
