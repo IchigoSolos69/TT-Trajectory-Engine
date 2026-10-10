@@ -173,3 +173,138 @@ The real IMG_7944 capture was inspected read-only in a separate browser tab; the
 ## Local desktop conversion — 2026-10-09
 
 The portable Windows application is built under `desktop/dist/TT Trajectory Engine/`. See `DESKTOP_VERIFICATION.md` and `artifacts/desktop_packaged_smoke.json` for native-window runtime checks with developer runtime directories excluded, 360/360-frame recording analysis, frame/coordinate agreement across views, persistent drafts and service cleanup. Detector models are unchanged. Camera capture, manual OS picker selection and prolonged soak are not claimed by this conversion.
+
+## BlurBall challenger — 2026-10-09
+
+See `BLURBALL_EVALUATION.md`. Both downloaded clips completed native analysis but had almost no usable table calibration. An isolated RGB/affine three-frame evaluator reproduces native YOLO accepted/missing results on all 299 frames, with score differences at JSON rounding scale. On official match22 rally003 (272 frames, strict <4 source-pixel tolerance), BlurBall offline precision/recall are 98.48%/96.30%; causal latest-frame selection is 97.69%/94.07%; current raw top YOLO is 4.41%/4.44%. Conventional recall includes misplaced/missing visible points. This is one published test clip, only two absent labels, and no independent venue/webcam accuracy acceptance.
+
+ONNX/TensorRT FP32 numerical parity passes on 18 real windows/51 components; maximum centroid difference 0.000209 source px. Offline 18-pass TensorRT forward median 9.85 ms excludes the rest of the pipeline; single-session live latency is unmeasured. Three focused geometry/tracking/scoring checks pass. Source/checkpoint hashes, per-frame predictions, comparisons and JSON reports are retained in `artifacts/blurball_research`. No application integration, default model promotion, reviewed-label rewrite, table calibration fix, physical 3D/spin inference or completion of the advanced plan is claimed.
+
+## October 9: native integration and precision release
+
+The earlier challenger-only scope is superseded by native/application integration, while default promotion, local fine-tuning, physical analytics and whole-plan closure remain unfinished. [BLURBALL_IMPLEMENTATION.md](BLURBALL_IMPLEMENTATION.md) and [PRECISION_RELEASE_REPORT.md](PRECISION_RELEASE_REPORT.md) record the exact contracts, results and limits.
+
+Final native build and contact/gap/source-time forecast tests pass. The final main/controller report accounts for all272 recording frames, exact selected centroids, scene-frame identity, compatible cache reuse, one-/two-frame source completion without fabricated context and live standby file rejection with no camera opened. The published model's identical-input native numerical parity passes; the separate OpenCV-version preprocessing difference remains documented. The previous YOLO/scene weights and original phone review SHA-256 are unchanged.
+
+Final packaged tests pass with a clean runtime PATH: real renderer-origin annotation save, actual pointer streak/save/reload, source/model switching, all-frame analysis, analysis/frame identity across views, C++-only forecast rendering, invalid/canceled source preservation and normal close cleanup. Root inspected the final rendered screenshots. The verified build occupies the standard application directory and the previous package is retained for rollback. [Packaged evidence](artifacts/blurball_desktop_smoke_final.json), [delivery](artifacts/blurball_release_delivery.json).
+
+Native causal replay of the original IMG_7943 prefix decoded1694 frames and selected390 observations. All15 frames1680–1694 have accepted hypotheses, and the frame1685 marker visually follows the ball streak rather than the ceiling. No reviewed reference labels exist for that window, so accuracy/recall/localization metrics remain null. Originals/annotations were not altered. [Diagnostic scope](artifacts/blurball_research/phone_7943_causal/summary.json).
+
+Ten forecast-evaluator integrity tests pass. Both complete272-frame lookahead and causal journals are scored against exact independently supplied source coordinates. Causal paired MAE improves but RMSE and per-horizon p95 regress versus constant velocity; the forecast stays off by default. Neither a learned forecaster nor calibrated prediction coverage is claimed. Live hardware latency, grey-table geometry, native MOV true timestamps/seek acceptance, independent session data and broad model promotion remain outstanding.
+
+## Reviewed CNN dataset adapter — 2026-10-09
+
+The strict [BlurBall dataset adapter](python_tools/blurball_reviewed_dataset.py) is implemented and checked against the inspected upstream affine and RGB normalization. It transforms original reviewed endpoints into output-map center, half-length and undirected degree-axis exactly once. Its explicitly versioned continuous binary capsule target avoids the upstream fractional-positive blank-map case while retaining the actual reviewed endpoint extent; this is an intentional target-policy change, not bitwise reproduction of upstream streak rasterization. Sharp-point targets retain the inspected radius-three behavior. Loss selection is mandatory: paper-described quality focal or upstream default MSE; neither starts training here.
+
+[The final combined run](artifacts/blurball_dataset_adapter_tests.log) passes 31 tests: 11 adapter geometry/loader tests, four exporter regressions and 16 separately authored integrity tests. Tests check chronological RGB/target channels and NumPy/PyTorch batch shapes, source/output/inverse geometry, reversal invariance, tiny positives, explicit absence and exclusion of unknown/occluded/partial targets. Export rows and mutable labels/indices/images are reaudited; truncated or reordered indices, stale timestamps/source IDs and session/original-recording/decoded-image leakage fail closed. Two independently reproduced completeness defects were fixed before the final passing run; earlier failure logs are retained. The mandatory adapter audit is stronger than the older standalone exporter.
+
+[Synthetic target previews](artifacts/blurball_dataset_adapter_v1/adapter_audit.json) were generated separately from real captures, with root visual inspection of the tiny-positive example. Equivalent PyTorch normalization matches bitwise; the full upstream torchvision training environment is not yet available. No real annotations, session assignments, source videos or model weights changed. This establishes structural training handoff readiness only. Real reviewed consecutive windows, independent sessions, adequate negative/contact diversity, a reproducible trainer and model acceptance measurements remain required.
+
+## October 9: no-ball interval review and hybrid data foundation
+
+See [HYBRID_PRECISION_IMPLEMENTATION.md](HYBRID_PRECISION_IMPLEMENTATION.md) for source-audited 9,164-frame import/causal replay, 300 unreviewed uniform images, explicit bulk ball-absence review and training provenance. Production API/page-handler checks, combined dataset tests, journal/mining integrity, frontend build and real packaged Chromium interaction pass. The application does not automatically label the supplied no-ball scene: 1,254 accepted model hypotheses remain suspected failures, with accuracy null. Twenty-four diverse nonoverlapping five-frame bursts are selected for review; coarse temporal/spatial diversity is not embedding clustering.
+
+The separate updated package opens review without starting inference or a camera. Source changes, genuine renderer-origin save, selected-frame synchronization, drafts and clean shutdown pass on isolated fixtures. The original source and deployed YOLO/scene/BlurBall engines remain unchanged. Green-channel preprocessing has geometry/channel/clipping tests and an offline comparison option; no filter or hybrid is enabled by default. Independent sessions, temporal continuity audit, real trainer completion and all earlier acceptance failures remain unfinished.
+
+## October 9: paired evaluation and actual backward-path evidence
+
+Native source/model/frame-bound candidate selection passes 25 contract checks;
+the journal scorer passes 25 integrity, reference and runtime-provenance tests.
+The full 272-frame official development comparison is scored at strict <4 source
+pixels. Causal BlurBall precision/recall are 97.69%/94.07%; the first conservative
+selector achieves 100% precision on only five accepted predictions and 1.85%
+recall. Its no-regression gate fails. No default changes or thresholds fitted on
+this reused clip follow from these results.
+
+The full no-ball paired replay accounts for all 9,164 frames, actual increasing
+PTS and zero lookahead. Selected hypothesis counts are 2,557 YOLO, 1,254 BlurBall
+and 15 experimental; unreviewed accuracy stays null. Historical evaluator binary
+hashes are explicitly recorded-only after rebuild; Unicode/space and 500-frame
+progress checks verify the archived subsequent executable. The initial apparent
+stall was a stale directory-size misreading: the interrupted journal contained
+7,204 consecutive indexed frames. Its corrected partial evidence retains the
+initial snapshot and log.
+
+Nine training-readiness tests pass; the real audit finds 19 structurally eligible
+ball positives, zero verified negatives and zero reviewed CNN targets/windows,
+all in one session. Actual network MSE/direct-dictionary quality-focal forward,
+backward and in-memory optimizer updates pass on isolated artificial positive
+and absent windows. All output-connected gradients are finite; only the exact
+source-derived unused final fusion outputs are disconnected. The full upstream
+Hydra runner remains unverified, and no candidate checkpoint is saved. See
+[the current report](HYBRID_PRECISION_IMPLEMENTATION.md) for exact artifacts and
+remaining data/calibration/physical/live dependencies.
+
+## October 10: completed mixed-recording reviews
+
+The user explicitly confirmed that positive boxes in Video Project 6.mp4 mark
+actual balls. Its earlier no-ball description does not override saved labels.
+Root visually inspected uniform image 211 / source 6520 and found a real ball
+beside the net. No positive/absent label was changed by the audit.
+
+The fresh [readiness report](artifacts/real_training_readiness_2026_10_10_v1.json)
+supersedes the earlier zero-negative inventory: 750 saved images / 732 distinct
+frames, 129 eligible detector positives, 284 reviewed absences, zero visible CNN
+targets and 172 structural all-negative windows. All captures remain one session
+with no frozen independent partitions. Seven overlapping positive labels differ
+in box geometry, rather than presence/absence, and are excluded.
+
+The [reviewed-negative subset scorer](python_tools/score_reviewed_negative_subset.py)
+uses the previously audited complete native replay, actual source-frame/PTS,
+source/model/journal hashes and saved review/image/history snapshots. Of exactly
+284 unique reviewed absent frames, YOLO selects false balls on 42 and causal
+BlurBall on 71. The experimental selector selects none here but retains its
+failed positive-recall gate; it is not promoted. Uniform versus hard-mined counts
+and selection bias are explicit in [the report](artifacts/reviewed_negative_subset_2026_10_10_v2.json).
+Positive/unknown/unsampled frames are not declared absent. Historical runtime
+bytes and JPEG-to-original-pixel binding are not independently reverified.
+
+[Forty-two tests pass](artifacts/reviewed_negative_subset_tests_2026_10_10_v1.log):
+25 existing paired integrity/scoring checks and 17 subset checks cover exclusion,
+overlap/conflict handling, exact PTS, stale snapshots, explicit class review and
+absence-history integrity. This is a sampled diagnostic, not global accuracy,
+independent live acceptance, model fitting or a new deployment.
+
+The [next-step handoff](NEXT_TRAINING_STEP.md) identifies IMG_7944 saved images
+16–20 / source 14960–14964 for a small visible-CNN-label check, followed by real
+positive-window diversity, temporal continuity and independent session splits.
+Five targets are not an adequate training set. Camera capture was not authorized
+or opened, existing services were not restarted, and user labels/models/splits
+were preserved.
+
+## October 10: real reviewed CNN targets and optimizer handoff
+
+The user saved IMG_7944 images 16–20 / source 14960–14964 as reviewed center
+targets. Independent qualitative inspection finds a real moving ball at the
+annotated points; pixel localization error is not independently measured. The
+[fresh v2 audit](artifacts/real_training_readiness_2026_10_10_v2.json) returns
+`errors=[]`, 130 detector positives, 293 reviewed absences, eight visible CNN
+targets (six points/two streaks) and 178 structural windows. All recordings remain
+one unassigned session; synthetic fixture split files are not real held-out data.
+
+The new [single-session staging command/reader](python_tools/stage_reviewed_training.py)
+snapshots source/image/review/index/adapter identity, removes duplicate windows,
+and excludes unknown/partial/occluded/conflicting CNN targets independently of
+detector-box eligibility. Its [manifest](artifacts/reviewed_training_stage_2026_10_10_v1/manifest.json)
+contains three fully visible windows and 175 absent windows. `ready_for_fitting`
+remains false. Seventeen [staging tests](artifacts/reviewed_training_stage_2026_10_10_v1/tests.log)
+and eight [smoke guard tests](artifacts/reviewed_training_smoke_guard_tests_2026_10_10_v1.log)
+pass, including stale hashes, source/session/image overlap, nonempty positive
+channels and exactly blank absent channels. No unknown frame becomes a negative.
+
+The [actual reviewed-data quality-focal check](artifacts/blurball_reviewed_training_smoke_qfl_2026_10_10_v1/report.json)
+passes two in-memory optimizer steps on visible frames 14960–14962 and absent
+frames 1–3. Inputs are `[1,9,288,512]`, targets `[1,3,288,512]`. Each step has finite
+loss, 212 connected parameter tensors with finite gradients and 206 changed
+parameter tensors. Only the exact 39 inspected unused final fusion tensors are
+disconnected. The positive channels retain 27/29/29 target pixels; absent channels
+retain zero. Loss values are diagnostic, not accuracy. Original checkpoint and
+complete stage are reverified after the optimizer. No checkpoint is saved.
+
+The shared optimizer helper retains the [passing synthetic MSE check](artifacts/blurball_training_smoke_mse_2026_10_10_v3/report.json).
+Current YOLO, scene, BlurBall engines and the upstream checkpoint retain their
+previous hashes. No application build/runtime change, camera capture, source
+editing, label overwrite, split assignment, default promotion, live performance
+measurement or model-accuracy improvement is claimed. Independent data,
+representative positive-window coverage, continuity and full candidate training
+remain separate acceptance work. See [the updated checklist](NEXT_TRAINING_STEP.md).

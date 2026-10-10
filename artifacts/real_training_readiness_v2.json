@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "scope": "Read-only structural readiness; no fitting, promotion, label correctness or temporal continuity claim.",
+  "capture_count": 14,
+  "saved_images": 750,
+  "saved_reviewed": 30,
+  "unique_source_frames": 732,
+  "unique_decoded_images": 732,
+  "deduplicated_review_images": 732,
+  "duplicate_saved_images": 18,
+  "session_splits": {
+    "iphone_same_venue_session_1": [
+      "unassigned"
+    ]
+  },
+  "splits_sha256": null,
+  "counts_by_split": {
+    "train": {
+      "unique_review_images": 0,
+      "ball_positive": 0,
+      "ball_verified_absent": 0,
+      "ball_unknown_or_excluded": 0,
+      "cnn_visible_frames": 0,
+      "cnn_absent_frames": 0,
+      "cnn_unknown_or_excluded": 0,
+      "cnn_structural_three_frame_windows": 0
+    },
+    "val": {
+      "unique_review_images": 0,
+      "ball_positive": 0,
+      "ball_verified_absent": 0,
+      "ball_unknown_or_excluded": 0,
+      "cnn_visible_frames": 0,
+      "cnn_absent_frames": 0,
+      "cnn_unknown_or_excluded": 0,
+      "cnn_structural_three_frame_windows": 0
+    },
+    "test": {
+      "unique_review_images": 0,
+      "ball_positive": 0,
+      "ball_verified_absent": 0,
+      "ball_unknown_or_excluded": 0,
+      "cnn_visible_frames": 0,
+      "cnn_absent_frames": 0,
+      "cnn_unknown_or_excluded": 0,
+      "cnn_structural_three_frame_windows": 0
+    },
+    "unassigned": {
+      "unique_review_images": 732,
+      "ball_positive": 19,
+      "ball_verified_absent": 0,
+      "ball_unknown_or_excluded": 713,
+      "cnn_visible_frames": 0,
+      "cnn_absent_frames": 0,
+      "cnn_unknown_or_excluded": 732,
+      "cnn_structural_three_frame_windows": 0
+    }
+  },
+  "ball": {
+    "structurally_ready": false,
+    "reason_codes": [
+      "BALL_POSITIVE_ABSENT_MINIMUM_NOT_MET_TEST",
+      "BALL_POSITIVE_ABSENT_MINIMUM_NOT_MET_TRAIN",
+      "BALL_POSITIVE_ABSENT_MINIMUM_NOT_MET_VAL",
+      "BALL_REVIEWED_MINIMUM_NOT_MET_TEST",
+      "BALL_REVIEWED_MINIMUM_NOT_MET_TRAIN",
+      "BALL_REVIEWED_MINIMUM_NOT_MET_VAL",
+      "FROZEN_SPLITS_MISSING",
+      "INDEPENDENT_SESSIONS_INSUFFICIENT"
+    ]
+  },
+  "blurball": {
+    "structural_windows": 0,
+    "ready_for_fitting": false,
+    "reason_codes": [
+      "BLURBALL_BACKWARD_ENVIRONMENT_NOT_ASSESSED_BY_THIS_AUDIT",
+      "CNN_REVIEWED_WINDOWS_MISSING_TEST",
+      "CNN_REVIEWED_WINDOWS_MISSING_TRAIN",
+      "CNN_REVIEWED_WINDOWS_MISSING_VAL",
+      "FROZEN_SPLITS_MISSING",
+      "INDEPENDENT_SESSIONS_INSUFFICIENT",
+      "TEMPORAL_CONTINUITY_NOT_AUDITED"
+    ]
+  },
+  "conflicts": [],
+  "errors": [],
+  "capture_lineage": [
+    {
+      "clip": "phone_031b178c51bfae75_1",
+      "split": "unassigned",
+      "session_id": "iphone_same_venue_session_1",
+      "saved_frames": 30,
+      "annotations_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38",
+      "capture_sha256": "5708667b19430d604b2fd4554b888664112527af927726880f1ea0bdac4304a5",
+      "index_sha256": "2a0ab8fb272257123573dd74b1847897b1a81b27179de153a2836d1168ffd77c",
+      "temporal_continuity": "NOT_AUDITED"
+    },
+    {
+      "clip": "phone_1383e588b7ee3783_1",
+      "split": "unassigned",
+      "session_id": "iphone_same_venue_session_1",
+      "saved_frames": 30,
+      "annotations_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38",
+      "capture_sha256": "196d8be359b92d93dd510f43d147951fdf3b479a64c03bc81bbc376b7197469c",
+      "index_sha256": "62562e065d243180d200550c2c2dac73fdeb413fa337ff22e9ffb39e44a908a8",
+      "temporal_continuity": "NOT_AUDITED"
+    },
+    {
+      "clip": "phone_211157624ce0f530_1",
+      "split": "unassigned",
+      "session_id": "iphone_same_venue_session_1",
+      "saved_frames": 30,
+      "annotations_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38",
+      "capture_sha256": "ae3c4bd582acce34b1095cf4d54ed5e2c2e23121b3e4682168a7a573c77d34ac",
+      "index_sha256": "df98dfac5eb6220f6633aa807c16e55322af3125223390da7f8c2e5384b31cc0",
+      "temporal_continuity": "NOT_AUDITED"
+    },
+    {
+      "clip": "phone_3adaa646b1413bfa_1",
+      "split": "unassigned",
+      "session_id": "iphone_same_venue_session_1",
+      "saved_frames": 30,
+      "annotations_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38",
+      "capture_sha256": "7350371ae93039ff5ca53987d41a3173e4575b9fd3a26d8c6afc7145d1296155",
+      "index_sha256": "291b7a4a79ba76b58b7a7cf091be54b54cde20dce6e5b60e09074902074b5430",
+      "temporal_continuity": "NOT_AUDITED"
+    },
+    {
+      "clip": "phone_452627e98a3c2652_1",
+      "split": "unassigned",
+      "session_id": "iphone_same_venue_session_1",
+      "saved_frames": 300,
+      "annotations_sha256": "85fe25dc0f5a0dda0c4d64defa51d1017ea60c1b49406880e09e6767fd5590a2",
+      "capture_sha256": "de6a66de9ccf4c5915bc53ddb5debfe3161b8cfc39d19f315bf3699983b57a29",
+      "index_sha256": "38957991c5426d7588afa3ebd7c38207ba040b263bddcf7e5a1c12ed23c9b153",
+      "temporal_continuity": "NOT_AUDITED"
+    },
+    {
+      "clip": "phone_452627e98a3c2652_2",
+      "split": "unassigned",
+      "session_id": "iphone_same_venue_session_1",
+      "saved_frames": 120,
+      "annotations_sha256": "55bf87bc78241e21d5792780c9718829d43e0c8ca2d46da0283963bb8e1ef6f9",
+      "capture_sha256": "b1a07a68137da6749dddead290bf5b93f7ddfb1abbdb4a32e512610a338d6e21",
+      "index_sha256": "f7a46c794263025b73c3a24c74db771a6ae32516716fc89ca051b85b03b56bd3",
+      "temporal_continuity": "NOT_AUDITED"
+    },
+    {
+      "clip": "phone_61f027143f6c8d57_1",
+      "split": "unassigned",
+      "session_id": "iphone_same_venue_session_1",
+      "saved_frames": 30,
+      "annotations_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38",
+      "capture_sha256": "ce2589c193869787b0dddb0d3e123341adbd4444defe81273d4d1b351acd01c0",
+      "index_sha256": "72de4c6c6670d1bedd7a0e48bdef23de2be00acf8eda5e5f834edfffc3020113",
+      "temporal_continuity": "NOT_AUDITED"
+    },
+    {
+      "clip": "phone_8b5ea69a091d17fd_1",
+      "split": "unassigned",
+      "session_id": "iphone_same_venue_session_1",
+      "saved_frames": 30,
+      "annotations_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38",
+      "capture_sha256": "6b0eb35e54469f0d4ecf991547a614b3431d6aa67938c95fd009a49654eeae27",
+      "index_sha256": "a34b11b2a851025391f9409bcc1252143b6202b00c96ff5232585ff22a6123d0",
+      "temporal_continuity": "NOT_AUDITED"
+    },
+    {
+      "clip": "phone_c343f0cdb72df492_1",
+      "split": "unassigned",
+      "session_id": "iphone_same_venue_session_1",
+      "saved_frames": 30,
+      "annotations_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38",
+      "capture_sha256": "369f993088df4b1b055e4a04d47a0a92a71efac6f9f5feba6a8a6d50796fa55f",
+      "index_sha256": "216158e0ee6d3e9f090c81822867db378a2125769b6d51ff63f758f02a8defb1",
+      "temporal_continuity": "NOT_AUDITED"
+    },
+    {
+      "clip": "phone_c343f0cdb72df492_2",
+      "split": "unassigned",
+      "session_id": "iphone_same_venue_session_1",
+      "saved_frames": 15,
+      "annotations_sha256": "d51e0f6c248f078b728a7add29b3a0a3ab8f0ee6c43ad35b58b6023a4209dd3c",
+      "capture_sha256": "cc754802c5bcef8144edd6d19c6fb9d72a522dea0f7c496c373c6ad64311b6d4",
+      "index_sha256": "7399ac530fcc93a3b09e633c301feab27d9adf0316ad8767d1b8530e28814575",
+      "temporal_continuity": "NOT_AUDITED"
+    },
+    {
+      "clip": "phone_c343f0cdb72df492_3",
+      "split": "unassigned",
+      "session_id": "iphone_same_venue_session_1",
+      "saved_frames": 15,
+      "annotations_sha256": "d51e0f6c248f078b728a7add29b3a0a3ab8f0ee6c43ad35b58b6023a4209dd3c",
+      "capture_sha256": "a6745001ec94478ee568f8f3bffdc999b9bf8a4f075bb73c027d0ce2ec858447",
+      "index_sha256": "36759a7a9cfbb199964011fe442138e6000b3b8053284704d0a891d95ec0f80a",
+      "temporal_continuity": "NOT_AUDITED"
+    },
+    {
+      "clip": "phone_e197222a3322d1af_1",
+      "split": "unassigned",
+      "session_id": "iphone_same_venue_session_1",
+      "saved_frames": 30,
+      "annotations_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38",
+      "capture_sha256": "5074ea239105c397e7b0da07b8cf0c5f44b586d38f9ac60958cc74f9af5c1941",
+      "index_sha256": "aa8b3be371bb99f5fc5f3399afeed4628c6120345dd5302ea1542eab7d685ad4",
+      "temporal_continuity": "NOT_AUDITED"
+    },
+    {
+      "clip": "phone_e23544b0c4c1a850_1",
+      "split": "unassigned",
+      "session_id": "iphone_same_venue_session_1",
+      "saved_frames": 30,
+      "annotations_sha256": "2d561e8c9c53aed3a491d27e8a66115075011c5483f24345763cdcb44f6639df",
+      "capture_sha256": "575c8d339d34c1c6b62673e021379d104f3e1ded78aaf875ee1b88756587720e",
+      "index_sha256": "d9bfc7720e84193b5415b956eac599bbdafba92a634219a4f08cebba3adb34cd",
+      "temporal_continuity": "NOT_AUDITED"
+    },
+    {
+      "clip": "phone_fa4e98c1cc92b86c_1",
+      "split": "unassigned",
+      "session_id": "iphone_same_venue_session_1",
+      "saved_frames": 30,
+      "annotations_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38",
+      "capture_sha256": "a084e74cd5de1a6333f25fe1a783c8086e8bea517ffa457f72915e9091c3fcf3",
+      "index_sha256": "ba258ddd871959d5b524095eeb567306d6d7d3c7e0b5e85af247e4b9a93685b4",
+      "temporal_continuity": "NOT_AUDITED"
+    }
+  ],
+  "minimum_note": "YOLO trainer minimum: 30 reviewed frames and five positive/five verified absent per independent split; this is not sufficient sample size or acceptance.",
+  "continuity_note": "Consecutive IDs/timestamps and burst IDs supply structural windows only. Cuts, repeated footage and exposure interruptions require a separate continuity audit.",
+  "environment_note": "This audit does not assess the training environment. Separate forward/loss/backward/finite-gradient/optimizer evidence is required."
+}

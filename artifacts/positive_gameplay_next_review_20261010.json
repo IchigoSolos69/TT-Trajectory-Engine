@@ -1,0 +1,851 @@
+{
+  "scope": "Read-only annotation/source-structure audit; boxes and visibility tags are not proof of label correctness; no proposed coordinates become ground truth.",
+  "capture": "phone_e23544b0c4c1a850_1",
+  "original_filename": "IMG_7944.MOV",
+  "original_path": "C:\\Users\\Adi\\Downloads\\recordings\\IMG_7944.MOV",
+  "source_sha256_from_capture": "e23544b0c4c1a8506f529f4d53e75ecb9e0c98f7e529e03355086875cce433de",
+  "session_id": "iphone_same_venue_session_1",
+  "split": null,
+  "annotations_sha256": "2d561e8c9c53aed3a491d27e8a66115075011c5483f24345763cdcb44f6639df",
+  "saved_reviews": 30,
+  "explicit_class_flags": 0,
+  "eligible_positive_source_frames": [
+    4987,
+    4988,
+    4989,
+    4990,
+    4991,
+    9974,
+    9975,
+    9976,
+    9977,
+    9978,
+    14960,
+    14961,
+    14962,
+    14963,
+    14964,
+    19947,
+    19948,
+    19949,
+    19950
+  ],
+  "current_cnn_targets": 0,
+  "current_cnn_windows": 0,
+  "adjacent_structural_three_frame_windows": 18,
+  "box_eligible_three_frame_windows": 11,
+  "current_visible_box_only_candidate_windows": 3,
+  "recommended_initial_review": {
+    "burst_id": 4,
+    "files": [
+      "frame_16.jpg",
+      "frame_17.jpg",
+      "frame_18.jpg",
+      "frame_19.jpg",
+      "frame_20.jpg"
+    ],
+    "source_frames": [
+      14960,
+      14961,
+      14962,
+      14963,
+      14964
+    ],
+    "source_time_s": 249.81,
+    "potential_windows_after_genuine_review": 3,
+    "reason": "Only existing five-frame gameplay burst with all saved tags visible and boxes; candidate selection uses structure/tags, not model scores or presumed ball location.",
+    "workflow": "Ball-only -> Blur streak -> inspect at 100% or 200%, then drag the actual visible endpoints or click the actual sharp center -> Save & next for each source frame. Keep hidden, partial and uncertain targets excluded; do not alter visibility just to pass training."
+  },
+  "box_to_streak_policy": "May focus inspection on existing box or present an explicitly unconfirmed hint; bbox is not measured streak center/axis/extent. Human review must draw/confirm visible endpoints. Never convert boxes into reviewed CNN ground truth automatically.",
+  "next_candidate_bursts": [
+    {
+      "burst": 2,
+      "source_frames": "4987\u20134991",
+      "constraint": "The last three are tagged partial; only the first two are visible. Inspect and preserve the true state; there is no complete currently visible triplet."
+    },
+    {
+      "burst": 3,
+      "source_frames": "9974\u20139978",
+      "constraint": "The first two are unknown, the middle frame is partial, and the last two are visible. Resolve these only through review of the actual images."
+    },
+    {
+      "burst": 5,
+      "source_frames": "19947\u201319951",
+      "constraint": "The first four are partial and the last is occluded; do not fabricate full streaks or absence."
+    }
+  ],
+  "records": [
+    {
+      "file": "frame_1.jpg",
+      "source_frame": 1,
+      "elapsed_ms": 0.0,
+      "burst_id": 1,
+      "burst_index": 0,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "visible",
+      "ball_box_count": 0,
+      "ball_detector_eligible": false,
+      "ball_detector_positive": false,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_2.jpg",
+      "source_frame": 2,
+      "elapsed_ms": 16.666666666666668,
+      "burst_id": 1,
+      "burst_index": 1,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "visible",
+      "ball_box_count": 0,
+      "ball_detector_eligible": false,
+      "ball_detector_positive": false,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_3.jpg",
+      "source_frame": 3,
+      "elapsed_ms": 33.333333333333336,
+      "burst_id": 1,
+      "burst_index": 2,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "visible",
+      "ball_box_count": 0,
+      "ball_detector_eligible": false,
+      "ball_detector_positive": false,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_4.jpg",
+      "source_frame": 4,
+      "elapsed_ms": 50.0,
+      "burst_id": 1,
+      "burst_index": 3,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "visible",
+      "ball_box_count": 0,
+      "ball_detector_eligible": false,
+      "ball_detector_positive": false,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_5.jpg",
+      "source_frame": 5,
+      "elapsed_ms": 66.66666666666667,
+      "burst_id": 1,
+      "burst_index": 4,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "visible",
+      "ball_box_count": 0,
+      "ball_detector_eligible": false,
+      "ball_detector_positive": false,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_6.jpg",
+      "source_frame": 4987,
+      "elapsed_ms": 83265.0,
+      "burst_id": 2,
+      "burst_index": 0,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "visible",
+      "ball_box_count": 1,
+      "ball_detector_eligible": true,
+      "ball_detector_positive": true,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_7.jpg",
+      "source_frame": 4988,
+      "elapsed_ms": 83281.66666666667,
+      "burst_id": 2,
+      "burst_index": 1,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "visible",
+      "ball_box_count": 1,
+      "ball_detector_eligible": true,
+      "ball_detector_positive": true,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_8.jpg",
+      "source_frame": 4989,
+      "elapsed_ms": 83298.33333333333,
+      "burst_id": 2,
+      "burst_index": 2,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "partial",
+      "ball_box_count": 1,
+      "ball_detector_eligible": true,
+      "ball_detector_positive": true,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_9.jpg",
+      "source_frame": 4990,
+      "elapsed_ms": 83315.00000000001,
+      "burst_id": 2,
+      "burst_index": 3,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "partial",
+      "ball_box_count": 1,
+      "ball_detector_eligible": true,
+      "ball_detector_positive": true,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_10.jpg",
+      "source_frame": 4991,
+      "elapsed_ms": 83331.66666666667,
+      "burst_id": 2,
+      "burst_index": 4,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "partial",
+      "ball_box_count": 1,
+      "ball_detector_eligible": true,
+      "ball_detector_positive": true,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_11.jpg",
+      "source_frame": 9974,
+      "elapsed_ms": 166545.00000000003,
+      "burst_id": 3,
+      "burst_index": 0,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "unknown",
+      "ball_box_count": 1,
+      "ball_detector_eligible": true,
+      "ball_detector_positive": true,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_12.jpg",
+      "source_frame": 9975,
+      "elapsed_ms": 166563.33333333334,
+      "burst_id": 3,
+      "burst_index": 1,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "unknown",
+      "ball_box_count": 1,
+      "ball_detector_eligible": true,
+      "ball_detector_positive": true,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_13.jpg",
+      "source_frame": 9976,
+      "elapsed_ms": 166580.0,
+      "burst_id": 3,
+      "burst_index": 2,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "partial",
+      "ball_box_count": 1,
+      "ball_detector_eligible": true,
+      "ball_detector_positive": true,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_14.jpg",
+      "source_frame": 9977,
+      "elapsed_ms": 166596.66666666666,
+      "burst_id": 3,
+      "burst_index": 3,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "visible",
+      "ball_box_count": 1,
+      "ball_detector_eligible": true,
+      "ball_detector_positive": true,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_15.jpg",
+      "source_frame": 9978,
+      "elapsed_ms": 166613.33333333334,
+      "burst_id": 3,
+      "burst_index": 4,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "visible",
+      "ball_box_count": 1,
+      "ball_detector_eligible": true,
+      "ball_detector_positive": true,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_16.jpg",
+      "source_frame": 14960,
+      "elapsed_ms": 249810.0,
+      "burst_id": 4,
+      "burst_index": 0,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "visible",
+      "ball_box_count": 1,
+      "ball_detector_eligible": true,
+      "ball_detector_positive": true,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_17.jpg",
+      "source_frame": 14961,
+      "elapsed_ms": 249826.6666666667,
+      "burst_id": 4,
+      "burst_index": 1,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "visible",
+      "ball_box_count": 1,
+      "ball_detector_eligible": true,
+      "ball_detector_positive": true,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_18.jpg",
+      "source_frame": 14962,
+      "elapsed_ms": 249843.33333333337,
+      "burst_id": 4,
+      "burst_index": 2,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "visible",
+      "ball_box_count": 1,
+      "ball_detector_eligible": true,
+      "ball_detector_positive": true,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_19.jpg",
+      "source_frame": 14963,
+      "elapsed_ms": 249860.0,
+      "burst_id": 4,
+      "burst_index": 3,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "visible",
+      "ball_box_count": 1,
+      "ball_detector_eligible": true,
+      "ball_detector_positive": true,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_20.jpg",
+      "source_frame": 14964,
+      "elapsed_ms": 249876.6666666667,
+      "burst_id": 4,
+      "burst_index": 4,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "visible",
+      "ball_box_count": 1,
+      "ball_detector_eligible": true,
+      "ball_detector_positive": true,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_21.jpg",
+      "source_frame": 19947,
+      "elapsed_ms": 333091.6666666667,
+      "burst_id": 5,
+      "burst_index": 0,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "partial",
+      "ball_box_count": 1,
+      "ball_detector_eligible": true,
+      "ball_detector_positive": true,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_22.jpg",
+      "source_frame": 19948,
+      "elapsed_ms": 333108.3333333334,
+      "burst_id": 5,
+      "burst_index": 1,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "partial",
+      "ball_box_count": 1,
+      "ball_detector_eligible": true,
+      "ball_detector_positive": true,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_23.jpg",
+      "source_frame": 19949,
+      "elapsed_ms": 333125.0,
+      "burst_id": 5,
+      "burst_index": 2,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "partial",
+      "ball_box_count": 1,
+      "ball_detector_eligible": true,
+      "ball_detector_positive": true,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_24.jpg",
+      "source_frame": 19950,
+      "elapsed_ms": 333141.6666666667,
+      "burst_id": 5,
+      "burst_index": 3,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "partial",
+      "ball_box_count": 1,
+      "ball_detector_eligible": true,
+      "ball_detector_positive": true,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_25.jpg",
+      "source_frame": 19951,
+      "elapsed_ms": 333158.3333333334,
+      "burst_id": 5,
+      "burst_index": 4,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "occluded",
+      "ball_box_count": 1,
+      "ball_detector_eligible": false,
+      "ball_detector_positive": false,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_26.jpg",
+      "source_frame": 24934,
+      "elapsed_ms": 416523.3333333334,
+      "burst_id": 6,
+      "burst_index": 0,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "unknown",
+      "ball_box_count": 0,
+      "ball_detector_eligible": false,
+      "ball_detector_positive": false,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_27.jpg",
+      "source_frame": 24935,
+      "elapsed_ms": 416556.6666666667,
+      "burst_id": 6,
+      "burst_index": 1,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "unknown",
+      "ball_box_count": 0,
+      "ball_detector_eligible": false,
+      "ball_detector_positive": false,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_28.jpg",
+      "source_frame": 24936,
+      "elapsed_ms": 416590.00000000006,
+      "burst_id": 6,
+      "burst_index": 2,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "unknown",
+      "ball_box_count": 0,
+      "ball_detector_eligible": false,
+      "ball_detector_positive": false,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_29.jpg",
+      "source_frame": 24937,
+      "elapsed_ms": 416623.3333333333,
+      "burst_id": 6,
+      "burst_index": 3,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "unknown",
+      "ball_box_count": 0,
+      "ball_detector_eligible": false,
+      "ball_detector_positive": false,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    },
+    {
+      "file": "frame_30.jpg",
+      "source_frame": 24938,
+      "elapsed_ms": 416656.6666666667,
+      "burst_id": 6,
+      "burst_index": 4,
+      "burst_length": 5,
+      "saved_reviewed": true,
+      "explicit_reviewed_classes": null,
+      "visibility": "unknown",
+      "ball_box_count": 0,
+      "ball_detector_eligible": false,
+      "ball_detector_positive": false,
+      "cnn_target_eligible": false,
+      "reviewed_streak_present": false
+    }
+  ],
+  "windows": [
+    {
+      "source_frames": [
+        1,
+        2,
+        3
+      ],
+      "files": [
+        "frame_1.jpg",
+        "frame_2.jpg",
+        "frame_3.jpg"
+      ],
+      "burst_id": 1,
+      "ball_box_eligible_all_three": false,
+      "all_three_currently_tagged_visible_with_boxes": false,
+      "all_three_cnn_reviewed_targets": false
+    },
+    {
+      "source_frames": [
+        2,
+        3,
+        4
+      ],
+      "files": [
+        "frame_2.jpg",
+        "frame_3.jpg",
+        "frame_4.jpg"
+      ],
+      "burst_id": 1,
+      "ball_box_eligible_all_three": false,
+      "all_three_currently_tagged_visible_with_boxes": false,
+      "all_three_cnn_reviewed_targets": false
+    },
+    {
+      "source_frames": [
+        3,
+        4,
+        5
+      ],
+      "files": [
+        "frame_3.jpg",
+        "frame_4.jpg",
+        "frame_5.jpg"
+      ],
+      "burst_id": 1,
+      "ball_box_eligible_all_three": false,
+      "all_three_currently_tagged_visible_with_boxes": false,
+      "all_three_cnn_reviewed_targets": false
+    },
+    {
+      "source_frames": [
+        4987,
+        4988,
+        4989
+      ],
+      "files": [
+        "frame_6.jpg",
+        "frame_7.jpg",
+        "frame_8.jpg"
+      ],
+      "burst_id": 2,
+      "ball_box_eligible_all_three": true,
+      "all_three_currently_tagged_visible_with_boxes": false,
+      "all_three_cnn_reviewed_targets": false
+    },
+    {
+      "source_frames": [
+        4988,
+        4989,
+        4990
+      ],
+      "files": [
+        "frame_7.jpg",
+        "frame_8.jpg",
+        "frame_9.jpg"
+      ],
+      "burst_id": 2,
+      "ball_box_eligible_all_three": true,
+      "all_three_currently_tagged_visible_with_boxes": false,
+      "all_three_cnn_reviewed_targets": false
+    },
+    {
+      "source_frames": [
+        4989,
+        4990,
+        4991
+      ],
+      "files": [
+        "frame_8.jpg",
+        "frame_9.jpg",
+        "frame_10.jpg"
+      ],
+      "burst_id": 2,
+      "ball_box_eligible_all_three": true,
+      "all_three_currently_tagged_visible_with_boxes": false,
+      "all_three_cnn_reviewed_targets": false
+    },
+    {
+      "source_frames": [
+        9974,
+        9975,
+        9976
+      ],
+      "files": [
+        "frame_11.jpg",
+        "frame_12.jpg",
+        "frame_13.jpg"
+      ],
+      "burst_id": 3,
+      "ball_box_eligible_all_three": true,
+      "all_three_currently_tagged_visible_with_boxes": false,
+      "all_three_cnn_reviewed_targets": false
+    },
+    {
+      "source_frames": [
+        9975,
+        9976,
+        9977
+      ],
+      "files": [
+        "frame_12.jpg",
+        "frame_13.jpg",
+        "frame_14.jpg"
+      ],
+      "burst_id": 3,
+      "ball_box_eligible_all_three": true,
+      "all_three_currently_tagged_visible_with_boxes": false,
+      "all_three_cnn_reviewed_targets": false
+    },
+    {
+      "source_frames": [
+        9976,
+        9977,
+        9978
+      ],
+      "files": [
+        "frame_13.jpg",
+        "frame_14.jpg",
+        "frame_15.jpg"
+      ],
+      "burst_id": 3,
+      "ball_box_eligible_all_three": true,
+      "all_three_currently_tagged_visible_with_boxes": false,
+      "all_three_cnn_reviewed_targets": false
+    },
+    {
+      "source_frames": [
+        14960,
+        14961,
+        14962
+      ],
+      "files": [
+        "frame_16.jpg",
+        "frame_17.jpg",
+        "frame_18.jpg"
+      ],
+      "burst_id": 4,
+      "ball_box_eligible_all_three": true,
+      "all_three_currently_tagged_visible_with_boxes": true,
+      "all_three_cnn_reviewed_targets": false
+    },
+    {
+      "source_frames": [
+        14961,
+        14962,
+        14963
+      ],
+      "files": [
+        "frame_17.jpg",
+        "frame_18.jpg",
+        "frame_19.jpg"
+      ],
+      "burst_id": 4,
+      "ball_box_eligible_all_three": true,
+      "all_three_currently_tagged_visible_with_boxes": true,
+      "all_three_cnn_reviewed_targets": false
+    },
+    {
+      "source_frames": [
+        14962,
+        14963,
+        14964
+      ],
+      "files": [
+        "frame_18.jpg",
+        "frame_19.jpg",
+        "frame_20.jpg"
+      ],
+      "burst_id": 4,
+      "ball_box_eligible_all_three": true,
+      "all_three_currently_tagged_visible_with_boxes": true,
+      "all_three_cnn_reviewed_targets": false
+    },
+    {
+      "source_frames": [
+        19947,
+        19948,
+        19949
+      ],
+      "files": [
+        "frame_21.jpg",
+        "frame_22.jpg",
+        "frame_23.jpg"
+      ],
+      "burst_id": 5,
+      "ball_box_eligible_all_three": true,
+      "all_three_currently_tagged_visible_with_boxes": false,
+      "all_three_cnn_reviewed_targets": false
+    },
+    {
+      "source_frames": [
+        19948,
+        19949,
+        19950
+      ],
+      "files": [
+        "frame_22.jpg",
+        "frame_23.jpg",
+        "frame_24.jpg"
+      ],
+      "burst_id": 5,
+      "ball_box_eligible_all_three": true,
+      "all_three_currently_tagged_visible_with_boxes": false,
+      "all_three_cnn_reviewed_targets": false
+    },
+    {
+      "source_frames": [
+        19949,
+        19950,
+        19951
+      ],
+      "files": [
+        "frame_23.jpg",
+        "frame_24.jpg",
+        "frame_25.jpg"
+      ],
+      "burst_id": 5,
+      "ball_box_eligible_all_three": false,
+      "all_three_currently_tagged_visible_with_boxes": false,
+      "all_three_cnn_reviewed_targets": false
+    },
+    {
+      "source_frames": [
+        24934,
+        24935,
+        24936
+      ],
+      "files": [
+        "frame_26.jpg",
+        "frame_27.jpg",
+        "frame_28.jpg"
+      ],
+      "burst_id": 6,
+      "ball_box_eligible_all_three": false,
+      "all_three_currently_tagged_visible_with_boxes": false,
+      "all_three_cnn_reviewed_targets": false
+    },
+    {
+      "source_frames": [
+        24935,
+        24936,
+        24937
+      ],
+      "files": [
+        "frame_27.jpg",
+        "frame_28.jpg",
+        "frame_29.jpg"
+      ],
+      "burst_id": 6,
+      "ball_box_eligible_all_three": false,
+      "all_three_currently_tagged_visible_with_boxes": false,
+      "all_three_cnn_reviewed_targets": false
+    },
+    {
+      "source_frames": [
+        24936,
+        24937,
+        24938
+      ],
+      "files": [
+        "frame_28.jpg",
+        "frame_29.jpg",
+        "frame_30.jpg"
+      ],
+      "burst_id": 6,
+      "ball_box_eligible_all_three": false,
+      "all_three_currently_tagged_visible_with_boxes": false,
+      "all_three_cnn_reviewed_targets": false
+    }
+  ],
+  "temporal_continuity": "Not audited; adjacent IDs/timestamps alone cannot establish absence of cuts/duplicates",
+  "independent_validation_test": "Current whole session must stay in onepartition; reviewednegativebatch doesnotcreate independentvalidation/test."
+}

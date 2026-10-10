@@ -1,0 +1,28 @@
+{
+  "scope": "Artificial fixture training-environment smoke only",
+  "loss": "mse",
+  "passed": false,
+  "real_training_run": false,
+  "accuracy_measured": false,
+  "checkpoint_saved": false,
+  "promotion_approved": false,
+  "live_latency_measured": false,
+  "full_upstream_runner_verified": false,
+  "dataset_scope": "SYNTHETIC ONLY; sharp, tiny, streak and absent adapter examples",
+  "gpu": "NVIDIA GeForce RTX 5050 Laptop GPU",
+  "torch": "2.14.0+cu130",
+  "checkpoint_sha256": "3545206c7155194ea654899d33579c88c9fd8e82c632cbdbae3b0c0ec3f2985f",
+  "network_source_sha256": "e5dbaf53f5ce146526a04325c0d35d1bf337b89f675a9806bab59a002a6ded43",
+  "loss_source_sha256": null,
+  "stage": "backward",
+  "optimizer": {
+    "name": "Adam",
+    "learning_rate": 1e-05,
+    "weight_decay": 0
+  },
+  "parameter_count": 1488531,
+  "loss_adapter": "Sigmoid/clamp then MSE, matching inspected train_blur.yaml default",
+  "steps": [],
+  "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\python_tools\\smoke_blurball_training.py\", line 121, in main\n    experiment(args, report)\n    ~~~~~~~~~~^^^^^^^^^^^^^^\n  File \"C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\python_tools\\smoke_blurball_training.py\", line 81, in experiment\n    raise RuntimeError('Missing/zero training gradients: ' + ','.join(missing))\nRuntimeError: Missing/zero training gradients: stage4.0.fuse_layers.1.0.0.0.weight,stage4.0.fuse_layers.1.0.0.1.weight,stage4.0.fuse_layers.1.0.0.1.bias,stage4.0.fuse_layers.1.2.0.weight,stage4.0.fuse_layers.1.2.1.weight,stage4.0.fuse_layers.1.2.1.bias,stage4.0.fuse_layers.1.3.0.weight,stage4.0.fuse_layers.1.3.1.weight,stage4.0.fuse_layers.1.3.1.bias,stage4.0.fuse_layers.2.0.0.0.weight,stage4.0.fuse_layers.2.0.0.1.weight,stage4.0.fuse_layers.2.0.0.1.bias,stage4.0.fuse_layers.2.0.1.0.weight,stage4.0.fuse_layers.2.0.1.1.weight,stage4.0.fuse_layers.2.0.1.1.bias,stage4.0.fuse_layers.2.1.0.0.weight,stage4.0.fuse_layers.2.1.0.1.weight,stage4.0.fuse_layers.2.1.0.1.bias,stage4.0.fuse_layers.2.3.0.weight,stage4.0.fuse_layers.2.3.1.weight,stage4.0.fuse_layers.2.3.1.bias,stage4.0.fuse_layers.3.0.0.0.weight,stage4.0.fuse_layers.3.0.0.1.weight,stage4.0.fuse_layers.3.0.0.1.bias,stage4.0.fuse_layers.3.0.1.0.weight,stage4.0.fuse_layers.3.0.1.1.weight,stage4.0.fuse_layers.3.0.1.1.bias,stage4.0.fuse_layers.3.0.2.0.weight,stage4.0.fuse_layers.3.0.2.1.weight,stage4.0.fuse_layers.3.0.2.1.bias,stage4.0.fuse_layers.3.1.0.0.weight,stage4.0.fuse_layers.3.1.0.1.weight,stage4.0.fuse_layers.3.1.0.1.bias,stage4.0.fuse_layers.3.1.1.0.weight,stage4.0.fuse_layers.3.1.1.1.weight,stage4.0.fuse_layers.3.1.1.1.bias,stage4.0.fuse_layers.3.2.0.0.weight,stage4.0.fuse_layers.3.2.0.1.weight,stage4.0.fuse_layers.3.2.0.1.bias\n",
+  "offline_smoke_wall_s": 17.660673499980476
+}

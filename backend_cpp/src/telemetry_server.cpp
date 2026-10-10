@@ -411,6 +411,9 @@ std::string TelemetryServer::serializeToJSON(int frameId, const std::vector<Trac
 
     if (presentation) {
         if(!presentation->intelligenceJson.empty())ss<<",\"intelligence\":"<<presentation->intelligenceJson;
+        if(!presentation->ballModelJson.empty())ss<<",\"ball_model\":"<<presentation->ballModelJson;
+        if(!presentation->ballBlurJson.empty())ss<<",\"ball_blur\":"<<presentation->ballBlurJson;
+        if(!presentation->ballFlightJson.empty())ss<<",\"ball_flight\":"<<presentation->ballFlightJson;
         ss << ",\"source_id\":"<<presentation->sourceId
            <<",\"ball_observation\":{\"state\":"<<std::quoted(presentation->ballObservationState)<<",\"reason\":"<<std::quoted(presentation->ballObservationReason)<<"}"
            <<",\"scene_frame_id\":"<<presentation->sceneFrameId
@@ -420,13 +423,13 @@ std::string TelemetryServer::serializeToJSON(int frameId, const std::vector<Trac
         ss << ",\"strikes\":[";
         for(size_t i=0;i<presentation->strikes.size();++i) {
             const auto& strike=presentation->strikes[i];if(i)ss<<",";
-            ss<<"{\"id\":"<<strike.id<<",\"frame_id\":"<<strike.frame<<",\"source_time\":"<<strike.time<<",\"speed_kmh\":"<<strike.speedKmh<<"}";
+            ss<<"{\"id\":"<<strike.id<<",\"frame_id\":"<<strike.frame<<",\"source_time\":"<<std::setprecision(6)<<strike.time<<std::setprecision(4)<<",\"speed_kmh\":"<<strike.speedKmh<<"}";
         }
         ss<<"]";
         ss << ",\n  \"preview_jpeg\": " << std::quoted(presentation->jpegBase64)
            << ",\n  \"source_width\": " << presentation->width
            << ",\n  \"source_height\": " << presentation->height
-           << ",\n  \"source_time\": " << presentation->sourceTime
+           << ",\n  \"source_time\": " << std::setprecision(6) << presentation->sourceTime << std::setprecision(4)
            << ",\n  \"total_frames\": " << presentation->totalFrames
            << ",\n  \"playback_rate\": " << presentation->playbackRate
            << ",\n  \"processing_fps\": " << presentation->processingFps

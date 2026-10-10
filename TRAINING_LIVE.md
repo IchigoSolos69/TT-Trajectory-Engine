@@ -196,7 +196,8 @@ These targeted frames cannot be treated as a new independent validation session.
 
 Use **100%** for native pixels or **200%** for inspection, scrolling within the
 image. Drag the real ball's visible extent; a click's initial 12-pixel box is only
-a starting point. Check every visible person and the table too. The ceiling light
+a starting point. Ball-only review is sufficient for ball training; use full-scene
+review when you also want to train person/table detection. The ceiling light
 is background, so do not give it a ball box. Set visibility and blur tags only
 when you can judge them. Leave uncertain positions unreviewed and distinguish
 occlusion from verified absence. Save reviewed labels explicitly. Zoom changes
@@ -217,3 +218,139 @@ python python_tools/import_phone_recordings.py "C:\Users\Adi\Downloads\recording
 
 Use a new capture sequence for a different target interval. Sampling remains
 sequential, and an out-of-range request is rejected rather than silently shortened.
+
+## No-ball footage without hundreds of repeated markings
+
+The local launcher has a **Training review** button. Open it without starting a
+camera session, then select **Video Project 6.mp4**. There are two distinct captures:
+300 uniform images (`phone_452627e98a3c2652_1`) and 120 selected suspected-failure
+images (`phone_452627e98a3c2652_2`). Both now have saved reviews and belong to the earlier
+`iphone_same_venue_session_1`. The 420 saved images cover 407 distinct source frames;
+13 selected frames overlap the uniform capture. Account for these duplicates when
+building a training manifest instead of treating them as independent examples.
+The user confirmed on October 10 that actual balls are present in the positive
+frames. This is mixed footage: do not bulk-label the whole recording absent.
+The two batches contain 124 positive image files, 290 absent files and six unknown
+files before deduplication/conflict exclusion. Seven duplicate positive labels
+have different box geometry and stay excluded pending reconciliation. Existing
+reviews do not need to be repeated wholesale.
+
+Expand **No-ball interval · review saved images together**, choose source-frame
+bounds and preview. Inspect the selected images and use the individual frame
+controls for uncertainty or existing ball evidence. Save pending drafts first.
+When the recording interval is known to contain no ball, tick the explicit
+confirmation and save. This approves only saved images within that interval.
+Unsampled footage, person/table annotations and model proposals remain unreviewed.
+Hidden/uncertain balls are not equivalent to an absent-ball negative. Confirmation
+is refused when visible, partial or occluded ball evidence conflicts with absence.
+Original revisions, source/image hashes and the interval review are preserved.
+
+The source is about 5 minutes 5 seconds at 1080p/30 FPS, not six minutes at 60 FPS.
+The complete sequential decode found 9,164 frames with monotonic decoder PTS.
+Editing/cut/duplicate history is unknown. Inspect consecutive bursts for continuity
+before temporal training. Keep all recordings from this session in one split.
+Use a separate later session for independent validation/test, including real ball
+rallies and ordinary no-ball scenes. Negative-only training cannot teach the model
+where the ball is; combine these examples with reviewed positive gameplay.
+
+The selected capture was generated from the complete causal native BlurBall
+diagnostic, using temporal/spatial diversity rather than saving every adjacent
+failure. Its selection reasons and source/model/journal hashes remain attached;
+suggested failures never become labels automatically. The reviewed training
+export validates explicit absence provenance and excludes unchecked scene classes.
+See [the implementation report](HYBRID_PRECISION_IMPLEMENTATION.md) for native,
+API, dataset and packaged-GUI evidence and the remaining model gates.
+
+To reproduce the selected import into its existing capture without overwriting
+reviews, use the exact selection and `--resume`:
+
+```powershell
+python python_tools/import_phone_recordings.py "C:\Users\Adi\Downloads\Video Project 6.mp4" training_data/live --session iphone_same_venue_session_1 --review-selection artifacts/no_ball_hard_negative_selection.json --capture-sequence 2 --capture-origin unspecified --resume --report artifacts/no_ball_hard_negative_resume.json
+```
+
+Do not combine `--review-selection` with `--start-frame` or a separate `--bursts`
+request. A stale source/session/journal or changed selector is rejected. This
+command imports/verifies review images; it does not train or promote a model.
+
+## Check saved-label readiness before training
+
+Run the read-only audit before preparing a candidate. Without a frozen split
+manifest, it reports current labels under `unassigned`; it never chooses splits.
+Use a new output filename each time, or omit `--output` to print the report.
+
+```powershell
+python -B python_tools/audit_training_readiness.py training_data/live --output artifacts/new_training_readiness.json
+```
+
+Once independent whole-session partitions are recorded explicitly:
+
+```powershell
+python -B python_tools/audit_training_readiness.py training_data/live --splits training_data/live/splits.json --output artifacts/new_frozen_training_readiness.json
+```
+
+The audit reuses reviewed-label and absence-provenance validators, checks original
+recording hashes, and deduplicates both recording/frame identity and decoded RGB
+images. Conflicting reviewed duplicates are excluded and reported. Cross-partition
+source/image duplicates and sessions are reported as leakage. Hidden, uncertain
+and unreviewed balls never become verified negatives. Numeric consecutive frame
+IDs produce structural CNN window counts only; cut/duplicate continuity and a
+real network/loss/backward smoke remain separate requirements. A minimum count
+passing is not proof that labels are correct, a dataset is sufficient, a candidate
+is accurate or a model may be promoted.
+
+Current evidence is [the updated October 10 readiness report](artifacts/real_training_readiness_2026_10_10_v2.json):
+750 saved images cover 732 distinct source frames in one session. After reviewed
+duplicate exclusion, 130 ball-positive images and 293 verified absent images are
+structurally eligible. There are eight reviewed visible CNN targets (six points,
+two streaks), 293 absent targets and 178 structural three-frame windows: three
+visible and 175 absent. These counts do not prove temporal continuity or adequate
+training diversity. No independent session partitions are assigned.
+The earlier `real_training_readiness_v3.json` zero-negative inventory is historical.
+Original labels and model files were not changed by either audit.
+
+The five **IMG_7944.MOV** images **16–20** / source **14960–14964** are now saved
+as manually reviewed center targets. They form the three visible windows. Existing
+boxes remain useful for detector training; they were not automatically converted
+to approved endpoints. No measured streak extent is inferred from center points.
+See [the current handoff checklist](NEXT_TRAINING_STEP.md) for remaining positive
+window diversity, continuity, independent capture, split and promotion requirements.
+
+## Stage current real reviews without inventing held-out splits
+
+The new staging command creates a hash-bound, read-only single-session snapshot.
+It deliberately keeps `partition=unassigned` and `ready_for_fitting=false`.
+Unknown/occluded/partial targets are excluded; reviewed positive/absent windows
+are deduplicated. Existing user labels, sources and split assignments are preserved.
+
+```powershell
+python -B python_tools/stage_reviewed_training.py training_data/live --session iphone_same_venue_session_1 --output artifacts/new_reviewed_training_stage
+python -B python_tools/smoke_reviewed_blurball_training.py artifacts/new_reviewed_training_stage --loss quality_focal --output artifacts/new_real_data_optimizer_smoke
+```
+
+Use new output paths. A stale review, source, image or adapter snapshot fails
+closed. The smoke verifies one real fully visible triplet and one real fully
+absent triplet, without saving weights. Its loss choice is explicit; actual
+fine-tuning and validation are separate tasks. [The completed real-data check](artifacts/blurball_reviewed_training_smoke_qfl_2026_10_10_v1/report.json)
+passes; original checkpoint and staged data remain unchanged. Seventeen staging
+and eight smoke guard tests pass. The existing synthetic MSE smoke also passes
+after the optimizer helper was shared with the real-data path.
+
+## Verify the CNN optimization path without touching real labels
+
+The isolated smoke creates new artificial adapter fixtures and checks the actual
+BlurBall network, selected loss, backward gradients and two in-memory Adam steps.
+It saves evidence, not model weights. Use a fresh output directory for each run.
+
+```powershell
+python -B python_tools/smoke_blurball_training.py --loss mse --output artifacts/new_cnn_mse_smoke
+python -B python_tools/smoke_blurball_training.py --loss quality_focal --output artifacts/new_cnn_qfl_smoke
+```
+
+The quality-focal path calls the inspected loss with dictionaries; the upstream
+HeatmapLoss tensor/dictionary mismatch is not silently swallowed. Exactly the
+final unused auxiliary fusion outputs are accounted for in gradient checks. Every
+output-connected gradient must be present and finite, parameters must change and
+the source checkpoint must remain unchanged. Existing passing reports are
+[MSE](artifacts/blurball_training_smoke_mse_v2/report.json) and
+[quality-focal](artifacts/blurball_training_smoke_qfl_v1/report.json). These do not
+verify the full upstream Hydra runner or supply missing real training targets.

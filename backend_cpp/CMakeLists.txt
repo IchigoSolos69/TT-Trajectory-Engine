@@ -59,6 +59,7 @@ endif()
 set(SOURCES
     src/main.cpp
     src/tensorrt_engine.cpp
+    src/blurball_engine.cpp
     src/cuda_preprocess.cu
     src/bytetrack.cpp
     src/telemetry_server.cpp
@@ -85,11 +86,24 @@ add_executable(test_bounce_matcher tests/test_bounce_matcher.cpp)
 add_executable(test_tracking tests/test_tracking.cpp src/bytetrack.cpp)
 add_executable(test_training_recorder tests/test_training_recorder.cpp)
 add_executable(test_observed_spin tests/test_observed_spin.cpp)
+add_executable(test_imageplane_flight tests/test_imageplane_flight.cpp)
+target_link_libraries(test_imageplane_flight PRIVATE ${OpenCV_LIBS})
 target_link_libraries(test_observed_spin PRIVATE ${OpenCV_LIBS})
 add_executable(test_trajectory_intelligence tests/test_trajectory_intelligence.cpp)
 target_link_libraries(test_trajectory_intelligence PRIVATE ${OpenCV_LIBS})
 add_executable(eval_trajectory_uncertainty tests/eval_trajectory_uncertainty.cpp)
 add_executable(eval_temporal_recovery tests/eval_temporal_recovery.cpp src/temporal_recovery.cpp)
+add_executable(eval_blurball_native tests/eval_blurball_native.cpp src/blurball_engine.cpp)
+add_executable(test_blurball_stream tests/test_blurball_stream.cpp src/blurball_engine.cpp)
+add_executable(eval_imageplane_forecast tests/eval_imageplane_forecast.cpp src/blurball_engine.cpp)
+target_link_libraries(eval_blurball_native PRIVATE ${OpenCV_LIBS} ${TENSORRT_LIBS} ${CUDA_LIBRARIES} ${CUDA_cudart_static_LIBRARY})
+target_link_libraries(test_blurball_stream PRIVATE ${OpenCV_LIBS} ${TENSORRT_LIBS} ${CUDA_LIBRARIES} ${CUDA_cudart_static_LIBRARY})
+target_link_libraries(eval_imageplane_forecast PRIVATE ${OpenCV_LIBS} ${TENSORRT_LIBS} ${CUDA_LIBRARIES} ${CUDA_cudart_static_LIBRARY})
+if(WIN32)
+    target_link_libraries(eval_blurball_native PRIVATE advapi32)
+    target_link_libraries(test_blurball_stream PRIVATE advapi32)
+    target_link_libraries(eval_imageplane_forecast PRIVATE advapi32 ws2_32 crypt32 ole32 uuid)
+endif()
 target_link_libraries(eval_temporal_recovery PRIVATE ${TENSORRT_LIBS} ${CUDA_LIBRARIES} ${CUDA_cudart_static_LIBRARY})
 add_executable(eval_temporal_pipeline tests/eval_temporal_pipeline.cpp src/temporal_recovery.cpp)
 target_link_libraries(eval_temporal_pipeline PRIVATE ${OpenCV_LIBS} ${TENSORRT_LIBS} ${CUDA_LIBRARIES} ${CUDA_cudart_static_LIBRARY})
@@ -156,5 +170,11 @@ endif()
 add_executable(tt_intelligence_candidate EXCLUDE_FROM_ALL ${SOURCES})
 target_link_libraries(tt_intelligence_candidate PRIVATE $<TARGET_PROPERTY:tt_trajectory_engine,LINK_LIBRARIES>)
 
-
-
+# Offline paired-model research. Production source/model selection is unchanged.
+add_executable(test_ball_candidate_selection tests/test_ball_candidate_selection.cpp)
+target_link_libraries(test_ball_candidate_selection PRIVATE ${OpenCV_LIBS})
+add_executable(eval_paired_ball_candidates EXCLUDE_FROM_ALL tests/eval_paired_ball_candidates.cpp src/tensorrt_engine.cpp src/blurball_engine.cpp src/cuda_preprocess.cu)
+target_link_libraries(eval_paired_ball_candidates PRIVATE ${OpenCV_LIBS} ${TENSORRT_LIBS} ${CUDA_LIBRARIES} ${CUDA_cudart_static_LIBRARY})
+if(WIN32)
+    target_link_libraries(eval_paired_ball_candidates PRIVATE advapi32 ws2_32 crypt32 ole32 uuid)
+endif()

@@ -1,0 +1,658 @@
+PAGE 1
+Noname manuscript No.
+(will be inserted by the editor)
+Reliable Real Time Ball Tracking for Robot Table Tennis
+Sebastian Gomez-Gonzalez · Yassine Nemmour ·
+Bernhard Sch¨olkopf · Jan Peters
+thedateofreceiptandacceptanceshouldbeinsertedlater
+Abstract Robot table tennis systems require a vision posed system thoroughly in simulation and in the real
+systemthatcantracktheballpositionwithlowlatency system,outperformingpreviouswork.Furthermore,we
+andhighsamplingrate.Alteringtheballtosimplifythe show that the accuracy and robustness of the proposed
+trackingusingforinstanceinfraredcoatingchangesthe system increases as more cameras are added. Finally,
+physics of the ball trajectory. As a result, table tennis we evaluate the table tennis playing performance of an
+systems use custom tracking systems to track the ball existing method in the real robot using the proposed
+based on heuristic algorithms respecting the real time vision system. We measure a slight increase in perfor-
+constrains applied to RGB images captured with a set mancecomparedtoapreviousvisionsystemevenafter
+of cameras. However, these heuristic algorithms often removing all the heuristics previously present to filter
+report erroneous ball positions, and the table tennis out erroneous ball observations.
+policiestypicallyneedtoincorporateadditionalheuris-
+tics to detect and possibly correct outliers. In this pa-
+per, we propose a vision system for object detection
+and tracking that focus on reliability while providing
+Keywords Multiple Camera Stereo · Tracking ·
+real time performance. Our assumption is that by us-
+Robotics
+ingmultiplecameras,wecanfindanddiscardtheerrors
+obtained in the object detection phase by checking for
+consistency with the positions reported by other cam-
+eras.Weprovideanopensourceimplementationofthe
+proposedtrackingsystemtosimplifyfutureresearchin
+robot table tennis or related tracking applications with
+strong real time requirements. We evaluate the pro-
+SebastianGomez-Gonzalez
+Max-Planck InstituteforIntelligentSystems
+MaxPlanckRing4,Tu¨bingen,Germany
+E-mail:sgomez@tue.mpg.de
+YassineNemmour
+Max-Planck InstituteforIntelligentSystems
+E-mail:ynemmour@tuebingen.mpg.de
+BernhardScho¨lkopf Fig. 1: Robot table tennis setup used to evaluate the
+Max-Planck InstituteforIntelligentSystems
+proposedmethods.Weusefourcamerasattachedtothe
+E-mail:bs@tuebingen.mpg.de
+ceilingtotrackthepositionoftheball.Therobotsused
+JanPeters
+aretwoBarrettWAMrobotarmscapableofhighspeed
+TechnischeUniversit¨atDarmstadt
+motion, with seven degrees of freedom like a human
+Hochschulstrasse10,Darmstadt,Germany
+E-mail:mail@jan-peters.net arm.
+9102
+guA
+02
+]OR.sc[
+1v23370.8091:viXra
+
+PAGE 2
+2 SebastianGomez-Gonzalezet al.
+1 Introduction ouswork[15].Weshowthattheproposedframeworkis
+clearly superior in accuracy and robustness to outliers.
+Gameplayinghasbeenapopulartechniquetocompare Finally, we evaluate the system by using a robot table
+theperformanceofdifferentartificialintelligencemeth- tennis policy [5] that was designed to be used with the
+odsbetweenthemselvesandagainsthumans.Examples RTBlob vision system [15]. We remove all the heuris-
+include board games like Chess [16] and Go [3] as well tics to detect and remove outliers from the policy im-
+as sports like robot-soccer [8]. Table tennis has been plemented [5] and still obtain a slight improvement of
+used regularly as a robot task to evaluate the perfor- performance compared using the proposed vision sys-
+mance of ad-hoc techniques [13], imitation learning [6], tem. Figure 1, shows the real robot setup used on the
+reinforcement learning [14] and other techniques in a experiments, executing the policy proposed in [5] with
+complex real time environment. the vision system proposed on this paper.
+Inordertoplaytabletennis,aroboticsystemsneeds Although we focus on robot table tennis due to
+reliable information about the ball trajectory with low its particular real time requirements, we use machine
+latencyandhighsamplingfrequency.Commercialtrack- learning techniques for the object detection part that
+ing system like VICON can provide reliable 3D posi- canbetrainedtotrackdifferentkindofobjects.Auser
+tions with high sampling frequencies, but it requires onlyneedstolabelafewimagesbyplacingabounding
+attaching IR reflective markers to the objects to track. box around the object of interest and train the system
+Table tennis balls are very light, and it is not possi- with the labeled images.
+ble to attach a IR marker or even coat the ball surface
+withIRreflectivepaintwithoutchangingthephysicsof
+Contributions
+the ball trajectory. For this reason, robot table tennis
+approaches typically use software based solutions that
+Weprovideaopensourceimplementation[1]ofasimple
+take images from a set of video cameras and estimate
+table tennis ball tracking system that focuses on relia-
+the 3D position of the ball.
+bility and real time performance. The implementation
+Trackingsystemsfortabletennisballsusefastheuris-
+canbeusedtotrackdifferentobjectssimplybyretrain-
+ticstodetecttheballrespectingtherealtimeconstrains
+ing the model. The provided open source implemen-
+requiredbytabletennissystems.Theseheuristicstypi-
+tation will enable researchers working on robot table
+callylookforroundobjectsandusecolorinformationof
+tennis or related real time object tracking applications
+table tennis balls. Although these heuristics work well
+to focus their efforts into better strategies or models,
+most of the time, assuming that the reported ball po-
+insteadofdevisingstrategiestodeterminewhichobser-
+sitions are always correct before the 3D triangulation
+vations can be trusted and which can not.
+willresultinanumberofoutliersthatincreasesasmore
+We evaluate the proposed system in simulation and
+cameras are used in the tracking system.
+in a real robot table tennis platform. In simulation, we
+Asaresult,robottabletennissystemsneedtoincor-
+show that increasing the number of cameras results in
+porateoutlierdetection[21]techniquesonthereported
+higher reliability. On the real system, we evaluate an
+3D positions using for example physical models of the
+existing robot table tennis strategy using the proposed
+ball trajectory [6]. This is unfortunate, since it results
+vision system with four cameras attached to the ceil-
+ineffortduplicationandreducestheinterestofthema-
+ing. The heuristics used to discard outliers on the ball
+chine learning community to work on real robot table
+observations where removed, while obtaining a slightly
+tennis platforms.
+increase on playing performance. In addition, we pro-
+In this paper, we propose a simple and efficient
+videlatencytimesforthedifferentexperimentstoshow
+frameworkforobjecttracking.Theproposedframework
+the proposed system can deliver real time performance
+is tested on a robot table tennis setup and compared
+even with a large number of cameras.
+with previous work [15]. Unlike previous work, we fo-
+cus on the reliability of the system without the use of
+any strong assumptions about the object shape or the Related Work
+physics of the flying ball. To evaluate the performance
+ofthealgorithminsetupswithdifferentamountofcam- Ball tracking systems take an important role in almost
+eras, we use a simulation environment. We show that allpopularballbasedsportstoaidcoaches,refereesand
+adding more cameras helps to increase the robustness sport commentators. Examples include soccer [22,20],
+and the accuracy of the proposed system. basketball[7],tennis[4],etc.Therearemultiplesystems
+In the real system, we evaluate the error distribu- designed for tracking table tennis balls, some of which
+tionoftheproposedsystemandcompareitwithprevi- include real time considerations or were designed for
+
+PAGE 3
+ReliableReal TimeBallTrackingforRobotTableTennis 3
+robottabletennis.Tabletennisisafastgame,andthat
+makesitahardrobotproblemtotackle.Asmashedball
+takesabout0.1secondstoreachtheotherendoftheta-
+ble,andevenatbeginnerittakesabout1secondtothe
+balltoreachtheopponent.Consideringthatrobotarms
+like the Barrett WAM are much slower than a human
+arm,theamountoftimeavailabletomakeadecisionof
+Fig. 2: Ball detection with a Mobilnet deep network
+howandwheretomovebeforeitistoolatetoreachthe
+architecture using the Single Shot Detection (SSD)
+ball is low even to play at a beginner level. As a result,
+method.NotethattheSSDmethodfindsthelocationof
+a vision system for robot table tennis needs to provide
+theballinalltheimageswithrelativelygoodaccuracy.
+a high sampling rate with a low latency to provide as
+However, we obtain an average of 15 ball observations
+much information as possible as early as possible.
+persecondonafourcamerasetup,notefficientenough
+for a highly dynamic task like robot table tennis.
+RTblob[15]wasoneofthefirstvisionsystemsused
+for robot table tennis applications. It uses four color
+cameras to track the position of the ball. To find the 2 Reliable Real-Time Ball Tracking
+positionoftheballonanimage,thissystemusesaref-
+erence orange color and convolves the resulting image End-to-end systems are an appealing strategy for sys-
+with a circular pattern using the fast Fourier Trans- tem design in machine learning research, because it
+form for efficiency. Instead of using the four cameras makes less assumptions about how the system works
+to output one single 3D ball position, this system uses internally. For our table tennis vision setup, an end-to-
+twopairsoftwocameras.Asaresult,ifallthecameras endsystemshouldreceivetheinputimagesfromallthe
+are seeing the ball, two 3D position are estimated. In cameras and output the corresponding ball location in
+this system, it is not clear how to use more cameras 3D cartesian coordinates. However, such an end-to-end
+or how to determine which observations are reliable or solution would have a number of disadvantages for our
+not. Each table tennis policy that used RTBlob had to table tennis setup. For example, adding new cameras
+implement its own outlier rejection heuristics to deter- or moving around the existing cameras would require
+mine which produced ball observations were reliable. to re-train the entire system from scratch.
+We divide our vision system into two subsystems.
+There are several other vision systems for robot ta- The object detection subsystem that outputs the ball
+ble tennis, but none of them addresses the problem of positionsinpixelspaceforeachimage,andtheposition
+how to deal with mistakes from the object detection estimationsubsystemthatoutputsasingle3Dposition
+algorithm in the images. Quick MAG 3 [10] uses a mo- oftheballbasedonacameracalibrationprocedure.To
+tion blur and a ball trajectory model to estimate and add new cameras we only need to run the calibration
+predict ball trajectories. In [9], a background model is procedure, and moving existing cameras requires only
+used to extract the position of the ball. The detected the re-calibration of the moved cameras.
+blobs are filtered out according to their area, circular- First,wediscussaboutdifferentmethodsusedtode-
+ity and other factors. Finally, a ball model is used to tect objects in images. In particular, we discuss about
+predicttheballtrajectory.In[19],theauthorsfocuson object detection and semantic segmentation methods.
+thephysicalmodelsusefultopredicttheballtrajectory, We show that although both methods can successfully
+and use these models for humanoid robot table tennis. find table tennis balls in an image, the semantic seg-
+mentation method can be used with smaller models,
+Acommondesignpatternforallthediscussedtable achievingtherequiredrealtimeexecutionrequirements
+tennis vision systems, is that the object detection part we need for robot table tennis.
+consistsonmultipleheuristicsbasedonbackgroundex- Subsequently, we discuss how to estimate a single
+traction, color finding and basic shape matching on 3Dballpositionfrommultiplecameraobservations.We
+blobs. Although these approaches tend to work well focus particularly on how to deal with erroneus esti-
+in practice, it is hard to adapt them to track differ- mates of the ball position in pixel space, for example,
+ent objects. Instead, we use machine learning methods whentheobjectdetectionmethodfailsandreportsthe
+for the object detection procedure. To track different location of some other object. We analyze the algorith-
+objects, we only require to label new images by plac- mic complexity of the proposed methods and we also
+ing bounding boxes around the objects of interest and provide execution times in a particular computer for
+subsequently retrain the system. setups with different number of cameras.
+
+PAGE 4
+4 SebastianGomez-Gonzalezet al.
+Algorithm 1 Finding the set of pixels of an object. [17] uses deep convolutional neural networks to classify
+Input: A probability image B, and a high and low thresh- every pixel in a street scene as one of 20 categories like
+oldsT h andT l . car,personandroad.Forourtabletennissetup,avery
+Output: Asetofobject pixelsO
+simple and small model can be used considering that
+1: (a,b)=argmax B
+(a,b) ab the ball has a simple spherical shape, small size and a
+2: if B <T then
+ab h
+3: return ∅ relativelyuniformcolor.Totracktheballweonlyneed
+4: endif twocategories:BallandBackground.Weconsiderback-
+5: O←{(a,b)}
+ground anything that is not a table tennis ball. Let us
+6: q←Queue({(a,b)})
+denote the resulting probability image as a matrix B,
+7: whileq isnotempty do
+8: x←pop(q) where B
+ij
+is a scalar denoting the probability that the
+9: for each neighborsy ofx do pixel (i,j) of the original image corresponds to a ball
+10: if noty∈O andBy >T
+l
+then
+pixel or not.
+11: push(q,y)
+12: O←O∪{y} In order to find the actual set of pixels correspond-
+13: endif ing to the ball, we need some kind of threshold based
+14: endfor algorithmthatmakesahardzero/onedecisionofwhich
+15: endwhile
+pixels belong to the object of interest based on the ob-
+16: return O
+tained probabilities. We used a simple algorithm that
+consists of finding the pixel position (a,b) with maxi-
+2.1 Finding the Position of the Ball in an Image mumprobabilityandaregionofneighboringpixelswith
+a probability higher than a given threshold.
+The problem of detecting the location of desired ob- Algorithm1showstheproceduretoobtainthesetof
+jects in images has been well studied in the computer pixelscorrespondingtotheballfromtheprobabilityim-
+vision community [12]. Finding bounding boxes for ob- age B. The procedure receives two threshold values T
+h
+jects in images is known as object detection. In [18], andT ,thatwecallhighandlowthresholdrespectively.
+l
+a method called Single Shot Detection (SSD) was pro- In Line 1, we find the pixel position (a,b) with maxi-
+posedtoturnaconvolutionalneuralnetworkforimage mum probability on the probability image B. If the
+classification into an object detection network. An im- maximum probability is lower than the high thresh-
+portantdesigngoaloftheSSDmethodiscomputational old value T we consider there is no ball in the image
+h
+efficiency. In combination with a relatively small deep and return an empty set of pixels. Otherwise, Lines 5
+networkarchitecturelikeMobilnet[2],designedformo- to 15 find a region of neighboring pixels O around the
+bile devices, it can perform real time object detection maximum (a,b) with a probability larger than the low
+for some applications. threshold T using a Breadth First Search algorithm.
+l
+Figure 2, shows example predictions of a Mobilnet ThecomputationalcomplexityofAlgorithm1islin-
+architecture trained with the SSD method in a ball de- ear on the number of pixels. If N represents the total
+t
+tection data set. Each picture shows a section of the number of pixels in the image and N the number of
+o
+imagewiththecorrespondingboundingboxprediction. pixels of the object to track, the computational com-
+The resulting average processing speed using a GPU plexity of Line 1 alone in O(N ) and the complexity of
+t
+NVidia GTX 1080 was 60.2 frames per second on 200 therestofthealgorithmisO(N ).However,Line1can
+o
+x 200 pixel resolution images. For a 4 camera robot ta- beefficientlyimplementedinaGPU,whereastherestof
+ble tennis setup, this would result in about 15 ball ob- the algorithm is harder to implement on a GPU due to
+servations per second. Unfortunately, for a high speed its sequential nature. Given that N (cid:29)N , we decided
+t o
+game like table tennis, a significantly higher number to use the GPU to execute Line 1 and implemented
+of ball observations is necessary. However, we consider the rest of the algorithm in the CPU. In combination
+importanttomentiontheresultsweobtainedwithfast withthesemanticsegmentationapproachusingasingle
+deep learning object detection techniques like the SSD convolutional unit, we obtained a throughput about 50
+method, because it can be used with our method for timeslargerthantheSSDmethodforourballtracking
+a different application where the objects to track are problem.
+more complex and the required processing speeds are Figure 3 shows the semantic segmentation results
+lower. forthetabletennisproblemusingasingleconvolutional
+An alternative approach to find objects in images unitwitha5x5pixelsfiltersize.Thepictureontheleft
+is to use a semantic segmentation method, where the shows a section of the image captured with our cam-
+output of the network is a pixelwise classification of eras. The picture on the center shows the probability
+the objects of interest or background. For example, image B assigned by the model to each pixel as be-
+
+PAGE 5
+ReliableReal TimeBallTrackingforRobotTableTennis 5
+Algorithm 2 Remove outliers by finding the largest
+consistent subset of 2D observations for stereo vision.
+Input: Asetof2DobservationsandcameramatrixpairsS=
+{{x1,P1},...,{x
+k
+,P
+k
+}},andpixel errorthreshold(cid:15).
+Output: Asubset Sˆ⊂S ofmaximalsize withoutoutliers.
+1: Sˆ←∅
+2: for i∈{1,...,k−1} do
+Fig. 3: Ball detection using a single convolutional unit 3: for j∈{i+1,...,k} do
+in a semantic segmentation setting. The image on the
+4: candidate←stereo({Pi,Pj},{xi,xj})
+5: Sij ←∅
+left shows a section of a table tennis scene. The image
+6: for k∈{0,...,k} do
+onthecentershowstheprobabilityimageB represent- 7: xˆ ←project(candidate,P )
+k k
+ing the probability assigned to each pixel of being the 8: p err ←(cid:107)x k −xˆ k (cid:107)2
+9: if p err <(cid:15) then
+ball.Darkmeanslowprobabilityandbrightmeanshigh
+10: Sij ←Sij∪{x
+k
+,P
+k
+}
+probability. The image on the right shows the detected
+11: endif
+ball position. This simple model can successfully find 12: endfor
+the ball in the image, and it is around 50 times faster 13: if |Sij|>|Sˆ| then
+than the SSD method.
+14: Sˆ←Sij
+15: endif
+16: endfor
+17: endfor
+ing the ball, where white means high probability and 18: return Sˆ
+black low probability. The picture on the right shows
+a bounding box that contains all pixels in O returned
+by Algorithm 1. Note that all the objects in the scene a 3D point X and a projection matrix P for the cam-
+i
+that are not the ball are assigned by the model a very erai,thefunctionx =project(X,P )returnsthepixel
+i i
+low probability of being the ball, and most of the pix- space coordinates x of projection of X in the image
+i
+els of the ball are assigned a high probability of being plane ofcamera i. For thestereo vision method, we are
+theball.Actually,theonlyobjectthatcanstillbeseen givenasetofpixelspacepoints{x ,...,x }fromkdif-
+1 k
+not completely dark in the probability image is the hu- ferent cameras and their corresponding projection ma-
+man arm, because it has a similar color to the ball in trices {P ,...,P }, and obtain an estimate of the 3D
+1 k
+comparison with the rest of the scene. point X by
+Thethroughputofthesingle5x5convolutionalunit
+is about 50 times higher that the throughput of the X =stereo({x ,...,x },{P ,...,P }).
+1 k 1 k
+SSD method on the same hardware with our imple-
+mentations. As a result, we decided to use the single Intuitively, the function stereo finds the point X that
+convolutionalunitastheballdetectionmethod,achiev- minimize the pixel re-projection error given by
+ing the necessary ball observation frequency and accu-
+(cid:88)
+racy for robot table tennis. In Section 3, we analyze in L(X)= dist(x ,project(X,P )),
+k k
+detail the performance and accuracy of the single con- k
+volutional unit. In addition, we compare the accuracy
+where dist is some distance metric like euclidean dis-
+of our entire proposed system with the RTBlob vision
+tance. If we could assume that the pixel space position
+system[15]andevaluatetheplayingperformanceofan
+of the balls is affected by independent Gaussian noise,
+existing robot table tennis method [5] using the pro-
+taking all the available observations to minimize L(X)
+posed system.
+wouldyieldtheoptimalsolution.However,independent
+Gaussiannoiseisnotavalidassumptionisthepresence
+2.2 Robust Estimation of the Ball Position of outliers.
+The algorithms described in Section 2.1 to find the
+Once we have the position of the ball in pixel space in position of the ball in the image will some times com-
+multiple calibrated cameras, we proceed to estimate a mit errors, reporting for example the position of other
+singlereliable3Dballposition.Theprocesstoobtainan image objects as the ball. Assume that from a set S
+estimationofthe3Dpositionofanobjectgivenitspixel of pixel space ball observations reported by the vision
+space position in two or more cameras is called stereo system, some of the observations Sˆ ∈ S are correctly
+vision. For an overview in stereo vision refer to [11]. reported ball positions and the rest of the reported ob-
+We assume we have access to two functions project servations S¯=S−Sˆ are erroneously reported ball po-
+andstereoavailablefromanstereovisionlibrary.Given sitions. We call Sˆ the inlier set and S¯ the outlier set.
+
+PAGE 6
+6 SebastianGomez-Gonzalezet al.
+We would like to find the 3D ball position X that min-
+imizes L(X) using only the set of inliers Sˆ. Unfortu- c 1% Pr 5 o % bability 1 o 0 f % Outlier 2 s 5 p % o 50%
+nately, we do not know which observations from the
+E 0.71cm 0.85cm 0.84cm 0.79cm 4.67 cm
+set S are outliers and which are inliers. 4
+F 0.1% 0.5% 2.0% 9.7% 37.7%
+We define a set of pixel space observations as con-
+sistent if there is a 3D point X such that L(X) < (cid:15), E 0.52cm 0.53cm 0.59cm 0.94cm 6.84 cm
+8
+where (cid:15) is a pixel space error tolerance. We estimate Sˆ F 0.0% 0.0% 0.0% 0.1% 4.5%
+bycomputingthelargestsubsetofS thatisconsistent. E 0.35cm 0.36cm 0.37cm 0.41cm 4.72 cm
+15
+The underlying assumption is that it should be hard F 0.0% 0.0% 0.0% 0.0% 0.02%
+to find a single 3D position that explains a set of pixel
+E 0.24cm 0.25cm 0.25cm 0.28cm 0.35 cm
+observations containing outliers. On the other hand, if 30
+F 0.0% 0.0% 0.0% 0.0% 0.0%
+thesetofobservationscontainsonlyinliers,weknowit
+should be possible to find a single 3D position X, the
+Table 1: Estimation error (E) and failure probability
+cartesianpositionoftheball,thatexplainsallthepixel
+(F)ofthe3Dpositionestimationprocedureinthepres-
+space observations.
+ence of outliers. A failure means that the system does
+Algorithm 2 shows the procedure we use to obtain
+not report any ball position at all because the maxi-
+the largest consistent set of observations. Note that
+mum consistent set returned by Algorithm 2 consisted
+we need at least two cameras to estimate a 3D posi-
+of less than two ball observations. Otherwise, the sys-
+tion. Our procedure consists in trying all pairs of cam-
+tem return an estimated ball position and we report
+eras(i,j),estimatingacandidate3Dpositiononlywith
+the distance in centimeters to the ground truth posi-
+thosetwoobservations,andsubsequentlycountinghow
+tion. We simulate multiple scenarios with a different
+many cameras are consistent with the estimated can-
+numberofcamerasanddifferentprobabilityofoutliers.
+didate position. If c represents the number of cameras
+Note that as the number of cameras increases and the
+reporting a ball observation, the computational com-
+probability of obtaining outliers decreases the system
+plexity of this algorithm is O(c3).
+becomes more reliable.
+For a vision system of less than 30 cameras, we ob-
+tained real time performance even using a sequential
+implementation of Algorithm 2. Nevertheless, it is easy RTBlob system even after removing all the outlier re-
+toparallelizeAlgorithm2.Notethattheoutermosttwo jection heuristics implemented in [5].
+for loops can be run independently in parallel. In Sec-
+tion 3, we evaluate the real time performance and the
+accuracyofthe3Destimationsimulatingscenarioswith
+3.1 Evaluation on a Simulation Environment
+differentnumberofcamerasandprobabilityofoutliers.
+Afterwards, we evaluate the error in the real system To evaluate the proposed methods in scenarios that in-
+and compare it with the RTBlob method on the same clude different number of cameras and probability of
+experimental setup. outliers, we use a simulation scenario. The advantage
+of evaluating in simulation is that we have access to
+exact ground truth data and we can easily test the ro-
+3 Experiments and Results bustnessandaccuracyofthesystem.Inthissection,we
+evaluate the robustness of the introduced procedure to
+We evaluate the proposed system in a simulation en- find the 3D position of the ball from several unreliable
+vironment and in a real robot platform. In simulation, pixelspaceobservations.First,wewanttoevaluatethe
+we measure the accuracy of the system as we increase performance of Algorithm 2 independently of the rest
+thenumberofcamerasandwhenwechangetheproba- ofthesystem.Inaddition,wewanttotesttheaccuracy
+bility of obtaining outliers. We use the real robot plat- and running time ofthe algorithmfor different amount
+form to evaluate the interaction of all the components of cameras and outlier rates.
+of the proposed system. In particular, we measure the The simulation for a scenario with c cameras and a
+accuracy and robustness of the proposed system and probability of outlier p consists of the following steps:
+o
+compare it with the RTBlob method. In addition, we First,wegeneraterandomlya3DballpositionX inthe
+evaluate the success rate of a method proposed in [5] work space of the robot and project it to each camera
+to return balls to the opponent’s court with the pro- using the calibration matrices. We add a small Gaus-
+posed vision system. We have a slightly higher success siannoisewithastandarddeviationof1.3pixelstothe
+rate using the proposed vision system than using the projected pixel space position, because that is the av-
+
+PAGE 7
+ReliableReal TimeBallTrackingforRobotTableTennis 7
+30cameras.Inaddition,Algorithm2canbeeasilypar-
+Cameras 4 8 15 30 50
+Run time (ms) 0.001 0.012 0.015 3.02 11.46 allelized if necessary as discussed in Section 2.2.
+It is important to note that on a real system not
+Table2:Runtimeinmillisecondsofasequentialimple- all the cameras might be seeing the work space of the
+mentation of Algorithm 2 with respect to the number robot.Forexample,intherealrobotsetupweusedfour
+of cameras. For a system of up to 30 cameras, the se- camerasbuttherearemanypartsoftheworkspacethat
+quential implementation of Algorithm 2 provides real arecoveredonlybytwocameras,reducingtheeffective
+time performance for more than 200 ball observations robustness of the system on those areas. However, the
+per second. outlierrateoftheimageprocessingalgorithmsisbelow
+1% in practice, and good results can be obtained using
+a small number of cameras as we discuss in the next
+section.
+erage re-projection error reported by the camera cal-
+ibration procedure. For each camera, we replace the
+obtained pixel space position by some other random 3.2 Evaluation on the Real Robot Platform
+position in the image plane with probability p . Subse-
+o
+quently,weattempttoobtainthe3Dballpositionwith We evaluate the entire proposed system in the real
+Algorithm 2. If it fails to obtain any position at all, we robot platform and compare the performance to the
+countitasafailure.Otherwise,wemeasuretheerrorof RTBlob system presented in [15]. The evaluation on
+the obtained position with the ground truth value X. the real robot platform consisted of two experiments.
+First, we attach a table tennis ball to the robot end
+Table 1 shows the results for scenarios with a num-
+effector. We move the robot and use its kinematics to
+ber of cameras ranging from 4 to 30 and probability of
+compute the position of the ball and use it as ground
+outliers ranging from 1% to 50%. For every combina-
+truth to compare against the ball positions obtained
+tion of number of cameras and probability of outliers,
+with the vision system. Finally, we evaluate the play-
+wereportthefailurerate(F)andtheerror(E)between
+ing performance of the robot table tennis strategy in-
+the ground truth position and the reported ball posi-
+troduced in [5] if we remove all the heuristics used to
+tion. As the probability of outliers increases the error
+remove vision outliers.
+and failure rate increases as it is expected. Similarly,
+We compare the performance of the proposed vi-
+as more cameras are added to the system, the robust-
+sion system with RTBlob [15]. The RTBlob system has
+ness of the system increases, obtaining smaller errors
+beenusedforrobottabletennisexperimentation[6,21].
+and failure rates. There are few entries in Table 1 that
+In order to compare the accuracy of both systems, we
+seemtocontradictthetrendtoreducetheerrorasmore
+need access to ground truth positions. We use the joint
+cameras are introduced or the outlier rate drops. For
+sensors of the robot and the robot kinematics to com-
+example, for an outlier rate of 50% the error with four
+pute the Cartesian position of the robot end effector.
+cameras is 4.67 cm whereas the error for eight cameras
+We attach the ball to the robot end effector and use
+is 6.84 cm. Note however that the failure rate for four
+the Cartesian position computed with the joint mea-
+cameras is much higher than for eight cameras in this
+surements as ground truth.
+case.
+Figure 4 shows a histogram of the error of the RT-
+Adding more cameras to the system improves ac- Blob method and the method proposed in this paper.
+curacy and robustness. However, it also increases the WecalledtheproposedsystemRT2inthefigure,stand-
+computationcost.Thecostoftheimageprocessingpart ing for Real Time Reliable Tracking. The error is com-
+grows linearly with the number of cameras, but can be puted as the distance between the position reported
+runindependentlyinparallelforeverycameraifneces- by the vision and the ground truth computed with the
+sary.Therefore,wewillfocusonthecostoftheposition robotkinematics.Notethattheproposedvisionsystem
+estimation procedure as the number of cameras grows. outperforms the RTBlob method in terms of accuracy,
+AsdiscussedinSection2.2,thecostofthepositionesti- butspeciallyintermsofoutliers.Thedistributionofer-
+mationprocedureinO(c3).Table2showstheruntime rorsforRT2 concentratestheprobabilitymassbetween
+in milliseconds of a sequential implementation of 2 in 0 cm and 5 cm error. On the other hand, the error
+C++inaLenovoThinkpadX2laptop.Foratargetfre- distribution of the RTBlob method is multimodal. The
+quency rate of 200 observations per second we need a first mode corresponds to the scenario where all the
+processing time smaller than 5 milliseconds. Note that cameras detected the ball correctly, and in this case
+even the sequential implementation of Algorithm 2 has the error mass is also concentrated below a 7 cm error
+the required real time performance for systems up to threshold. The second mode shows a high probability
+
+PAGE 8
+8 SebastianGomez-Gonzalezet al.
+0.15
+0.10
+0.05
+0.00
+0.00 0.05 0.10 0.15 0.20 0.25 0.30
+Error
+ytilibaborP
+We decided to remove the heuristics to filter out-
+RT2 liers, accepting all ball observations as valid, and test
+RTblob the method with the proposed vision system. We de-
+fine ”success” as the robot hitting the incoming ball
+and sending it back to the opponent’s court according
+tothetabletennisrules.Theaveragesuccessrateusing
+the RTBlob vision system and all the outlier rejection
+heuristics was of 68 %, whereas using the proposed
+visionsystemandnooutlierrejectionheuristicstheav-
+erage success rate was 70 %. Given the variability of
+the table tennis performance between multiple experi-
+ments, we can not say that the improvement with the
+new vision system is statistically significant. However,
+wefindremarkablethatthesuccessrateoftabletennis
+Fig. 4: Histogram of the error of the presented vision
+strategy presented in [5] did not decrese after the out-
+system and RTBlob. We call the proposed vision sys-
+tem RT2, depicted in red in the histogram. The ball lier rejection heuristics were removed. We think that
+theslightimprovementonthesuccessratebyusingthe
+is attached to the robot end effector and the end ef-
+proposed vision system is due to the improved frame
+fector position computed with the kinematics is used
+rate, that is about 3 times as high as that of the RT-
+as ground truth. The accuracy of the proposed vision
+Blob implementation provided by the authors [15].
+system is superior to the RTBlob system. In terms of
+robustness to outliers, the proposed system (RT2) out-
+performs the RTBlob system as expected. The error
+distribution for our system is unimodal, whereas the 4 Conclusions and Discussion
+RTBlob system error is multimodal, reflecting the sen-
+sitivityoftheRTBlobsystemtothepresenceofoutliers. This paper introduces a vision system for robot table
+tennisfocusedonreliabilityandrealtimeperformance.
+The implemented system is released as an open source
+of error between 25 cm and 30 cm, and it is likely to project[1]tofacilitateitsusagebythecommunity.The
+correspond to a scenario where one of the four cameras proposedvisionsystemcanbeeasilyadaptedfordiffer-
+reported an incorrect ball position. enttrackingtasksbylabelinganewdatasetandtrain-
+During the execution of the accuracy experiment ingtheobjectdetectionalgorithm.Fortheobjectdetec-
+reported in Figure 4, the system proposed in this pa- tionpart,thispaperevaluatestwodifferentapproaches
+per never reported any ball position whose error was usedcommonlyinthecomputervisioncommunitythat
+largerthan10cm.Ontheotherhand,theRTBlobsys- are known for obtaining real time performance. We de-
+tem reported errors on the order of tens of meters with cided to use the simpler approach for tracking table
+probability around 0.1%. As a result, the table tennis tennis balls due to its high throughput.
+strategies that use the RTBlob method have to incor- For the position estimation procedure we proposed
+porate strategies to filter outliers to work properly. an algorithm that focuses on reliability, by assuming
+In the last part of this section, we present a final that some times the object detection methods will re-
+experimentwhereweusetheproposedvisionsystemto port wrong ball positions on the provided images. We
+return table tennis balls with the robot to the oppo- evaluatetheproposedmethodthoroughlyinsimulation
+nent’s court. We use a method presented in [5], that is and in the real robot platform. In simulation, we test
+based on Probabilistic Movement Primitives (ProMPs) the accuracy of the system under different probability
+and learning from a human teacher. The system pre- of outliers and number of cameras. In the real system,
+sented in [5] was originally designed to use the RTBlob we evaluate the complete proposed system in a four
+method as the vision system. To detect and filter out- camera setup and compare it with the RTBlob vision
+liers,theRANSACalgorithmwasusedonasetofinitial system. We show that our system provides higher ac-
+observations fitting a second order polynomial. Once a curacy, and outperforms the RTBlob system in robust-
+set of candidate positions is found, a Kalman filter is nesstooutliers.Finally,wetestanexistingtechniqueto
+used to predict the ball trajectory and subsequent ball return table tennis balls to the opponent’s court with
+observations are rejected if they are more than 3 stan- our vision system. We removed all the outlier detec-
+darddeviationsawayfromthemeanpositionpredicted tion techniques used by the table tennis algorithm and
+by the Kalman filter. obtained a small increase in success rate compared to
+
+PAGE 9
+ReliableReal TimeBallTrackingforRobotTableTennis 9
+the RTBlob system with all the outlier detection tech- 16. A.J.HoaneM.CampbellandF.Hsu.Deepblue.Artificial
+niques present. We believe the proposed approach will intelligence,134(1-2):57–83,2002.
+17. M. Mathias T. Pohlen, A. Hermans and B. Leibe. Full-
+help future research in robot table tennis by allowing
+resolutionresidualnetworksforsemanticsegmentationin
+the researchers to focus on the table tennis policies in-
+streetscenes. arXiv preprint,2017.
+stead of techniques to deal with an unreliable vision 18. D.ErhanC.SzegedyS.ReedC.FuW.Liu,D.Anguelov
+system. andA.Berg.Ssd:Singleshotmultiboxdetector.InEuro-
+peanconferenceoncomputervision,pages21–37.Springer,
+2016.
+19. W. Wan M. Zhou Z. Yu X. Chen, Q. Huang et al. A
+References
+robust vision module for humanoid robotic ping-pong
+game. International Journal of Advanced Robotic Systems,
+1. Open source implementation of the ball tracking sys- 12(4):35,2015.
+tem. https://gitlab.tuebingen.mpg.de/sgomez/ball_ 20. H. Lu X. Tong and Q. Liu. An effective and fast soccer
+tracking. balldetectionandtrackingmethod.InInternationalCon-
+2. B.ChenD.KalenichenkoA.Howard,M.Zhuetal. Mo- ference on Pattern Recognition, volume 4, pages 795–798.
+bilenets: Efficient convolutional neural networks for mo- IEEE,2004.
+bile vision applications. arXiv preprint arXiv:1704.04861, 21. B. Scholkopf Y. Huang and J. Peters. Learning optimal
+2017. striking points for a ping-pong playing robot. In IEEE
+3. C. Maddison D. Silver, A. Huang et al. Mastering the InternationalConferenceonIntelligentRobotsandSystems
+game of go with deep neural networks and tree search. (IROS),pages4587–4592.IEEE,2015.
+Nature,529(7587):484–489,2016. 22. H.KimY.Seo,S.ChoiandK.Hong. Wherearetheball
+4. A. Opalach G. Pingali and Y. Jean. Ball tracking and andplayers?soccergameanalysiswithcolor-basedtrack-
+virtual replays for innovative tennis broadcasts. In In- ing and image mosaick. In International Conference on
+ternational Conference on Pattern Recognition, volume 4, Image Analysis and Processing, pages 196–203. Springer,
+pages152–156.IEEE,2000. 1997.
+5. S. Gomez-Gonzalez, G. Neumann, B. Scho¨lkopf, and
+J.Peters.Adaptationandrobustlearningofprobabilistic
+movementprimitives. ArXiv e-prints,August2018.
+6. B.Sch¨olkopfGomez-GonzalezS.,G.NeumannandJ.Pe-
+ters. Using probabilistic movement primitives for strik-
+ing movements. In International Conference of Humanoid
+Robots,pages502–508.IEEE,2016.
+7. Y.ChenW.TsaiH.Chen,M.TienandS.Lee. Physics-
+basedballtrackingand3dtrajectoryreconstructionwith
+applicationstoshootinglocationestimationinbasketball
+video. JournalofVisualCommunicationandImageRepre-
+sentation,20(3):204–216,2009.
+8. Y.KuniyoshiI.NodaH.Kitano,M.AsadaandE.Osawa.
+Robocup:Therobotworldcupinitiative.InInternational
+conference on Autonomous agents, pages 340–347. ACM,
+1997.
+9. L. Lou K. Ku¨hnlenz H. Li, H. Wu and O. Ravn. Ping-
+pong robotics with high-speed vision system. In Inter-
+nationalConferenceonControlAutomationRobotics&Vi-
+sion,pages106–111.IEEE,2012.
+10. B.WangY.ZhouH.Liu,Z.LiandQ.Zhang. Tableten-
+nis robot with stereo vision and humanoid manipulator
+ii: Visual measurement of motion-blurred ball. In Inter-
+national Conference on Robotics and Biomimetics, pages
+2430–2435.IEEE,2013.
+11. A. Heyden and M. Pollefeys. Multiple view geometry.
+Emerging topics in computer vision,pages45–107,2005.
+12. C. Sun M. Zhu J. Huang, V. Rathod et al.
+Speed/accuracy trade-offs for modern convolutional ob-
+jectdetectors. In IEEE CVPR,2017.
+13. J. Kober K. Mu¨lling and J. Peters. A biomimetic
+approach to robot table tennis. Adaptive Behavior,
+19(5):359–376,2011.
+14. O.KroemerK.Mu¨lling,J.KoberandJ.Peters.Learning
+to select and generalize striking movements in robot ta-
+bletennis. TheInternationalJournalofRoboticsResearch,
+32(3):263–279,2013.
+15. C. Lampert and J. Peters. Real-time detection of col-
+oredobjectsinmultiplecamerastreamswithoff-the-shelf
+hardware components. Journal of Real-Time Image Pro-
+cessing,7(1):31–41,2012.

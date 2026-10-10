@@ -1,0 +1,46 @@
+{
+  "created_at": "2026-10-09T14:29:57.434Z",
+  "package": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\desktop\\dist\\TT Trajectory Engine training review v2",
+  "backend_unchanged": true,
+  "backend_sha256": "85b693c29b6ada72d1444b86c325f87bd3aff846fddeace903b6fec7919b3366",
+  "models": {
+    "ball": {
+      "source_sha256": "2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9",
+      "packaged_sha256": "2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9",
+      "unchanged": true
+    },
+    "scene": {
+      "source_sha256": "5eb0ecbfe0cddb8631cc89fbf6e7a2145d2a4a6b10595034afd4ab8b1a454cee",
+      "packaged_sha256": "5eb0ecbfe0cddb8631cc89fbf6e7a2145d2a4a6b10595034afd4ab8b1a454cee",
+      "unchanged": true
+    },
+    "blurball_experimental": {
+      "source_sha256": "48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f",
+      "packaged_sha256": "48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f",
+      "unchanged": true
+    }
+  },
+  "evidence": {
+    "artifacts/paired_ball_official_22_003_v1/metrics_with_runtime_provenance.json": "9572c45ab8e2b262d82a7c64d6539ab1e9e438061da633960000deb9f577f1f0",
+    "artifacts/paired_ball_no_ball_v2/metrics_with_runtime_provenance.json": "541e0a9af8946733807c5840d02a4311f5028d184965025ea0b92d800336a4b4",
+    "artifacts/real_training_readiness_v3.json": "02335c272a6e8b2036168b4349bbede97391213d8e24d349fa059d394e401ecb",
+    "artifacts/blurball_training_smoke_mse_v2/report.json": "098e498fec8bbd3dabd9bc62190e1064114f4688e43b34793cd22df7103c9e9c",
+    "artifacts/blurball_training_smoke_qfl_v1/report.json": "f33d97c76dabf04d0047107126b0a27ced3b5f04ef44e302999f74f05213f452"
+  },
+  "hybrid_promoted": false,
+  "filter_default_changed": false,
+  "new_weights_saved": false,
+  "readiness_audit_passed": true,
+  "ready_for_real_training": false,
+  "tests": {
+    "candidate_contracts": 25,
+    "paired_scorer": 25,
+    "readiness": 9
+  },
+  "synthetic_optimizer_smokes": [
+    "mse",
+    "quality_focal"
+  ],
+  "live_accuracy_measured": false,
+  "whole_plan_complete": false
+}

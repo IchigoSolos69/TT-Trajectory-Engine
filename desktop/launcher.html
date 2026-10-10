@@ -5,10 +5,12 @@
 <body><main>
   <div class="eyebrow"><span class="status-dot"></span> LOCAL WORKSPACE</div>
   <div class="hero"><img src="icon.svg" alt="" width="72" height="72"><div><h1>Table Tennis<br><span>Trajectory Engine</span></h1><p>From footage to flight. Your analysis stays on this computer.</p></div></div>
+  <label class="eyebrow" for="ball-model">Ball model <select id="ball-model"><option value="yolo">YOLO · existing detector</option><option value="blurball">BlurBall · experimental temporal detector</option></select></label>
+  <p>BlurBall uses two future frames for recordings and only past frames for live capture. Scores are uncalibrated; table calibration and physical height remain separate.</p>
   <div class="cards">
     <button id="recording" class="card"><span class="symbol">↗</span><span class="badge">RECORDING ANALYSIS</span><h2>Open a game</h2><p>Select an iPhone MOV or another local recording. Analyze every frame, then explore footage, trajectories and strike telemetry.</p><span class="action">Choose recording <span>→</span></span></button>
     <button id="live" class="card live"><span class="symbol">◎</span><span class="badge">LIVE CAMERA</span><h2>Start a live session</h2><p>Use your connected camera for ball and player detection. Camera capture begins when you authorize it inside the session.</p><span class="action">Open live workspace <span>→</span></span></button>
   </div>
   <div id="status" role="status" aria-live="polite">Ready. Choose a recording or a live session.</div>
-  <footer><span>C++ · TensorRT · NVIDIA GPU</span><button id="data">Open local data and logs</button></footer>
+  <footer><span>C++ · TensorRT · NVIDIA GPU</span><button id="review">Training review</button><button id="data">Open local data and logs</button></footer>
 </main><script src="launcher.cjs"></script></body></html>

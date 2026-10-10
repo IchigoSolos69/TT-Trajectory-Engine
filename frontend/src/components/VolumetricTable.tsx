@@ -5,7 +5,7 @@ import { OrbitControls, Line } from '@react-three/drei';
 import { tableToScene } from '../lib/spatialFrame';
 import type { TrajectorySample } from '../types/telemetry';
 
-interface VolumetricProps { x: number; y: number; hasBall?: boolean; frameId?: number; trajectory?: TrajectorySample[]; }
+interface VolumetricProps { x: number; y: number; hasBall?: boolean; frameId?: number; analysisId?: string; trajectory?: TrajectorySample[]; }
 function UncertaintyCorridor({samples}:{samples:TrajectorySample[]}) {
   return <group>{samples.map((s,i)=>{
     const p=s.table_position,prev=samples[i-1];if(!p||s.state==='LOST')return null;
@@ -44,10 +44,10 @@ function Table() {
     <gridHelper args={[12,24,'#334155','#1e293b']} position={[0,.001,0]}/>
   </group>;
 }
-export default function VolumetricTable({x,y,hasBall=false,frameId=0,trajectory=[]}:VolumetricProps) {
+export default function VolumetricTable({x,y,hasBall=false,frameId=0,analysisId='',trajectory=[]}:VolumetricProps) {
   const [preset,setPreset]=useState('Perspective');
   const position = tableToScene(x,y);
-  return <div aria-label="3D table plane projection" data-frame-id={frameId} data-ball-x={hasBall ? x : ''} data-ball-y={hasBall ? y : ''} className="w-full h-[560px] rounded-2xl overflow-hidden border border-slate-800 relative bg-slate-950">
+  return <div aria-label="3D table plane projection" data-analysis-id={analysisId} data-frame-id={frameId} data-ball-x={hasBall ? x : ''} data-ball-y={hasBall ? y : ''} className="w-full h-[560px] rounded-2xl overflow-hidden border border-slate-800 relative bg-slate-950">
     <div className="absolute top-4 left-4 right-4 z-10 flex flex-wrap justify-between gap-2">
       <div className="bg-slate-950/85 rounded-lg p-3 text-xs font-mono text-cyan-300">3D TABLE VIEW · 2.74 × 1.525 m · NET 15.25 cm</div>
       <div className="flex gap-1">{['Perspective','Top','Side'].map(view=><button key={view} onClick={()=>setPreset(view)} className={`px-3 py-2 text-xs rounded-lg ${preset===view?'bg-cyan-400 text-slate-950':'bg-slate-900 text-slate-300'}`}>{view}</button>)}</div>

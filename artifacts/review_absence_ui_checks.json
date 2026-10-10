@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "scope": "Production page handlers with controlled hooks; browser paint remains separate",
+  "checks": [
+    "source range defaults",
+    "read-only preview request",
+    "sample thumbnails",
+    "explicit unchecked confirmation",
+    "token/revision confirmation payload",
+    "post-save reviewed state",
+    "draft conflict prevents request without discarding edits"
+  ]
+}

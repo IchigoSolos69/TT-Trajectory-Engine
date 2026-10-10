@@ -1,0 +1,478 @@
+{
+  "scope": "Real reviewed data handoff / two in-memory optimizer steps only",
+  "passed": true,
+  "loss": "quality_focal",
+  "candidate_fine_tuned": false,
+  "accuracy_measured": false,
+  "checkpoint_saved": false,
+  "promotion_approved": false,
+  "splits_assigned": false,
+  "live_latency_measured": false,
+  "full_upstream_runner_verified": false,
+  "stage": "complete",
+  "staged_manifest_sha256": "6180aa1b1759b35996d5a4e47f53876d32628152330e46d97e7153fefc06ffdb",
+  "staged_windows_sha256": "e331301d27288dddc3fd74f008401f463c1320a088018935402d67004f0a6b4d",
+  "real_smoke_source_sha256": "1897ea728e1239a0717afa92d639d81bb448dc1c5eea75a2da2899a293bd0c70",
+  "staging_source_sha256": "091124b90b97ded718d4679979637f957dd10a598ed52efe092a29a47bf83ad0",
+  "available_windows": 178,
+  "selected_examples": [
+    {
+      "dataset_index": 175,
+      "kind": "reviewed_visible",
+      "session_id": "iphone_same_venue_session_1",
+      "clip": "phone_e23544b0c4c1a850_1",
+      "source_frames": [
+        14960,
+        14961,
+        14962
+      ]
+    },
+    {
+      "dataset_index": 0,
+      "kind": "reviewed_absent",
+      "session_id": "iphone_same_venue_session_1",
+      "clip": "phone_452627e98a3c2652_1",
+      "source_frames": [
+        1,
+        2,
+        3
+      ]
+    }
+  ],
+  "dataset_scope": "Original reviewed images; current session unassigned; no validation/test data",
+  "gpu": "NVIDIA GeForce RTX 5050 Laptop GPU",
+  "torch": "2.14.0+cu130",
+  "checkpoint_sha256": "3545206c7155194ea654899d33579c88c9fd8e82c632cbdbae3b0c0ec3f2985f",
+  "network_source_sha256": "e5dbaf53f5ce146526a04325c0d35d1bf337b89f675a9806bab59a002a6ded43",
+  "model_config_sha256": "02378c1e76290640a4e200376e4d17052e39a3afeae8a7f7cc59bff8c1f33925",
+  "upstream_training_config_sha256": "f3d2585e0f3ef1d017a4e5be8d9e1db793eb969c3c8957bdf3526a042909c1b9",
+  "adapter_source_sha256": "ac06b356b992cc66a3cc7dad3fa5621d379a8f3ae9c56f5f9d6332e09745e3ec",
+  "smoke_source_sha256": "e2972223d9db9f948a2825489d10f20d17e5f91c623bdc896640a576750a1633",
+  "loss_source_sha256": "552a327390c6bf426efcc6ed22392d00b572bf9d05343b08ff8e13a657fac578",
+  "expected_inactive_parameters": [
+    "stage4.0.fuse_layers.1.0.0.0.weight",
+    "stage4.0.fuse_layers.1.0.0.1.bias",
+    "stage4.0.fuse_layers.1.0.0.1.weight",
+    "stage4.0.fuse_layers.1.2.0.weight",
+    "stage4.0.fuse_layers.1.2.1.bias",
+    "stage4.0.fuse_layers.1.2.1.weight",
+    "stage4.0.fuse_layers.1.3.0.weight",
+    "stage4.0.fuse_layers.1.3.1.bias",
+    "stage4.0.fuse_layers.1.3.1.weight",
+    "stage4.0.fuse_layers.2.0.0.0.weight",
+    "stage4.0.fuse_layers.2.0.0.1.bias",
+    "stage4.0.fuse_layers.2.0.0.1.weight",
+    "stage4.0.fuse_layers.2.0.1.0.weight",
+    "stage4.0.fuse_layers.2.0.1.1.bias",
+    "stage4.0.fuse_layers.2.0.1.1.weight",
+    "stage4.0.fuse_layers.2.1.0.0.weight",
+    "stage4.0.fuse_layers.2.1.0.1.bias",
+    "stage4.0.fuse_layers.2.1.0.1.weight",
+    "stage4.0.fuse_layers.2.3.0.weight",
+    "stage4.0.fuse_layers.2.3.1.bias",
+    "stage4.0.fuse_layers.2.3.1.weight",
+    "stage4.0.fuse_layers.3.0.0.0.weight",
+    "stage4.0.fuse_layers.3.0.0.1.bias",
+    "stage4.0.fuse_layers.3.0.0.1.weight",
+    "stage4.0.fuse_layers.3.0.1.0.weight",
+    "stage4.0.fuse_layers.3.0.1.1.bias",
+    "stage4.0.fuse_layers.3.0.1.1.weight",
+    "stage4.0.fuse_layers.3.0.2.0.weight",
+    "stage4.0.fuse_layers.3.0.2.1.bias",
+    "stage4.0.fuse_layers.3.0.2.1.weight",
+    "stage4.0.fuse_layers.3.1.0.0.weight",
+    "stage4.0.fuse_layers.3.1.0.1.bias",
+    "stage4.0.fuse_layers.3.1.0.1.weight",
+    "stage4.0.fuse_layers.3.1.1.0.weight",
+    "stage4.0.fuse_layers.3.1.1.1.bias",
+    "stage4.0.fuse_layers.3.1.1.1.weight",
+    "stage4.0.fuse_layers.3.2.0.0.weight",
+    "stage4.0.fuse_layers.3.2.0.1.bias",
+    "stage4.0.fuse_layers.3.2.0.1.weight"
+  ],
+  "inactive_reason": "Final-stage auxiliary fusion outputs are not returned by inspected out_scales=[0] forward",
+  "optimizer": {
+    "name": "Adam",
+    "learning_rate": 1e-05,
+    "weight_decay": 0
+  },
+  "parameter_count": 1488531,
+  "loss_adapter": "Direct dictionary input to the inspected QualityFocalLoss; upstream HeatmapLoss passes tensors to its dictionary API and is not used",
+  "steps": [
+    {
+      "example_kind": "reviewed_visible",
+      "dataset_index": 175,
+      "source_provenance": {
+        "partition": "unassigned",
+        "session_id": "iphone_same_venue_session_1",
+        "clip": "phone_e23544b0c4c1a850_1",
+        "latest_source_frame": 14962,
+        "window_kind": "all_visible",
+        "frames": [
+          {
+            "source_frame": 14960,
+            "elapsed_ms": 249810.0,
+            "source_image_sha256": "fba63c3b5a79e50ce94c0c9435598ca23d18db61080c6bdc971005a11bfbb8df",
+            "source_dimensions": [
+              1920,
+              1080
+            ],
+            "source_target": {
+              "visibility": "visible",
+              "endpoints_normalized": [
+                [
+                  0.7025352364058017,
+                  0.5728008326121182
+                ],
+                [
+                  0.7025352364058017,
+                  0.5728008326121182
+                ]
+              ],
+              "position_px": [
+                1348.8676538991394,
+                618.6248992210877
+              ],
+              "half_length_px": 0.0,
+              "axis_rad": null,
+              "method": "manual_streak_endpoints"
+            },
+            "output_target": {
+              "visibility": "visible",
+              "center_px": [
+                359.6980410397705,
+                164.96663979229007
+              ],
+              "endpoints_px": [
+                [
+                  359.6980410397705,
+                  164.96663979229007
+                ],
+                [
+                  359.6980410397705,
+                  164.96663979229007
+                ]
+              ],
+              "half_length_px": 0.0,
+              "axis_deg": null,
+              "axis_directed": false
+            },
+            "source_to_output_affine": [
+              [
+                0.26666666666666666,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.26666666666666666,
+                0.0
+              ]
+            ]
+          },
+          {
+            "source_frame": 14961,
+            "elapsed_ms": 249826.6666666667,
+            "source_image_sha256": "00f1ae02370b8a13fd4d08245524f72a02866b1552f91f84b66c0f8ba6b31e70",
+            "source_dimensions": [
+              1920,
+              1080
+            ],
+            "source_target": {
+              "visibility": "visible",
+              "endpoints_normalized": [
+                [
+                  0.7073480399073807,
+                  0.5670748392740885
+                ],
+                [
+                  0.7073480399073807,
+                  0.5670748392740885
+                ]
+              ],
+              "position_px": [
+                1358.108236622171,
+                612.4408264160156
+              ],
+              "half_length_px": 0.0,
+              "axis_rad": null,
+              "method": "manual_streak_endpoints"
+            },
+            "output_target": {
+              "visibility": "visible",
+              "center_px": [
+                362.1621964325789,
+                163.3175537109375
+              ],
+              "endpoints_px": [
+                [
+                  362.1621964325789,
+                  163.3175537109375
+                ],
+                [
+                  362.1621964325789,
+                  163.3175537109375
+                ]
+              ],
+              "half_length_px": 0.0,
+              "axis_deg": null,
+              "axis_directed": false
+            },
+            "source_to_output_affine": [
+              [
+                0.26666666666666666,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.26666666666666666,
+                0.0
+              ]
+            ]
+          },
+          {
+            "source_frame": 14962,
+            "elapsed_ms": 249843.33333333337,
+            "source_image_sha256": "782bd0f7da8349e1512ef37fabc02786d88472cadc71501d07c627555351f369",
+            "source_dimensions": [
+              1920,
+              1080
+            ],
+            "source_target": {
+              "visibility": "visible",
+              "endpoints_normalized": [
+                [
+                  0.7132601723960942,
+                  0.568576405843099
+                ],
+                [
+                  0.7132601723960942,
+                  0.568576405843099
+                ]
+              ],
+              "position_px": [
+                1369.4595310005009,
+                614.0625183105469
+              ],
+              "half_length_px": 0.0,
+              "axis_rad": null,
+              "method": "manual_streak_endpoints"
+            },
+            "output_target": {
+              "visibility": "visible",
+              "center_px": [
+                365.1892082668002,
+                163.7500048828125
+              ],
+              "endpoints_px": [
+                [
+                  365.1892082668002,
+                  163.7500048828125
+                ],
+                [
+                  365.1892082668002,
+                  163.7500048828125
+                ]
+              ],
+              "half_length_px": 0.0,
+              "axis_deg": null,
+              "axis_directed": false
+            },
+            "source_to_output_affine": [
+              [
+                0.26666666666666666,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.26666666666666666,
+                0.0
+              ]
+            ]
+          }
+        ],
+        "target_method": "continuous_binary_capsule_v1",
+        "ready_for_fitting": false
+      },
+      "input_shape": [
+        1,
+        9,
+        288,
+        512
+      ],
+      "target_shape": [
+        1,
+        3,
+        288,
+        512
+      ],
+      "target_positive_pixels": 85,
+      "positive_pixels_per_frame": [
+        27,
+        29,
+        29
+      ],
+      "loss": 5.4489610192831606e-05,
+      "finite_gradient_tensors": 212,
+      "expected_inactive_gradient_tensors": 39,
+      "gradient_l2": 0.0003519955968199037,
+      "changed_parameter_tensors": 206,
+      "max_parameter_delta": 1.0013580322265625e-05,
+      "target_method": "continuous_binary_capsule_v1"
+    },
+    {
+      "example_kind": "reviewed_absent",
+      "dataset_index": 0,
+      "source_provenance": {
+        "partition": "unassigned",
+        "session_id": "iphone_same_venue_session_1",
+        "clip": "phone_452627e98a3c2652_1",
+        "latest_source_frame": 3,
+        "window_kind": "all_absent",
+        "frames": [
+          {
+            "source_frame": 1,
+            "elapsed_ms": 0.0,
+            "source_image_sha256": "26b7fc4aac79058196e0447ff27e35eefd3ed6a727e977ac868ff9299ae4a836",
+            "source_dimensions": [
+              1920,
+              1080
+            ],
+            "source_target": {
+              "visibility": "absent",
+              "position_px": null,
+              "half_length_px": null,
+              "axis_rad": null,
+              "method": "human_confirmed_absence"
+            },
+            "output_target": {
+              "visibility": "absent",
+              "center_px": null,
+              "endpoints_px": null,
+              "half_length_px": null,
+              "axis_deg": null,
+              "axis_directed": false
+            },
+            "source_to_output_affine": [
+              [
+                0.26666666666666666,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.26666666666666666,
+                0.0
+              ]
+            ]
+          },
+          {
+            "source_frame": 2,
+            "elapsed_ms": 33.333333333333336,
+            "source_image_sha256": "f1b9afec56e34bca9cb1471f2a11ec29f4eff9fb866edee09eef18666eef2bd6",
+            "source_dimensions": [
+              1920,
+              1080
+            ],
+            "source_target": {
+              "visibility": "absent",
+              "position_px": null,
+              "half_length_px": null,
+              "axis_rad": null,
+              "method": "human_confirmed_absence"
+            },
+            "output_target": {
+              "visibility": "absent",
+              "center_px": null,
+              "endpoints_px": null,
+              "half_length_px": null,
+              "axis_deg": null,
+              "axis_directed": false
+            },
+            "source_to_output_affine": [
+              [
+                0.26666666666666666,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.26666666666666666,
+                0.0
+              ]
+            ]
+          },
+          {
+            "source_frame": 3,
+            "elapsed_ms": 66.66666666666667,
+            "source_image_sha256": "2e847c1dff27b3e5ad9a764bdaa1e2366ec3128caeba77b7418fbff3f5b91c19",
+            "source_dimensions": [
+              1920,
+              1080
+            ],
+            "source_target": {
+              "visibility": "absent",
+              "position_px": null,
+              "half_length_px": null,
+              "axis_rad": null,
+              "method": "human_confirmed_absence"
+            },
+            "output_target": {
+              "visibility": "absent",
+              "center_px": null,
+              "endpoints_px": null,
+              "half_length_px": null,
+              "axis_deg": null,
+              "axis_directed": false
+            },
+            "source_to_output_affine": [
+              [
+                0.26666666666666666,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.26666666666666666,
+                0.0
+              ]
+            ]
+          }
+        ],
+        "target_method": "continuous_binary_capsule_v1",
+        "ready_for_fitting": false
+      },
+      "input_shape": [
+        1,
+        9,
+        288,
+        512
+      ],
+      "target_shape": [
+        1,
+        3,
+        288,
+        512
+      ],
+      "target_positive_pixels": 0,
+      "positive_pixels_per_frame": [
+        0,
+        0,
+        0
+      ],
+      "loss": 3.5680946552929527e-07,
+      "finite_gradient_tensors": 212,
+      "expected_inactive_gradient_tensors": 39,
+      "gradient_l2": 1.8703230808558244e-05,
+      "changed_parameter_tensors": 206,
+      "max_parameter_delta": 9.82731580734253e-06,
+      "target_method": "continuous_binary_capsule_v1"
+    }
+  ],
+  "checkpoint_unchanged": true,
+  "peak_gpu_allocated_bytes": 1225187840,
+  "snapshot_reverified_after_optimizer": true,
+  "offline_smoke_wall_s": 46.6542929999996
+}

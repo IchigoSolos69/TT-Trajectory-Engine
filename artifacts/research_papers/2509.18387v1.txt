@@ -1,0 +1,831 @@
+PAGE 1
+BlurBall: Joint Ball and Motion Blur Estimation for Table Tennis Ball Tracking
+ThomasGossard*,FilipRadovic,AndreasZiegler,AndreasZell
+UniversityofTuebingen
+Sand1Tuebingen72076,Germany
+thomas.gossard@uni-tuebingen.de
+Abstract
+Motion blur reduces the clarity of fast-moving objects,
+posingchallengesfordetectionsystems,especiallyinracket
+sports,whereballsoftenappearasstreaksratherthandis-
+tinctpoints. Existinglabelingconventionsmarktheballat
+theleadingedgeoftheblur,introducingasymmetryandig-
+noringvaluablemotioncuescorrelatedwithvelocity. This
+paper introduces a new labeling strategy that places the
+ballatthecenteroftheblurstreakandexplicitlyannotates
+blurattributes. Usingthisconvention,wereleaseanewta-
+Figure1. Motionblurfrequentlyappearsinbroadcastfootagebut
+ble tennis ball detection dataset. We demonstrate that this
+istypicallydisregarded.Yet,itoffersvaluablecuesforestimating
+labeling approach consistently enhances detection perfor-
+the ball’s velocity. The blue cross denotes the classical labeling
+mance across various models. Furthermore, we introduce
+approach, whichintroducesasymmetryandambiguitytothede-
+BlurBall, a model that jointly estimates ball position and
+tectiontask. Weproposearefinedannotationstrategy:relabelthe
+motion blur attributes. By incorporating attention mecha- ballcentertocorrespondtothemiddleoftheblur(redcross)and
+nismssuchasSqueeze-and-Excitationovermulti-framein- includeadirectionalblurlabel(greenline)tocapturemotionin-
+puts, we achieve state-of-the-art results in ball detection. formationbetter.
+Leveraging blur not only improves detection accuracy but
+also enables more reliable trajectory prediction, benefit-
+ing real-time sports analytics. Project page: https: rally[23]. Suchtechniquesalsoopenthedoortoautomated
+//cogsys-tuebingen.github.io/blurball/ umpiringsystemsbasedsolelyonvideofootage[41].
+Moreover,thisdataisparticularlypromisingfortraining
+tabletennisrobots. Despiteremarkableprogress[6,15,19,
+1.INTRODUCTION
+35], incorporating human-like behavior remains challeng-
+ing due to the lack of diverse, high-quality datasets. Ide-
+Sports analytics has become a vital component in un-
+ally, the abundance of online match recordings could be
+derstandingperformance,refiningstrategies,andenhancing
+leveragedtotrainrobust,human-informedpolicies. Forex-
+athleteevaluation.Extractingmeaningfulinsightsfromraw
+ample,[8]introduceda20-hourdatasetcollectedfromreal
+game footage has traditionally been both time-consuming
+matchesanddemonstrateditsutilityinsimulation, leading
+and costly. Nevertheless, the benefits, ranging from im-
+toimprovedballreturnpredictionandenhancedroboticper-
+proved performance metrics to deeper tactical understand-
+formance.
+ing, are substantial. Recent advances in computer vision
+Theseapplicationsrelyonaccurateandrobustballtrack-
+now enable automatic extraction of key game elements
+ing, an essential prerequisite for intelligent analysis, fore-
+suchasballtrajectories, playerposes, andevenracketori-
+casting,andautonomousbehaviorinhigh-speedsportsen-
+entation [24]. These capabilities not only support retro-
+vironments. However, achieving this is far from trivial,
+spective analysis but also enable predictive applications,
+especially in racket sports like table tennis where the ball
+for example, forecasting ball bounce positions from serve
+generally moves at extreme speeds. The high speed of the
+strokes[43],oridentifyingthecharacteristicsofawinning
+ball often results in motion blur, transforming its appear-
+*TheworkwaspartiallyfundedbySonyAI ancefromadistinctdotintoastreakofvaryinglength.This
+1
+5202
+peS
+22
+]VC.sc[
+1v78381.9052:viXra
+
+PAGE 2
+motionblurnotonlycomplicatesthedetectionprocessbut dynamic environments and varying illumination condi-
+alsoraisesthequestionofhowtodefinetheball’sposition tions [47]. Some approaches repurpose general object de-
+accuratelywhentheblurispresent. tectors like Detectron2 [2] and YOLOv4 [18], fine-tuning
+Traditionally, the convention for racket sports [12,32] them on in-house sports datasets. However, these models
+has been to define the ball’s position as the leading edge arenotidealforsmall,fast-movingobjectslikesportsballs,
+(or front) of the blur streak as shown in Figure 1. How- whichoftenappearassingleinstancesperframeandcanbe
+ever, this approach introduces ambiguities, such as deter- heavily blurred. To address these limitations, several spe-
+miningwhichendofthestreakisthefront,andresultsina cialized approaches have emerged that treat ball detection
+non-symmetricrepresentationthatcancomplicatebothde- as a heatmap regression problem. DeepBall [16] was an
+tection and tracking. A common workaround has been to earlyexampleusingfullyconvolutionalnetworkstogener-
+provide the model with multiple sequential frames, allow- ate ball-centered heatmaps, demonstrating effectiveness in
+ingittoinfermotionimplicitly. Althoughoftendismissed soccer videos. BallSeg [44] is a modified version of IC-
+as visual noise, motion blur inherently captures informa- Net[46]appliedtobasketballvideos.TrackNet[12],devel-
+tionabouttheball’svelocityanddirectionofmotion.When oped for tennis, introduced the use of Gaussian heatmaps
+properlyleveraged,thisvisualcuebecomesapowerfulsig- to represent the probability distribution of ball locations.
+nal, enhancingboththerobustnessofballtrackingandthe Bothpreviousmethodsintroducedmultipleconsecutivein-
+accuracyoftrajectoryprediction. put frames for implicit background subtraction and used
+Inthispaper,weaddressthechallengesofdetectingfast- the ball dynamics for filtering. TrackNetV2 [32] extended
+moving balls in high-speed sports like table tennis by ex- this approach with a U-Net backbone [26] and adopted a
+plicitlymodelingmotionblur,acommonlyignoredbutin- multiple-input multiple-output (MIMO) design to jointly
+formative visual cue. Table tennis balls can reach speeds detect ball positions across several frames, improving ro-
+ofupto35m/s, makingpreciselocalizationdifficult, espe- bustness and inference speed. Monotrack [22] further en-
+cially in blurred frames. To address these challenges, we hanced detection by adding residual connections and re-
+presentthefollowingcontributions: placing the focal loss with a weighted combination of the
+Dice loss and the binary cross-entropy loss to better han-
+• BlurBall: A model that jointly predicts ball posi- dle the extreme class imbalance caused by the ball’s small
+tionandmotionblur,achievingstate-of-the-artperfor- size. TrackNetV3[5]addressedocclusionbyincorporating
+mance. a trajectory rectification module and an inpainting mecha-
+nismtorecovermissingdetections. TheWidelyApplicable
+• Blur-aware labeling: A new annotation scheme that StrongBaseline(WASB)[34],switchedfromaU-Nettoan
+definesballpositionattheblurcenterandencodesblur HRNet [38] backbone for improved results. Another key
+attributes,improvingaccuracyandresolvingambigui- insight from it is that reducing the step size in the MIMO
+ties. setup, effectively oversampling by shifting input windows
+byoneframeinsteadofthree,leadstonotablybetterdetec-
+• Tabletennisballdataset:Weextendthefieldofsport
+tionperformance,albeitatthecostofslowerinference.
+balldetectionandtrackingtotabletennis.
+Attention Mechanisms. All the previously mentioned
+methods rely on CNNs, but transformers [36] have proven
+2.RELATEDWORK
+highly effective for vision tasks such as segmentation and
+Balldetectionandtrackinghavetraditionallybeenap- object detection, particularly with the introduction of Vi-
+proached using classical computer vision techniques, such sion Transformers (ViTs) [7,36]. While applying a full
+as the use of color filtering, background subtraction, and transformer architecture may be excessive for the task of
+blobdetection[1,13,33,35,41]. Whilethesemethodscan detecting a single small object like a ball, hybrid CNN-
+beeffectiveincontrolledenvironments,theyoftenstruggle transformer models have emerged to capture temporal de-
+withvariationsinlighting,cameraangles,andbackground pendencies more effectively. TrackNetV4 [25] builds on
+clutter, requiring extensive fine-tuning to maintain perfor- top of TrackNetV3 and introduces motion attention maps
+mance. Post-processing techniques can improve their ro- andamotion-awarefusionmechanism. Fortabletennis,Li
+bustnessbyenforcingphysicalconstraints,suchasfiltering etal.[20]proposedadetectorthatintegratesatransformer
+detections based on physically plausible trajectories [33]. modulewithaCNNtoleveragetemporalcontext.However,
+However, these rule-based approaches remain sensitive to theirdatasetandcodearenotpubliclyavailable,whichcur-
+environmental changes and do not generalize well across rentlylimitsreproducibility.
+differentsportssettings. As a lighter alternative, attention mechanisms within
+Withtheadvancementofdeeplearning,neuralnetwork- CNNshavegainedtractionforimprovingfeaturerepresen-
+based models have demonstrated greater robustness to tationanddetectionaccuracy.Whilethesemechanismstyp-
+2
+
+PAGE 3
+icallyoperateacrosschannels,inthecontextofmulti-frame Blur Estimation. Research on fast-moving objects has
+inputs, as used in ball detectors—channel, wise attention shown that motion blur can be explicitly modeled and ex-
+canimplicitlyactastemporalattention, helpingthemodel ploited for trajectory reconstruction. Rozumnyi et al. [29]
+bettercapturemotioncuesandleveragetemporalinforma- introduced the first dataset and tracker for FMOs, where
+tion. We mostly focus on the following mechanisms. The objectsappearasblurredstreaks. Thislineofworkwasex-
+Squeeze-and-Excitation (SE) block [11] enhances perfor- tendedwithTrackingbyDeblatting[17,27,28],whichcom-
+mancebyadaptivelyrecalibratingchannel-wisefeatures. It bines blind deblurring and image matting to recover intra-
+generatesachannelattentionvectorbyapplyingglobalav- frametrajectoriesfromblur. Furtherextensionsenabled3D
+eragepooling,followedbytwofullyconnectedlayerswith reconstruction,usingobjectsizeasadepthcue[30,45].An-
+a ReLU activation, allowing the network to emphasize in- gularvelocityestimationbecomesalsopossiblebyfinding
+formative channels and suppress less relevant ones. Effi- the 3D rotation that best aligns successive blurred appear-
+cientChannelAttention(ECA)[39]simplifiesthisprocess ances [30]. More recently, FMODetect [31] proposed a
+by removing the dimensionality reduction step and replac- learning-baseddetectortrainedonsyntheticFMOs,achiev-
+ing the fully connected layers with a lightweight 1D con- ing more efficient detection, trajectory estimation, and ap-
+volution, enablingefficientlocalcross-channelinteraction. pearancerecovery.However,mostofthesemethodsrequire
+Coordinate Attention (CA) [10] extends channel attention labor-intensivelabeling,suchashigh-speedcameraannota-
+byembeddingspatialinformationthroughdirectionalpool- tions [17] or manual blur masks [29]. In contrast, for vol-
+ing along the horizontal and vertical axes. This allows the leyball, Chao et al. [4] attempted to exploit blur implicitly
+network to capture both content and location. We pro- byconstructingvelocityheatmapsfromconsecutiveframes,
+pose to integrate these attention mechanisms to improve butwithoutexplicitlymodelingtheunderlyingblurproper-
+theballdetectionperformance.Otherattentionmechanisms ties. Unlike prior FMO methods, we assume blur follows
+likeConvolutionalBlockAttentionModule(CBAM)[42], astraightline,whichsimplifiesdatasetlabelingandallows
+GlobalContext(GC)blocks[3],andnon-localblocks[40] ustoannotatealargenumberofdiversevideosfortraining
+have also demonstrated improvements in object detection ourmodel.
+by combining channel and spatial attention or modeling
+long-range dependencies. However, due to their higher 3.METHOD
+computational overhead and focus on broader contextual
+Traditionalsportsballdetectorsaretypicallydesignedto
+modeling, we leave their integration for future work and
+output only the ball’s position, overlooking other valuable
+concentrate on methods most compatible with real-time,
+information available in a single frame, such as player po-
+high-precisiondetectioninhigh-speedsportsscenarios.
+sitions and the layout of the playing field. Among these,
+Racketsportdatasets. TheOpenTTGamesdataset[37] motion blur provides direct insight into the ball’s velocity.
+is a publicly available resource for table tennis ball detec- Motionbluroccurswhenanobjectmovessignificantlydur-
+tion,collectedunderhighlycontrolledconditionswithhigh ing the camera’s exposure time, causing its appearance to
+framerates(120fps),1080presolution,close-upviews,and stretch into a streak. The magnitude of the blur is deter-
+stable lighting. However, such ideal conditions are rarely minedbytheball’svelocityandtheexposuretime: shorter
+found in real-world broadcasts, where lower frame rates, exposuresproduceminimalblur,whilelongerexposuresre-
+lowerresolutions,andinconsistentlightingmakedetection sultinmorepronouncedstreaks.
+significantly more challenging. Additionally, the dataset Inthissection,wefirstintroduceournewlycollectedand
+suffersfromunbalancedcameracolorcalibration,resulting labeledtabletennisballdetectiondataset,whichfollowsour
+in unnatural tones that hinder generalization to real-world proposedlabelingconventionincorporatingmotionblurin-
+footage. Datasets for fast-moving objects (FMO) also in- formation.Wethendescribehowthisdatasetisusedtotrain
+clude some table tennis footage [17,29], but with fewer BlurBall, our model designed to jointly estimate both the
+than ten rallies they are insufficient for training; the same ball’spositionanditsassociatedmotionblurproperties.
+holdsforthesyntheticVOT-FMOdataset[31]. Balldetec-
+3.1.Dataset
+tion datasets exist for other sports such as badminton [32]
+and tennis [12]. Among them, the badminton shuttlecock Acomprehensivetabletennisdatasetwascreatedusing
+is visually most similar to a table tennis ball, and models footagefrom26differentonlinerecordings,spanningboth
+trainedonbadmintondata[34]candetecttabletennisballs amateurandprofessionalgames. 64,119framesweregath-
+tosomeextent. However, weobservedthattheirdetection ered in total. In an effort to enhance the diversity of the
+accuracyontabletennisfootageissignificantlylowerthan dataset, we varied the point of view, table color schemes,
+the reported performance for badminton, highlighting the lighting, and general environmental conditions as much as
+domaingapbetweenthetwotasks. Thishighlightsthene- possible, as shown in Figure 2. All videos were recorded
+cessityofadedicateddatasetfortabletennis. fromfixed,staticcamerapositions.
+3
+
+PAGE 4
+p
+2 l
+x
+p b θ
+p
+1
+y
+Figure3. Motionblurlabelingschematic. Conventionallabels
+markthefrontbluredgep ,whichmaybeconfusedwithp with-
+1 2
+outmotioncontext. Weproposelabelingtheblurcenterp with
+b
+itshalf-lengthlandorientationθ.
+Figure2. Examplescenesfromourdataset,showcasingadiverse
+rangeofcontextstoensurecomprehensivecoverage.
+Games Clips Frames disp.[px] Blurratio
+Train 22 363 51423 18.7±16.4 0.58
+Test 4 80 12696 20.1±12.1 0.77
+Table1. Tabletennisdatasetdescription. disp. isthemeanball Figure 4. Distribution of the half-lengths l of the motion blur
+displacementbetweenframes. Blurratioisthefractionofobser- streakinourdataset.Themaximumrecordedvaluewas73pixels.
+vationswheretheballhasmotionblur.
+distribution of motion blur lengths is shown in Figure 4,
+Previous racket sport datasets [12,32] annotate the ball where we can see that the blur length is primarily concen-
+position at the leading edge of the motion blur streak. In tratedaroundl = 5pixels,althoughitcanextendupto73
+contrast,weproposeanewlabelingconventioninwhichthe pixelsinsomerarescenarios.
+ball position is defined as the midpoint of the blur streak. Inadditiontoballpositions,weprovidecameracalibra-
+Furthermore, we extend the labeling to include additional tiondataforeachgame, enabling3Dreconstructionofthe
+informationabouttheblurstreak,specificallyitslengthand ball trajectory [9,14]. Specifically, we compute the cam-
+orientationasshowninFigure3.Foreachframe,wemanu- era’sextrinsicparameters,rotationRandtranslationT,rel-
+allygeneratedlabelsfortheball’sposition,orientation,and ativetotheworldframe,whichisdefinedbythetabletennis
+blur length, represented as [p b ,θ,l], where p b = (x b ,y b ) table.
+denotestheballcenter. Theselabelswereobtainedbyman-
+ually drawing a line along the blur streak. This is more 3.2.BallDetector
+time-effectivecomparedtodrawingtheblurstreakmaskfor
+Among existing ball detection and tracking methods,
+eachframe[29]orlabellingalltheframesfromhigh-speed
+WASB[34]showedstrongperformancefortennisandbad-
+cameras [17]. Approximating the blur streak as a straight
+minton.InWASB,anHRNetbackbonegeneratesheatmaps
+line is justified, since the short exposure time ensures that
+oflikelyballlocations,fromwhichconnectedcomponents
+theballtrajectorydoesnotdeviatesignificantlyduringim-
+above a threshold δ = 0.5 are selected as candidates. A
+age capture, except in specific rare cases as mentioned in
+tracker then refines these candidates using tracklets from
+Section4.6. Whenmotionblurispresent,wedefinethean-
+previous frames, ensuring temporal consistency and sup-
+gleθ andthehalf-lengthl oftheblur. Thetwoextremities
+pressing false positives. We therefore adopt WASB as the
+oftheblurstreakarethencalculatedasfollows:
+basisofourmodel.However,toeffectivelyincorporatemo-
+p =p +(lcosθ,lsinθ)∈R2, tion blur information, we introduced modifications to its
+1 b
+(1) trainingprocedure.
+p =p −(lcosθ,lsinθ)∈R2
+2 b OurkeymodificationliesintheGTheatmapdesign. In
+WASB,abinarymapisgeneratedusingthefollowingequa-
+For comparison, we additionally include the traditional
+tion:
+leading-edgelabelsi.e. thefrontoftheballblurstreak.
+(cid:40) (cid:13) (cid:13)
+Table 1 contains statistics that describe the generated ybin = 1 if (cid:13)p−pGT(cid:13)≤d , (2)
+dataset. Weobservemotionblurin62%oftheframes. The p 0 otherwise
+4
+
+PAGE 5
+wherepGT denotesthegroundtruthballposition,ybinrep-
+p
+resentsthevalueoftheGTmapatlocationp,anddisadis-
+tancethresholddefiningtheradiusofthedisk. Incontrast,
+we redefine the ground truth (GT) heatmap to encompass
+theentiremotion-blurredregionoftheballasfollows:
+(cid:40)
+1 if∃p′ ∈[pGT,pGT]s.t. ∥p−p′∥≤d
+ybin = 1 2 (3)
+p 0 otherwise Figure5.Left:Labelandtargetheatmap.Right:Modelprediction
+overlaywithestimatedballcenter(red)andblur(green).
+In this formulation, all pixels within the blur
+streak—ranging from the detected start point p to
+1
+the endpoint p —are assigned a value of 1, effectively
+2 3.3.Estimatingmotionblur
+capturingthefullextentofthemotionbluroftheball. This
+adaptationensuresthatthemodellearnstolocalizenotonly Once the trained BlurBall model produces a heatmap
+theball’scenterbutalsothefullextentofitsmotionblur. highlighting ball pixels, including those affected by mo-
+To further refine the learning process, we adapted the tionblur,thenextstepistoprocessthisheatmaptoextract
+Hard-to-Localize Sample Mining (HLSM) of WASB [34] the blur parameters: orientation and length. To isolate the
+to our modified GT heatmap. The original formulation of blur region, we first apply a thresholding operation to the
+theGTheatmapis: predictedheatmap. Bydefault,pixelswithheatmapvalues
+(cid:40) min (cid:16) Cexp (cid:16) −∥p−pGT∥2 (cid:17) ,1 (cid:17) if∥p−pGT∥≤d overδ areconsideredpartoftheblurregion. Todetermine
+yreal = d2 thedirectionofmotionblur,weapplyPrincipalComponent
+p
+0 otherwise Analysis (PCA) to the set of pixel coordinates within the
+(4) extractedmask. PCAidentifiestheprincipalaxisB,which
+whereyrealisthevalueofthereal-valuedGTmapatpand corresponds to the eigenvector associated with the largest
+p
+C isdeterminedsothatthenon-zerominimumvalueisset eigenvalue. This axis represents the primary direction of
+toapredefinedvaluec . Similarlytothebinarymap,we elongationintheblurstreakandservesasanestimateofthe
+min
+extendthereal-valuedheatmaptoencompasstheblurwith: ball’s motion direction during the camera’s exposure time.
+Theorientationangleθofthebluristhencomputedas:
+ (cid:16) (cid:16) (cid:17) (cid:17)
+y p real =
+ ma
+if
+x
+∃
+p′
+p
+∈[
+′
+p
+∈
+G 1 T,
+[
+p
+p
+G 2
+G 1
+T]
+T,
+m
+p
+i
+G 2
+n
+T]s
+C
+.t.
+ex
+∥
+p
+p−
+−
+p
+∥p
+′∥
+− d p
+≤
+2 ′∥
+d
+2 ,1
+θ =arctan
+(cid:18)
+B y
+(cid:19)
+, (6)
+0
+otherwise
+B x
+(5) whichgivestheblurdirectionrelativetothehorizontalaxis.
+The network was trained using the quality focal loss [21], To determine the blur length, we project all pixel coor-
+whichhelpsthemodelfocusonchallengingregionswhere dinatespfromthemaskontotheprincipalaxis. Therange
+balllocalizationisdifficult. Forinference,thecenterofthe of these projections represents the total extent of the blur
+bluriscalculatedinamannersimilartoWASB[34],where alongitsdominantdirection.
+it is obtained as the weighted mean of the heatmap. This
+ensures that the center is accurately located based on the max (B·p)−min (B·p)
+l= p∈mask p∈mask (7)
+intensityofthedetectedblur. 2
+TofurtherimprovetheHRNet,weincorporatetheatten-
+tionmechanismsSE,CA,andECA,previouslydiscussedin By extracting these two parameters, orientation (θ) and
+Section 2. While SE and ECA improve channel-wise fea- length (l), we effectively recover the motion blur charac-
+ture discrimination, capturing temporal cues in our multi- teristics, which provide direct insight into the velocity of
+frameinputwithminimalcomputationaloverhead,CAad- theball.
+ditionally encodes positional information, enabling more In[32,34],theconfidencescoreiscalculatedasthesum
+precise and spatially aware attention. As shown in Sec- oftheheatmapvalueswithinthedetectedblobregion.How-
+tion4,SEyieldsthemostconsistentperformanceimprove- ever,sinceourgoalistodetectmotionblurratherthanthe
+ment, andwechoosethisasourattentionmechanism. We precise ball position, this approach tends to favor longer
+refertoourmodelbasedonHRNetwithSEandtrainedfor blur streaks, as the summed value naturally increases with
+joint ball detection and blur estimation as BlurBall. The streak length rather than signal strength. To address this
+training data and output predictions of BlurBall, including bias, BlurBall instead uses the mean value of the heatmap
+both ball localization and blur information, are visualized blobastheconfidencescore,makingitmorerobusttovari-
+inFigure5. ationsinblurextent.
+5
+
+PAGE 6
+theperformanceofseveralsportsballdetectorstrainedwith
+twodistinctlabelingstrategies: onewheretheballposition
+is labeled at the front edge of the blur streak (Front), and
+anotherwheretheball’spositionisdefinedatthemidpoint
+(a) (b) (c) (d) (e) of the blur (Mid.). We used a fixed distance threshold of
+τ = 4 pxforthebenchmark,asmotivatedin[34]. WASB
+Figure6.BaselineMethodforMotionBlurEstimation.Fromleft
+(1-step)achievesthebestperformanceacrossallmetricsex-
+toright:(a)Framen−2,(b)Framenwiththeestimatedballpo-
+ceptrecall. TrackNetV3attainsnear-perfectrecall,primar-
+sition,(c)Absolutedifferencebetweenframesnandn−2,(d)Bi-
+ilyduetoitstrajectoryinpaintingandrectificationmodule.
+narymaskobtainedafterthresholding,highlightingtheestimated
+blurregion,and(e)Framenwiththedetectedbluroverlayed. Using the midpoint convention consistently improves de-
+tection performance across all models. These results indi-
+catethatballdetectorsperformbetterwhenthemotionblur
+4.EXPERIMENTS
+streak is symmetric around the ball label, leading to more
+accurate localization. However, we did not notice any im-
+4.1.Blurestimationbaseline
+provementintrainingspeedwithregardtothelabelingcon-
+Existing ball detectors can be leveraged to extract the ventionused. Giventhesefindings, werecommendadopt-
+ball’sblurstreakbyincorporatingadditionalstandardcom- ingthismidpointlabelingconventionforballdetectors,par-
+putervisiontechniques. Toestablishabaselineforcompar- ticularlyinfast-pacedsportswheremotionbluriscommon.
+ison,weimplementedamethodthatdetectsmotionblurus- Thisapproachenhancestherobustnessandaccuracyofde-
+ingtraditionalimageprocessingtechniques,similarto[29]. tectionsystemsinsuchdynamicenvironments.
+First, we define a small region of interest (ROI) centered AsshowninTable3,incorporatingblurinformationinto
+aroundthedetectedballposition. TheinputRGBimageis WASBwitha3-stepsettingslightlydecreasestheF1score
+thenconvertedtograyscale,andwecomputetheframedif- andaccuracy,yetitimprovestheAP.Incontrast,forthe1-
+ferencetohighlightregionsofmotion. Tosuppressnoise,a stepsetting,addingblurinformationconsistentlyenhances
+thresholdingoperationisapplied,retainingonlysignificant all metrics, suggesting that using the blur from adjacent
+intensitychanges. Theresultingbinarymaskmightcontain frames helps infer the ball’s likely location in the center
+multipleconnectedcomponents, amongwhichweidentify framemoreaccurately.
+the one closest to the ROI center as the blur streak corre-
+Introducing attention mechanisms improves perfor-
+sponding to the ball’s motion. An example of this process
+mance across all metrics compared to the blur-augmented
+isillustratedinFigure6. Althoughthisapproachisnotper-
+baseline. Among them, the SE block yields the most con-
+fect,itcouldalsobeusedtogeneratenewlabelsusingour
+sistent improvements. Its ability to globally recalibrate
+conventionforexistingsportsballdatasets. Whilethisap-
+channel-wisefeatureresponsesallowsittoemphasizeboth
+proach provides a straightforward way to estimate motion
+motionandappearancefeatures. Incomparison,CAincor-
+blur,itisinherentlylimitedtostaticcamerasandislessro-
+poratespositionalinformationthroughcoordinateattention,
+bustthanBlurBallindynamicenvironments.
+whichcanbebeneficialforlargerorspatiallyconsistentob-
+4.2.Training jects. However, in our case where the target is small, fast-
+moving,andlacksstablespatialpatterns,CA’saddedcom-
+BlurBall was trained from scratch for 30 epochs using
+plexityanduseofper,axispoolingandnormalizationmay
+Adam. Weexperimentedwithpretrainingthenetworkwith
+introduce noise, particularly in the 3-step setup. ECA of-
+the badminton dataset [32], which is the closest looking
+fers a more lightweight alternative by using local 1D con-
+sport to table tennis, but this did not yield any improve-
+volutionswithoutdimensionalityreduction,butthiscomes
+ments. The batch size was set to 8 and the ball detector
+at the cost of only modeling short-range dependencies. In
+takesasinputimagesrescaledto288x512. Wesetdto2.5
+practice,itlackstheglobalcontextmodelingneededforro-
+andc to0.7andstartrunningHLSMatthebeginningof
+min bustmotionblurinterpretation. WhileCAandSEachieve
+the20thepoch,similarlytotheoriginalWASBimplementa-
+similarperformanceinthe1-stepsetting,SEisbothslightly
+tion. ExperimentswereconductedonanNVIDIAGeForce
+fasterandmorerobustacrosssettings.Forthesereasons,we
+RTX2080Ti.
+selectSEastheattentionmechanismforBlurBall.
+4.3.BallTracking AlthoughWASBachievesthehighestaccuracyinthe1-
+stepsetting,itsprecisiondropscomparedtothe3-stepver-
+The effect of different labeling conventions on the per-
+sion. This suggests that the model is overconfident in the
+formanceofballdetectorswasinvestigated. Table2shows
+central frame predictions and that the default threshold of
+1https://github.com/Chang-Chia-Chi/TrackNet-Badminton-Tracking- δ = 0.5 is suboptimal. As shown in Figure 7, the thresh-
+tensorflow2 old has little influence for 3-step inference, but for 1-step
+6
+
+PAGE 7
+F1 Acc AP Recall Precision #Params FPS
+Model
+Front Mid. Front Mid. Front Mid. Front Mid. Front Mid. (M)
+DeepBall[16] 39.36 57.14 26.21 41.36 42.96 61.40 86.86 91.52 25.45 41.54 0.1 65
+DeepBall-Large 52.40 71.72 36.93 56.66 55.42 75.03 89.82 94.12 36.99 57.94 1.1 51
+BallSeg[44] 85.09 89.01 75.47 81.33 75.58 81.56 63.67 83.56 27.15 35.94 12.7 40
+TrackNetV2[32] 90.37 91.61 83.25 85.27 85.07 86.88 89.79 88.38 90.96 95.09 11.3 85
+ResTrackNetV21 87.03 91.81 78.11 85.61 75.53 86.58 86.76 89.02 87.90 94.78 1.2 112
+Monotrack[22] 93.60 94.97 88.55 90.89 87.97 91.26 93.13 94.93 94.07 96.36 2.9 115
+TrackNetV3[5] 93.74 95.93 88.35 92.28 N.A.∗ N.A.∗ 99.64 99.66 88.50 92.48 17.8 77
+WASB(steps=3)[34] 94.23 95.77 89.62 92.26 91.82 94.66 93.89 95.23 94.57 96.31 1.5 95
+WASB(steps=1)[34] 95.58 96.00 91.90 92.56 95.10 96.85 97.08 97.77 94.15 94.50 1.5 42
+Table2.Comparisonofdifferentmodels’performancedependingonthelabelingconvention.∗APisnotavailableforTrackNetV3because
+therectificationmoduledoesn’tprovideaconfidencevalue.
+F1 Acc AP MAEl[px] MAEθ[deg] #Params FPS
+Model
+1step 3steps 1step 3steps 1step 3steps 1step 3steps 1step 3steps (M) for3step
+WASB[34](baseline) 96.00 95.77 92.56 92.26 96.85 94.66 3.1±3.4∗ 3.0±3.2∗ 13.5±23.2∗ 14.8±24.6∗ 1.48 95
++Blurlabel 96.28 95.54 93.05 91.81 97.59 95.40 1.5±1.2 1.4±1.2 6.5±18.2 7.2±20.1 1.48 95
++ECA 96.35 95.60 93.18 91.92 97.91 95.67 1.8±1.3 1.8±1.3 6.4±18.5 7.0±19.8 1.48 79
++CA 96.50 95.76 93.48 92.23 97.24 94.82 1.4±1.2 1.4±1.2 6.5±18.6 6.7±18.8 1.50 72
++SE→BlurBall(ours) 96.52 96.16 93.47 92.89 98.23 96.72 1.5±1.2 1.6±1.2 6.5±18.9 6.9±19.5 1.49 79
+BlurBallwithδ=0.7 97.17 96.12 94.75 92.89 97.34 94.80 1.2±1.1 1.2±1.1 6.8±18.9 7.3±19.9 1.50 72
+Table 3. Performance comparison starting from the WASB baseline, showing the effect of replacing the position-only heatmap with
+blur-awareheatmapsandevaluatingdifferentattentionmechanisms. BlurBall,usingSEattention,achievesthebestoverallperformance.
+∗WASBblurmasksareobtainedviabackgroundsubtraction.Boldvaluesindicatethebestresultineachcolumn.
+angleiscomputedonlyforpredictionswheretheestimated
+blurlengthexceeds3pixels.Underthisconstraint,BlurBall
+proves significantly more accurate, achieving nearly twice
+theprecisionofWASBcombinedwiththebaselineblures-
+timation. Amongtheattentionmechanismstested, SEand
+CA improve blur estimation, whereas ECA does not offer
+anynotablebenefit.
+4.5.BallTrajectoryPrediction
+Figure7. F1scoreforBlurBallwithdifferentthresholdvaluesδ
+onthetestset.
+Inthissubsection,wedemonstratethatmotionblurpro-
+videsvaluablecuesforpredictingtheball’strajectory. The
+ball’s 3D trajectory can be reasonably approximated using
+the optimal value shifts to δ = 0.7. With this adjustment,
+asecond-degreepolynomial. Thisisbasedontheassump-
+BlurBall obtains the best F1-score and accuracy (Table 3),
+tion that the forces acting on the ball—gravity, drag, and
+thoughatthecostofaslightdecreaseinAPandbluresti-
+Magnusforce—remainrelativelyconstantwhiletheballis
+mationquality.
+airborne. Consequently,the2Dprojectionofthetrajectory
+intheimageplanecanalsobemodeledasasecond-degree
+4.4.BlurEstimation
+polynomial. Werepresenttheball’simagecoordinatesover
+timeas(P (t),P (t)),whereP andP arequadraticpoly-
+We evaluate and compare the accuracy of BlurBall and x y x y
+nomialswithrespecttotime.
+WASBinTable3. Themotionblurestimationperformance
+isassessedusingtheMeanAbsoluteError(MAE)forboth In this context, we show that incorporating motion blur
+blurlengthlandblurangleθ.Forsmallblurlengths,partic- informationimprovestrajectorypredictionwhiletheballis
+ularlywhenl≤3,theestimationofthebluranglebecomes in flight. Motion blur is directly linked to the ball’s speed
+highlysensitivetonoise,renderingthemeasurementsunre- and camera exposure time, allowing us to relate the ob-
+liable. Toensurearobustevaluation,theMAEfortheblur servedblurlengthlandangleθtothederivativeofthetra-
+7
+
+PAGE 8
+(a)Input1 (b)HM2 (c)Input2 (d)HM2
+Figure9. Framesandcorrespondinginferredheatmapswherethe
+bounceisexactlycapturedbythecamera.
+trajectoryestimates,particularlyinfast-motionscenariosor
+Figure 8. Trajectory prediction comparison using position-only
+whenonlyafewframesareavailable.
+vs. position+blur fitting. Polynomials are fitted using the first
+threeobservationstopredicttheball’strajectory. Predictionsare
+4.6.Limitations
+comparedtothegroundtruth(GT)positions. Redlinesindicate
+observedmotionblur.
+BlurBallhascertainlimitations. Onekeyassumptionin
+our approach is that motion blur appears as a single lin-
+jectoryasfollows: ear streak. However, in rare cases, such as when the ex-
+act moment of a ball bounce is captured, this assumption
+lcos(θ) lsin(θ)
+P˙ (t)= , P˙ (t)= (8) no longer holds, as illustrated in Figure 9. The ball is still
+x t y t
+exp exp detected,buttheestimatedpositionisinaccurate,asthede-
+Forevaluation,weuseBlurBalltoinferboththeballposi- tector takes the center of a non-convex blob, distorted due
+tionandmotionblur. Topredicttheball’strajectory,wefit to the bounce. Still, the outputted heatmap seems to have
+a second-degree polynomial using only the first 3 frames capturedthechangeindirectiontosomedegree, asshown
+of each sequence—the minimum required to estimate a bythebendintheheatmapblob. Also,althoughthemodel
+quadraticcurve. Trajectoryfittingbasedsolelyonposition can work for videos with non-static cameras, we observed
+isperformedusingastandardleast-squaresmethod.Forpo- thatitismorepronetomisdetections. Thisintroducespo-
+sition + blur fitting, we minimize the following cost func- tentialchallengesinaccuratelyestimatingtheball’smotion
+tions using the Nelder-Mead algorithm to obtain the poly- insuchcases.
+nomialcoefficientsandt : While our current model achieves state-of-the-art ball
+exp
+detection for table tennis, some failure cases remain and
+J x = 3 1(cid:88) 2 ∥P x (t k )−xˆ k ∥2+0.2 (cid:13) (cid:13) (cid:13) (cid:13) P˙ x (t k )− l k c t os(θ k ) (cid:13) (cid:13) (cid:13) (cid:13) 2 h o i f g f h a l l i s g e h p t o a s r i e t a iv s e f s o i r n f v u o t l u v r e e s i w m h p i r t o e v o e b m je e c n t t s . b A ein c g om m m is o id n e s n o ti u fi r e c d e
+exp
+k=0
+as the ball. This typically includes shoes, hands, or logos
+(9)
+onuniformsthatresembletheballinsize,shape,ormotion.
+J y = 3 1(cid:88) 2 ∥P y (t k )−yˆ k ∥2+0.2 (cid:13) (cid:13) (cid:13) (cid:13) P˙ y (t k )− l k s t in(θ k ) (cid:13) (cid:13) (cid:13) (cid:13) 2 T co o n r t e e d x u t c fr e om fal t s h e e p w o h si o t l i e ve s s c , e f n u e tu to re he w lp or t k el c l o th u e ld ba in ll c a lu p d a e rt m fro o m re
+exp
+k=0
+similar-lookingobjects.
+(10)
+Here,(xˆ k ,yˆ k )arethedetectedpositions,l k istheestimated 5.CONCLUSION
+blur length, and θ is the blur angle for each frame k. We
+k
+weight the blur loss with a coefficient of 0.2. After fitting In this paper, we introduced a novel labeling conven-
+thepolynomial,wecomparethepredictedtrajectorytothe tion for sports ball detectors that explicitly incorporates
+groundtruthpositionsfortheremainderoftheball’sflight. motionblur,significantlyimprovingdetectionperformance
+Thisevaluationisperformedon95manuallysegmentedtra- acrossallmodelstestedonournewlyintroducedtableten-
+jectoriesfromthetestset. Anexampleofthepredictedtra- nisdataset. WealsopresentedBlurBall,adetectorcapable
+jectoryisshowninFigure8. ofjointlyestimatingballpositionandmotionblur,offering
+We obtain a MAE of 84.4 ± 136.6 pixels for the tra- valuable cues about the ball’s velocity and enabling more
+jectoryfittingusingpositiononly,andasignificantlylower accurate trajectory prediction. Our model achieves com-
+MAEof53.0±87.1pixelswhenincorporatingbothposi- petitive performance by integrating attention mechanisms,
+tion and blur information. The notable reduction in both which benefit from multi-frame inputs. Our approach en-
+meanandvarianceofthepredictionerrordemonstratesthat ables more precise and robust tracking, with strong poten-
+motion blur encodes meaningful velocity information. In- tial for broader applications in high-speed sports analytics
+corporatingthesecuesleadstomoreaccurateandconsistent andreal-worlddeployments.
+8
+
+PAGE 9
+References [13] C.Hung.AStudyofAutomaticandReal-TimeTableTennis
+FaultServeDetectionSystem. Sports,6(4):158,Nov.2018.
+[1] M.ArchanaandM.KalaiseviGeetha. ObjectDetectionand
+2
+Tracking Based on Trajectory in Broadcast Tennis Video.
+[14] DanielKienzle,RobinScho¨n,RainerLienhart,andShin’Ichi
+ProcediaComputerScience,58:225–232,Jan.2015. 2
+Satoh. Towardsballspinandtrajectoryanalysisintableten-
+[2] J.Calandre,R.Pe´teri,L.Mascarilla,andB.Tremblais. Ex-
+nis broadcast videos via physically grounded synthetic-to-
+traction and analysis of 3D kinematic parameters of Table
+real transfer. In Proceedings of the IEEE/CVF Conference
+Tennisballfromasinglecamera.In202025thInternational
+onComputerVisionandPatternRecognition(CVPR)Work-
+Conference on Pattern Recognition (ICPR), pages 9468–
+shops,June2025. 4
+9475,Milan,Italy,Jan.2021.IEEE. 2
+[15] J. Kober, K. Muelling, O. Kroemer, C.H. Lampert, B.
+[3] Yue Cao, Jiarui Xu, Stephen Lin, Fangyun Wei, and Han
+Schoelkopf, and J. Peters. Movement templates for learn-
+Hu.Globalcontextnetworks. IEEETransactionsonPattern
+ingofhittingandbatting. InIEEEInternationalConference
+AnalysisandMachineIntelligence,45(6):6881–6895,2020.
+onRoboticsandAutomation(ICRA),2010. 1
+3
+[16] J. Komorowski, G. Kurzejamski, and G. Sarwas. Deep-
+[4] V. Chao, H. Nguyen, A. Jamsrandorj, Y. Oo, K. Mun, H.
+ball: Deepneural-networkballdetector. InProceedingsof
+Park,S.Park,andJ.Kim. TrackingtheBlur: AccurateBall
+the14thInternationalJointConferenceonComputerVision,
+Trajectory Detection in Broadcast Sports Videos. In Pro-
+Imaging and Computer Graphics Theory and Applications
+ceedingsofthe7thACMInternationalWorkshoponMulti-
+(VISIGRAPP 2019) - Volume 5: VISAPP, pages 297–304.
+mediaContentAnalysisinSports,pages41–49,Melbourne
+INSTICC,SciTePress,2019. 2,7,11
+VICAustralia,Oct.2024.ACM. 3
+[17] JanKotera,DenysRozumnyi,FilipSˇroubek,andJiˇr´ıMatas.
+[5] Yu-JouChenandYu-ShuenWang. Tracknetv3: Enhancing
+Intra-frameobjecttrackingbydeblatting.In2019IEEE/CVF
+shuttlecocktrackingwithaugmentationsandtrajectoryrec-
+InternationalConferenceonComputerVisionWorkshop(IC-
+tification.InProceedingsofthe5thACMInternationalCon-
+CVW),pages2300–2309,2019. 3,4
+ferenceonMultimediainAsia,MMAsia’23,NewYork,NY,
+[18] K. Kulkarni, R. Jamadagni, J. Paul, and S. Shenoy. Table
+USA,2024.AssociationforComputingMachinery. 2,7
+TennisStrokeDetectionandRecognitionUsingBallTrajec-
+[6] David B D’Ambrosio, Saminda Wishwajith Abeyruwan,
+toryData. SSRNElectronicJournal,Jan.2022. 2
+Laura Graesser, Atil Iscen, Heni Ben Amor, Alex Bew-
+[19] AsaiKyohei,NakayamaMasamune,andYaseSatoshi. The
+ley, BarneyReed, KristaReymann, LeilaTakayama, Yuval
+pingpongrobottoreturnaballpreciselytrajectorypredic-
+Tassa,etal. Achievinghumanlevelcompetitiverobottable
+tionandracketcontrolforspinningballs. 2019. 1
+tennis. In 7th Robot Learning Workshop: Towards Robots
+withHuman-LevelAbilities,2024. 1 [20] W. Li, X. Liu, K. An, C. Qin, and Y. Cheng. Table Ten-
+nisTrackDetectionBasedonTemporalFeatureMultiplex-
+[7] Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov,
+ingNetwork. Sensors,23(3):1726,Jan.2023. 2
+Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner,
+MostafaDehghani,MatthiasMinderer,GeorgHeigold,Syl- [21] X.Li,W.Wang,X.Hu,J.Li,J.Tang,andJ.Yang. General-
+vainGelly,JakobUszkoreit,andNeilHoulsby. Animageis izedFocalLossV2: LearningReliableLocalizationQuality
+worth16x16words: Transformersforimagerecognitionat EstimationforDenseObjectDetection. In2021IEEE/CVF
+scale. ICLR,2021. 2 Conference on Computer Vision and Pattern Recognition
+[8] DanielEtaat,DvijKalaria,NimaRahmanian,andSShankar (CVPR), pages 11627–11636, Nashville, TN, USA, June
+Sastry. Latte-mv: Learning to anticipate table tennis hits 2021.IEEE. 5
+frommonocularvideos. InProceedingsoftheComputerVi- [22] P. Liu and J. Wang. MonoTrack: Shuttle trajectory re-
+sionandPatternRecognitionConference,pages7115–7124, construction from monocular badminton video. In 2022
+2025. 1 IEEE/CVF Conference on Computer Vision and Pattern
+[9] ThomasGossard,AndreasZiegler,andAndreasZell. Tt3d: Recognition Workshops (CVPRW), pages 3512–3521, New
+Table tennis 3d reconstruction. In Proceedings of the Orleans,LA,USA,June2022.IEEE. 2,7,11
+IEEE/CVF Conference on Computer Vision and Pattern [23] Katharina Muelling, Abdeslam Boularias, Betty Mohler,
+Recognition(CVPR)Workshops,June2025. 4 BernhardScho¨lkopf,andJanPeters. Learningstrategiesin
+[10] QibinHou,DaquanZhou,andJiashiFeng.Coordinateatten- tabletennisusinginversereinforcementlearning.Biological
+tionforefficientmobilenetworkdesign. In2021IEEE/CVF Cybernetics,108(5):603–619,Oct.2014. 1
+Conference on Computer Vision and Pattern Recognition [24] Banoth Thulasya Naik, Mohammad Farukh Hashmi, and
+(CVPR),pages13708–13717,2021. 3 NeerajDhanrajBokde. AComprehensiveReviewofCom-
+[11] JieHu,LiShen,andGangSun. Squeeze-and-excitationnet- puterVisioninSports: OpenIssues,FutureTrendsandRe-
+works. InProceedingsoftheIEEEconferenceoncomputer searchDirections. AppliedSciences,12(9):4429,Jan.2022.
+visionandpatternrecognition,pages7132–7141,2018. 3 1
+[12] Y.Huang,I.Liao,C.Chen,T.˙Ik,andW.Peng.TrackNet:A [25] ArjunRaj, LeiWang, andTomGedeon. TrackNetV4: En-
+DeepLearningNetworkforTrackingHigh-speedandTiny hancingFastSportsObjectTrackingwithMotionAttention
+Objects in Sports Applications. In 2019 16th IEEE Inter- Maps,Sept.2024. 2
+national Conference on Advanced Video and Signal Based [26] OlafRonneberger,PhilippFischer,andThomasBrox.U-net:
+Surveillance(AVSS),pages1–8,Sept.2019. 2,3,4 Convolutionalnetworksforbiomedicalimagesegmentation.
+9
+
+PAGE 10
+InNassirNavab,JoachimHornegger,WilliamM.Wells,and [38] Jingdong Wang, Ke Sun, Tianheng Cheng, Borui Jiang,
+AlejandroF.Frangi,editors,MedicalImageComputingand ChaoruiDeng,YangZhao,DongLiu,YadongMu,Mingkui
+Computer-AssistedIntervention–MICCAI2015,pages234– Tan, Xinggang Wang, Wenyu Liu, and Bin Xiao. Deep
+241,Cham,2015.SpringerInternationalPublishing. 2 high-resolution representation learning for visual recogni-
+[27] DenysRozumnyi,JanKotera,FilipSˇroubek,andJiˇr´ıMatas. tion. IEEE Transactions on Pattern Analysis and Machine
+Non-causal tracking by deblatting. In Gernot A. Fink, Si- Intelligence,43(10):3349–3364,2021. 2
+mone Frintrop, and Xiaoyi Jiang, editors, Pattern Recog- [39] QilongWang, BangguWu, PengfeiZhu, PeihuaLi, Wang-
+nition, pages 122–135, Cham, 2019. Springer International mengZuo,andQinghuaHu. Eca-net: Efficientchannelat-
+Publishing. 3 tentionfordeepconvolutionalneuralnetworks. InProceed-
+[28] DenysRozumnyi,JanKotera,FilipSˇroubek,andJiˇr´ıMatas. ings of the IEEE/CVF conference on computer vision and
+TrackingbyDeblatting. InternationalJournalofComputer patternrecognition,pages11534–11542,2020. 3
+Vision,129(9):2583–2604,Sept.2021. 3 [40] XiaolongWang,RossGirshick,AbhinavGupta,andKaim-
+[29] Denys Rozumnyi, Jan Kotera, Filip Sroubek, Lukas ingHe.Non-localneuralnetworks.In2018IEEE/CVFCon-
+Novotny,andJiriMatas. TheWorldofFastMovingObjects ferenceonComputerVisionandPatternRecognition,pages
+. In2017IEEEConferenceonComputerVisionandPattern 7794–7803,2018. 3
+Recognition(CVPR),pages4838–4846,LosAlamitos,CA, [41] P.Wong, H.Myint, L.Dooley, andA.Hopgood. Amulti-
+USA,July2017.IEEEComputerSociety. 3,4,6 view automatic table tennis umpiring framework. Pro-
+[30] DenysRozumnyi,JanKotera,FilipSˇroubek,andJiˇr´ıMatas. ceedings of the Institution of Mechanical Engineers, Part
+Sub-frameappearanceand6dposeestimationoffastmoving P: Journal of Sports Engineering and Technology, page
+objects. In2020IEEE/CVFConferenceonComputerVision 175433712311714,Apr.2023. 1,2
+andPatternRecognition(CVPR),pages6777–6785,2020.3 [42] SanghyunWoo,JongchanPark,Joon-YoungLee,andInSo
+[31] DenysRozumnyi,Jiˇr´ıMatas,FilipSˇroubek,MarcPollefeys, Kweon. Cbam: Convolutional block attention module. In
+andMartinR.Oswald. Fmodetect: Robustdetectionoffast VittorioFerrari,MartialHebert,CristianSminchisescu,and
+movingobjects. InProceedingsoftheIEEE/CVFInterna- Yair Weiss, editors, Computer Vision – ECCV 2018, pages
+tionalConferenceonComputerVision(ICCV),pages3541– 3–19,Cham,2018.SpringerInternationalPublishing. 3
+3549,October2021. 3 [43] ErwinWu,FlorianPerteneder,andHidekiKoike. Real-time
+TableTennisForecastingSystembasedonLongShort-term
+[32] N. Sun, Y. Lin, S. Chuang, T. Hsu, D. Yu, H. Chung, and
+T.˙Ik.TrackNetV2:EfficientShuttlecockTrackingNetwork. PosePredictionNetwork. InSIGGRAPHAsia2019Posters,
+SA’19,pages1–2,NewYork,NY,USA,Nov.2019.Asso-
+In2020InternationalConferenceonPervasiveArtificialIn-
+ciationforComputingMachinery. 1
+telligence(ICPAI),pages86–91,Dec.2020. 2,3,4,5,6,7,
+11 [44] G.VanZandyckeandC.DeVleeschouwer.Real-timeCNN-
+basedSegmentationArchitectureforBallDetectioninaSin-
+[33] S. Tamaki and H. Saito. Reconstruction of 3D Trajecto-
+gle View Setup. In Proceedings Proceedings of the 2nd
+ries for Performance Analysis in Table Tennis. In 2013
+InternationalWorkshoponMultimediaContentAnalysisin
+IEEE Conference on Computer Vision and Pattern Recog-
+Sports,MMSports’19,pages51–58,NewYork,NY,USA,
+nitionWorkshops,pages1019–1026,June2013. 2
+Oct.2019.AssociationforComputingMachinery. 2,7,11
+[34] S. Tarashima, M. Haq, Y. Wang, and N. Tagawa. Widely
+[45] W. Zhang, Y. Zhang, Y. Zhao, and B. Zhang. Recog-
+applicablestrongbaselineforsportsballdetectionandtrack-
+nizing and Recovering Ball Motion Based on Low-Frame-
+ing.In34thBritishMachineVisionConference2023,BMVC
+RateMonocularCamera.AppliedSciences,13(3):1513,Jan.
+2023,Aberdeen,UK,November20-24,2023.BMVA,2023.
+2023. 3
+2,3,4,5,6,7,11
+[46] Hengshuang Zhao, Xiaojuan Qi, Xiaoyong Shen, Jianping
+[35] J. Tebbe, Y. Gao, M. Sastre-Rienietz, and A. Zell. A ta-
+Shi,andJiayaJia. Icnetforreal-timesemanticsegmentation
+bletennisrobotsystemusinganindustrialkukarobotarm.
+onhigh-resolutionimages. InECCV,2018. 2
+In Pattern Recognition: 40th German Conference, GCPR
+[47] Y. Zhao, J. Wu, Y. Zhu, H. Yu, and R. Xiong. A learning
+2018,Stuttgart,Germany,October9-12,2018,Proceedings
+frameworktowardsreal-timedetectionandlocalizationofa
+40,pages33–45.Springer,2019. 1,2
+ball for robotic table tennis system. In 2017 IEEE Inter-
+[36] AshishVaswani,NoamShazeer,NikiParmar,JakobUszko-
+nationalConferenceonReal-timeComputingandRobotics
+reit, Llion Jones, Aidan N Gomez, Ł ukasz Kaiser, and Il-
+(RCAR),pages97–102,Okinawa,July2017.IEEE. 2
+lia Polosukhin. Attention is all you need. In I. Guyon,
+U.VonLuxburg,S.Bengio,H.Wallach,R.Fergus,S.Vish-
+wanathan,andR.Garnett,editors,AdvancesinNeuralInfor-
+mationProcessingSystems, volume30.CurranAssociates,
+Inc.,2017. 2
+[37] R. Voeikov, N. Falaleev, and R. Baikulov. TTNet: Real-
+timetemporalandspatialvideoanalysisoftabletennis. In
+2020 IEEE/CVF Conference on Computer Vision and Pat-
+tern Recognition Workshops (CVPRW), pages 3866–3874,
+Seattle,WA,USA,June2020.IEEE. 3
+10
+
+PAGE 11
+BlurBall: a ball detector with blur estimation
+Supplementary Material
+Dataset
+Thedatasetwasgeneratedfrompubliclyavailableonline
+videosunderaCreativeCommonslicensetoensurecompli-
+ancewithcopyrightregulations. Wedeliberatelycovereda
+wide range of scenarios, including different playing con-
+ditions, camera angles, and lighting variations, to improve
+model robustness. Orange table tennis balls, although of-
+ficially approved for competition, are not included. This
+omission is unlikely to affect performance, as white balls
+are overwhelmingly preferred and almost exclusively used
+inprofessionalmatches. Figure10. Annotatedtablekeypointsusedforcameracalibration
+anddefinitionoftheworldframe.
+The dataset is publicly available at: https:
+//cogsys-tuebingen.github.io/blurball/.
+EachvideoisaccompaniedbyaCSVfilewiththefollowing
+Modeltraining
+structure:
+WefollowedthetrainingsetupofWASB[34]forconsis-
+Frame Visibility X Y θ l tencyacrossmodels. Eachmodelwastrainedfor30epochs
+000049 1 581.62 295.26 -152.5 2.8 withanappropriatelossfunctionandoptimizer:
+000050 1 572.98 292.86 171.8 2.1
+• DeepBall[16]andDeepBall-large: BCEloss, Adam
+Table 4. CSV description. Each row contains the ball position optimizer,learningrate3×10−4.
+(X,Y),blurorientation(θ),andhalf-length(l).
+• BallSeg [44]: focal loss (γ = 2), Adam optimizer,
+learningrate3×10−4.
+Angles are given in degrees and follow the convention
+illustratedinFigure3. • TrackNetV2 [32] and ResTrackNetV2: focal loss,
+AdaDeltaoptimizer,learningrate1.0.
+Cameracalibration
+• MonoTrack [22]: Combo loss, AdaDelta optimizer,
+learningrate1.0.
+We provide camera calibration for each table tennis
+match in the dataset. Specifically, we include the focal
+• WASB[34]:qualityfocalloss,Adamoptimizer,learn-
+length f and the camera extrinsics: rotation vector r and ingrate3×10−4.
+translationvectorT. Theworldframeisdefinedbytheta-
+ble geometry, with the table’slength aligned tothe Y-axis This ensures fair comparison, with each model opti-
+and the surface normal aligned to the Z-axis, as shown in mizedusingstrategiessuitedtoitsarchitecture.
+Figure10.
+This choice is motivated by the precise, known geome- BlurBall: furtherinsights
+tryofthetable,whichmakesitareliablecalibrationtarget.
+Impactofthethresholdvalue
+Wemanuallyannotatekeypointssuchasthefourtablecor-
+ners,themidline–backlineintersection,andtheintersection Toevaluatetheinfluenceofthedetectionthresholdinour
+betweenthenetandthetable’ssideedge(Figure10). The BlurBallmodel,weplotthePrecision-Recall(PR)curvein
+cameraposeisthenestimatedbyminimizingthereprojec- Figure11. Overall,the1-stepvariantachievesabetterbal-
+tionerrorviaastandardPnPoptimization. ancethanthe3-stepvariant. However,foridenticalthresh-
+Due to the limited and near-coplanar set of keypoints, oldvalues,the1-stepdetectorconsistentlyyieldshigherre-
+distortion coefficients d and the optical center cannot be call but lower precision, indicating that its middle-frame
+d
+reliably estimated. We therefore assume an ideal pinhole predictions tend to be overconfident. This trade-off moti-
+model,withintrinsicparametersreducedtothefocallength vatesthechoiceofathresholdvalueofδ = 0.7,whichwe
+f. adoptforsubsequenttrackingexperimentsinSection4.3.
+11
+
+PAGE 12
+Figure11. PRcurvesforBlurBallatdifferentconfidencethresh-
+oldsδ.
+Figure 14. Full box plot of trajectory prediction errors for Pos
+andPos+Blur,includingoutliers.
+Figure12. Angularestimationerrorasafunctionofground-truth
+blurlength.
+(a)FN1 (b)FN2 (c)FP1
+Figure13. ExamplesofBlurBallfailures. FN1andFN2: missed
+detections.FP1:falsepositiveonahand.
+Blurprediction
+Figure12showstherelationshipbetweenblurlengthand Figure15.Zoomed-inboxplotoftrajectorypredictionerrors.
+angle estimation error. As expected, longer blur streaks
+yieldmoreaccurateangleestimation.Forl>3,theangular
+error remains below 10◦, validating its use in downstream Trajectorypredictionbenchmark
+taskssuchastrajectoryprediction(Section4.5).
+Webenchmarktrajectorypredictionusingposition-only
+(Pos)versusposition+blur(Pos+Blur)fitting. Figure14
+Failurecases andFigure15reportfullandzoomed-inboxplots.
+As shown in Figure 15, Pos+Blur achieves a lower
+Figure 13 shows typical failure cases. In FN1, the ball medianerror(19.9pxvs.28.4px)andanarrowerinterquar-
+briefly appears between two occluded frames, leading to a tilerange,indicatinggreaterconsistency. Thefulldistribu-
+misseddetection. InFN2, theballoverlapswithamoving tion (Figure 14) also reveals fewer extreme outliers and a
+player’sbody,ascenariodifficultevenforhumanobservers. shorter upper whisker (140.2px vs. 224.6px), confirming
+InFP1,ahandisincorrectlydetectedastheball. improvedrobustnessindifficultcases. Overall,incorporat-
+12
+
+PAGE 13
+ingblurleadstomoreaccurateandstabletrajectorypredic-
+tions,especiallyundersparseornoisyobservations.
+13

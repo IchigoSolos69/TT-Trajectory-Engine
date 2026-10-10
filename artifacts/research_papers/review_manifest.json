@@ -1,0 +1,295 @@
+{
+  "review_date": "2026-10-09",
+  "report": "RESEARCH_APPLICATIONS.md",
+  "references": [
+    {
+      "id": "A1",
+      "title": "BlurBall: Joint Ball and Motion Blur Estimation for Table Tennis Ball Tracking",
+      "year": 2025,
+      "url": "https://arxiv.org/abs/2509.18387v1",
+      "status": "attached_full_text",
+      "source": "C:\\Users\\Adi\\Downloads\\2509.18387v1.pdf",
+      "pages": 13,
+      "visually_inspected_pages": [
+        1,
+        5,
+        8,
+        11
+      ],
+      "sha256": "8f0caf4738504f5f4ff7c2c937530c1f05a7e314638bedba008d40ce7a4e953f"
+    },
+    {
+      "id": "A2",
+      "title": "Video-Based Table Tennis Tracking and Trajectory Prediction Using Convolutional Neural Networks",
+      "year": 2022,
+      "url": "https://doi.org/10.1142/S0218348X22401569",
+      "status": "attached_full_text",
+      "source": "C:\\Users\\Adi\\Downloads\\video-based-table-tennis-tracking-and-trajectory-prediction-using-convolutional-neural-networks.pdf",
+      "pages": 23,
+      "visually_inspected_pages": [
+        2,
+        8,
+        17
+      ],
+      "sha256": "81a4fe2d303fc419586e39ca01870d7032f916f2b2ea04fb9d6b46febe55dbe8"
+    },
+    {
+      "id": "B1",
+      "title": "Reliable Real-Time Ball Tracking for Robot Table Tennis",
+      "year": 2019,
+      "url": "https://www.mdpi.com/2218-6581/8/4/90",
+      "status": "publisher_blocked_corresponding_author_preprint_reviewed",
+      "full_text_url": "https://arxiv.org/pdf/1908.07332",
+      "artifact": "robotics_arxiv.pdf"
+    },
+    {
+      "id": "B2",
+      "title": "Fast moving table tennis ball tracking algorithm based on graph neural network",
+      "year": 2024,
+      "url": "https://www.nature.com/articles/s41598-024-80056-3",
+      "status": "publisher_pdf_reviewed",
+      "full_text_url": "https://www.nature.com/articles/s41598-024-80056-3.pdf",
+      "artifact": "nature_pdf.pdf"
+    },
+    {
+      "id": "B3",
+      "title": "Ball Tracking and Trajectory Prediction for Table-Tennis Robots",
+      "year": 2020,
+      "url": "https://www.mdpi.com/1424-8220/20/2/333",
+      "status": "publisher_pdf_reviewed",
+      "full_text_url": "https://mdpi-res.com/d_attachment/sensors/sensors-20-00333/article_deploy/sensors-20-00333.pdf",
+      "artifact": "sensors_publisher.pdf",
+      "visually_inspected_pages": [
+        14,
+        16
+      ]
+    },
+    {
+      "id": "B4",
+      "title": "Table tennis players use superior saccadic eye movements to track moving visual targets",
+      "year": 2024,
+      "url": "https://www.frontiersin.org/journals/sports-and-active-living/articles/10.3389/fspor.2024.1289800/full",
+      "status": "publisher_full_text_reviewed"
+    },
+    {
+      "id": "B5",
+      "title": null,
+      "year": null,
+      "url": "https://ieeexplore.ieee.org/abstract/document/11147615",
+      "status": "publisher_blocked_identity_unresolved",
+      "reason": "Abstract, document, stamp and metadata routes blocked or unavailable; exact-ID search provided no verified match. No method inferred."
+    },
+    {
+      "id": "B6",
+      "title": null,
+      "year": null,
+      "url": "https://ieeexplore.ieee.org/abstract/document/10572328",
+      "status": "publisher_blocked_identity_unresolved",
+      "reason": "Publisher verification/blocking and rate-limited metadata lookup; exact-ID search did not resolve identity. Related event-camera reference not equated with this ID."
+    },
+    {
+      "id": "B7",
+      "title": "Research on real–time tracking of table tennis ball based on machine learning with low-speed camera",
+      "year": 2018,
+      "url": "https://www.tandfonline.com/doi/full/10.1080/21642583.2018.1450167#d1e239",
+      "status": "primary_search_cache_full_text_reviewed_direct_pdf_blocked"
+    },
+    {
+      "id": "B8",
+      "title": null,
+      "year": null,
+      "url": "https://ieeexplore.ieee.org/abstract/document/4281948",
+      "status": "publisher_blocked_identity_unresolved",
+      "reason": "Publisher access blocked; exact-ID searches had no trustworthy bibliographic match. No year or method guessed."
+    },
+    {
+      "id": "B9",
+      "title": "Studies and simulations on the flight trajectories of spinning table tennis ball via high-speed camera vision tracking system",
+      "year": 2019,
+      "online_year": 2018,
+      "url": "https://journals.sagepub.com/doi/abs/10.1177/1754337118815021",
+      "status": "restricted_access_abstract_only",
+      "limitation": "Full methods, equations, hardware details and error protocol unreviewed."
+    },
+    {
+      "id": "B10",
+      "title": "An On-Line Algorithm for Measuring the Translational and Rotational Velocities of a Table Tennis Ball",
+      "year": 2012,
+      "url": "https://www.tandfonline.com/doi/abs/10.9746/jcmsi.5.233",
+      "status": "primary_indexed_abstract_first_page_only",
+      "limitation": "Complete publisher PDF retrieval blocked; full methods and errors unreviewed."
+    },
+    {
+      "id": "B11",
+      "title": "Tracking a table tennis ball for umpiring purposes",
+      "year": 2015,
+      "url": "https://ieeexplore.ieee.org/abstract/document/7153160",
+      "status": "publisher_blocked_author_accepted_manuscript_reviewed",
+      "full_text_url": "https://researchportal.port.ac.uk/files/10388418/Tracking_a_table_tennis_ball_for_umpiring_purposes.pdf"
+    },
+    {
+      "id": "B12",
+      "title": "Application of Table Tennis Ball Trajectory and Rotation-Oriented Prediction Algorithm Using Artificial Intelligence",
+      "year": 2022,
+      "url": "https://www.frontiersin.org/journals/neurorobotics/articles/10.3389/fnbot.2022.820028/full",
+      "status": "publisher_full_text_reviewed",
+      "artifact": "frontiers_prediction.html"
+    },
+    {
+      "id": "C1",
+      "title": "Table Tennis Ball Spin Estimation with an Event Camera",
+      "year": 2024,
+      "url": "https://openaccess.thecvf.com/content/CVPR2024W/CVsports/html/Gossard_Table_Tennis_Ball_Spin_Estimation_with_an_Event_Camera_CVPRW_2024_paper.html",
+      "status": "additional_verified_primary_full_text",
+      "artifact": "eventcamera_pdf.pdf",
+      "limitation": "Requires event-camera acquisition; not identified as B5, B6 or B8."
+    }
+  ],
+  "assets": [
+    {
+      "file": "2509.18387v1.txt",
+      "bytes": 51918,
+      "sha256": "c7291dcd6877fd42a244b3fee5048096f8a1c6310ece5f50b49933f10898e01a",
+      "warning": null
+    },
+    {
+      "file": "2509.18387v1_page_1.png",
+      "bytes": 50063,
+      "sha256": "6f0a406b8f130808dba998a8accb1bee9f50bf8fcef840424fbd597d8d0087b5",
+      "warning": null
+    },
+    {
+      "file": "2509.18387v1_page_11.png",
+      "bytes": 42383,
+      "sha256": "745899f4358fbad98e6db4824aea7f2c5f376c9b99da6406e0f9584f2225d67b",
+      "warning": null
+    },
+    {
+      "file": "2509.18387v1_page_2.png",
+      "bytes": 39960,
+      "sha256": "189e73840070c4256569019ddddb56326f4b61310bb019aac14aca0445d01636",
+      "warning": null
+    },
+    {
+      "file": "2509.18387v1_page_5.png",
+      "bytes": 46144,
+      "sha256": "527c279a9c078f83bd839b8b6e7da838c852254a44e305765334bb807b099ecf",
+      "warning": null
+    },
+    {
+      "file": "2509.18387v1_page_8.png",
+      "bytes": 48052,
+      "sha256": "a191371b367b426759de646e3067bf81c92789180801ba62dc3c5ac44b8d21e7",
+      "warning": null
+    },
+    {
+      "file": "eventcamera_pdf.pdf",
+      "bytes": 1828520,
+      "sha256": "2c34b5f79ed7fcdbccd2fda9986854308c9bb547b7b9ec585e813a1b3ad2476d",
+      "warning": null
+    },
+    {
+      "file": "eventcamera_pdf.txt",
+      "bytes": 40494,
+      "sha256": "a167bdb9f7add7f83bd57210eea6c9f16613e0e2838a776a1c527ad30d128a8f",
+      "warning": null
+    },
+    {
+      "file": "frontiers_prediction.html",
+      "bytes": 834049,
+      "sha256": "c119f41fa75497f91be47b406de9b29fa02f04641f151a13268bdba5f96ae163",
+      "warning": null
+    },
+    {
+      "file": "nature_pdf.pdf",
+      "bytes": 9541263,
+      "sha256": "17acf98f0726c7f5332057d7e9ee88aff2eec8a51ab7423069f223c5d57fc4a6",
+      "warning": null
+    },
+    {
+      "file": "nature_pdf.txt",
+      "bytes": 109527,
+      "sha256": "c5d97fd2ffd28df2f831c26c3455661de75f4814c9305aa498697958da522b18",
+      "warning": null
+    },
+    {
+      "file": "robotics_arxiv.pdf",
+      "bytes": 458188,
+      "sha256": "786be67aaa6817ddb968da80c048b4555f7cbe36c17614d74d5027f5644c0eb3",
+      "warning": null
+    },
+    {
+      "file": "robotics_arxiv.txt",
+      "bytes": 40914,
+      "sha256": "cedd681b987eecb7646f5e74f9e63c22cbfbfd010e1d8fac9cc95dc4310f65c0",
+      "warning": null
+    },
+    {
+      "file": "sensors_pmc.html",
+      "bytes": 21374,
+      "sha256": "81fc15d25d7205bc17f1dd22e92d451ccb7409b619695e748cfaac2f52bf9119",
+      "warning": "Bot-verification response; not paper full text"
+    },
+    {
+      "file": "sensors_publisher.pdf",
+      "bytes": 3148495,
+      "sha256": "c6e609988d537d77937339b76fbb0ae2daac3efe3049802e0f227ba2bb5c06b7",
+      "warning": null
+    },
+    {
+      "file": "sensors_publisher.txt",
+      "bytes": 53019,
+      "sha256": "cf44f8d16d95e91fbd60c090f1456a7e373d2c1b9259464fbdb863e8f9a074bc",
+      "warning": null
+    },
+    {
+      "file": "sensors_publisher_page_14.png",
+      "bytes": 36486,
+      "sha256": "95db2a5b50146c493ac39928d136b3be28b648a4f7f475234910bf28441310ca",
+      "warning": null
+    },
+    {
+      "file": "sensors_publisher_page_16.png",
+      "bytes": 36028,
+      "sha256": "b73425f615c216073b47548549799c3180a626f3678fb24fe1dadf7705002312",
+      "warning": null
+    },
+    {
+      "file": "video-based-table-tennis-tracking-and-trajectory-prediction-using-convolutional-neural-networks.txt",
+      "bytes": 75473,
+      "sha256": "ba13c6032c8e64997538cc15fc27c87640f7dfc6bcfeb1552abe0042f7d93b2b",
+      "warning": null
+    },
+    {
+      "file": "video-based-table-tennis-tracking-and-trajectory-prediction-using-convolutional-neural-networks_page_1.png",
+      "bytes": 20830,
+      "sha256": "09ddd10f0ac9992917e8ad405fec4e0050edccea450ea1c9b095a29dfb2077c3",
+      "warning": null
+    },
+    {
+      "file": "video-based-table-tennis-tracking-and-trajectory-prediction-using-convolutional-neural-networks_page_17.png",
+      "bytes": 43629,
+      "sha256": "7f7d10bfd4565bf9a5fe966097c1b258a3f8809ff8844498cc2ca97bdf59df3a",
+      "warning": null
+    },
+    {
+      "file": "video-based-table-tennis-tracking-and-trajectory-prediction-using-convolutional-neural-networks_page_2.png",
+      "bytes": 31530,
+      "sha256": "3e1ac1f9eae6b7d6909e7947be5fb315b2a9b3e597dfe53e0b8ce232a5de7bc1",
+      "warning": null
+    },
+    {
+      "file": "video-based-table-tennis-tracking-and-trajectory-prediction-using-convolutional-neural-networks_page_8.png",
+      "bytes": 41103,
+      "sha256": "9705f998e7b85b6039bb073d5949fe3e0da0368e252d1f8375be7c1ba3978e6e",
+      "warning": null
+    }
+  ],
+  "scope": "Methods/evidence review only. Local PDF sources unmodified. No accuracy promotion or application-code changes.",
+  "acquisition_notes": [
+    "Every requested specific URL was attempted with browsing; selected primary alternative versions were used when available.",
+    "Python certificate-trust errors were resolved using PowerShell's normal TLS trust, not by disabling certificate verification.",
+    "source_fetch_manifest.json records the final automated fetch batch only; this manifest is the complete consolidated access ledger.",
+    "Research PDFs and extracted text are local review evidence; this manifest does not authorize redistribution or inclusion in application packages."
+  ]
+}

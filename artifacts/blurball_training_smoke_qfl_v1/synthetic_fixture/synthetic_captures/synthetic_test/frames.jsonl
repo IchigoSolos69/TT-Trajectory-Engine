@@ -1,0 +1,12 @@
+{"file": "frame_1.jpg", "source_frame": 1, "elapsed_ms": 0.0, "burst_id": 1}
+{"file": "frame_2.jpg", "source_frame": 2, "elapsed_ms": 16.666666666666668, "burst_id": 1}
+{"file": "frame_3.jpg", "source_frame": 3, "elapsed_ms": 33.333333333333336, "burst_id": 1}
+{"file": "frame_4.jpg", "source_frame": 4, "elapsed_ms": 50.0, "burst_id": 2}
+{"file": "frame_5.jpg", "source_frame": 5, "elapsed_ms": 66.66666666666667, "burst_id": 2}
+{"file": "frame_6.jpg", "source_frame": 6, "elapsed_ms": 83.33333333333333, "burst_id": 2}
+{"file": "frame_7.jpg", "source_frame": 7, "elapsed_ms": 100.0, "burst_id": 3}
+{"file": "frame_8.jpg", "source_frame": 8, "elapsed_ms": 116.66666666666667, "burst_id": 3}
+{"file": "frame_9.jpg", "source_frame": 9, "elapsed_ms": 133.33333333333334, "burst_id": 3}
+{"file": "frame_10.jpg", "source_frame": 10, "elapsed_ms": 150.0, "burst_id": 4}
+{"file": "frame_11.jpg", "source_frame": 11, "elapsed_ms": 166.66666666666666, "burst_id": 4}
+{"file": "frame_12.jpg", "source_frame": 12, "elapsed_ms": 183.33333333333334, "burst_id": 4}

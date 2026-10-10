@@ -1,0 +1,2195 @@
+PAGE 1
+www.nature.com/scientificreports
+OPEN Fast moving table tennis ball
+tracking algorithm based on graph
+neural network
+Tianjian Zou1, Jiangning Wei1,3, Bo Yu1,3, Xinzhu Qiu1,3, Hao Zhang2,3, Xu Du2,3 & Jun Liu1,3
+The key object tracking in sports video scenarios poses a pivotal challenge in the analysis of sports
+techniques and tactics. In table tennis, due to the small size and rapid motion of the ball, identifying
+and tracking the table tennis ball through video is a particularly arduous task, where the majority of
+existing detection and tracking algorithms struggle to meet the practical application requirements
+in real-world scenarios. To address this issue, this paper proposes a combined technical approach
+integrating detection and discrimination, tailored to the unique motion characteristics of table
+tennis. For the detector, we utilize and refine a common video differential detector. As for the
+discriminator, we introduce GMP (a Graph Max-message Pass Neural Network), which is designed
+specifically for tracking table tennis balls or similar objects. Furthermore, we enhance an existing
+dataset for table tennis tracking problems by enriching its scenarios. The results demonstrate that our
+proposed technical solution performs impressively on both the dataset and the intended real-world
+environments, showcasing the good scalability of our algorithms and models as well as their potential
+for application in other scenarios.
+Keywords Table tennis, Fast moving object, Object tracking, Object detection, Graph neural network, Sports
+analytics
+The application of AI technology in sports has emerged as one of the recent research hotspots, with AI-based
+sports analysis already finding its way into various sports such as football, tennis and billiards. These intelligent
+analysis systems deployed in sports scenarios typically leverage multiple advancements in AI fields as their core
+technological components, adapting them to cater to the specific needs of sports analysis. For instance, human
+body key point extraction and pose recognition techniques are employed to identify athletes’ movements, while
+object detection and tracking technologies are utilized to record and analyze match scenarios. Additionally,
+anomaly detection and recognition techniques based on video and motion image features are used to extract key
+frames. These technologies aid athletes and coaches in making rational plans and decisions, reducing the cost
+of training and teaching, and enhancing the popularity of sports, thereby developing and elevating the overall
+performance level of the sport.
+Similarly, table tennis is a widely popular sport globally, and video-based intelligent analysis systems for
+table tennis can assist a vast number of enthusiasts and athletes in evaluating their tactical characteristics,
+providing standardized movement guidance1, and planning scientific training, thereby effectively enhancing
+their skill levels. Consequently, video-based intelligent analysis systems for table tennis techniques possess
+broad application prospects and ample demand. Within these intelligent analysis systems, ball tracking is an
+indispensable key technology. It can assist the system in determining the point of contact2, delineating the start
+and end moments of movements to aid in action classification and standardization3, and supporting the action
+recognition system in segmenting rounds and scoring. However, the small size, rapid motion, and insignificant
+and unstable image features of the table tennis ball bring many difficulties to the tracking algorithm. Further
+more, well-researched target detection and tracking algorithm recently,including pedestrian tracking (primarily
+focused on larger targets with clear image features), and unmanned aerial vehicle (UAV) detection and tracking
+algorithms (where targets are small but feature-stable, making motion easier to track) are inapplicable in our
+scenario for these difficulties. Examples of table tennis balls to be detected and tracked are shown in Figure 1.
+In the context of small object detection, research represented by4suggests that leveraging contextual
+information and adjacent video frames can enhance tracking capabilities. On the other hand, studies focusing on
+1School of Artificial Intelligence, Beijing University of Post and Telecommunications, XiTuCheng Road, 10, Haidian
+100082, Beijing, China. 2Department of Physical Education, Beijing University of Post and Telecommunications,
+XiTuCheng Road, 10, Haidian 100082, Beijing, China. 3These authors contributed equally: Jiangning Wei, Bo Yu,
+Xinzhu Qiu, Hao Zhang, Xu Du and Jun Liu. email: liujun@bupt.edu.cn
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 1
+
+PAGE 2
+www.nature.com/scientificreports/
+Fig. 1. Examples of table tennis balls to be detected and tracked.
+high-speed moving object tracking, exemplified by5, propose the utilization of frame differences and analysis of
+differential images to separate the target from the background. Inspired by these two perspectives, our proposed
+approach combines detection and discrimination to track table tennis balls. Similar ideas have been explored
+in existing research, where6and7achieved good detection results using similar concepts. However, due to the
+processing of unstructured data, their discriminators tend to have numerous parameters, complex structures,
+and slow runtimes. Although existing Graph Neural Networks (GNNs) can handle unstructured data, they do
+not adapt well to the demands of tracking problems. The vast majority of research employing graph neural
+networks for tracking tasks has focused on Multiple Object Tracking (MOT) datasets, which emphasize the
+construction of relationships between targets while rarely considering the presence of erroneous, false, or even
+uncertain targets. While numerous similar studies have also prioritized handling severe occlusion and target
+loss scenarios8, these methods still rely on inferences based on relatively good detection results, rather than
+operating from the outset under the challenging conditions encountered in table tennis videos. Therefore, we
+introduce a novel Graph Max-message Pass Neural Network (GMP) as a new discriminator specifically designed
+for tracking and filtering table tennis balls or similar targets. The overall approach of the proposed algorithm will
+be detailed in Section 3, with a focus on the analysis of the discriminator GMP in Section 3.5.
+To train effective models and validate the efficiency of our method, we build a dataset with rich scenarios
+based on existing research5679and conduct comparisons with various general-purpose algorithms on this dataset.
+The general-purpose algorithms we compared against include YOLOv8, which performs object detection based
+directly on single-frame image features101112, Single Object Tracking (SOT), which relies on user annotations
+and image features for tracking13, and a scheme that utilizes the generic Graph Attention Network (GAT)14 as
+a discriminator. Our findings indicate that our method outperforms all the comparison algorithms and holds
+the potential to address other object tracking problems. In Section 4, we will delve into the detailed analysis of
+the performance of our proposed method. In Section 2, we will review related works, and in Section 5, we will
+provide a brief summary and outline future research directions.
+In practical training and match analysis, our algorithm can directly provide information such as the image
+location and trajectory of the table tennis ball. These direct data assist the analysis system in segmenting rounds
+and actions. With subsequent analysis and processing, we can obtain the land point and hit point of the table
+tennis ball and estimate its approximate speed (shown in Figure 2). During training and matches, by analyzing
+these data, we can quantify players’ stability, offensive, and defensive capabilities, and use the data to arrange
+corresponding tactics and targeted training. For instance, in training, by analyzing players’ ball-striking speed
+and trajectory direction, coaches can correct their force generation method and angle during ball striking,
+thereby improving their hitting quality. During matches, coaches can formulate reasonable counter-tactics
+for their own players based on data such as the trajectory and land point of the opponent’s table tennis ball.
+Compared to commonly used match result analysis, scoring and losing statistics, the results provided by the
+table tennis tracking algorithm are more precise, detailed, and rigorous.
+Related works
+In our previous research6, we leveraged a tree structure to establish contextual relationships among potential
+table tennis ball targets. Initially, we employed a differential detection method to filter out numerous potential
+targets, ensuring a sufficiently high recall rate. Subsequently, based on the proposed tree structure and the
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 2
+
+PAGE 3
+www.nature.com/scientificreports/
+Fig. 2. Further analysis of the tracking results of table tennis can yield many useful technical and tactical
+information (including land point, hit point, approximate ball speed, etc. ). In particular, we roughly calculate
+the average pixel distance of the table tennis ball between a trajectory frame, and then roughly estimate the ball
+speed of the table tennis ball based on the pixel length of the center line of the table, the actual length (2.74m),
+and the video frame rate (in this case, the frame rate of the video is 30 fps).
+kinematic characteristics of table tennis, we refined the targets to identify the table tennis ball through trajectory
+analysis associated with the leaf nodes in the tree. This approach achieved certain success in terms of accuracy
+and adaptability across different scenarios. However, it relied heavily on manually tuned empirical parameters
+and operated relatively slowly. Consequently, we have further delved into this field and present the method
+proposed in this thesis. Our related work revolves around four aspects: the significance of table tennis tracking
+algorithms for intelligent analysis systems, object detection methods, traditional object tracking methods, and
+graph neural network-based object tracking methods.
+The significance of table tennis tracking algorithms for intelligent analysis systems
+Currently, there have been a number of studies, achievements, and datasets related to intelligent analysis systems
+for table tennis9, yet the tracking of table tennis balls in complex scenarios remains limited. This is due to the high
+technicality of table tennis, which has led most research to focus on motion guidance and standardization. These
+studies typically utilize deep learning methods to extract human body keypoints, employing them to model
+and estimate human poses15. Algorithms can then determine the start and end of actions based on the pose
+skeletons of individuals in video frames16, classify technical actions17, and design rules for evaluating technique
+execution. Similar technical solutions do not require table tennis ball detection as they rely solely on human
+skeletons and keypoints; however, analyzing actions based only on skeletons remains a challenging task1819.
+This approach is only effective in relatively standardized training environments. In less standardized training
+and competition scenarios, the movement of the table tennis ball is highly variable20, and players need to adjust
+their actions accordingly. Without effective table tennis ball tracking technology, intelligent analysis systems may
+fail to adapt to such changes, leading to useless or even erroneous analysis and guidance, significantly reducing
+the accuracy and recall rates of motion guidance3. Tracking results for table tennis balls can assist in precisely
+dividing action stages for motion analysis and guidance, aiding in the assessment of the standardization and
+rationality of actions.
+Object detection methods
+With the development of object detection techniques in computer vision, detecting objects directly from images
+based on their edges, morphology, color, and other features, and regressing the bounding boxes of these objects,
+has become one of the primary methods for object detection. Representative methods include YOLO and
+FASTER-RCNN. Among them, YOLO12has gained widespread popularity due to its simple structure, strong
+adaptability, and fast operation1011. Previous studies have found that applying these methods directly to table
+tennis ball detection is not ideal due to the small size and excessive blurring of the ball7. Some scholars have
+used an improved FASTER-RCNN algorithm to detect table tennis balls based on their small size characteristics,
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 3
+
+PAGE 4
+www.nature.com/scientificreports/
+achieving good results21. However, there is still room for improvement in terms of the method’s performance
+metrics and adaptability to complex scenarios.
+Some scholars have chosen to focus on the rapid movement characteristics and shape of table tennis balls,
+attempting to extract the rapidly moving balls in the foreground based on differential images5. Other studies
+have tried to directly segment blurred table tennis balls in the foreground using deep learning techniques229,
+while some have considered relying on background information from the table tennis table to separate the balls
+in the foreground23. These methods perform well in scenarios with uncomplicated backgrounds, but table tennis
+sports videos in real-world are full of various noises, background clutter, and interference caused by athlete
+movements. Under such circumstances, the aforementioned approaches often fail to function properly. Some
+studies have proposed using local images for detection and excluding most image regions based on the ball’s
+motion characteristics to avoid background interference24. However, table tennis sports videos in real-world
+contain a large number of invalid segments where the ball is not present, which limits the direct application of
+the aforementioned methods.
+Traditional object tracking methods
+Since relying solely on single-frame images cannot effectively solve the problem of table tennis ball tracking, a
+natural approach is to leverage the contextual and spatio-temporal information from videos for detection. The
+conventional idea behind such methods is to extract all potential candidate regions and targets from images or
+video frames, aggregate these targets, and then screen them based on image features, motion characteristics, and
+spatio-temporal information to obtain the final tracking results25.
+In4, researchers extracted all potential targets from single-frame images and then filtered out the best
+results based on video context, improving the detection effectiveness for blurred small objects. In26, researchers
+successfully tracked vehicles in videos with significant distortion by combining the motion characteristics of
+vehicles. In27, researchers achieved billiards tracking and 3D reconstruction by proposing all possible positions
+and shapes of the cue ball.
+Furthermore, table tennis ball tracking can also be considered as part of the Single Object Tracking (SOT)
+problem28. However, due to SOT’s heavy reliance on stable image features and feature extraction networks29, its
+application to table tennis ball tracking is limited. Nevertheless, in this context, researchers often focus on the
+Region Proposal Network (RPN) responsible for candidate region generation13. The role of this network is to
+analyze all potential candidate regions and select the optimal tracking results. This aspect of the work essentially
+involves analyzing and discriminating all potential targets from a global perspective, assessing the confidence of
+each target based on prior information, and filtering out the results.
+However, since the relationships among all potential targets are unstructured data, it is difficult to vectorize
+prior information and decision-making conditions. Therefore, most of the aforementioned studies did not use
+deep learning methods in addressing tracking problems, which limited their ability to extract deeper and more
+essential information, resulting in poor adaptability.
+Graph neural networks based tracking method
+In deep learning, to handle non-Euclidean space data, researchers proposed Graph Neural Networks (GNNs)30.
+With the gradual development of deep learning and its applications, researchers have found that GNNs can
+adapt to various unstructured data. Currently, apart from the original GNNs, Graph Attention Networks (GATs)
+are also mainstream in the industry14. Some scholars have even suggested that Transformer is essentially a fully
+connected GNN31. GNNs are widely used in prediction, optimization, feature learning, and other problems due
+to their adaptability to unstructured data32.
+33employed GNNs to improve prediction results in latent spaces, while34used GNNs to learn feature
+information from unstructured data in multi-agent motion. In35and36, GNNs were utilized to study team
+collaboration mechanisms in football and select the best combinations or players for the game37. applied GNNs
+to merge and group targets in tracking problems. GNNs can adapt to unstructured data, converting traditional
+methods such as traversal, screening, and matching in tracking problems into regression and classification
+tasks in deep learning, thereby enhancing tracking performance38. They have also improved the performance of
+tracking problems in general39.
+In the context of SOT, the application of graph attention mechanisms effectively integrates image feature
+information, leading to improved tracking performance40. For tracking problems involving objects with distinct
+motion patterns and characteristics, such as vehicles and high-speed particles, GNNs can process unstructured
+trajectory information, predict target positions, assist in target search and reconstruction, and enhance tracking
+performance4142. In multi-target tracking problems involving pedestrians and robots, GNNs primarily facilitate
+message passing among objects, enabling potential targets to refine their features and learn patterns from videos
+or contextual images4344. used message passing in GNNs to determine the consistency among potential targets,
+while45directly matched target features obtained from GNNs. Both methods achieved superior tracking results
+compared to traditional methods with the assistance of GNNs. During this process, some studies have attempted
+to modify the structure and frameworks of graph neural networks to enhance information aggregation
+capabilities and tracking efficiency within graphs46,47. These methods have demonstrated promising results and
+improvements in pedestrian tracking and matching for Multiple Object Tracking (MOT) scenarios.
+Summary
+Despite the abundance of detection and tracking algorithms proposed in current research, which have achieved
+remarkable performance in tracking feature-rich targets such as pedestrians, they cannot be directly applied
+to the context and problems of table tennis analysis in our study. A single detection scheme fails to provide
+satisfactory accuracy and recall rates, while most tracking methods primarily focus on relationship matching
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 4
+
+PAGE 5
+www.nature.com/scientificreports/
+issues similar to those in MOT datasets, rendering them unsuitable for our required scenarios. Although graph
+neural networks excel at handling unstructured data, neither GNNs nor GATs yield satisfactory results for our
+purposes. Notably, we recognize that the tracking tasks we envision for graph neural networks under numerous
+false target conditions extend beyond mere relationship matching and information fusion; they necessitate
+a reinterpretation (detailed in Section 3). To better accomplish this reinterpreted graph task, we propose the
+Graph Max-message Pass Neural Network (GMP), which we demonstrate to effectively address the challenges
+of table tennis tracking.
+Method
+Problem formulation
+The input data processed by the method proposed in this paper is a video Φ, which consists of n video frames
+(Image, I), i.e., Φ=[I 1 ,I 2 ,...,I n]. Each frame image may or may not contain a table tennis ball, and there
+also may be one or multiple table tennis balls in each frame image. Therefore, we assume that there are k table
+tennis balls (k=0 or k N+) in each frame image. We collect all these k table tennis balls in the tth frame
+∈
+image into a set Bt, where the balls are sequentially numbered as bt i. Specifically, bt i denotes the ith table tennis
+ball in the tth frame. It should be noted that if k=0, then Bt is an empty set. In this way, we obtain a total of n
+sets: B1,B2,...,Bn.
+The continuous movement of table tennis balls in multiple frame images is called a trajectory T. Obviously,
+there may be multiple trajectories throughout the video, which we assume to be T 1 ,T 2 ,...,T u ,...,T s. Any
+trajectory T u represents an ordered sequence of table tennis balls [bj i1 1,bj i2 2,...,bj im m], where j 1 <j 2 <...<j m.
+We know that bj i1 1 ∈ Bj1,bj i2 2 ∈ Bj2,...,bj im m ∈ Bjm. It should be noted that, in T 1 ,T 2 ,...,T s, the table tennis
+balls subordinated to different trajectories T u are all distinct. That is to say, for any given real table tennis ball
+bt i, it can only belong to a specific trajectory T u and cannot be simultaneously associated with two trajectories.
+Additionally, we assume that every table tennis ball bt i will appear in the form of a trajectory, indicating that
+T 1∪ T 2∪ ... ∪ T s =B 1∪ B 2∪ ... ∪ B n.
+Our ultimate task is to identify all the trajectories T 1 ,T 2 ,...,T s within the frame images [I 1 ,I 2 ,...,I n]
+from video Φ. An example is shown in Figure 3.
+Frameworks and processes
+Firstly, we will outline the entire process of the proposed method:
+Step 1: Each video frame image { I 1 ,I 2 ,...,I n } will be processed through the object detector h real,
+resulting in a set of potential objects for each frame. Consequently, we obtain n sets of potential objects, denoted
+as [O1,O2,...,Ot,...,On]. These sets are similar to the sets of ping-pong balls Bt in each frame, except that
+Bt represents the actual table tennis targets, whereas Ot comprises potential table tennis targets. Specifically,
+Ot = { ot 1 ,ot 2 ,...,ot k} , where ot i represents the i-th potential table tennis target in the t-th frame. Section 3.3
+will provide a detailed introduction to the object detector h real.
+Step 2: Utilizing a sliding window (Window, w) and a gap (Gap, g), we sequentially select the potential
+target sets Ot,Ot+1,...,Ot+w − 1 obtained from Step 1 to construct a set of graphs G= { G 1 ,G 2 ,...,G r } for
+further discrimination. Each graph G: V,E comprises a set of nodes V and a set of edges E. The definitions
+{ }
+of nodes and edges, as well as the specific construction method of the graphs, will be elaborated in Section 3.4.
+obta S i t n e p a 3 s : e t E a o c f h g r g a r p a h p s h G in p t = he { s G et p 1 G ,G = p 2 , { .. G . 1 , , G G p r 2 } , , . w .. h , e G re r b } o w th il l n b o e d e f s e d a n in d t o e d t g h e e s d h i a sc v r e i m as i s n o a c t i o a r t e f d r e p a r l o ( b θ a , b G il r it ) i e t s o .
+If the input graph to the discriminator is G: V,E , then the output probability graph is defined as
+{ }
+Gp : Vp,Ep where Vp = (v,p(v))v V,p(v) [0,1] ,Ep = (e,p(e))e E,p(e) [0,1] . In
+{ } { | ∈ ⊂ } { | ∈ ⊂ }
+Section 3.5, we will introduce the discriminator f real(θ,G) in detail.
+Step 4: Finally, based on all the probability graphs Gp(Gp 1 ,Gp 2 ,...,Gp r ), we derive a set of trajectories
+[T 1 ,T 2 ,...,T s] as the final result. Section 3.6 will explain the method of obtaining the final trajectories
+[T 1 ,T 2 ,...,T s] from the probability graphs Gp.
+The whole process of the proposed method is illustrated in Figure 4.
+Fig. 3. Video frames and table tennis balls to be tracked.
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 5
+
+PAGE 6
+www.nature.com/scientificreports/
+Fig. 4. Flowchart of the proposed method, Step 1 extract potential targets, Step 2 organize these potential goals
+into a graph, Step 3 compute the confidence of each potential target and the relationship between them (i.e.,
+gives the confidence of the nodes and edges in the graph), Step 4 organize the results of the track based on the
+confidence of these goals and relationships.
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 6
+
+PAGE 7
+www.nature.com/scientificreports/
+In the proposed method, the two core steps are the detector and the discriminator. Below, we briefly
+introduce our thought of the design about these two core steps, which is important to understand following
+detail description of each step of the proposed method.
+For the problem of trajectory tracking of a specific target in a video, the most straightforward solution is
+to train a detector specifically for that target. In the case of table tennis trajectory tracking, this detector is
+represented as p bt i| I t , which detects table tennis balls from each video frame image based on the detector.
+Subsequently, all detected table tennis balls, denoted as
+bj
+, are linked together. However, due to the sparse and
+( ) i
+easily blurred features of a single table tennis ball in the image, directly construct the detector p bt i| I t for
+table tennis faces numerous challenges and yields unsatisfactory results. For instance, Figure 5 demonstrates
+( )
+an example of the results obtained from a table tennis ball detector (YOLOv8), which is trained by the dataset
+mentioned in Section 4 based. It can be observed that there are numerous missed detections and false detections.
+To solve this problem, we need to approach it from a different way. Since the result trajectories [T 1 ,T 2 ,...,T s] to
+be output are independent of each other, we can simply analyze the detection process of a specific trajectory T u. In the
+existing video stream ϕ= { I 1 ,I 2 ,...,I n } , when we do not know T u, we can arbitrarily designate potential targets
+oj in different frames of the video ϕ. Subsequently, we concatenate them in the order of their appearance to obtain
+i
+T possiblev =[oj i1 1,oj i2 2,...,oj im m]. Evidently, we can obtain T u sooner or later by endlessly proposing T possiblev .
+Let’s assume that all proposed T possiblev form T Σ, i.e., T Σ = { T possible1 ,T possible2 ,...,T possiblev ,... } . Now,
+p(Tu)p ϕ Tu
+considering the posterior probability of T u from the perspective of T Σ we have p T u ϕ = p (cid:31) (ϕ) (cid:30) (cid:30) (cid:29).
+(cid:31) (cid:30) (cid:29) (cid:30)
+Since p(ϕ) does not participate in the posterior calculation of T u, according to the maxi(cid:30)
+(cid:30)
+mum posterior crit (cid:30) erion,
+(cid:30)
+argmaxp(T u
+|
+ϕ)=argmax(log(p(T u))+log(p(ϕ
+|
+T u))) where T u
+∈
+T Σ.
+Tu Tu
+Then, we delve into a detailed analysis of the above expression. Assuming that the two terms in the expression
+are largely independent during the optimization process (or have minimal mutual influence), we can optimize
+them individually:
+(1) The term log(p(T u)) can be regarded as a probabilistic model that discriminates whether T u is sufficiently
+close to the prior of table tennis motion characteristics. To estimate p(T u), we need to build a discriminator
+based on a dataset of table tennis motions.
+(2) For the second term log(p(ϕT u)), we can consider a generative model of ϕ as ϕ=ϕ Inital T u
+| ⊕
+, where ϕ Inital can be interpreted as the background component (or video prior) of the im-
+age stream under analysis. The relationship between these components is expressed as
+p(ϕT u)p(T u)p(ϕ Inital ϕ,T u)=p(ϕ)p(T u ϕ Inital ,ϕ)p(ϕ Inital ϕ). This simplifies to
+| | | |
+Fig. 5. Object detection results of the trained detector YOLOv8.
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 7
+
+PAGE 8
+www.nature.com/scientificreports/
+p(ϕ | T u)= p(ϕ)p( p T (T u u | ϕ ) I p n (ϕ it I a n l i , t ϕ a ) l p | ( ϕ ϕ ,T In u i ) tal| ϕ). Given that we primarily focus on the relationship between T u
+and ϕ in this generative model of ϕ, terms like p(T u) and other independent factors can be ignored, result-
+ing in p(ϕT u) p(T u ϕ Inital ,ϕ). Since we can estimate ϕ Inital through contextual information in the
+| ∝ |
+video stream, p(T u ϕ Inital ,ϕ) points to a detector using the estimation of scene as a prior. That is, the pro-
+|
+posed T u should yield a favorable output from the detector p(T u ϕ Inital ,ϕ).Through the above derivation,
+|
+we have decomposed the tracking problem into finding T u that maximizes the relatively independent dis-
+criminator log(p(T u)) and detector log(p T u ϕ Inital ,ϕ ). Let’s denote the discriminator as f(θ,T u)
+(cid:31) (cid:30) (cid:29)
+(cid:30)
+and the detector as h(T u | µ,ϕ). Then, T u =a T r po g s m s (cid:30) (cid:30) ib a l x e (f(θ,T possible)+h(T possible | µ,ϕ)), where θ and µ
+are parameters. In practical scenarios, the preliminary detector often only provides a basic reliable thresh-
+old and cannot effectively regress. Moreover, since the detector typically operates on single-frame images,
+we incorporate all outputs from the single-frame detector into the discriminator. In essence, our approach
+can be described as following formula:
+T u =argmax(f(θ,T possible)) where T possible =[oj i1 1,oj i2 2,...,oj im m] (j 1 <j 2 <...<j m),
+Tpossible
+oj i ∈ Oj Oj = oj i h real oj i µ,I j >threshold .
+(cid:31) (cid:30) (cid:29) (cid:31) (cid:29) (cid:28) (cid:27)(cid:28)
+(cid:29) (cid:29)
+(cid:29) (cid:29)
+Notably, h real here is still a(cid:29) discrimina(cid:29)tor with a prior estimation of ϕ Inital, rather than a simple single-frame
+image detector p(oj
+i|
+I j). Additionally, we can implicitly learn the features of all known table tennis trajectories
+T k Σ nown =[T known1 ,T known2 ,...] through parameterized deep learning methods, obtaining the discrimination
+function f(θ,T possible), where T possible is the feature to be discriminated and θ=Train(T k Σ nown ) represents
+the parameters learned from all known table tennis trajectories TΣ . Practically, due to the vast number of
+known
+potential T possible, we compose the set of potential targets [O1,O2,...,Ot,...,On] into a graph G, and our
+discriminator is reformulated as f real(θ,G), whose output is the previously mentioned probabilistic graph Gp.
+Detector
+Based on Section 3.2, we know that the detector h real,which detects potential targets from video frame images,
+originates from the probabilistic model p(T u ϕ Inital ,ϕ). This model points to a detector that uses scene
+|
+estimation as a prior. Considering a frame image I t belonging to the source video ϕ, during the derivation
+process, we label I t_Inital as the scene for the video frame image I t under detection. Given that the background
+of an image changes relatively slowly and stably compared to high-speed moving objects, adjacent frames in
+the temporal domain, such as I t ∆t ,I t ,I t+∆t, can be considered to have the same scene I t_Initial. Within
+these images, a high-speed movi − ng object bt i represents the table tennis ball that we aim to detect. Assuming
+that the foreground images of the table tennis ball in these three frames are non-overlapping, denoted as
+I_bt i− ∆t,I_bt i ,I_b i t+∆t (if there is overlap among I_bt i− ∆t,I_bt i ,I_bt i +∆t in the video, we can increase
+∆t to eliminate any overlap).
+Then, we have I t − ∆t =I t_Initial ⊕ I_bt i− ∆t,I t =I t_Initial ⊕ I_bt i ,I t+∆t =I t_Initial ⊕ I_bt i +∆t
+. Since our goal is to extract I_bt i , we need to perform subtraction to eliminate I t_Initial
+. Calculating ∆− =absdiff(I t − ∆t ,I t) results in ∆− =I_bt i⊕ I_bt i− ∆t. Similarly, calculating
+∆+ =absdiff(I t+∆t ,I t) gives ∆+ = I_bt i⊕ I_bt i +∆t. Finally, calculating ∆=absdiff(I t+∆t ,I t − ∆t )
+give C s o ∆ ns = ide I r _ in b g t i − ∆ th t e ⊕ I b _ in b a t i r + iz ∆ e t d . images ∆+
+b
+,∆b ,∆−b corresbounding to ∆+,∆,∆−, we define
+M_bt i =(∆+ b ∆ˆ −b ) \ (∆b). This binarized image M_bt i serves as the position mask for I_bt i . This method, first
+proposed in the5 article, is an effective approach for detecting high-speed moving objects. Figure 6 illustrate this
+process.
+In an ideal scenario, extracting and analyzing the connected components of the binarized image I_bt would
+i
+yield the target set Bt at time t. However, due to noise in practical scenarios, M_bt contains numerous false
+i
+targets within its connected components. We denote the set of all potential targets derived from the analysis
+of M_bt as Ot. It is certain that the set of table tennis balls we seek to find, Bt, is a subset of Ot. In reality,
+i
+the number of potential targets ot i directly obtained from this method for each frame can be hundreds or
+even thousands. To minimize the number of potential targets ot i, we propose three methods: noise reduction,
+filtering, and connected component analysis.
+Noise reduction: We notice that the modeling of I t_Initial is often crude, and in practical videos,
+due to camera motion or sensor noise, I t_Initial_real = I t_Initial
+⊕
+σ, where σ represents the
+ghosting and noise introduced by camera movement or sensor jitter. Taking ∆−- as an example,
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 8
+
+PAGE 9
+www.nature.com/scientificreports/
+Fig. 6. The process of differential detector h real.
+Stages of the method
+Video Name Initial After Noise reduction After Filtering Final
+Side-Facing
+1876.08 544.51 25.02 12.65
+Male Race01
+Drive Training02 845.43 419.35 28.40 19.30
+Table 1. The Average number of potential targets ot i in Video ϕ. We have extracted two videos from different
+∆− =absdiff(I t − ∆t ,I t)=(I_bt i⊕ I_bt i− ∆t) ⊕ σ. This can lead to the detection of excessive false ot i,
+which should originally belong to I t_Initial. Considering that camera motion and sensor noise are typically
+sensitive to the edge regions of an image, we can estimate the distribution of σ across the entire image, σ′
+, by computing the gradient of each pixel in I t using the Sobel operator and subtracting it accordingly:
+∆− =(I_bt i⊕ I_bt i− ∆t) ⊕ σ ⊕ ( − σ′) ≈ (I_bt i⊕ I_bt i− ∆t). However, directly using I t to compute σ′
+would result in the edges of I_bt being eroded into σ′, leading to missed detections. Therefore, when actually
+i
+computing σ′, we use the images I t ∆t and I t+∆t instead.
+−
+Filtering: Although much noise is removed during the noise reduction step, there are still numerous isolated
+noise points present in M_bt i . The table tennis balls bt i that we aim to extract typically belong to a larger
+connected component. Therefore, we can filter out these isolated noise points by applying an “erosion” followed
+by a “dilation” process, while barely altering the connected component where bt i resides. Through this approach,
+we can significantly reduce the number of connected components and potential targets ot i, greatly reducing the
+computational burden without compromising the final output accuracy.
+Connected Component Analysis: To further reduce the number of ot i, we can utilize some prior knowledge
+about the table tennis balls bt i to conduct a simple analysis and filtering of ot i. For instance, we can predefine the
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 9
+
+PAGE 10
+www.nature.com/scientificreports/
+Fig. 7. An example of all the potential targets ot i from I t.
+shape and color characteristics of the table tennis balls. By analyzing the shape, size of the connected component
+where ot i resides, as well as the color of the corresponding region in I t, we can further filter out a portion of ot i.
+The above method does not improve the effect of the method significantly, but it can greatly increase the
+speed of the method by reducing the number of false targets (Table 1 gives two examples). Figure 7 is an example
+to show all the potential targets ot i on an image. Up to this point, we do not have sufficient information to
+distinguish whether these potential targets ot i are part of the final trajectory T u. The subsequent steps will involve
+screening and stitching them together to form the final output trajectory T u.
+Construct graph
+After obtaining the potential targets [O1,O2,...,Ot,...,On] throughout the entire video, we sequentially select
+consecutive frame sets based on the window length, w, and stride, g, which is specified in Section 3.2. The range
+of set are: [0, w − 1], [g, g+w − 1], ..., [k 1· g, k 1· g+w − 1], ..., [k ∗ g, n], and the total number
+of such sets is n −g w +1. Using the detector described in Section 3.3, we obtain the target sets corresponding
+to these consec ⌊ utive f ⌋ rames, [Ot,Ot+1,...,Ot+w − 1]. We consider all targets oj i belonging to this set as nodes
+and connect all nodes belonging to different target sets Oti as edges. The resulting graph can be described as
+G: { V,E } where V = { v x | potential target oj ix x } ,E = { e xy =(oj ix x,oj iy y) | oj ix x,oj iy y,j x ̸ =j y } .
+After obtaining all the potential targets ot i, a straightforward approach would be to iterate through all possible
+T possible and then select the tracking result T u using a learned discriminator f(θ,T possible). Researchers in
+the6 have proposed similar ideas. The study revealed that directly iterating through all possible T possible without
+any filtering is completely unrealistic due to the astronomical number of potential combinations. However, it
+is straightforward to observe that every T possible =[oj i1 1,oj i2 2,...,oj im m] can be summarized by two essential
+elements: the target
+ojx
+and the relationship between two targets
+ojx
+and
+ojy.
+ix ix iy
+After the construction of graph G, any potential trajectory in T possible can be uniquely mapped to a
+subgraph G Tpossible : { V Tpossible ,E Tpossible} where V Tpossible = { v x | oj ix x ∈ T possible } ,E Tpossible
+= { e xy =(oj ix x,oj iy y) | oj ix x,oj iy y ∈ T possible } . By arranging the nodes according to the frame order
+of the targets and adding edges connecting them, T possible corresponds to a path in the graph,
+[v 1 ,e 12 ,v 2 ,e 23 ,v 3 ,...,v x ,e xy ,v y ,...,v m], where the sequence of nodes represents the trajectory we aim
+to output. Notably, if e xy =(oj ix x,oj iy y) ∈ T possible, then j x ̸ =j y, indicating that two potential targets do not
+belong to the same frame. This is the reason why we require j x =j y when constructing the edges of graph G.
+̸
+Furthermore, if the distance between
+ojx
+and
+ojy
+in the image plane or the difference in their sizes is excessively
+ix iy
+large, based on priors and preset conditions, the existence of the edge e xy connecting oj ix x and oj iy y becomes
+unnecessary. These priors and preset conditions significantly reduce the complexity of graph G. Since node v x
+corresponds to a target oj ix x that belongs to only one of the sets [Ot,Ot+1,...,Ot+w − 1], specifically Otj, and
+all nodes o tj belonging to the same set Otj are not connected to each other. Therefore, graph G is an N-partite
+i
+graph, where N = w (window length).
+Discriminator
+Tasks of discriminator
+Inspired by the applications of graph neural networks discussed in Chapter 2, we employ
+a graph neural network to implement the discriminator f real(θ,G). We design the
+following task for it: Suppose the result trajectory T u have a path in graph G, represented as
+v u1 ,e u1u2 ,v u2 ,e u2u3 ,v u1 ,...,v ux ,e uxuy ,v uy ,...,v um . The function f real(θ,G) maps graph
+[ ]
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 10
+
+PAGE 11
+www.nature.com/scientificreports/
+Fig. 8. The correspondence between trajectory T u and the probabilistic graph Gp (Red color represents
+nodes v and edges e with p(v)=1 or p(e)=1, while blue color represents nodes and edges with p(v) =0 or
+p(e)=0.). Those nodes and edges marked red are part of the trajectory, while the blue nodes and edges are
+Fig. 9. The computation process for the initial features p0 of a node v.
+G to a probabilistic graph Gp, where each node v and edge e has an associated probability. Specifically,
+Gp : V′,E′ where V′ = (v,p(v))v V,p(v) [0,1] ,E′ = (e,p(e))e E,p(e) [0,1]
+{ } { | ∈ ⊂ } { | ∈ ⊂ }
+with V,E G. The task requires that for all v or e, if v or e belongs to T u, then in the probabilistic graph
+∈
+Gp, p(v)=1 or p(e)=1; otherwise, p(v)=0 or p(e)=0. It is noteworthy that if there are multiple paths
+between two nodes that are not completely overlapping and a node v ux
+∈
+T u exists on these paths, such as
+[v u1 ,e u1u2 ,v u2 ,e u2u3 ,v u3 ] and [v u1 ,e u1u3 ,v u3 ], then all nodes v and edges e on these paths should have
+p(v)=1 and p(e)=1 in the probabilistic graph Gp. Figure 8 illustrates the relationship between the trajectory
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 11
+
+PAGE 12
+www.nature.com/scientificreports/
+T u and the probabilistic graph Gp using an example of four consecutive image frames (with a window length
+w=4).
+Structure of discriminator
+In Section 3.4, we mentioned that the discriminator of our algorithm will be a graph neural network, denoted
+as f real(θ,G). Prior to this, we need to compute the initial features for both nodes v and edges e. The features
+of a node v are composed of the local image HOG features, position, and shape information corresponding to
+its underlying object ot i. Due to the sparsity of HOG features, a full-connect layer (also called Linear Layer in
+pytorch) is applied to compress the features before inputting them into the graph neural network. The initial
+features of an edge e xy =(oj ix x,oj iy y) are jointly determined by the position and shape information, as well as the
+initial features of
+ojx
+and
+ojy
+(Figure 9 illustrate this process).
+ix iy
+After initializing the node features p0 and edge features q0, we pass them through a custom three-layer
+graph neural network, GMP (Graph Max-message Pass Neural Network). The steps and details of each layer of
+this model will be explained in detail later. The GMP graph neural network performs feature propagation and
+embedding to obtain the final node features p′ and edge features q′. Subsequently, we design two multi-layer
+perceptrons, w 1 and w 2, to score the final feature p′ and q′ of each node and edge, respectively. This allows us to
+obtain p(v) and p(e) in the probabilistic graph Gp. The specific process is illustrated in Figure 10.
+GMP layer
+Like all graph neural networks (GNNs), the Graph Message Passing (GMP) network also relies on message
+passing to update node and edge feature vectors. However, unlike other GNNs, the GMP network operates as
+follows: Firstly, each node v x in the GMP network collects all messages Mes from its neighbors and concatenates
+them into a “message tensor” Mes Ax. Secondly, it scores the edges e xy connected to neighboring nodes based
+on the neighbors’ messages Mes, yielding gra xy. Thirdly, it applies max-pooling to the “message tensor” Mes Ax
+to obtain a node-specific message Mes x, which is used to update the node features. Finally, it updates the edge
+features based on the feature vector of the edge e xy, the feature vectors of its adjacent nodes v x,v y, and the scores
+gra xy, gra yx assigned by nodes v x and v y to the edge.
+The four main steps outlined above correspond to the four primary operations f, l, g, h in each layer of GMP,
+each containing learned parameter sets θ 1 ,θ 2 ,θ 3 ,θ 4. Detailed steps are elaborated below, which readers may
+skip if not seeking specifics. Assuming the input data consists of previous or initial node and edge features
+pn Ri, qn Rj, the “message tensor” Mes Rk, updated node features pn+1 Rii, and edge features
+∈ ∈ ∈ ∈
+qn+1 Rjj:
+∈
+The predefined inputs and outputs for f,l,g,h can be defined as follows:
+f(x,θ 1 ): Takes features In ∈ R2i+j where In=(pn x ,q x n y ,pn y ) as input and produces a message Mes ∈ Rk
+as output.
+l(x,θ 2 ): Takes a message Mes ∈ Rk as input and outputs a real-valued score gra ∈ R.
+g(x,θ 3 ): Takes features (Mes,pn x ) ∈ Rk+i as input and produces new node features pn x +1 ∈ Rii as output.
+h(x,θ 4 ): Takes a tuple (pn x +1,gra xy ,pn y +1,gra yx ,q x n y ) as input and outputs new edge features q x n y +1 ∈ Rjj
+.
+Fig. 10. The structure and computation process of the discriminator, with the computation layer by layer, the
+characteristics of each node and edge are constantly changing, until the confidence level is finally obtained by
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 12
+
+PAGE 13
+www.nature.com/scientificreports/
+Fig. 11. The feature updating process in each layer of the GMP. We illustrate the feature update process for
+node v x and edge e xy.
+Considering the feature update processes for nodes and edges separately, GMP primarily comprises two
+parts, Step A and Step B, focused on updating node features pn and edge features qn, respectively (The whole
+update process is illustrate in Figure 11).
+Step A: Calculate the “message tensor” Mes, the “message passing strength” gra, and update all node features.
+for each node v x V:
+∈
+1. Iterate over all adjacent nodes v y1 ,v y2 ,...,v yg ,...v yh and their corresponding edg-
+es e xy1 ,e xy2 ,...,e xyg ,...,e xyh
+∈
+E, each iterate get a triplet, all of them can be noted as
+(v x ,v y1 ,e xy1 ),(v x ,v y2 ,e xy2 ),...,(v x ,v yg ,e xyg ),...,(v x ,v yh ,e xyh ). Then, concatenate their corre-
+sponding feature vectors pn x ,q x n y1 ,pn y1 , pn x ,q x n y2 ,pn y2 ,...,(pn x ,q x n yg ,pn yg ),..., pn x ,q x n yh ,pn yh . Each
+iteration yields results In (xy1 ,In xy2 ,.. ) .,I ( n xyg ,...In x)yh . ( )
+2. Concatenate all In xyg to obtain the tensor Mes Ax
+∈
+Rm × k (using 0k for non-adjacent node tensors).
+3. Mes x = max(Mes Ax ,dim=0) to obtain the “message” for node v x.
+4. gra xyg = l Mes xyg ,θ 2 ,gra xyg ∈ R. Pass Mes xy1 ,Mes xy2 ,...,Mes xyg ,...,Mes xyh through
+l(x,θ 2 ) to ob ( tain gra xy1 , ) gra xy2 ,...,gra xyg ,...,gra xyh , which are the “message” weights for each tri-
+plet (v x ,v yg ,e xyg ). Associate these weights with the respective edges e xyg , where edge e xyg receives gra xyg
+(the “message” weight obtained through node v yg ) is gra ygx ).
+5. pn x +1 =g((Mes x ,pn x ),θ 3 ) to update the feature vector for node v x.Step B: Update edge features based on
+the “message passing strength” gra.
+1. After completing Step A, each edge e xyg possesses “message” weights e xyg (gra xyg ,gra ygx ). Each node v x
+finds all its adjacent edges e xy1 ,e xy2 ,...,e xyg ,...,e xyh . As mentioned earlier, graph G exhibits an n-par-
+tite structure due to the window length w (n = window length), and adjacent nodes v y1 ,v y2 ,...,v yg ,...v yh
+belong to n-1 parts among them. Assume without loss of generality that v yg 1 ,v yg 2 ,...,v yg n are the same node
+located in the same part, and the adjacent edges connecting to the same part, e xyg 1 ,e xyg 2 ,...,e xyg n, have
+their respective e xyg (gra xyg ,gra ygx ). Perform a SoftMax mapping on [gra xyg 1 ,gra xyg 2 ,...,gra xyg n] to
+obtain [gra1 xyg 1 ,gra1 xyg 2 ,...,gra1 xyg n]. For each edge e xy, after completing the above steps, we obtain thresh-
+olded values that regress to (0,1), namely (gra1 ,gra1 ).
+xyg ygx
+2. for each edge e xy E in the graph:
+∈
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 13
+
+PAGE 14
+www.nature.com/scientificreports/
+q x n y +1 =h((pn x +1,gra1 xy ,pn y +1,gra1 yx ,q x n y ),θ 4 ) to update the feature vector of edge e xy.
+Message Vectors and Node features Update
+Here, we focus on explaining the design rationale for the feature p component of our discriminator related
+to node v. In essence, within the designed tracking task framework, table tennis nodes belonging to the same
+trajectory should be able to identify each other through a message-passing process. While updating their features
+based on these “messages,” they should actively “reject” messages from other nodes. Consequently, we have
+devised a message-passing framework as illustrated in Figure 11 (characterized by the use of max-pooling to
+process all messages received by the nodes). This section provides a detailed mathematical explanation. Readers
+may skip this part if they are not seeking in-depth details.
+Returning to the graph task we set out in Section 3.4, if node v ux belongs to the graph
+path v u1 ,e u1u2 ,v u2 ,e u2u3 ,v u1 ,...,v ux ,e uxuy ,v uy ,...,v um corresponding to
+trajectory T u[ , let’s assume under ideal conditions that the nod ] e and edge features belonging
+to trajectory T u are [p′ u1 ,q u ′ 1u2 ,p′ u2 ,q u ′ 2u3 ,p′ u3 ,...,p′ ux ,q u ′ xuy ,p′ uy ,...,p′ um ]. The output
+of classifier w 1 is p(T u | p′ u1 ),p(T u | p′ u2 ),...,p(T u | p′ um ); and the output of classifier w 2 is
+p(T u | q u ′ 1u2 ),p(T u | q u ′ 2u3 ),...,p(T u | q u ′ m − 1um ). This implies that after message passing through the GMP
+network, the features p′ ux and q u ′ xuy exhibit consistency within the feature space and are highly relevant to T u
+. Let’s assume that T u corresponds to the core features p′ u and q u ′ in the feature space. Then, the final output
+features p′ ux and q u ′ xuy of the node v ux and edge e uxuy belonging to T u should be as close as possible to
+p′ u and q u ′. Simultaneously, the output features p′ x and q x ′ y of other nodes v x and edges e xy should be as far
+away as possible from p′ u and q u ′. Revisiting graph G, if we desire specific node features pn x and edge features
+q x n y along a certain path, targeted message passing between nodes is necessary. Nodes v ux belonging to the
+path corresponding to T u engage in message passing with other nodes v uy also belonging to T u, mutually
+recognizing their membership in T u and estimating p′ u based on messages Mes ux from neighboring nodes.
+This allows for consistency correction and, after multiple iterations of message passing, results in p′ ux .
+Due to the presence of numerous false targets in graph G, node v ux belonging to T u should ideally only receive
+messages from nodes v uy that also belong to T u. We observe that since table tennis exhibits specific motion
+pattern across multiple video frames, the triplets (v ux ,e uxuy , v uy ) between nodes v ux and v uy in T u should
+also possess these motion pattern. Therefore, our previously designed function f(x,θ 1 ) must possess the ability
+to recognize these pattern. Let’s design f(x,θ 1 ) such that the higher the input x aligns with the characteristic
+pattern, the higher the output function value. Considering that graph G contains a significant number of false
+target nodes v, node v ux should filter them out. As a result, the message it receives from neighboring nodes is
+Mes ux =argmaxf((v x ,v yg ,e xyg ),θ 1 ). Notably, the motion of table tennis may exhibit multiple patterns
+yg
+pattern k , thus Mes ux ∈ Rk.
+For any given node v x, the message Mes x received informs it of the specific patterns pattern k exhibited by
+its neighboring nodes. Node v x can then use Mes x to modify its node feature pn x and record the details of this
+message passing, resulting in pn x +1. That is, pn x +1 =g((Mes x ,pn x ),θ 3 ). Figure 12 illustrates that our algorithm
+gradually distinguish different classes of nodes through feature update processes. Figure 13 illustrates the detail
+step of g(x,θ 3 ) and h(x,θ 4 ), where h(x,θ 4 ) will be shown in Section 3.5.5.
+Fig. 12. The PCA clustering results of node features at different levels demonstrate that, as message passing
+and feature updating proceed, the difference in features between positive samples (orange) and negative
+samples (blue) becomes increasingly significant.
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 14
+
+PAGE 15
+www.nature.com/scientificreports/
+Fig. 13. Schematic Diagram of the Node and Edge Update Functions g(x,θ 4 ) and h(x,θ 4 ).
+Edge features update and grading edge with SoftMax
+In updating edge features, we observe that in graph neural networks, edges serve as the carriers of message
+passing, and their properties are primarily determined by the nodes they connect. Furthermore, within the
+designed task framework, there exists a mutual exclusion relationship among some of the edges connected to
+the same node. Based on this observation, we employ softMax to score the edges and utilize these scores for
+updating edge features. This section primarily elaborates on the design rationale and provides a mathematical
+explanation. Readers who are not seeking detailed derivations may skip this part.
+Similarly, if an edge e uxuy belongs to the graph path
+v u1 ,e u1u2 ,v u2 ,e u2u3 ,v u1 ,...,v ux ,e uxuy ,v uy ,...,v um corresponding to T u, then the triplet
+[ (v ux ,e uxuy ,v uy ) composed of the edge e uxuy and its two ] endpoint nodes v ux and v uy should possess a
+motion pattern. Furthermore, if e uxuy belongs to the graph path corresponding to T u, then v ux and v uy should
+exchange messages through e uxuy to bring their respective features p′ ux and p′ uy closer to the feature vector p′ u
+corresponding to T u.
+Then, a straightforward approach would be to determine the feature q x n y +1 of the edge e xy based on the
+neighbor node features pn x +1 and pn y +1 after the message passing process, i.e., q x n y +1 =h(pn x +1,pn y +1,θ 4 )
+. However, if our goal is to achieve the targeted and specific message passing mentioned earlier, this simple
+approach falls short as it treats the edge e xy as an appendage to the nodes v x and v y, ignoring the relationships
+between edges in the graph structure.
+Given the n-partite structure of graph G and the absence of nodes belonging to the same part in the graph path
+v u1 ,e u1u2 ,v u2 ,e u2u3 ,v u1 ,...,v ux ,e uxuy ,v uy ,...,v um corresponding to T u, there exist numerous mutual
+[ exclusion relationships among the edges incident to a given no ] de v x, such as e xy1 ,e xy2 ,...,e xyg ,...,e xyh . For
+instance, if nodes v yg 1 and v yg 2, both neighbors of node v x, belong to the same part, then the edges connecting
+them, e xyg 1 and e xyg 2, exhibit a mutual exclusion relationship.
+Assuming that the node v ux belonging to T u has neighboring nodes v uy ,v yg 1 ,v yg 2 ,...,v yg n from
+the same part, where only v uy belongs to T u, we cannot distinguish based on the available information
+whether v uy ,v yg 1 ,v yg 2 ,...,v yg n belong to T u. Since we know that only one of them belongs to T u
+, it follows that only one of the edges connecting them belongs to T u. This leads to the constraint
+p(T u | e uxuy )+p(T u | e uxyg 1)+p(T u | e uxyg 2)+...+p(T u | e uxyg n) ≤ 1.
+We implement the constraint and the probability p(T u | e xy ) using SoftMax and a scoring function l(x,θ 2 ),
+respectively. Consequently, the edge e xy receives two weights, gra1 xy and gra1 yx , which we refer to as “message
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 15
+
+PAGE 16
+www.nature.com/scientificreports/
+Fig. 14. The PCA clustering results of edge features at various levels indicate that, as message passing and
+feature updating progress, the differences in features between positive samples (orange) and negative samples
+(blue) become increasingly pronounced.
+Fig. 15. Schematic Diagram of the Graph Sampling Process. Red represents the Positive Sample while Blue
+represents Negative one. (Note: We Retain All Positive Samples and Only Sample on Negative Samples).
+passing strengths”. Based on these weights and the updated node features pn x +1 and pn y +1 after message passing,
+we update the feature of edge e xy as q x n y +1 =h((pn x +1,gra1 xy ,pn y +1,gra1 yx ,q x n y ),θ 4 ).
+If e xy ∈ T u, pn x +1 and pn y +1 provide specific information about T u to the edge e xy, and through
+h(x,θ 4 ), q x ′ y is steered towards q n ′. Conversely, if e xy does not belong to T u, h(x,θ 4 ) uses the tuple
+(pn x +1,gra1 xy ,pn y +1,gra1 yx ,q x n y ) to determine that e xy ∈ / T u and steers q x ′ y away from q n ′.
+Alternatively, if a significant amount of “message passing” occurs between nodes v x and v y through e xy,
+resulting in pn x +1 and pn y +1, the simplest approach is to record this information in q x n y +1. In this case, h(x,θ 4 )
+needs to utilize the tuple (pn x +1,gra1 xy ,pn y +1,gra1 yx ,q x n y ) to make the necessary judgments and maintain an
+accurate “record”. Figure 14 illustrates that our algorithm gradually distinguish different classes of edge through
+process above.
+Training method and loss function
+According to the graph tasks we have previously defined, the multi-layer perceptron, w 1 and w 2, perform
+supervised learning on the outputs p(v) and p(e) based on the final features p′ and q′ of nodes v and edges e,
+respectively, comparing them with the pre-defined labels p GT(v) and p GT(e). However, during the training
+process, the large number of false targets ot i in the original video often results in a large-scale graph G. Taking
+the scenario of Image Window=8 as an example, a single graph in the Ground Truth dataset for training may
+contain up to hundreds of nodes and tens of thousands of edges, leading to significant resource consumption
+that precludes training on most GPUs.
+Drawing from our discussions in Sections 3.5.3 and 3.5.4, message passing in the GMP model is typically
+targeted, with negative samples or messages passed between nodes belonging to different categories often being
+less significant. Therefore, we can randomly sample negative samples or nodes from other categories while
+preserving positive samples or a specific category of nodes48. A large-scale graph G can be sampled to generate
+multiple small-scale graphs, and combined with randomization and the setting of hyperparameters such as batch
+size during training, the training process becomes more stable, often leading to more ideal results. Additionally,
+we can re-sample the graph G between training epochs to obtain different outcomes, effectively implementing
+a form of data augmentation that can effectively mitigate overfitting in the model. An example of sampling is
+shown in Figure 15.
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 16
+
+PAGE 17
+www.nature.com/scientificreports/
+Interestingly, our graph neural network does not consume excessive memory during the inference mode due
+to the elimination of the need to store gradients, computation graphs, and intermediate results. Consequently,
+the algorithm does not require sampling the graph G during inference.
+In terms of loss function selection, we have chosen the cross-entropy loss function. For the graph G V,E ,
+{ }
+we compute the average loss across all nodes and edges and then directly sum them up:
+1
+loss=
+− V(G)
+(p
+GT
+(v x)log(p(v x))+(1
+−
+p
+GT
+(v x) log(1
+−
+p(v x)))
+1 ∑ )
++
+E(G)
+(p
+GT
+(e xy)log(p(e xy))+(1
+−
+p
+GT
+(e xy) log(1
+−
+p(e xy)))
+where v
+x
+∑
+∈
+V, e
+xy
+∈
+E; V,E
+∈
+G
+{
+V,E
+}
+)
+Now let us revisit the cross-entropy loss function, which is expressed as l= ylogx+(1 y)log(1 x)
+− − −
+where y represents the label of the sample and x is the output result. Assuming in practical scenarios that the
+average correct prediction rate for positive samples is p and for negative samples i∑s q, with the respective numbers
+of positive and negative samples being m and n, the total loss can be expressed as l= 1 (mlogp+nlogq).
+−m+n
+We can calculate the derivatives of the loss function with respect to p and q as ∂l = 1 m , ∂l = 1 n
+∂p −pm+n ∂q −qm+n
+. Since p and q are generated by the Sigmoid function, the gradients passed back to the classifier are
+∂l = ∂l ∂p + ∂l ∂q = m 1p(1 p) n 1q(1 q)= 1 (m(1 p)+n(1 q)). Here, the
+∂w ∂p∂w ∂q∂w −m+np − − m+nq − −m+n − −
+gradient ratio contributed by p and q, ∇ p q , is m n( ( 1 1 − q p ) ).
+∇ −
+Furthermore, we can compute precision (pre) and recall as pre= n (1 m m + q n )+ p m p = pm+ p ( m 1 q)n and
+m+n − m+n −
+recall= mp =p. When pre=recall, we have m(1 − p) =1 and p= q, and the model evenly improves
+m n(1 q) ∇ ∇
+−
+the performance of both positive and negative samples. When pre>recall, m(1 − p) <1, p< q, and
+n(1 q) ∇ ∇
+−
+the model tends to improve the performance of negative samples more, emphasizing recall. Conversely, when
+pre<recall, m(1 − p) >1, p> q, and the model favors improving the performance of positive samples,
+n(1 q) ∇ ∇
+−
+emphasizing pre.
+The original cross-entropy function aims to achieve pre=recall. However, when m n, we have
+≪
+1 p 1 q, meaning the model tends to improve q to a higher level before improving p. This can result in a
+− ≫ −
+low precision pre for a significant portion of the training process, and positive samples may not receive sufficient
+attention.
+To address this, we consider a weighted loss function: l= − a 1 ylogx+a 2 (1 − y)log(1 − x) where a 1
+and a 2 are weighting coefficients. When a 1 =a 2 =1, it becomes the original cross-entropy function. Setting
+a 1 >a 2 allows the model to focus more on positive samples, ∑ emphasizing the improvement of p and recall.
+Conversely, a 2 >a 1 directs the model’s attention to negative samples, emphasizing the enhancement of q and
+pre.
+At the initial stage of our model training, we set a 1 >a 2. As the loss function decreases
+and p and q improve, we gradually decrease a 1 until a 1 ≈ a 2 ≈ 1. In practice, we use the
+following expressions for a 1 and a 2: a 1 = 2Max((loss+0.15)√mn+ m ( +n loss+0.85)(m+n),√mn) and
+− 2
+a 2 = 2(m+n Max((loss+0.15)√m m n + + n ( loss+0.85)(m+n),√mn)) , In this expression, loss refers to the value of loss
+− − 2
+function from the previous epoch, and the initial loss can be considered as positive infinity or a large number.
+Organize and output results
+In Section 3.4, we constructed several graphs using the potential targets oj from the set [O1,O2,...,Ot,...,On]
+i
+. For each probability graph Gp, we obtained the probabilities p(v x) and p(e xy) that each node v x and edge
+e xy belongs to a particular trajectory T u in the graph G. These probabilities correspond to the likelihood of a
+potential target oj
+ix
+x belonging to a trajectory T u, denoted as p(oj
+ix
+x), and the probability of two potential targets
+ojx
+and
+ojy
+belonging to the same trajectory, denoted as
+q(ojx,ojy).
+It is worth noting that during the process of
+ix iy ix iy
+graph construction based on Image Window and Gap, some targets
+ojx
+and connections
+(ojx,ojy)
+may appear
+ix ix iy
+in multiple probability graphs Gp. In such cases, we simply select the maximum values of p(ojx) and q(ojx,ojy)
+ix ix iy
+as the output of the Discriminator.
+Subsequently, we utilize the output results
+p(ojx)
+and
+q(ojx,ojy)
+to derive the resulting trajectories
+ix ix iy
+T 1 ,T 2 ,...,T s. The specific process is outlined as follows:
+Step 1.
+Set threshold values p min and q min for p(oj ix x) and q(oj ix x,oj iy y), respectively (where p min ,q min >0).Step 2.
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 17
+
+PAGE 18
+www.nature.com/scientificreports/
+Filter out all potential targets oj
+ix
+x with p oj
+ix
+x <p min.Step 3.
+For each remaining potential target o(j ix x w ) ith p oj ix x ≥ p min, we establish a trajectory T x contain-
+ing only that particular target, i.e., T x =[oj ix x]. (The )set T is composed of all such trajectories T x,
+T = { T 1 ,T 2 ,...,T x ,...,T y ,... } .Step 4.
+Identify the two most suitable trajectories T x and T y for merging in T.
+Initial q temp =0,temp_x= 1,temp_y= 1;
+− −
+For (T x ,T y) in T (where x=y):
+̸
+Where T x =[o j ix x 1 1,o j ix x 2 2,...,oj ix x n n], T y =[o j iy y 1 1,o j iy y 2 2,...,oj iy y m m]
+Initial count=0 , q result =0
+For (o j ix x
+k
+k,o j iy y
+l
+l) in (T x ,T y):
+If any j xk = j yl :
+q result =0
+Break
+Elif q(o
+jxk,o jyl)
+doesn’t exist:
+ixk iyl
+Continue
+Else:
+q result += q(o j ix x
+k
+k,o j iy y
+l
+l)
+count++
+End For
+If count != 0:
+q result = q c r o e u su n l t t
+If q result >q temp :q temp =q result ,temp_x=x,temp_y=y;
+Else:
+Continue
+End For
+Goto Step 5.Step 5.
+If q temp >q min:
+1. Merge T temp_x and T temp_y into T new by combining all potential targets from T temp_x and T temp_y
+into a single sequence and arranging them in ascending order based on the values of j x1 ,j x2 ,...,j xn
+and j y1 ,j y2 ,...,j ym ;
+2. Remove T temp_x and T temp_y from T and add T new to T (update T);
+3. Then, Return to Step 4.
+Else:
+Goto Step 6.Step 6.
+For the set T = { T 1 ,T 2 ,...,T s } , filter out all trajectories with a length of 1, i.e., remove all T u from T where
+T u =[oj iu u].Finish Process
+The final set T = { T 1 ,T 2 ,...,T s } obtained at the end of the algorithm represents the final output result.
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 18
+
+PAGE 19
+www.nature.com/scientificreports/
+Fig. 16. Illustrations of Images from Different Perspectives: Side-Facing (Left), Directly-Facing (Middle),
+Player-Facing (Right).
+Fig. 17. Original Video Images from the Dataset.
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 19
+
+PAGE 20
+www.nature.com/scientificreports/
+Evaluation and results
+To train a useful model and validate effectiveness of the algorithm in a real-world, it is imperative to collect
+table tennis match videos that closely resemble the intended usage scenarios. These videos must be annotated
+according to the requirements of tactical analysis, serving as the dataset for algorithm training and evaluation.
+Additionally, to verify the algorithm’s effectiveness and advancement, a comparison with similar solutions is
+necessary. Such comparisons can also assist in identifying any issues within the algorithm.
+Datasets
+We have augmented the67 dataset with a significant number of videos, resulting in a comprehensive collection
+encompassing 20 independent videos as the dataset. Each video is a continuous recording under a fixed scenario,
+totaling 13,950 frames and 6,027 annotated table tennis balls. In selecting and annotating the videos, we took
+into account their diversity: our dataset includes scenarios such as competition, training, and warm-up; players
+ranging from amateurs, student athletes, to professional athletes; and various camera perspectives including
+side-facing (viewing the table tennis table from the side), directly-facing (viewing the table tennis table from
+the back), and player-facing (viewing the player directly). In subsequent text, we will refer to the side-facing,
+directly-facing, and player-facing perspectives as Side-Facing, Directly-Facing, and Player-Facing, respectively.
+Scenes captured from different perspectives are illustrated in Figure 16. Over 45% of the dataset comes from
+videos recorded on mobile phones, while more than 30% originates from competition replays sourced from
+online and televised broadcasts on platforms such as Migu video and CCTV. Additionally, we have appropriately
+referenced some open-source datasets59 to provide horizontal comparisons and references. An example frame
+from the dataset is shown in Figure 17, and the specific details of the videos in the dataset are summarized in
+Table A1 of Appendix A.
+Results and comparison
+Training and results
+We selected the first 17 out of the 20 videos from the dataset for training and testing purposes, while reserving
+the last 3 videos for validation. It is worth noting that while the last 3 videos share similar scenarios, only one of
+the 17 videos used for training and testing exhibits a comparable setting. This approach was adopted because the
+perspectives and scenarios of the last 3 videos are the most popular among current table tennis broadcasts and
+tactical analyses, and are also the most likely scenarios for the application of our algorithm. Given the diversity
+of video scenarios and the inconsistency in the number of video frames and table tennis balls captured from
+different perspectives, we took extra care in dividing the training and testing sets to minimize the impact of data
+imbalance. For some videos, we chose the first 70% of consecutive frames as the training set, while for others, we
+selected the first 50%. The remaining 50% of consecutive frames from each video were designated as the testing
+set. (Specific ranges are detailed in Table A2. of Appendix A.)
+During training, we employed the sampling scheme mentioned in Section 3.5.6 to sample the graph G
+constructed from the training set, while no sampling was performed on the testing set. The final counts of nodes
+v and edges e in the entire training set are presented in Table 2.
+For training, we set the learning rates for the three-layer message-passing graph neural network GMP and the
+classifiers w 1, w 2 to 0.005 and 0.002, respectively. In analyzing the results, we simply used a threshold of 0.5 to
+categorize nodes v and edges e into positive and negative samples. The performance criteria are precision, recall,
+and F1-score, which are calculated by TP/(TP + FP), TP/(TP + FN), and 2TP/(2TP + FN + FP), respectively.
+Here, TP, FP, and FN stand for the number of true positives, false positives, and false negatives, respectively.
+The variation of the loss function (Section 3.5.5) and classification accuracy during the entire training
+process are depicted in Figure 18. Training was conducted using two NVIDIA Tesla-T4 GPUs. After sampling
+the training set, each epoch comprised approximately 1000 steps, resulting in rapid model convergence. The
+optimal model was obtained at epoch=8. Additionally, we re-sampled the training set every two training rounds,
+as described in Section 3.5.6. The initial learning rate for the GMP component was set to 5 10− 4 with a
+×
+minimum decay of 2 × 10− 4, while the initial learning rates for the classifiers w 1 and w 2 were set to 2 × 10− 4
+with a minimum decay of 1 10− 4.
+×
+Experimental results demonstrate the stability of our training approach, with good performance after model
+convergence. Only minor overfitting and jittering phenomena were observed.
+Recalling to the problem definition in Section 3.1, we need to compare the differences between the set of
+trajectories { T 1 ,T 2 ,...,T s } output by the algorithm and the Ground Truth set T 1 GT,T 2 GT,...,T s GT. For
+the i-th table tennis ball bt i in the t-th frame belonging to the Ground Truth set, if bt i is also present in the
+output trajectory set { T 1 ,T 2 ,...,T s, it will be labeled as a true positive sample. Conversely, bt i will be labeled
+as a false negative sample if it is not in the output set. Similarly, any sample belonging to the output trajectory
+Attribute Positive Num Negative Num Total Num
+Edge in Train Set 41,750 5,278,699 5,320,449
+Node in Train Set 14,694 190,358 205,052
+Edge in Test Set 15,455 13,048,646 13,064,101
+Node in Test Set 5,572 233,227 238,799
+Table 2. Number of Nodes v and Edges e in the Test Set and Training Set.
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 20
+
+PAGE 21
+www.nature.com/scientificreports/
+Fig. 18. The variation curves of loss function and model performance during training.
+set { T 1 ,T 2 ,...,T s } but not to the Ground Truth set T 1 GT,T 2 GT,...,T s GT will be labeled as a false positive
+sample. We will calculate the precision, recall, and F1-score for table tennis ball targets (Target) based on the
+number of these samples.
+Apart from analyzing the table tennis balls bt i, we also need to assess the trajectories T u. Consider the
+Ground Truth trajectory T u GT = b j iG
+1
+1 G T T ,b j iG
+2
+2 G T T ,...,bj iG
+m
+m G T T , where all adjacent table tennis balls (bj iG
+x
+x G T T ,b j iG
+y
+y G T T )
+with ( j 1 GT <j 2 GT <...<j x GT [<j y GT <...<j m GT) a]re identified. In total, m − 1 pairs of adjacent table
+tennis balls (bj iG
+x
+x G T T ,b j iG
+y
+y G T T ) can be extracted from T u GT, denoted as the relationship R(bj iG
+x
+x G T T ,b j iG
+y
+y G T T ). Next, we
+investigate whether the pair (bj iG
+x
+x G T T ,b j iG
+y
+y G T T ) belongs to the same trajectory T u within the output trajectory set
+{ T 1 ,T 2 ,...,T s } . If the pair is indeed present in the same trajectory T u, it is labeled as a true positive sample.
+Otherwise, R(bjx GT ,b jy GT ) is labeled as a false negative sample.
+iG
+x
+T iG
+y
+T
+Finally, we examine all relationships R(bj ix x,bj iy y) within the output trajectory set { T 1 ,T 2 ,...,T s } . If bj ix x and
+bj iy y do not belong to the same trajectory in the Ground Truth set { T 1 GT,T 2 GT,...,T s GT } , then R(bj ix x,bj iy y) is
+labeled as a false positive sample. Similarly, we calculate the precision, recall, and F1-score for all relationship
+groups
+R(bjx,bjy)
+(Relationship) based on the sample counts. This analysis provides insights into the
+ix iy
+effectiveness of the algorithm in reconstructing table tennis ball trajectories.
+Based on the content of Section 3.6, the manually set thresholds p min and q min can influence the final test
+results. To assess this impact, we varied p min within the range of [0.05, 0.7] with a step size of 0.05. For each
+setting of p min, we ran the algorithm with three different values of q min: p min, p min− 0.05, and p min +0.05.
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 21
+
+PAGE 22
+pihsnoitaleR
+tegraT
+)06.0–04.0(
+evA
+)07.0–03.0(
+evA
+)07.0–50.0(
+evA
+)06.0–04.0(
+evA
+)07.0–03.0(
+evA
+)07.0–50.0(
+evA
+.1F
+.ceR
+.erP
+.1F
+.ceR
+.erP
+.1F
+.ceR
+.erP
+.1F
+.ceR
+.erP
+.1F
+.ceR
+.erP
+.1F
+.ceR
+.erP
+emaNoediV
+07.0
+07.0
+17.0
+96.0
+96.0
+96.0
+36.0
+96.0
+85.0
+47.0
+27.0
+67.0
+37.0
+17.0
+57.0
+76.0
+27.0
+36.0
+10ecaR
+elameF
+gnicaF-yltceriD
+98.0
+19.0
+88.0
+88.0
+98.0
+68.0
+48.0
+19.0
+87.0
+49.0
+39.0
+59.0
+29.0
+19.0
+39.0
+98.0
+29.0
+68.0
+20ecaR
+elameF
+gnicaF-yltceriD
+77.0
+48.0
+27.0
+67.0
+38.0
+07.0
+27.0
+68.0
+16.0
+88.0
+19.0
+48.0
+68.0
+09.0
+28.0
+08.0
+29.0
+17.0
+30ecaR
+elameF
+gnicaF-yltceriD
+48.0
+67.0
+49.0
+37.0
+86.0
+87.0
+07.0
+17.0
+96.0
+48.0
+67.0
+49.0
+48.0
+77.0
+39.0
+28.0
+08.0
+48.0
+40ecaR
+elameF
+gnicaF-yltceriD
+38.0
+28.0
+58.0
+38.0
+28.0
+48.0
+77.0
+48.0
+17.0
+58.0
+48.0
+68.0
+58.0
+48.0
+58.0
+97.0
+78.0
+27.0
+50ecaR
+elameF
+gnicaF-yltceriD
+78.0
+19.0
+48.0
+78.0
+09.0
+38.0
+58.0
+29.0
+97.0
+19.0
+59.0
+78.0
+19.0
+59.0
+78.0
+98.0
+69.0
+38.0
+10
+pu-mraW
+49.0
+49.0
+59.0
+09.0
+29.0
+98.0
+98.0
+29.0
+78.0
+49.0
+49.0
+59.0
+49.0
+49.0
+59.0
+49.0
+49.0
+39.0
+)yltrap(
+10
+ecaR
+tnedutS
+19.0
+89.0
+58.0
+19.0
+89.0
+58.0
+09.0
+89.0
+38.0
+19.0
+99.0
+58.0
+19.0
+99.0
+58.0
+09.0
+99.0
+38.0
+20
+pu-mraW
+29.0
+79.0
+78.0
+29.0
+79.0
+78.0
+19.0
+79.0
+58.0
+39.0
+89.0
+88.0
+39.0
+89.0
+88.0
+29.0
+89.0
+68.0
+)yltrap(
+ecaR
+TTnepo
+58.0
+88.0
+28.0
+58.0
+88.0
+28.0
+48.0
+98.0
+08.0
+58.0
+09.0
+18.0
+58.0
+09.0
+18.0
+48.0
+19.0
+87.0
+)yltrap(
+gniniarT
+kcattA
+78.0
+69.0
+08.0
+78.0
+59.0
+97.0
+28.0
+69.0
+27.0
+68.0
+69.0
+87.0
+68.0
+69.0
+77.0
+18.0
+69.0
+07.0
+10gniniarT
+evirD
+49.0
+39.0
+59.0
+49.0
+39.0
+49.0
+39.0
+49.0
+29.0
+69.0
+49.0
+79.0
+69.0
+49.0
+79.0
+59.0
+59.0
+59.0
+20gniniarT
+evirD
+29.0
+19.0
+39.0
+29.0
+19.0
+29.0
+19.0
+29.0
+09.0
+59.0
+69.0
+59.0
+59.0
+59.0
+49.0
+49.0
+69.0
+39.0
+10ecaR
+elameF
+gnicaF-ediS
+49.0
+69.0
+39.0
+49.0
+59.0
+39.0
+49.0
+69.0
+29.0
+89.0
+79.0
+99.0
+89.0
+79.0
+99.0
+89.0
+79.0
+89.0
+10ecaR
+elaM
+gnicaF-yltceriD
+94.0
+63.0
+87.0
+15.0
+73.0
+18.0
+46.0
+15.0
+58.0
+76.0
+15.0
+59.0
+76.0
+15.0
+69.0
+57.0
+36.0
+59.0
+tniap
+OMF
+09.0
+49.0
+68.0
+19.0
+39.0
+98.0
+88.0
+39.0
+38.0
+49.0
+59.0
+39.0
+39.0
+49.0
+39.0
+29.0
+59.0
+09.0
+edis
+OMF
+19.0
+49.0
+78.0
+98.0
+59.0
+48.0
+19.0
+79.0
+68.0
+39.0
+69.0
+09.0
+39.0
+69.0
+09.0
+19.0
+79.0
+68.0
+pot
+OMF
+09.0
+39.0
+78.0
+98.0
+29.0
+68.0
+88.0
+39.0
+38.0
+19.0
+59.0
+88.0
+19.0
+49.0
+88.0
+98.0
+59.0
+48.0
+tseT
+& niarT
+latoT
+98.0
+98.0
+88.0
+98.0
+98.0
+88.0
+98.0
+19.0
+88.0
+39.0
+09.0
+59.0
+39.0
+09.0
+59.0
+39.0
+29.0
+49.0
+20ecaR
+elameF
+gnicaF-ediS
+19.0
+29.0
+19.0
+19.0
+19.0
+09.0
+19.0
+29.0
+98.0
+69.0
+39.0
+99.0
+59.0
+39.0
+89.0
+59.0
+39.0
+79.0
+30ecaR
+elameF
+gnicaF-ediS
+69.0
+89.0
+39.0
+59.0
+89.0
+39.0
+59.0
+99.0
+29.0
+99.0
+99.0
+99.0
+99.0
+89.0
+99.0
+89.0
+99.0
+89.0
+10ecaR
+elaM
+gnicaF-ediS
+39.0
+49.0
+19.0
+29.0
+49.0
+19.0
+29.0
+59.0
+09.0
+69.0
+59.0
+89.0
+69.0
+59.0
+89.0
+69.0
+59.0
+79.0
+noitadilaV
+latoT
+,07.0
+ot
+50.0
+morf
+gnignarnim
+pdlohserht
+eht
+htiw
+deniatbo
+noisicerp
+egareva
+naem
+eht
+ot
+srefer
+)07.0–50.0(evA
+,elbat
+siht
+nI
+.stesatad
+ruo
+no
+mhtiroglA
+eht
+fo
+stluseR
+latnemirepxE
+.3
+elbaT
+tseT
+&
+niarT
+sa
+desu
+era
+elbat
+eht
+ni
+soediv
+02
+eht
+fo
+tuo
+71
+tsrfi
+eTh
+.ylevitcepser
+,erocS-1F
+dna
+,llaceR
+,noisicerP
+rof
+snoitaiverbba
+era
+.1F
+dna
+,.ceR
+,.erP
+.stcejorp
+rehto
+ot seilppa
+emas
+eht
+dna
+.tes
+noitadilav
+sa
+desu
+era
+soediv
+3 tsal
+eht
+elihw
+,tesatad
+www.nature.com/scientificreports/
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 22
+
+PAGE 23
+www.nature.com/scientificreports/
+By averaging the output results, we obtained the mean average precision , mean average recall, and mean average
+F1-score.
+Furthermore, we calculated the average values of these metrics across different threshold ranges. When
+annotating the results, we used parentheses to indicate the threshold ranges, such as (0.40–0.60) and (0.30–0.70).
+These ranges represent the p min values tested within the specified intervals with a step size of 0.05, and the results
+were averaged accordingly.
+The final results on our dataset are presented in Table 3. The data indicate that our proposed algorithm is
+not highly sensitive to the manually set thresholds p min and q min, and it achieves good performance on most
+datasets.
+Compare with other methods
+To validate the performance and advancement of our algorithm, we examined other object tracking algorithms
+and potential alternative solutions, and compared them one by one. The results indicated that our algorithm
+excels in overall performance.
+Comparison with Directly Applying Object Detection Algorithms (YOLOv8)12: We filtered out all images
+containing table tennis balls from the training and testing sets, and converted the annotated table tennis ball
+trajectories { TG 1 T,T 2 GT,...,T s GT } into the dataset format required by YOLOv8. Subsequently, we divided
+the YOLOv8 dataset into training and testing sets in the ratio of 85% and 15%, respectively. We then trained
+the default YOLOv8n model for 100 epochs to obtain the best-performing model. In the data evaluation, if the
+confidence score of a candidate bounding box inferred by the YOLOv8 model exceeded a certain threshold (conf
+> threshold) and its IOU(Intersection over Union) with any original annotation box of a table tennis ball in the
+dataset was greater than 0.4, the target was labeled as True Positive. Conversely, it was labeled as False Negative.
+All candidate boxes with confidence scores above the threshold (conf > threshold) but with IOU values less than
+0.4 with all original annotation boxes of table tennis balls in the dataset were labeled as False Positive.
+Comparison with Tracking Algorithms: SOT (Step Mode)13: In SOT algorithms, target tracking in videos
+relies on manual annotations in the first frame. However, the videos in our dataset contain numerous segments
+without table tennis balls, making it inappropriate to directly apply the SOT algorithm to accurately assess its
+tracking capability. Therefore, we disassemble the trajectories T u GT = b j iG
+1
+1 G T T ,b j iG
+2
+2 G T T ,...,bj iG
+m
+m G T T in the dataset
+into relationships R(bjx GT ,b jy GT ) between adjacent table tennis balls. Th [ is approach allows us ] to evaluate the
+iG
+x
+T iG
+y
+T
+algorithm’s ability to detect a table tennis ball bjx GT when another ball b jy GT has already been annotated.
+iG
+x
+T iG
+y
+T
+Given that the algorithm uses ResNet as its backbone network, resulting in relatively coarse image granularity,
+we define a relationship R(bjx GT ,b jy GT ) as True Positive if the bounding box of a detected table tennis ball
+iG
+x
+T iG
+y
+T
+bjy
+with a confidence score above a threshold has an IOU(Intersection over Union) greater than 0.3 with the
+iy
+annotated bounding box of b
+jy GT
+. Conversely, the relationship is labeled as False Positive if the IOU is below this
+iG
+y
+T
+threshold. If no table tennis ball
+bjy
+is detected, the relationship is marked as False Negative. It is worth noting
+iy
+that we did not retrain the SOT model and instead used the published open-source model directly.
+Comparison with Direct Use of Graph Attention Networks (GAT): As an alternative to our GMP message-
+passing network, we selected a three-layer GAT model for comparison and trained and evaluated it using the
+same approach as described in Section 4.2.1. It is noteworthy that, due to the slightly faster computation speed
+of the GAT model compared to our GMP model, we allocated more feature dimensions to the GAT model.
+Specifically, the input node feature dimensions for each layer of the three-layer GMP model were 70, 96, and
+128, respectively. In contrast, the input node feature dimensions for the three-layer GAT model were 438, 502,
+and 566, respectively.
+Furthermore, we compared the performance of the T-FORT algorithm with the FMO algorithm on a subset
+of videos from the dataset. We compiled statistics on the metrics of these videos and included them in the tables
+for reference. All the results are presented in Table 4.
+Analysis
+Experimental Factors and Error Sample Analysis: Reviewing the hypothesis proposed in Section 3.2, our
+discriminator is effectively regressing log(p(T u)), making decisions on potential table tennis balls in videos
+based on both image and motion features. In practical experiments, we observed significant differences in the
+trajectories and visual morphologies of table tennis balls captured from different camera angles, which are
+clearly reflected in our experimental data. Taking GMP(0.4–0.6) as an example, we analyzed the average results
+from three camera angles: Side-Facing, Player-Facing, and Directly-Facing, as summarized in Table 5.
+In the Player-Facing view, the table tennis balls appear large in size, with distinct image features and
+significant contrast against the background due to the proximity to the table tennis table, making them easier to
+track. In the Side-Facing view, the movement of the table tennis balls exhibits strong regularity (primarily lateral
+movement). Although the balls may appear small and their image features blurry in some videos, the algorithm
+still achieves good tracking performance. However, in the Directly-Facing view, the trajectory of the table tennis
+balls is irregular, and due to interference and occlusion from the players, the balls have low contrast with the
+background noise, making them the most challenging to track. Consequently, the algorithm performs the worst
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 23
+
+PAGE 24
+teS
+noitadilaV
+teS
+tseT&niarT
+pihsnoitaleR
+tegraT
+pihsnoitaleR
+tegraT
+.1F
+.ceR
+.erP
+.1F
+.ceR
+.erP
+.1F
+.ceR
+.erP
+.1F
+.ceR
+.erP
+emaN
+mhtiroglA
+A/N
+A/N
+A/N
+136.0
+837.0
+155.0
+A/N
+A/N
+A/N
+597.0
+447.0
+3581.0)10.0=fnoc(8vOLOY
+A/N
+A/N
+A/N
+386.0
+675.0
+838.0
+A/N
+A/N
+A/N
+167.0
+746.0
+4291.0)05.0=fnoc(8vOLOY
+A/N
+A/N
+A/N
+107.0
+146.0
+377.0
+A/N
+A/N
+A/N
+187.0
+586.0
+809.20)05.0
+10.0(8vOLOY
+−
+6.0
+384.0
+297.0
+A/N
+A/N
+A/N
+367.0
+507.0
+238.0
+A/N
+A/N
+A/N
+3)59.0
+50.0(TOS
+−
+529.0
+839.0
+219.0
+369.0
+649.0
+189.0
+598.0
+729.0
+568.0
+219.0
+649.0
+88.0
+4)06.0
+04.0(PMG
+−
+328.0
+318.0
+438.0
+968.0
+368.0
+578.0
+958.0
+388.0
+738.0
+778.0
+709.0
+948.0
+4)06.0
+04.0(TAG
+−
+A/N
+A/N
+A/N
+A/N
+A/N
+A/N
+108.0
+838.0
+767.0
+818.0
+658.0
+287.0
+5TROF
+T
+−
+A/N
+A/N
+A/N
+A/N
+A/N
+A/N
+A/N
+A/N
+A/N
+646.0
+295.0
+117.0
+5OMF
+ecnedfinoc
+eht
+tes
+ew
+snaeM
+10.0=fnoc
+]1[
+.ylevitcepser
+,erocS-1F
+dna
+,llaceR
+,noisicerP
+rof
+snoitaiverbba
+era
+.1F
+dna
+,.ceR
+,.erP
+.stesatad
+ruo
+no
+mhtiroglA
+eht
+fo
+stluseR
+latnemirepxE
+.4
+elbaT
+esaerced
+erocS-1F
+s’8vOLOY
+esuaceb
+sdlohsreht
+eseht
+tceles
+eW
+.05.0,54.0,...,01.0,50.0,10.0
+sa
+tes
+era
+dlohserht
+nehw
+8vOLOY
+fo
+tluser
+egareva
+eTh
+]2[
+.10.0
+sa
+8vOLOY
+ni
+noitceted
+fo
+dlohserht
+PMG
+ro
+TAG
+fo
+tluser
+egareva
+eTh
+]4[
+.59.0,09.0,...,01.0,50.0
+sa
+tes
+era
+dlohserht
+nehw
+TOS
+fo
+tluser
+egareva
+eTh
+]3[
+.05.0
+dna
+10.0
+neewteb
+tnetsisnoc
+peek
+elihw
+5.0
+<
+dlohserht
+nehw
+ylprahs
+.repap
+rieht
+ni
+stluser
+mhtirogla
+htiw
+soediv
+eht
+dedulcni
+ylno
+ew
+,smhtirogla
+eseht
+gniredisnoc
+nehW
+]5[
+.06.0,...,54.0,04.0
+sa
+tes
+era
+dlohserht
+nehw
+www.nature.com/scientificreports/
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 24
+
+PAGE 25
+www.nature.com/scientificreports/
+Target Relationship
+Algorithm Name Precision Recall F1-Score Precision Recall F1-Score
+Side-Facing 0.862 0.954 0.906 0.853 0.941 0.895
+Player-Facing 0.950 0.953 0.952 0.930 0.915 0.922
+Directly-Facing 0.862 0.866 0.864 0.827 0.837 0.832
+Total 0.880 0.946 0.912 0.865 0.927 0.895
+Table 5. Tracking Performance under Different Views.
+Fig. 19. Successfully detected table tennis balls in Directly-Facing view (marked with green boxes).
+in this view. The table tennis ball samples successfully detected from the three perspectives of Directly-Facing,
+Player-Facing, and Side-Facing are shown in Figure 19, 20, and 21, respectively.
+Analysis of False Negative Targets: The algorithm simply utilizes the HOG image operator, focusing solely
+on local image features of candidate targets without considering more peripheral or even global image features.
+The lack of semantic image features results in some table tennis balls that are not distinct from the background
+or are interfered with by the players’ movements lacking the necessary features for detection, leading to them
+being missed by the algorithm. Additionally, due to the limitations of the differential detection algorithm, some
+table tennis balls fail to be accurately outlined with candidate boxes, resulting in the calculation of image features
+deviating from normal values and causing the subsequent algorithm to overlook these balls. Examples of table
+tennis balls falsely labeled as negative is shown Figure 22 .
+Analysis of False Positive Targets: These targets primarily arise from background noise, local image features
+and motion trajectories generated by athletes’ movements that closely resemble table tennis balls. Relying solely
+on local image and motion features of the table tennis balls makes it difficult to discern them accurately. Utilizing
+sufficiently discriminated data and image features with deep semantic information can assist in resolving some of
+these issues. Examples of table tennis balls falsely labeled as positive is shown Figure 23. Notably, the occurrence
+of these False Positive targets and trajectories is typically brief. Therefore, directly filtering out trajectories T uwith
+shorter lengths can significantly reduce the number of such targets. Similar strategies have also been proposed
+in6and7. Results of Filtering Out Short Trajectories is shown in Table A3 of Appendix A.
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 25
+
+PAGE 26
+www.nature.com/scientificreports/
+Fig. 20. Successfully detected table tennis balls in Player-Facing view (marked with green boxes).
+Fig. 21. Successfully detected table tennis balls in Side-Facing view (marked with green boxes).
+Model Parameters and Inference Speed: Our proposed method not only exhibits excellent performance but
+also boasts a significantly small number of parameters, totaling merely 0.8M. In contrast, the YOLOv8n model
+possesses a substantial parameter count of 3.2M. This is partly due to our simplified approach of utilizing the
+HOG operator as the image feature extractor, without designing a specialized feature extraction network for
+small targets. Another contributing factor is the nature of graph neural networks, where model parameters are
+reused across nodes and edges during inference, potentially leading to the neglect of challenging and infrequently
+occurring samples.
+Regarding inference speed, we conducted tests on Side-Facing Professional athlete Competition videos in
+both 1080P and 720P resolutions. The testing environment consisted of a docker container equipped with a Teala
+T4 graphics card (Memory 16GB), CPU limitations ranging from 4–16 cores, and memory restrictions between
+8192-32768MB. The running time for each component of our algorithm is summarized in Table 6.
+Overall, inference speed is not a strength of our approach. Under the same testing conditions, YOLOv8’s
+preprocess, inference, and postprocess stages averaged 1.8ms, 16.2ms, and 2.1ms, respectively, resulting in an
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 26
+
+PAGE 27
+www.nature.com/scientificreports/
+Fig. 22. Some examples of table tennis balls falsely labeled as negative (marked with blue boxes).
+average frame time of 20.1ms and an inference performance exceeding 45fps (49.7fps). Furthermore, the running
+time of our solution is sensitive to the resolution of the video images, as the time spent by the detector is directly
+proportional to the image resolution. Nevertheless, the current performance of our algorithm is sufficient to
+meet the needs of offline inference services for users. If we consider only the Graph Inference component, our
+model can achieve a performance of approximately 10-20fps (without utilizing half-precision acceleration for
+inference in our tests). With optimizations to the detector, such as employing separate processes or adopting
+alternative faster solutions, our approach has the potential to achieve real-time tracking and detection.
+Feasibility of Widespread Application:We downloaded a brief tennis match video (consisting of 155 frames)
+from the Wimbledon Tennis Championships official website49. We brutally applied the model previously used
+for table tennis tracking and the same environment utilized for table tennis tactical analysis to detect tennis
+balls in the video, subsequently analyzing them in a similar manner. The analysis results presented in Table 7
+demonstrate that even with a model, method, and technical solution specifically designed for table tennis, a
+certain level of effectiveness can be achieved in a tennis scenario (Examples of successfully detected tennis ball
+is shown in Figure 24). Based on this, we can boldly hypothesize that our proposed technical solution, with
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 27
+
+PAGE 28
+www.nature.com/scientificreports/
+Fig. 23. Some examples of table tennis balls falsely labeled as positive (marked with red boxes).
+1080P 720P
+Stage of the Algorithm Time Cost (s/frame) fps Time Cost (s/frame) fps
+Detector 0.34 2.94 0.08 11.81
+Preprocess for Graph 0.08 13.18 0.02 52.33
+Graph Inference 0.12 8.07 0.05 19.01
+Organize Result 0.03 35.34 0.01 88.50
+Total 0.57 1.76 0.17 5.96
+Table 6. Tracking Performance under Different Views.
+Precision Recall F1-Score
+Tennis Target 0.882 0.606 0.719
+Tennis Relationship 0.786 0.473 0.591
+Table 7. Analysis Results for Tennis Match Scenarios. The definitions of “Target” and “Relationship” in the
+table are identical to those in table tennis. Please refer to Section 4.2.1 for details.
+targeted modifications and training, can be applied to other ball sports such as tennis, badminton, football,
+basketball, volleyball, and so on. Additionally, the GMP model itself can be utilized for similar problems such as
+link discovery in graphs.
+Conclusion and future works
+In this paper, we addressed the challenging problem of tracking fast-moving table tennis balls, which are
+small-sized, rapidly moving, and have non-significant image features. To tackle this, we employed a combined
+approach of detection and discrimination. Specifically, for the discriminator, we proposed a novel graph neural
+network called GMP, which features a unique message passing mechanism tailored to address the target tracking
+problem. Our experimental results demonstrated that our algorithm performs well in various scenarios within
+the dataset and holds promise for application to other high-speed target tracking problems.
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 28
+
+PAGE 29
+www.nature.com/scientificreports/
+Fig. 24. The tennis ball successfully detected in a tennis match scenario.
+For the future works,we may improve some details in our method considering some problems and limitations.
+Firstly, consider the aspect of image features. We solely utilized simple HOG features. It is evident that the use of
+image features containing semantic information could further enhance performance. In terms of target detection,
+simple difference detection and connected component analysis may not work effectively in all scenarios and
+are susceptible to interference from athletes and video noise within the scene. Therefore, more accurate scene
+modeling and target detection algorithms could help improve the algorithm’s effectiveness. Further more, it
+would be a promising research topic to track high-speed targets such as table tennis balls using the state-of-the-
+art Segment Everything50 as a detector, while incorporating contextual information. Additionally, modifying
+and enhancing the performance of the algorithm proposed in this paper or directly applying it to other ball
+sports or tracking problems are viable research directions or tasks for future exploration.
+Data availability
+Data sets generated during the current study are available from the corresponding author on reasonable request.
+The natural gas production data are available from Drilling Info but restrictions apply to the availability of these
+data, which were used under license for the current study, and so are not publicly available.
+Materials availability
+Materials generated during the current study are available from the corresponding author on reasonable
+request.
+Code availability
+If needed, the code can be made openly accessible.
+Received: 25 July 2024; Accepted: 14 November 2024
+References
+1. Qiu, X., Zhang, H., Wei, J., Liu, J.: Machine learning based movement analysis and correction for table tennis. In: 2022 IEEE 8th
+International Conference on Cloud Computing and Intelligent Systems (CCIS), pp. 150–154 (2022). IEEE
+2. Zheng, Y., Zhou, W., Zou, T., Zhang, H.: A method for table tennis bat trajectories reconstruction with the fusion of human
+keypoint information. In: 2023 8th IEEE International Conference on Network Intelligence and Digital Content (IC-NIDC), pp.
+71–75 (2023). IEEE
+3. Yu, B., Wei, J., Zhang, H., Jin, Z., Yu, Y., Wang, Q., Liu, J.: A machine learning based method to establish normative action model
+for table tennis. In: 2023 8th IEEE International Conference on Network Intelligence and Digital Content (IC-NIDC), pp. 91–95
+(2023). IEEE
+4. Cores, D., Brea, V. M. & Mucientes, M. Spatiotemporal tubelet feature aggregation and object linking for small object detection in
+videos. Applied Intelligence 53(1), 1205–1217 (2023).
+5. Rozumnyi, D., Kotera, J., Sroubek, F., Novotny, L., Matas, J.: The world of fast moving objects. In: Proceedings of the IEEE
+Conference on Computer Vision and Pattern Recognition, pp. 5203–5211 (2017)
+6. Zou, T., Wei, J., Zhang, H., Jin, Z., Yu, Y., Liu, J.: T-fort: A tree-based fast-moving object trajectory tracking algorithm for table
+tennis. In: 2023 8th IEEE International Conference on Network Intelligence and Digital Content (IC-NIDC), pp. 76–80 (2023).
+IEEE
+7. Jin, Z., Zou, T., Sun, D., Yang, Y. & Liu, J. A semantic tree-based fast-moving object trajectory tracking algorithm for table tennis.
+International Journal on Semantic Web and Information Systems (IJSWIS) 20(1), 1–17 (2024).
+8. Hu, Y., Niu, A., Sun, J., Zhu, Y., Yan, Q., Dong, W., Woźniak, M., Zhang, Y.: Dynamic center point learning for multiple object
+tracking under severe occlusions. Knowledge-Based Systems, 112130 (2024)
+9. Voeikov, R., Falaleev, N., Baikulov, R.: Ttnet: Real-time temporal and spatial video analysis of table tennis. In: Proceedings of the
+IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops, pp. 884–885 (2020)
+10. Redmon, J., Divvala, S., Girshick, R., Farhadi, A.: You only look once: Unified, real-time object detection. In: Proceedings of the
+IEEE Conference on Computer Vision and Pattern Recognition, pp. 779–788 (2016)
+11. Terven, J., Córdova-Esparza, D.-M. & Romero-González, J.-A. A comprehensive review of yolo architectures in computer vision:
+From yolov1 to yolov8 and yolo-nas. Machine Learning and Knowledge Extraction 5(4), 1680–1716 (2023).
+12. Jocher, G., Chaurasia, A., Qiu, J.: Ultralytics YOLO (2023). https://github.com/ultralytics/ultralytics
+13. Li, B., Wu, W., Wang, Q., Zhang, F., Xing, J., Yan, J.: Siamrpn++: Evolution of siamese visual tracking with very deep networks. In:
+Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 4282–4291 (2019)
+14. Velickovic, P. et al. Graph attention networks. stat 1050(20), 10–48550 (2017).
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 29
+
+PAGE 30
+www.nature.com/scientificreports/
+15. Groos, D., Ramampiaro, H. & Ihlen, E. A. Efficientpose: Scalable single-person pose estimation. Applied intelligence 51(4), 2518–
+2533 (2021).
+16. Yu, H., Chen, D., Tao, Y., Yu, B., He, G.: Analysis and guidance for standing broad jump based on artificial intelligence. In: 2023 8th
+IEEE International Conference on Network Intelligence and Digital Content (IC-NIDC), pp. 81–85 (2023). IEEE
+17. Li, W. Analyzing the rotation trajectory in table tennis using deep learning. Soft Computing 27(17), 12769–12785 (2023).
+18. Zhu, Q. & Deng, H. Spatial adaptive graph convolutional network for skeleton-based action recognition. Applied Intelligence
+53(14), 17796–17808 (2023).
+19. Wei, J., Yu, B., Zhang, H., Liu, J.: Skeleton based graph convolutional network method for action recognition in sports: A review.
+In: 2023 8th IEEE International Conference on Network Intelligence and Digital Content (IC-NIDC), pp. 66–70 (2023). IEEE
+20. Hu, M., Qiu, X., Zou, T., Zhang, H., Jin, Z., Yu, Y.: Research and implementation of table tennis sport simulator based on physical
+theory. In: 2023 8th IEEE International Conference on Network Intelligence and Digital Content (IC-NIDC), pp. 86–90 (2023).
+IEEE
+21. Rong, Z. Optimization of table tennis target detection algorithm guided by multi-scale feature fusion of deep learning. Scientific
+Reports 14(1), 1401 (2024).
+22. Zita, A., Šroubek, F.: Tracking fast moving objects by segmentation network. In: 2020 25th International Conference on Pattern
+Recognition (ICPR), pp. 10312–10319 (2021). IEEE
+23. Ning, T., Wang, C., Fu, M. & Duan, X. A study on table tennis landing point detection algorithm based on spatial domain
+information. Scientific Reports 13(1), 20656 (2023).
+24. Zhang, X., Zhang, T., Yang, Y., Wang, Z., Wang, G.: Real-time golf ball detection and tracking based on convolutional neural
+networks, 2808–2813 (2020). IEEE
+25. Pal, S. K., Pramanik, A., Maiti, J. & Mitra, P. Deep learning in multi-object detection and tracking: state of the art. Applied
+Intelligence 51, 6400–6429 (2021).
+26. Izquierdo, R. et al. Vehicle trajectory prediction on highways using bird eye view representations and deep learning. Applied
+Intelligence 53(7), 8370–8388 (2023).
+27. Rodriguez-Lozano, F. J., Gámez-Granados, J. C., Martínez, H., Palomares, J. M. & Olivares, J. 3d reconstruction system and
+multiobject local tracking algorithm designed for billiards. Applied Intelligence 53(19), 21543–21575 (2023).
+28. Zhang, Y., Wang, T., Liu, K., Zhang, B. & Chen, L. Recent advances of single-object tracking methods: A brief survey. Neurocomputing
+455, 1–11 (2021).
+29. Fan, H., Bai, H., Lin, L., Yang, F., Chu, P., Deng, G., Yu, S., Harshit, Huang, M., Liu, J., : Lasot: A high-quality large-scale single
+object tracking benchmark. International Journal of Computer Vision 129, 439–461 (2021)
+30. Scarselli, F., Gori, M., Tsoi, A. C., Hagenbuchner, M. & Monfardini, G. The graph neural network model. IEEE transactions on
+neural networks 20(1), 61–80 (2008).
+31. Dwivedi, V.P., Bresson, X.: A generalization of transformer networks to graphs. arXiv preprint arXiv:2012.09699 (2020)
+32. Ullah, I., Manzo, M., Shah, M. & Madden, M. G. Graph convolutional networks: analysis, improvements and results. Applied
+Intelligence 52(8), 9033–9044 (2022).
+33. Sola, F., Ayala, D., Hernández, I. & Ruiz, D. Deep embeddings and graph neural networks: using context to improve domain-
+independent predictions. Applied Intelligence 53(19), 22415–22428 (2023).
+34. Raabe, D., Nabben, R. & Memmert, D. Graph representations for the analysis of multi-agent spatiotemporal sports data. Applied
+Intelligence 53(4), 3783–3803 (2023).
+35. Yu, S., Zeng, Y., Pan, Y. & Chen, B. Discovering a cohesive football team through playersâ€™ attributed collaboration networks.
+Applied Intelligence 53(11), 13506–13526 (2023).
+36. Nouraie, M., Eslahchi, C. & Baca, A. Intelligent team formation and player selection: a data-driven approach for football coaches.
+Applied Intelligence 53(24), 30250–30265 (2023).
+37. Jahangard, S., Hayat, M., Rezatofighi, H.: Real-time trajectory-based social group detection. In: 2023 IEEE/RSJ International
+Conference on Intelligent Robots and Systems (IROS), pp. 1901–1908 (2023). IEEE
+38. Cetintas, O., Brasó, G., Leal-Taixé, L.: Unifying short and long-term tracking with graph hierarchies. In: Proceedings of the IEEE/
+CVF Conference on Computer Vision and Pattern Recognition, pp. 22877–22887 (2023)
+39. Bashar, M., Islam, S., Hussain, K.K., Hasan, M.B., Rahman, A., Kabir, M.H.: Multiple object tracking in recent times: A literature
+review. arXiv preprint arXiv:2209.04796 (2022)
+40. Wei, L., Xi, Z., Hu, Z. & Sun, H. Graph attention information fusion for siamese adaptive attention tracking. Applied Intelligence
+53(2), 2068–2087 (2023).
+41. Singh, D. & Srivastava, R. Graph neural network with rnns based trajectory prediction of dynamic agents for autonomous vehicle.
+Applied Intelligence 52(11), 12801–12816 (2022).
+42. Liu, R., Calafiura, P., Farrell, S., Ju, X., Murnane, D.T., Pham, T.M.: Hierarchical graph neural networks for particle track
+reconstruction. In: 21th International Workshop on Advanced Computing and Analysis Techniques in Physics Research: AI Meets
+Reality, vol. 3 (2023)
+43. Brasó, G., Cetintas, O. & Leal-Taixé, L. Multi-object tracking and segmentation via neural message passing. International Journal
+of Computer Vision 130(12), 3035–3053 (2022).
+44. Dai, P., Weng, R., Choi, W., Zhang, C., He, Z., Ding, W.: Learning a proposal classifier for multiple object tracking. In: Proceedings
+of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 2443–2452 (2021)
+45. He, J., Huang, Z., Wang, N., Zhang, Z.: Learnable graph matching: Incorporating graph partitioning with deep feature learning
+for multiple object tracking. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp.
+5299–5309 (2021)
+46. Dong, W. et al. Improving performance and efficiency of graph neural networks by injective aggregation. Knowledge-Based Systems
+254, 109616 (2022).
+47. Ke, Q. et al. Apgvae: Adaptive disentangled representation learning with the graph-based structure information. Information
+Sciences 657, 119903 (2024).
+48. Liu, Y., Ao, X., Qin, Z., Chi, J., Feng, J., Yang, H., He, Q.: Pick and choose: a gnn-based imbalanced learning approach for fraud
+detection. In: Proceedings of the Web Conference 2021, pp. 3168–3177 (2021)
+49. Jannik Sinner-Best Point of Wimbledon 2023. Website Videoshare https://www.wimbledon.com/en GB/video/index.html (2024)
+50. Kirillov, A., Mintun, E., Ravi, N., Mao, H., Rolland, C., Gustafson, L., Xiao, T., Whitehead, S., Berg, A.C., Lo, W.-Y.,: Segment
+anything. In: Proceedings of the IEEE/CVF International Conference on Computer Vision, pp. 4015–4026 (2023)
+Author contributions
+Conceptualization. Tianjian Zou and Jun Liu. Methodology, Software, Visualization and Writing - Original
+Draft. Tianjian Zou. Validation, Formal analysis, Investigation, Data Curation. Jiangning Wei, Bo Yu, Xinzhu-
+Qiu, LiuJun and Tianjian Zou. Resources. Hao Zhang and Xu Du. Writing - Review & Editing, Supervision and
+Project administration. Jun Liu.
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 30
+
+PAGE 31
+www.nature.com/scientificreports/
+Declarations
+Competing interests
+The authors declare no competing interests.
+Consent for publication
+We confirm that we have obtained informed consent from all subjects and/or their legal guardians for the
+publication of personal information/images in openly accessible online publications, and that data collection
+was only carried out after obtaining their informed consent.
+Informed consent
+We confirm that all methods were carried out in accordance with relevant guidelines and regulations. We
+confirm that all experimental protocols were approved by “Working Committee on Ethics and Governance of
+Artificial Intelligence” of “Chinese Association for Artificial Intelligence”. We confirm that informed consent
+was obtained from all subjects and/or their legal guardian(s).
+Additional information
+Supplementary Information The online version contains supplementary material available at h t t p s : / /d o i . o r g / 1
+0. 1 0 3 8 / s 4 1 59 8 - 0 2 4 - 8 0 0 5 6 - 3 .
+Correspondence and requests for materials should be addressed to J.L.
+Reprints and permissions information is available at www.nature.com/reprints.
+Publisher’s note Springer Nature remains neutral with regard to jurisdictional claims in published maps and
+institutional affiliations.
+Open Access This article is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives
+4.0 International License, which permits any non-commercial use, sharing, distribution and reproduction in
+any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide
+a link to the Creative Commons licence, and indicate if you modified the licensed material. You do not have
+permission under this licence to share adapted material derived from this article or parts of it. The images or
+other third party material in this article are included in the article’s Creative Commons licence, unless indicated
+otherwise in a credit line to the material. If material is not included in the article’s Creative Commons licence
+and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to
+obtain permission directly from the copyright holder. To view a copy of this licence, visit h t t p : / /c r e a t i v e c om m o
+n s . o r g /l i c e n s e s / by - n c - n d / 4 . 0 / .
+© The Author(s) 2024
+Scientific Reports | (2024) 14:29320 | https://doi.org/10.1038/s41598-024-80056-3 31

@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "scope": "Production API with actual NextRequest and isolated fixture; no real clip import or browser rendering",
+  "checks": [
+    "read-only exact sampled-frame preview",
+    "explicit confirmation",
+    "source/image/index/session-bound token",
+    "stale revision and token rejection",
+    "incomplete index/count rejection",
+    "visible/occluded evidence conflicts",
+    "scene/landmarks/events preservation",
+    "new scene classes remain unknown",
+    "immutable history",
+    "reload and lock cleanup",
+    "secure origin"
+  ]
+}

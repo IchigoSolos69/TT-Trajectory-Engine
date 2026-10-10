@@ -12,7 +12,7 @@ app.setAppUserModelId('com.adi.tttrajectory');
 if (process.env.TT_DESKTOP_DATA_ROOT) app.setPath('userData', path.resolve(process.env.TT_DESKTOP_DATA_ROOT));
 const launcherFile = path.join(__dirname, 'launcher.html');
 let window, frontend, engine, origin, closing = false, allowQuit = false, busy = false;
-let context = { phase: 'starting', mode: null, backendUrl: null, error: null };
+let context = { phase: 'starting', mode: null, backendUrl: null, ballBackend: 'yolo', error: null };
 const projectRoot = path.resolve(__dirname, '..');
 const resources = app.isPackaged ? path.join(process.resourcesPath, 'runtime') : projectRoot;
 function existingWorkspace() {
@@ -60,6 +60,13 @@ async function openRecording() {
   if (selection.canceled || closing) return context;
   return startSession('simulation', selection.filePaths[0]);
 }
+async function setBallBackend(value) {
+  if (busy || closing) throw Error('A session change is already in progress');
+  busy=true;publish({phase:'starting',error:null,backendUrl:null});
+  try {const state=await engine.setBallBackend(value);publish({...state,phase:state.mode?'ready':'idle',error:null});return context;}
+  catch(error){publish({...engine.context(),phase:'error',error:error.message});throw error;}
+  finally{busy=false;}
+}
 async function ensureFrontend() {
   if (frontend) return;
   const server = path.join(frontendRoot, 'server.js');
@@ -91,6 +98,17 @@ async function endSession() {
   try { await engine.stop(); publish({ phase: 'idle', backendUrl: null, mode: null, error: null }); await window.loadFile(launcherFile); }
   finally { busy = false; }
 }
+async function openTrainingReview() {
+  if (busy || closing) throw Error('A workspace change is already in progress');
+  busy=true;publish({phase:'starting',error:null});
+  try {
+    await ensureFrontend();
+    await window.loadURL(origin+'/training-review');
+    publish({...engine.context(),phase:engine.child?'ready':'idle',error:null});
+    return {...context,appVersion:app.getVersion()};
+  } catch(error) {publish({...engine.context(),phase:'error',error:error.message});throw error;}
+  finally {busy=false;}
+}
 async function shutdown() {
   if (closing) return;
   closing = true;
@@ -107,7 +125,7 @@ else {
   app.on('second-instance', () => { if (window) { if (window.isMinimized()) window.restore(); window.focus(); } });
   app.on('before-quit', event => { if (!allowQuit) { event.preventDefault(); void shutdown(); } });
   app.whenReady().then(async () => {
-    engine = new EngineSession({ executable, ballModel: path.join(resources, 'models', 'yolov11_ttgames.engine'), sceneModel: path.join(resources, 'models', 'scene.engine'), dataRoot, runtimeDirectories,
+    engine = new EngineSession({ executable, ballModel: path.join(resources, 'models', 'yolov11_ttgames.engine'), blurballModel: path.join(resources, 'models', 'blurball_fp32.engine'), sceneModel: path.join(resources, 'models', 'scene.engine'), dataRoot, runtimeDirectories,
       onFailure: error => publish({ phase: 'error', backendUrl: null, error: error.message }) });
     window = new BrowserWindow({ width: 1480, height: 960, minWidth: 960, minHeight: 640,
       title: 'TT Trajectory Engine', backgroundColor: '#020617', show: false,
@@ -128,6 +146,8 @@ else {
     ipcMain.handle('desktop:context', event => { authorize(event); return { ...context, appVersion: app.getVersion() }; });
     ipcMain.handle('desktop:recording', event => { authorize(event); return openRecording(); });
     ipcMain.handle('desktop:live', event => { authorize(event); return startSession('live'); });
+    ipcMain.handle('desktop:review', event => { authorize(event); return openTrainingReview(); });
+    ipcMain.handle('desktop:ball-model', (event,value) => { authorize(event); return setBallBackend(value); });
     ipcMain.handle('desktop:end', event => { authorize(event); return endSession(); });
     ipcMain.handle('desktop:data', async event => { authorize(event); const error = await shell.openPath(dataRoot); if (error) throw Error(error); });
     ipcMain.handle('desktop:drafts-read', event=>{authorize(event);return draftStore.read();});
@@ -136,6 +156,7 @@ else {
       { label: 'Session', submenu: [
         { label: 'Open recording…', accelerator: 'CmdOrCtrl+O', click: () => void openRecording().catch(error => dialog.showErrorBox('Recording could not open', error.message)) },
         { label: 'Live camera session', click: () => void startSession('live').catch(error => dialog.showErrorBox('Live session could not start', error.message)) },
+        { label: 'Training review', click: () => void openTrainingReview().catch(error => dialog.showErrorBox('Training review could not open', error.message)) },
         { label: 'End session', click: () => void endSession().catch(error => dialog.showErrorBox('Session could not stop', error.message)) },
         { type: 'separator' }, { role: 'quit' },
       ] },
@@ -148,6 +169,6 @@ else {
     window.once('ready-to-show', () => { if(process.env.TT_DESKTOP_SMOKE!=='1')window.show(); });
     window.on('close', event => { if (!allowQuit) { event.preventDefault(); void shutdown(); } });
     await window.loadFile(launcherFile); publish({ phase: 'idle' });
-    if (process.env.TT_DESKTOP_SMOKE === '1') await require('./tests/in-app-smoke.cjs').run({ app, window, engine, startSession, endSession, openRecording, dialog, dataRoot, getOrigin: () => origin, getContext: () => context });
+    if (process.env.TT_DESKTOP_SMOKE === '1') await require('./tests/in-app-smoke.cjs').run({ app, window, engine, startSession, endSession, openRecording, setBallBackend, dialog, dataRoot, getOrigin: () => origin, getContext: () => context });
   }).catch(error => { console.error('[desktop]', error); dialog.showErrorBox('Application startup failed', error.stack || error.message); void shutdown(); });
 }

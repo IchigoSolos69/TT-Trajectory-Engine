@@ -9,10 +9,11 @@
 #include <mutex>
 #include "observed_spin.hpp"
 
-struct StrikeMeasurement {int id=0,frame=0;float time=0,speedKmh=0;};
+struct StrikeMeasurement {int id=0,frame=0;double time=0;float speedKmh=0;};
 
 struct FramePresentation {
     std::string intelligenceJson;
+    std::string ballModelJson,ballBlurJson,ballFlightJson;
     int sourceId=1;
     bool measuredBall=false,positionValid=false,videoPickerOpen=false;
     Detection observedBall{};
@@ -30,7 +31,8 @@ struct FramePresentation {
     bool recordingActive = false, recordingFailed = false;
     int recordingSaved = 0, recordingDropped = 0;
     std::string recordingClip;
-    float sourceTime = 0, playbackRate = 1, processingFps = 0, previewFps = 0;
+    double sourceTime = 0;
+    float playbackRate = 1, processingFps = 0, previewFps = 0;
     bool paused = false, ended = false;
     float tableX = 0, tableY = 0;
     float imageVx = 0, imageVy = 0;

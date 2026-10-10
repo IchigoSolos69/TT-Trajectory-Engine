@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "uniform_saved_images": 300,
+  "mined_saved_images": 120,
+  "mined_bursts": 24,
+  "combined_unique_source_frames": 407,
+  "uniform_mined_source_frame_overlap": 13,
+  "selected_frame_identity_exact": true,
+  "new_annotations_unreviewed": true,
+  "session": "iphone_same_venue_session_1",
+  "split": null,
+  "cut_edit_history_verified": false,
+  "selection_sha256": "e1eba02dbabf1a2cb7ad8084e0f3d59bccd9b94f150481a20faa17c2b9e1bc71",
+  "source_sha256": "452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706",
+  "reviewed_negative_labels_created": 0
+}

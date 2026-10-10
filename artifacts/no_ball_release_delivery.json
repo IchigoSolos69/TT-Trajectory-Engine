@@ -1,0 +1,26 @@
+{
+  "created_at": "2026-10-09T13:58:30.754Z",
+  "release": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\desktop\\dist\\TT Trajectory Engine training review v2",
+  "frontend_build": "OlNGJGTFv7aXap_T2iuGh",
+  "backend_sha256": "85b693c29b6ada72d1444b86c325f87bd3aff846fddeace903b6fec7919b3366",
+  "models": {
+    "ball": "2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9",
+    "scene": "5eb0ecbfe0cddb8631cc89fbf6e7a2145d2a4a6b10595034afd4ab8b1a454cee",
+    "blurball_experimental": "48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f"
+  },
+  "desktop_code_sha256": {
+    "main.cjs": "91dbd5c5457a273fb4331bb59470356938f550890e0cc5342148f0cf4ecf267d",
+    "preload.cjs": "90c530e81b27d508c6b8f7c85e961a066ac07f1e9a684261351e0765a6658b9a",
+    "launcher.cjs": "66c215fba93fad6bb412a9dc8b713fa3445009c46f0a95e85688f1c83c1abe31",
+    "launcher.html": "1725ec1b82064512d1d2104a7a8f316141a7e587d0ba09c43bf31ac2f4f948e5",
+    "tests/in-app-smoke.cjs": "4469f98430a99cc79a2f2faec9fc83c51d8c8cc5410519146397ce51b9858989"
+  },
+  "package_source_matches": true,
+  "smoke_report_sha256": "e62bcd6cd0f818b63c2a76d304332ad3e3748ef90dfe96e0bd9ef16cb79061ef",
+  "smoke_passed": true,
+  "camera_opened": false,
+  "model_weights_changed": false,
+  "hybrid_default_enabled": false,
+  "filter_default_enabled": false,
+  "old_releases_preserved": true
+}

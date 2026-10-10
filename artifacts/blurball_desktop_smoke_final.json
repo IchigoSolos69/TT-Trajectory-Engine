@@ -1,0 +1,315 @@
+{
+  "started_at": "2026-10-09T11:52:54.637Z",
+  "packaged": true,
+  "electron": "44.7.0",
+  "checks": [
+    "Sandboxed native window with isolated, typed preload bridge",
+    "Launcher live control starts only live mode; camera remains unauthorized",
+    "End session releases its backend process",
+    "Native recording selection bridge handles Unicode/spaces and analyzes every frame",
+    "Desktop renders footage and native controls; review API, current assets and favicon load",
+    "Footage, 2D and 3D retain the same paused frame and authoritative table coordinates",
+    "Actual Chromium renderer saves and reloads reviewed fixture annotations at its exact dynamic loopback origin",
+    "Actual pointer drag creates a reviewed source-size streak through GUI Save, preserving prior boxes",
+    "Review drafts persist in an application-owned file independent of the HTTP port",
+    "Invalid video preserves the active recording",
+    "Canceling recording selection preserves the session",
+    "Opt-in forecast renders only authoritative C++ points with matching analysis/frame and past observation support",
+    "Rendered model selector restarts owned backend, isolates cache identity, covers all recording frames and paints BlurBall centroid/blur evidence",
+    "Switching back to YOLO releases the experimental backend",
+    "Closing the native window stops both application-owned services and frees their ports"
+  ],
+  "renderer_errors": [],
+  "security": {
+    "node": "undefined",
+    "bridge": "function",
+    "isolated": "undefined",
+    "launcher": true
+  },
+  "live": {
+    "pid": 33496,
+    "url": "ws://127.0.0.1:60587",
+    "camera_active": false
+  },
+  "recording": {
+    "pid": 7856,
+    "url": "ws://127.0.0.1:58805",
+    "analysis": {
+      "analyzed_frames": 360,
+      "coverage": "ALL_SOURCE_FRAMES",
+      "requested_frame": 0,
+      "status": "COMPLETE",
+      "total_frames": 360,
+      "waiting_for_analysis": false
+    },
+    "source_id": 1
+  },
+  "http": [
+    {
+      "endpoint": "/",
+      "status": 200
+    },
+    {
+      "endpoint": "/training-review",
+      "status": 200
+    },
+    {
+      "endpoint": "/api/training-review",
+      "status": 200
+    },
+    {
+      "endpoint": "/favicon.ico",
+      "status": 200
+    }
+  ],
+  "rendered": {
+    "toolbar": true,
+    "canvas": true,
+    "frame": 120,
+    "buttons": [
+      "Open recording…",
+      "Live camera",
+      "End session",
+      "Open recording…"
+    ],
+    "painted_frame": 120
+  },
+  "spatial_views": {
+    "radar": {
+      "frame": "120",
+      "x": "-1.8386",
+      "y": "1.2105"
+    },
+    "volumetric": {
+      "frame": "120",
+      "x": "-1.8386",
+      "y": "1.2105"
+    }
+  },
+  "training_review": {
+    "origin": "http://127.0.0.1:60568",
+    "status": 200,
+    "saved": true,
+    "annotation": {
+      "reviewed": true,
+      "ball": [
+        [
+          0.2,
+          0.3,
+          0.01,
+          0.01
+        ]
+      ],
+      "person": [],
+      "table": [],
+      "reviewed_at": "2026-10-09T11:53:11.280Z",
+      "geometry": {
+        "landmarks": {},
+        "landmarks_reviewed": false,
+        "visibility": "visible",
+        "blur": "unknown",
+        "events": [],
+        "events_reviewed": false
+      },
+      "source_frame": 120,
+      "elapsed_ms": 1000,
+      "reviewed_classes": {
+        "ball": true,
+        "person": false,
+        "table": false
+      }
+    },
+    "revision": "4a897069f3b972f40842951397dffc8f6f55950f1a7bac5cc57b1a21e50eeb42"
+  },
+  "streak_review": {
+    "endpoints": [
+      [
+        0.3005021015547944,
+        0.39956744385574655
+      ],
+      [
+        0.3999821007761046,
+        0.44956856794628863
+      ]
+    ],
+    "source_width": 1630,
+    "source_height": 1003,
+    "center": [
+      0.3502421011654495,
+      0.4245680059010176
+    ],
+    "half_length_px": 84.86538752625073,
+    "axis_rad": 0.29995222818299005,
+    "method": "manual_streak_endpoints",
+    "reviewed": true
+  },
+  "forecast_render": {
+    "frame": "30",
+    "analysis": "1791546798079210_30232",
+    "points": [
+      {
+        "pixel": [
+          360.382094,
+          172.555396
+        ],
+        "timestamp": 0.485595
+      },
+      {
+        "pixel": [
+          359.16224,
+          172.238401
+        ],
+        "timestamp": 0.510595
+      },
+      {
+        "pixel": [
+          357.938915,
+          173.125678
+        ],
+        "timestamp": 0.535595
+      }
+    ],
+    "provenance": {
+      "coordinate_basis": "source_pixels",
+      "fit_coefficients": [
+        [
+          360.382094,
+          -6.527039,
+          -0.049826
+        ],
+        [
+          172.555396,
+          -4.924973,
+          17.288113
+        ]
+      ],
+      "fit_origin": 0.485595,
+      "fit_rmse_px": 0.504753,
+      "fit_time_scale": 0.133957,
+      "maximum_horizon_s": 0.05,
+      "method": "recent_observations_quadratic_v1",
+      "points": [
+        {
+          "pixel": [
+            360.382094,
+            172.555396
+          ],
+          "timestamp": 0.485595
+        },
+        {
+          "pixel": [
+            359.16224,
+            172.238401
+          ],
+          "timestamp": 0.510595
+        },
+        {
+          "pixel": [
+            357.938915,
+            173.125678
+          ],
+          "timestamp": 0.535595
+        }
+      ],
+      "reason": "OBSERVED_FLIGHT_FIT",
+      "reference_frame": 30,
+      "reference_timestamp": 0.485595,
+      "segment_id": 2,
+      "status": "EXPERIMENTAL_FORECAST",
+      "support_frames": [
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30
+      ],
+      "uncertainty": null,
+      "uncertainty_reason": "FORECAST_COVERAGE_NOT_CALIBRATED"
+    }
+  },
+  "blurball": {
+    "pid": 30232,
+    "url": "ws://127.0.0.1:61100",
+    "analysis": {
+      "analyzed_frames": 272,
+      "coverage": "ALL_SOURCE_FRAMES",
+      "requested_frame": 0,
+      "status": "COMPLETE",
+      "total_frames": 272,
+      "waiting_for_analysis": false
+    },
+    "model": {
+      "backend": "blurball",
+      "experimental": true,
+      "heatmap_threshold": 0.7,
+      "lookahead_frames": 2,
+      "model_sha256": "48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f",
+      "score_calibrated": false,
+      "score_kind": "uncalibrated_heatmap_peak",
+      "temporal_policy": "all_windows_two_frame_lookahead",
+      "timestamp_basis": "nominal_source_fps_or_live_capture_clock",
+      "warmup_frames": 0
+    },
+    "frame": 120,
+    "ball": {
+      "x": 0.4909,
+      "y": 0.3887,
+      "z": null,
+      "vx": -1.0782,
+      "vy": 0.1817,
+      "vz": null,
+      "speed_kmh": 21.6528,
+      "confidence": 0.981,
+      "is_strike": false,
+      "is_bounce": false,
+      "bounce_x": -1,
+      "bounce_y": -1
+    },
+    "blur": {
+      "axis_deg": 177.957275,
+      "axis_directed": false,
+      "center_px": [
+        628.322632,
+        279.846924
+      ],
+      "component_mass": 47.771763,
+      "endpoints_px": [
+        [
+          614.501038,
+          280.339905
+        ],
+        [
+          642.144226,
+          279.353943
+        ]
+      ],
+      "exposure_seconds": null,
+      "extent_px": 27.660749,
+      "gpu_ms": 9.834336,
+      "heatmap_peak": 0.981025
+    },
+    "spatial_views": [
+      {
+        "frame": "120",
+        "analysis": "1791546798079210_30232",
+        "x": "0.4715",
+        "y": "1.2815"
+      },
+      {
+        "frame": "120",
+        "analysis": "1791546798079210_30232",
+        "x": "0.4715",
+        "y": "1.2815"
+      }
+    ]
+  },
+  "frontend_origin": "http://127.0.0.1:60568",
+  "data_root": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\desktop_test_1791546774038",
+  "ok": true,
+  "finished_at": "2026-10-09T11:53:36.506Z",
+  "clean_runtime_path": true
+}

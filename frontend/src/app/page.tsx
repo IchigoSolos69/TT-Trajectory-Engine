@@ -29,6 +29,7 @@ export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<'visualizer' | 'radar' | '3d' | 'physics' | 'analytics' | 'engine'>('visualizer');
   const [showHeatmap, setShowHeatmap] = useState<boolean>(false);
   const [showVelocityVector, setShowVelocityVector] = useState<boolean>(true);
+  const [showForecast, setShowForecast] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [cinematicMode, setCinematicMode] = useState<boolean>(false);
 
@@ -355,6 +356,7 @@ export default function DashboardPage() {
                         />
                         Impact Heatmap Overlay
                       </label>
+                      {currentFrame?.ball_model?.backend==='blurball'&&<label className="flex items-center gap-2 cursor-pointer text-violet-200"><input aria-label="Experimental trajectory forecast" type="checkbox" checked={showForecast} onChange={e=>setShowForecast(e.target.checked)} className="accent-violet-400"/>Trajectory forecast · experimental</label>}
                     </div>
                   </motion.div>
                 )}
@@ -389,6 +391,7 @@ export default function DashboardPage() {
                   currentFrame={currentFrame}
                   showVelocityVector={showVelocityVector}
                   showHeatmap={showHeatmap}
+                  showForecast={showForecast}
                 />
               </div>
             </motion.div>
@@ -403,8 +406,8 @@ export default function DashboardPage() {
               transition={{ duration: 0.3, ease: 'easeInOut' }}
               className="p-4 grid xl:grid-cols-2 gap-4 min-h-[520px]"
             >
-              <div className="h-[520px]"><TrajectoryCanvas currentFrame={currentFrame} showVelocityVector={showVelocityVector} showHeatmap={showHeatmap}/></div>
-              <TacticalRadar x={currentX} y={currentY} speedKmh={currentSpeed} isBounce={isBounce} impactPoints={impactPoints} hasBall={spatial.available} frameId={spatial.frameId} trajectory={currentFrame?.intelligence?.trajectory} />
+              <div className="h-[520px]"><TrajectoryCanvas currentFrame={currentFrame} showVelocityVector={showVelocityVector} showHeatmap={showHeatmap} showForecast={showForecast}/></div>
+              <TacticalRadar x={currentX} y={currentY} speedKmh={currentSpeed} isBounce={isBounce} impactPoints={impactPoints} hasBall={spatial.available} frameId={spatial.frameId} analysisId={currentFrame?.analysis_id} trajectory={currentFrame?.intelligence?.trajectory} />
             </motion.div>
           )}
 
@@ -417,8 +420,8 @@ export default function DashboardPage() {
               transition={{ duration: 0.3, ease: 'easeInOut' }}
               className="p-4"
             >
-              <div className="h-[300px] mb-4"><TrajectoryCanvas currentFrame={currentFrame} showVelocityVector={showVelocityVector} showHeatmap={showHeatmap}/></div>
-              <VolumetricTable x={currentX} y={currentY} hasBall={spatial.available} frameId={spatial.frameId} trajectory={currentFrame?.intelligence?.trajectory} />
+              <div className="h-[300px] mb-4"><TrajectoryCanvas currentFrame={currentFrame} showVelocityVector={showVelocityVector} showHeatmap={showHeatmap} showForecast={showForecast}/></div>
+              <VolumetricTable x={currentX} y={currentY} hasBall={spatial.available} frameId={spatial.frameId} analysisId={currentFrame?.analysis_id} trajectory={currentFrame?.intelligence?.trajectory} />
             </motion.div>
           )}
 

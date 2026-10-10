@@ -1,0 +1,695 @@
+{
+  "scope": "Read-only saved-review ambiguity evidence; no conclusion about whether a marked object is a real ball or a detector false positive. User clarification and image review are required. No labels, splits or models changed.",
+  "source_filename": "Video Project 6.mp4",
+  "source_sha256_from_capture": "452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706",
+  "counts": {
+    "phone_452627e98a3c2652_1": {
+      "box_positive_files": 65,
+      "explicit_absent_files": 235,
+      "unknown_or_occluded_files": 0,
+      "annotations_sha256": "fa8bb851eac615aba6d2ee74fed360e682d421e3c7ea5d175539b1b4ee7c3f34",
+      "index_sha256": "38957991c5426d7588afa3ebd7c38207ba040b263bddcf7e5a1c12ed23c9b153"
+    },
+    "phone_452627e98a3c2652_2": {
+      "box_positive_files": 59,
+      "explicit_absent_files": 55,
+      "unknown_or_occluded_files": 6,
+      "annotations_sha256": "6de8ecc73550107dba694127d53c7e0b42de4ca675106018d20398dc8881e23c",
+      "index_sha256": "f7a46c794263025b73c3a24c74db771a6ae32516716fc89ca051b85b03b56bd3"
+    }
+  },
+  "conflict_count": 7,
+  "conflicts": [
+    {
+      "source_frame": 7297,
+      "classification": "SAME_POSITIVE_VISIBILITY_DIFFERENT_REVIEWED_BOX_GEOMETRY",
+      "same_jpeg": true,
+      "same_decoded_rgb": true,
+      "box_iou": 0.7328099373253899,
+      "center_delta_px": [
+        -2.4324830029481745,
+        -3.268597412109557
+      ],
+      "copies": [
+        {
+          "clip": "phone_452627e98a3c2652_1",
+          "file": "frame_236.jpg",
+          "image_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_452627e98a3c2652_1\\frame_236.jpg",
+          "source_frame": 7297,
+          "elapsed_ms": 243200.0,
+          "visibility": "visible",
+          "reviewed_classes": {
+            "ball": true,
+            "person": false,
+            "table": false
+          },
+          "reviewed_at": "2026-10-10T10:03:52.086Z",
+          "boxes_normalized": [
+            [
+              0.5316723549527113,
+              0.6790306091308593,
+              0.01689188067977454,
+              0.03903900146484385
+            ]
+          ],
+          "boxes_pixel_xywh": [
+            [
+              1020.8109215092056,
+              733.3530578613281,
+              32.43241090516712,
+              42.162121582031354
+            ]
+          ],
+          "jpeg_sha256": "5ce89ab8d3c7c9e0ff242c673ac1db37fc389d4ec5fd86fd1942b7b1a4967694",
+          "decoded_rgb_sha256": "97bee1b8bf929c9dc96cb50db4cd1f8699de1de3e86aa43b2db31c2fa63b5560",
+          "dimensions": [
+            1920,
+            1080
+          ]
+        },
+        {
+          "clip": "phone_452627e98a3c2652_2",
+          "file": "frame_103.jpg",
+          "image_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_452627e98a3c2652_2\\frame_103.jpg",
+          "source_frame": 7297,
+          "elapsed_ms": 243200.0,
+          "visibility": "visible",
+          "reviewed_classes": {
+            "ball": true,
+            "person": false,
+            "table": false
+          },
+          "reviewed_at": "2026-10-10T09:47:38.403Z",
+          "boxes_normalized": [
+            [
+              0.5308277237254229,
+              0.6782563781738281,
+              0.01604730667294718,
+              0.034534505208333344
+            ]
+          ],
+          "boxes_pixel_xywh": [
+            [
+              1019.1892295528119,
+              732.5168884277343,
+              30.81082881205859,
+              37.29726562500001
+            ]
+          ],
+          "jpeg_sha256": "5ce89ab8d3c7c9e0ff242c673ac1db37fc389d4ec5fd86fd1942b7b1a4967694",
+          "decoded_rgb_sha256": "97bee1b8bf929c9dc96cb50db4cd1f8699de1de3e86aa43b2db31c2fa63b5560",
+          "dimensions": [
+            1920,
+            1080
+          ]
+        }
+      ]
+    },
+    {
+      "source_frame": 7298,
+      "classification": "SAME_POSITIVE_VISIBILITY_DIFFERENT_REVIEWED_BOX_GEOMETRY",
+      "same_jpeg": true,
+      "same_decoded_rgb": true,
+      "box_iou": 0.8057135644976768,
+      "center_delta_px": [
+        -1.6216919563939882,
+        -2.457751464843909
+      ],
+      "copies": [
+        {
+          "clip": "phone_452627e98a3c2652_1",
+          "file": "frame_237.jpg",
+          "image_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_452627e98a3c2652_1\\frame_237.jpg",
+          "source_frame": 7298,
+          "elapsed_ms": 243233.3333333333,
+          "visibility": "visible",
+          "reviewed_classes": {
+            "ball": true,
+            "person": false,
+            "table": false
+          },
+          "reviewed_at": "2026-10-10T10:03:54.656Z",
+          "boxes_normalized": [
+            [
+              0.5316723549527113,
+              0.6790306091308593,
+              0.01689188067977454,
+              0.03903900146484385
+            ]
+          ],
+          "boxes_pixel_xywh": [
+            [
+              1020.8109215092056,
+              733.3530578613281,
+              32.43241090516712,
+              42.162121582031354
+            ]
+          ],
+          "jpeg_sha256": "813bdf62f203d18dd2fdd8c7c70b7e3051ceee26456ec8994e60d387e1db1133",
+          "decoded_rgb_sha256": "2df6b9867165404da05068c511b307a4291ff15268ebe17922fbf8a529f390ee",
+          "dimensions": [
+            1920,
+            1080
+          ]
+        },
+        {
+          "clip": "phone_452627e98a3c2652_2",
+          "file": "frame_104.jpg",
+          "image_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_452627e98a3c2652_2\\frame_104.jpg",
+          "source_frame": 7298,
+          "elapsed_ms": 243233.3333333333,
+          "visibility": "visible",
+          "reviewed_classes": {
+            "ball": true,
+            "person": false,
+            "table": false
+          },
+          "reviewed_at": "2026-10-10T09:48:02.482Z",
+          "boxes_normalized": [
+            [
+              0.5308277237254229,
+              0.6782563781738281,
+              0.01689188067977443,
+              0.0360360717773438
+            ]
+          ],
+          "boxes_pixel_xywh": [
+            [
+              1019.1892295528119,
+              732.5168884277343,
+              32.432410905166904,
+              38.918957519531304
+            ]
+          ],
+          "jpeg_sha256": "813bdf62f203d18dd2fdd8c7c70b7e3051ceee26456ec8994e60d387e1db1133",
+          "decoded_rgb_sha256": "2df6b9867165404da05068c511b307a4291ff15268ebe17922fbf8a529f390ee",
+          "dimensions": [
+            1920,
+            1080
+          ]
+        }
+      ]
+    },
+    {
+      "source_frame": 7299,
+      "classification": "SAME_POSITIVE_VISIBILITY_DIFFERENT_REVIEWED_BOX_GEOMETRY",
+      "same_jpeg": true,
+      "same_decoded_rgb": true,
+      "box_iou": 0.7159581122727344,
+      "center_delta_px": [
+        -1.6216370247511804,
+        -4.890234375000091
+      ],
+      "copies": [
+        {
+          "clip": "phone_452627e98a3c2652_1",
+          "file": "frame_238.jpg",
+          "image_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_452627e98a3c2652_1\\frame_238.jpg",
+          "source_frame": 7299,
+          "elapsed_ms": 243266.66666666666,
+          "visibility": "visible",
+          "reviewed_classes": {
+            "ball": true,
+            "person": false,
+            "table": false
+          },
+          "reviewed_at": "2026-10-10T10:03:59.800Z",
+          "boxes_normalized": [
+            [
+              0.5316723549527113,
+              0.6790306091308593,
+              0.01689188067977454,
+              0.03903900146484385
+            ]
+          ],
+          "boxes_pixel_xywh": [
+            [
+              1020.8109215092056,
+              733.3530578613281,
+              32.43241090516712,
+              42.162121582031354
+            ]
+          ],
+          "jpeg_sha256": "408a564a00563dad91757abd46c3ae1e3efd983f698c323cedab15135f656b79",
+          "decoded_rgb_sha256": "00787079688edd50891804cb74b5aed4aa2c16dd05f804509ebb26d98ebe3315",
+          "dimensions": [
+            1920,
+            1080
+          ]
+        },
+        {
+          "clip": "phone_452627e98a3c2652_2",
+          "file": "frame_105.jpg",
+          "image_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_452627e98a3c2652_2\\frame_105.jpg",
+          "source_frame": 7299,
+          "elapsed_ms": 243266.66666666666,
+          "visibility": "visible",
+          "reviewed_classes": {
+            "ball": true,
+            "person": false,
+            "table": false
+          },
+          "reviewed_at": "2026-10-10T09:48:06.313Z",
+          "boxes_normalized": [
+            [
+              0.5316723549527113,
+              0.6752533467610677,
+              0.015202675445658786,
+              0.037537536621093714
+            ]
+          ],
+          "boxes_pixel_xywh": [
+            [
+              1020.8109215092056,
+              729.2736145019531,
+              29.18913685566487,
+              40.54053955078121
+            ]
+          ],
+          "jpeg_sha256": "408a564a00563dad91757abd46c3ae1e3efd983f698c323cedab15135f656b79",
+          "decoded_rgb_sha256": "00787079688edd50891804cb74b5aed4aa2c16dd05f804509ebb26d98ebe3315",
+          "dimensions": [
+            1920,
+            1080
+          ]
+        }
+      ]
+    },
+    {
+      "source_frame": 8383,
+      "classification": "SAME_POSITIVE_VISIBILITY_DIFFERENT_REVIEWED_BOX_GEOMETRY",
+      "same_jpeg": true,
+      "same_decoded_rgb": true,
+      "box_iou": 0.6234405093506007,
+      "center_delta_px": [
+        -2.4323182080199786,
+        -2.4070495605467386
+      ],
+      "copies": [
+        {
+          "clip": "phone_452627e98a3c2652_1",
+          "file": "frame_271.jpg",
+          "image_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_452627e98a3c2652_1\\frame_271.jpg",
+          "source_frame": 8383,
+          "elapsed_ms": 279400.0,
+          "visibility": "visible",
+          "reviewed_classes": {
+            "ball": true,
+            "person": false,
+            "table": false
+          },
+          "reviewed_at": "2026-10-10T10:06:01.839Z",
+          "boxes_normalized": [
+            [
+              0.5350507082004817,
+              0.6737518310546875,
+              0.019425659920717653,
+              0.040540568033854196
+            ]
+          ],
+          "boxes_pixel_xywh": [
+            [
+              1027.297359744925,
+              727.6519775390625,
+              37.29726704777789,
+              43.78381347656253
+            ]
+          ],
+          "jpeg_sha256": "620b4f8a3783ba51aa7cbb140f7375d0322df4010f6b7683252edf3991372435",
+          "decoded_rgb_sha256": "94a2009ae4e187e4a85da37068be9d581f319c9b92f434e24b0bfbf8decf260c",
+          "dimensions": [
+            1920,
+            1080
+          ]
+        },
+        {
+          "clip": "phone_452627e98a3c2652_2",
+          "file": "frame_112.jpg",
+          "image_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_452627e98a3c2652_2\\frame_112.jpg",
+          "source_frame": 8383,
+          "elapsed_ms": 279400.0,
+          "visibility": "visible",
+          "reviewed_classes": {
+            "ball": true,
+            "person": false,
+            "table": false
+          },
+          "reviewed_at": "2026-10-10T09:48:33.472Z",
+          "boxes_normalized": [
+            [
+              0.5342061914141156,
+              0.6775290934244792,
+              0.018581028693429036,
+              0.02852854410807293
+            ]
+          ],
+          "boxes_pixel_xywh": [
+            [
+              1025.675887515102,
+              731.7314208984376,
+              35.67557509138375,
+              30.810827636718763
+            ]
+          ],
+          "jpeg_sha256": "620b4f8a3783ba51aa7cbb140f7375d0322df4010f6b7683252edf3991372435",
+          "decoded_rgb_sha256": "94a2009ae4e187e4a85da37068be9d581f319c9b92f434e24b0bfbf8decf260c",
+          "dimensions": [
+            1920,
+            1080
+          ]
+        }
+      ]
+    },
+    {
+      "source_frame": 8384,
+      "classification": "SAME_POSITIVE_VISIBILITY_DIFFERENT_REVIEWED_BOX_GEOMETRY",
+      "same_jpeg": true,
+      "same_decoded_rgb": true,
+      "box_iou": 0.6234405093506007,
+      "center_delta_px": [
+        -2.4323182080199786,
+        -2.4070495605467386
+      ],
+      "copies": [
+        {
+          "clip": "phone_452627e98a3c2652_1",
+          "file": "frame_272.jpg",
+          "image_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_452627e98a3c2652_1\\frame_272.jpg",
+          "source_frame": 8384,
+          "elapsed_ms": 279433.3333333333,
+          "visibility": "visible",
+          "reviewed_classes": {
+            "ball": true,
+            "person": false,
+            "table": false
+          },
+          "reviewed_at": "2026-10-10T10:06:04.979Z",
+          "boxes_normalized": [
+            [
+              0.5350507082004817,
+              0.6737518310546875,
+              0.019425659920717653,
+              0.040540568033854196
+            ]
+          ],
+          "boxes_pixel_xywh": [
+            [
+              1027.297359744925,
+              727.6519775390625,
+              37.29726704777789,
+              43.78381347656253
+            ]
+          ],
+          "jpeg_sha256": "9fd2c1beee56860b8e85f7cba10a9a6c6f317a633756627afd4dbbf9c659033f",
+          "decoded_rgb_sha256": "f6112ebc09a425a7ab85e95856367eb54b7b63ae4144dfebaaf499035066ec36",
+          "dimensions": [
+            1920,
+            1080
+          ]
+        },
+        {
+          "clip": "phone_452627e98a3c2652_2",
+          "file": "frame_113.jpg",
+          "image_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_452627e98a3c2652_2\\frame_113.jpg",
+          "source_frame": 8384,
+          "elapsed_ms": 279433.3333333333,
+          "visibility": "visible",
+          "reviewed_classes": {
+            "ball": true,
+            "person": false,
+            "table": false
+          },
+          "reviewed_at": "2026-10-10T09:48:35.488Z",
+          "boxes_normalized": [
+            [
+              0.5342061914141156,
+              0.6775290934244792,
+              0.018581028693429036,
+              0.02852854410807293
+            ]
+          ],
+          "boxes_pixel_xywh": [
+            [
+              1025.675887515102,
+              731.7314208984376,
+              35.67557509138375,
+              30.810827636718763
+            ]
+          ],
+          "jpeg_sha256": "9fd2c1beee56860b8e85f7cba10a9a6c6f317a633756627afd4dbbf9c659033f",
+          "decoded_rgb_sha256": "f6112ebc09a425a7ab85e95856367eb54b7b63ae4144dfebaaf499035066ec36",
+          "dimensions": [
+            1920,
+            1080
+          ]
+        }
+      ]
+    },
+    {
+      "source_frame": 8385,
+      "classification": "SAME_POSITIVE_VISIBILITY_DIFFERENT_REVIEWED_BOX_GEOMETRY",
+      "same_jpeg": true,
+      "same_decoded_rgb": true,
+      "box_iou": 0.6234405093506007,
+      "center_delta_px": [
+        -2.4323182080199786,
+        -2.4070495605467386
+      ],
+      "copies": [
+        {
+          "clip": "phone_452627e98a3c2652_1",
+          "file": "frame_273.jpg",
+          "image_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_452627e98a3c2652_1\\frame_273.jpg",
+          "source_frame": 8385,
+          "elapsed_ms": 279466.6666666666,
+          "visibility": "visible",
+          "reviewed_classes": {
+            "ball": true,
+            "person": false,
+            "table": false
+          },
+          "reviewed_at": "2026-10-10T10:06:07.974Z",
+          "boxes_normalized": [
+            [
+              0.5350507082004817,
+              0.6737518310546875,
+              0.019425659920717653,
+              0.040540568033854196
+            ]
+          ],
+          "boxes_pixel_xywh": [
+            [
+              1027.297359744925,
+              727.6519775390625,
+              37.29726704777789,
+              43.78381347656253
+            ]
+          ],
+          "jpeg_sha256": "5ad12b061b839ef25089f33a3a062312cbf41c0ab40bf6f6c8a963fd0e3e15b0",
+          "decoded_rgb_sha256": "d8ac17a03eb00f627cbbefa6f4c559e7448c46a3dac1b0e6ea6b79fe9a84c09e",
+          "dimensions": [
+            1920,
+            1080
+          ]
+        },
+        {
+          "clip": "phone_452627e98a3c2652_2",
+          "file": "frame_114.jpg",
+          "image_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_452627e98a3c2652_2\\frame_114.jpg",
+          "source_frame": 8385,
+          "elapsed_ms": 279466.6666666666,
+          "visibility": "visible",
+          "reviewed_classes": {
+            "ball": true,
+            "person": false,
+            "table": false
+          },
+          "reviewed_at": "2026-10-10T09:48:36.991Z",
+          "boxes_normalized": [
+            [
+              0.5342061914141156,
+              0.6775290934244792,
+              0.018581028693429036,
+              0.02852854410807293
+            ]
+          ],
+          "boxes_pixel_xywh": [
+            [
+              1025.675887515102,
+              731.7314208984376,
+              35.67557509138375,
+              30.810827636718763
+            ]
+          ],
+          "jpeg_sha256": "5ad12b061b839ef25089f33a3a062312cbf41c0ab40bf6f6c8a963fd0e3e15b0",
+          "decoded_rgb_sha256": "d8ac17a03eb00f627cbbefa6f4c559e7448c46a3dac1b0e6ea6b79fe9a84c09e",
+          "dimensions": [
+            1920,
+            1080
+          ]
+        }
+      ]
+    },
+    {
+      "source_frame": 8386,
+      "classification": "SAME_POSITIVE_VISIBILITY_DIFFERENT_REVIEWED_BOX_GEOMETRY",
+      "same_jpeg": true,
+      "same_decoded_rgb": true,
+      "box_iou": 0.6234405093506007,
+      "center_delta_px": [
+        -2.4323182080199786,
+        -2.4070495605467386
+      ],
+      "copies": [
+        {
+          "clip": "phone_452627e98a3c2652_1",
+          "file": "frame_274.jpg",
+          "image_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_452627e98a3c2652_1\\frame_274.jpg",
+          "source_frame": 8386,
+          "elapsed_ms": 279500.0,
+          "visibility": "visible",
+          "reviewed_classes": {
+            "ball": true,
+            "person": false,
+            "table": false
+          },
+          "reviewed_at": "2026-10-10T10:06:10.195Z",
+          "boxes_normalized": [
+            [
+              0.5350507082004817,
+              0.6737518310546875,
+              0.019425659920717653,
+              0.040540568033854196
+            ]
+          ],
+          "boxes_pixel_xywh": [
+            [
+              1027.297359744925,
+              727.6519775390625,
+              37.29726704777789,
+              43.78381347656253
+            ]
+          ],
+          "jpeg_sha256": "01fffb85d41af52eb4ba8673a132e1cd05cfc8839f0f7be3e6da271b0d2b4d9e",
+          "decoded_rgb_sha256": "d2384e87497050945c5582a3a05695e58a994a8adc52aabe8c0a385fa55d44d0",
+          "dimensions": [
+            1920,
+            1080
+          ]
+        },
+        {
+          "clip": "phone_452627e98a3c2652_2",
+          "file": "frame_115.jpg",
+          "image_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_452627e98a3c2652_2\\frame_115.jpg",
+          "source_frame": 8386,
+          "elapsed_ms": 279500.0,
+          "visibility": "visible",
+          "reviewed_classes": {
+            "ball": true,
+            "person": false,
+            "table": false
+          },
+          "reviewed_at": "2026-10-10T09:48:38.980Z",
+          "boxes_normalized": [
+            [
+              0.5342061914141156,
+              0.6775290934244792,
+              0.018581028693429036,
+              0.02852854410807293
+            ]
+          ],
+          "boxes_pixel_xywh": [
+            [
+              1025.675887515102,
+              731.7314208984376,
+              35.67557509138375,
+              30.810827636718763
+            ]
+          ],
+          "jpeg_sha256": "01fffb85d41af52eb4ba8673a132e1cd05cfc8839f0f7be3e6da271b0d2b4d9e",
+          "decoded_rgb_sha256": "d2384e87497050945c5582a3a05695e58a994a8adc52aabe8c0a385fa55d44d0",
+          "dimensions": [
+            1920,
+            1080
+          ]
+        }
+      ]
+    }
+  ],
+  "useful_inspection_examples": [
+    {
+      "clip": "phone_452627e98a3c2652_1",
+      "file": "frame_211.jpg",
+      "image_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_452627e98a3c2652_1\\frame_211.jpg",
+      "source_frame": 6520,
+      "elapsed_ms": 217299.99999999997,
+      "visibility": "visible",
+      "reviewed_classes": {
+        "ball": true,
+        "person": false,
+        "table": false
+      },
+      "reviewed_at": "2026-10-10T10:01:31.048Z",
+      "boxes_normalized": [
+        [
+          0.540118266682368,
+          0.626478017171224,
+          0.018581085913890294,
+          0.03453460693359378
+        ]
+      ],
+      "boxes_pixel_xywh": [
+        [
+          1037.0270720301464,
+          676.5962585449219,
+          35.675684954669364,
+          37.29737548828128
+        ]
+      ],
+      "jpeg_sha256": "2c161c507a16bd9b719b463a44bf8030856359ceaafc41bc2870b15219f70d6a",
+      "decoded_rgb_sha256": "146cc33050d6bea35fc0670f3507db261310390ec5307cd91096ca368655da27",
+      "dimensions": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "clip": "phone_452627e98a3c2652_2",
+      "file": "frame_11.jpg",
+      "image_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_452627e98a3c2652_2\\frame_11.jpg",
+      "source_frame": 674,
+      "elapsed_ms": 22433.333333333332,
+      "visibility": "partial",
+      "reviewed_classes": {
+        "ball": true,
+        "person": false,
+        "table": false
+      },
+      "reviewed_at": "2026-10-10T09:39:40.853Z",
+      "boxes_normalized": [
+        [
+          0.45312502682209116,
+          0.8479260762532552,
+          0.023648644395776575,
+          0.03153147379557286
+        ]
+      ],
+      "boxes_pixel_xywh": [
+        [
+          870.000051498415,
+          915.7601623535156,
+          45.40539723989102,
+          34.05399169921869
+        ]
+      ],
+      "jpeg_sha256": "c0b6d0f1105fbf89392ddb7eb833e16aa181e355e712aa990c22df41808a358e",
+      "decoded_rgb_sha256": "7e1faf1de06de99bd7d0fb6e909a25ca2b030f8f0828476c2e480e38c138b7a8",
+      "dimensions": [
+        1920,
+        1080
+      ]
+    }
+  ],
+  "policy": "Do not automatically relabel positive boxes as absent, choose an older/newer conflicting box, or convert them into reviewed CNN streaks. The GUI saves a ball box as positive supervision; boxes around false alarms need explicit correction or removal after user confirmation.",
+  "next_positive_gameplay_workflow": "Pending the clarification requested by root; separate IMG_7944 burst4 is only a structural candidate for future visible-streak review."
+}

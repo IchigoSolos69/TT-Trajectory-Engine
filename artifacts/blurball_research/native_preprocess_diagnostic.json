@@ -1,0 +1,40 @@
+[
+  {
+    "clip": "001",
+    "source_rgb_max_difference_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "source_rgb_mean_difference_per_frame": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "same_image_input_tensor_max_difference": 0.017507314682006836,
+    "same_image_input_tensor_mean_difference": 0.0016271674539893866,
+    "same_input_native_pytorch_max_logit_difference": 2.193450927734375e-05,
+    "same_image_native_pytorch_max_logit_difference": 1.5545721054077148,
+    "python_opencv": "5.0.0",
+    "native_opencv": "4.14.0"
+  },
+  {
+    "clip": "demo5",
+    "source_rgb_max_difference_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "source_rgb_mean_difference_per_frame": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "same_image_input_tensor_max_difference": 0.017507314682006836,
+    "same_image_input_tensor_mean_difference": 0.0007996652857400477,
+    "same_input_native_pytorch_max_logit_difference": 2.47955322265625e-05,
+    "same_image_native_pytorch_max_logit_difference": 2.6002378463745117,
+    "python_opencv": "5.0.0",
+    "native_opencv": "4.14.0"
+  }
+]

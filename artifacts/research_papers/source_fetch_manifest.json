@@ -1,0 +1,34 @@
+[
+  {
+    "id": "robotics_arxiv",
+    "url": "https://arxiv.org/pdf/1908.07332",
+    "ok": false,
+    "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)>"
+  },
+  {
+    "id": "sensors_archive",
+    "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC7014400/fullTextXML",
+    "ok": false,
+    "error": "HTTP Error 503: Service Temporarily Unavailable"
+  },
+  {
+    "id": "jcmsi_pdf",
+    "url": "https://www.jstage.jst.go.jp/article/jcmsi/5/4/5_4_233/_pdf",
+    "ok": false,
+    "error": "HTTP Error 404: 404"
+  },
+  {
+    "id": "eventcamera_pdf",
+    "url": "https://openaccess.thecvf.com/content/CVPR2024W/CVsports/papers/Gossard_Table_Tennis_Ball_Spin_Estimation_with_an_Event_Camera_CVPRW_2024_paper.pdf",
+    "ok": true,
+    "bytes": 1828520,
+    "file": "eventcamera_pdf.pdf",
+    "title": []
+  },
+  {
+    "id": "s2_10572328",
+    "url": "https://api.semanticscholar.org/graph/v1/paper/URL:https%3A%2F%2Fieeexplore.ieee.org%2Fabstract%2Fdocument%2F10572328?fields=title,year,externalIds,openAccessPdf",
+    "ok": false,
+    "error": "HTTP Error 429: "
+  }
+]

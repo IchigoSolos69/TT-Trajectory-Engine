@@ -1,14 +1,20 @@
-const {spawn}=require('node:child_process'),fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const {spawn}=require('node:child_process'),fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),net=require('node:net');
+const vm=require('node:vm'),ts=require('../node_modules/typescript'),geometryScope={exports:{}};
+vm.runInNewContext(ts.transpileModule(fs.readFileSync('frontend/src/lib/reviewGeometry.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText,geometryScope);
 const delay=ms=>new Promise(r=>setTimeout(r,ms));
+async function freePort(){const server=net.createServer();await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(0,'127.0.0.1',resolve);});const port=server.address().port;await new Promise((resolve,reject)=>server.close(error=>error?reject(error):resolve()));return port;}
 async function main(){
  const root=path.resolve('artifacts/review_api_'+Date.now()),clip='live_0_0',dir=path.join(root,clip);
  fs.mkdirSync(dir,{recursive:true});fs.copyFileSync('artifacts/spatial_runtime_frame.jpg',path.join(dir,'frame_1.jpg'));
  fs.copyFileSync('artifacts/spatial_runtime_frame.jpg',path.join(dir,'frame_2.jpg'));
  fs.writeFileSync(path.join(dir,'capture.json'),JSON.stringify({source:'test_fixture'}));
  fs.writeFileSync(path.join(dir,'frames.jsonl'),'{"file":"frame_1.jpg","source_frame":1,"elapsed_ms":0}\n{"file":"frame_2.jpg","source_frame":2,"elapsed_ms":200}\n');
- const server=spawn(process.execPath,['node_modules/next/dist/bin/next','start','-H','127.0.0.1','-p','3100'],{cwd:path.resolve('frontend'),env:{...process.env,TT_TRAINING_ROOT:root}});
+ const desktop=process.argv.includes('--desktop'),port=process.argv.includes('--browser')?3100:await freePort();
+ const cwd=path.resolve(desktop?'frontend/.next-desktop/standalone':'frontend');
+ const server=spawn(process.execPath,desktop?['server.js']:['node_modules/next/dist/bin/next','start','-H','127.0.0.1','-p',String(port)],{cwd,env:{...process.env,HOSTNAME:'127.0.0.1',PORT:String(port),TT_TRAINING_ROOT:root}});
  let log='';server.stdout.on('data',d=>log+=d);server.stderr.on('data',d=>log+=d);
- const base='http://localhost:3100/api/training-review';
+ const browserOrigin='http://localhost:'+port,desktopOrigin='http://127.0.0.1:'+port;
+ const base=browserOrigin+'/api/training-review',desktopBase=desktopOrigin+'/api/training-review';
  try{
   for(let i=0;i<150&&!log.includes('Ready');i++)await delay(100);assert(log.includes('Ready'),log);
   const clips=await(await fetch(base)).json();assert.deepEqual(clips.clips,[clip]);
@@ -29,12 +35,17 @@ async function main(){
   assert.equal((await fetch(base+'?clip='+clip+'&file=frame_1.jpg')).headers.get('content-type'),'image/jpeg');
   const geometry={landmarks:{corner_near_left:[.1,.8],net_left:[.2,.5]},landmarks_reviewed:true,visibility:'partial',blur:'severe',events:['strike'],events_reviewed:true};
   const body={clip,file:'frame_1.jpg',reviewed:true,revision:detail.revision,labels:{ball:[[.1,.2,.03,.04]],person:[],table:[],geometry}};
-  const post=async(data,origin='http://localhost:3100')=>fetch(base,{method:'POST',headers:{'Content-Type':'application/json',Origin:origin},body:JSON.stringify(data)});
+  const post=async(data,origin=browserOrigin,url=base,headers={})=>fetch(url,{method:'POST',headers:{'Content-Type':'application/json',...(origin===null?{}:{Origin:origin}),...headers},body:JSON.stringify(data)});
   assert.equal((await post(body,'https://untrusted.example')).status,403);
+  assert.equal((await post(body,null,desktopBase)).status,403);
+  assert.equal((await post(body,browserOrigin,desktopBase)).status,403,'Loopback alias is a different origin');
+  assert.equal((await post(body,desktopOrigin,base)).status,403);
+  assert.equal((await post(body,'http://127.0.0.1:'+(port+1),desktopBase)).status,403);
+  assert.equal((await post(body,'https://untrusted.example',desktopBase,{'X-Forwarded-Host':'untrusted.example'})).status,403,'Forwarded host must not bypass CSRF');
   assert.equal((await post({...body,labels:{ball:[[.9,.9,.3,.3]],person:[],table:[]}})).status,400);
   for(const invalid of [{...geometry,landmarks:{net_left:[2,.5]}},{...geometry,events:['made_up']},{...geometry,visibility:'absent'}])
     assert.equal((await post({...body,labels:{...body.labels,geometry:invalid}})).status,400);
-  let saved=await post(body);assert.equal(saved.status,200);const savedBody=await saved.json();
+  let saved=await post(body,desktopOrigin,desktopBase);assert.equal(saved.status,200,'Actual numeric-loopback desktop origin must save');const savedBody=await saved.json();
   assert.equal((await post(body)).status,409,'stale revisions must not overwrite reviewed labels');
   detail=await(await fetch(base+'?clip='+clip)).json();assert.equal(detail.annotations['frame_1.jpg'].reviewed,true);
   assert.deepEqual(detail.annotations['frame_1.jpg'].ball,body.labels.ball);
@@ -61,12 +72,25 @@ async function main(){
   assert.deepEqual(merged.annotation.person,sceneLabels.person);assert.deepEqual(merged.annotation.table,sceneLabels.table);
   assert.deepEqual(merged.annotation.geometry.landmarks,geometry.landmarks);assert.deepEqual(merged.annotation.geometry.events,geometry.events);
   assert.deepEqual(merged.annotation.reviewed_classes,{ball:true,person:true,table:true});
+  const size=geometryScope.exports.jpegDimensions(fs.readFileSync(path.join(dir,'frame_1.jpg')));
+  const streak=geometryScope.exports.createBlurStreak([.2,.3],[.3,.4],size);
+  const streakBody={...body,scope:'ball',revision:merged.revision,labels:{...merged.annotation,geometry:{...merged.annotation.geometry,blur_streak:streak}}};
+  const streakResponse=await post(streakBody,desktopOrigin,desktopBase);assert.equal(streakResponse.status,200);const streakSaved=await streakResponse.json();
+  assert.equal(streakSaved.annotation.geometry.blur_streak.reviewed,true);
+  assert.equal(streakSaved.annotation.geometry.blur_streak.source_width,size.width);
+  for(const kind of ['ball','person','table'])assert.deepEqual(streakSaved.annotation[kind],merged.annotation[kind],'Streak review preserves all existing boxes');
+  assert.equal((await post({...streakBody,revision:streakSaved.revision,labels:{...streakBody.labels,geometry:{...streakBody.labels.geometry,blur_streak:{...streak,source_width:size.width+1}}}},desktopOrigin,desktopBase)).status,400);
+  const streakOnlyResponse=await post({...streakBody,revision:streakSaved.revision,labels:{...streakBody.labels,ball:[]}},desktopOrigin,desktopBase);assert.equal(streakOnlyResponse.status,200);const streakOnly=await streakOnlyResponse.json();
+  assert.deepEqual(streakOnly.annotation.ball,[]);assert.equal(streakOnly.annotation.geometry.blur_streak.reviewed,true);
+  const clearResponse=await post({...streakBody,revision:streakOnly.revision,labels:{...streakBody.labels,geometry:{...streakBody.labels.geometry,blur_streak:null}}},desktopOrigin,desktopBase);assert.equal(clearResponse.status,200);
+  const cleared=await(await fetch(desktopBase+'?clip='+clip)).json();assert.equal(cleared.annotations['frame_1.jpg'].geometry.blur_streak,null);
+  fs.writeFileSync('artifacts/streak_http_checks.json',JSON.stringify({passed:true,standalone:desktop,scope:'Compiled server HTTP requests with actual source JPEG and isolated fixture',source_dimensions:size,checks:['source dimensions verified','explicit streak review','all original boxes preserved','streak-only labels accepted','mismatched dimensions rejected','clear state persists after GET'],fixture_root:root},null,2)+'\n');
   if(process.argv.includes('--browser'))await new Promise((resolve,reject)=>{
     const check=spawn(process.execPath,['frontend/tests/browser_intelligence.cjs'],{stdio:'inherit'});
     check.on('exit',code=>code===0?resolve():reject(Error('Browser check failed: '+code)));check.on('error',reject);
   });
-  fs.writeFileSync('artifacts/training_review_api.json',JSON.stringify({passed:true,fixture_root:root,checks:['indexed frames','jpeg','path confinement','origin guard','label bounds','revision conflict','reviewed save','exclude from training','landmarks and visibility/blur validation','source event timestamps','immutable annotation history','ball-only review does not approve scene classes','explicit absent-ball confirmation','visible/unknown empty-label rejection','ball-only save preserves reviewed scene and landmark/event data'],log},null,2));
-  console.log('PASS: local review API, path/origin guards, valid labels, stale-write protection, reviewed/excluded persistence.');
+  fs.writeFileSync('artifacts/'+(desktop?'desktop_training_review_api':'training_review_api')+'.json',JSON.stringify({passed:true,standalone:desktop,fixture_root:root,origins:{browser:browserOrigin,desktop:desktopOrigin},checks:['indexed frames','jpeg','path confinement','origin guard','numeric-loopback desktop saves','loopback aliases rejected','missing and cross-port origins rejected','forwarded host cannot authorize writes','label bounds','revision conflict','reviewed save','exclude from training','landmarks and visibility/blur validation','source event timestamps','immutable annotation history','ball-only review does not approve scene classes','explicit absent-ball confirmation','visible/unknown empty-label rejection','ball-only save preserves reviewed scene and landmark/event data'],log},null,2));
+  console.log('PASS: local review API, path/origin guards, valid labels, stale-write protection, reviewed/excluded persistence and source-validated optional streaks.');
  }finally{server.kill();if(server.exitCode===null)await new Promise(r=>server.once('exit',r));}
 }
 main().catch(e=>{console.error(e);process.exitCode=1;});

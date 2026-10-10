@@ -1,0 +1,130 @@
+{
+  "scope": "Provisional evaluation of one source recording/prefix; checkpoint lineage is not established as blind validation",
+  "journal_directory": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\paired_ball_no_ball_v2",
+  "source_interval": "COMPLETE_RECORDING",
+  "entire_recording_decoded": true,
+  "source_sha256": "452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706",
+  "yolo_model_sha256": "2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9",
+  "blurball_model_sha256": "48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f",
+  "fusion_sha256": "c580ac8e7f8271264798d500838f2b5d9f80612558b51ae79b745aff1b9f0b1b",
+  "selector_configuration": {
+    "agreement_radius_source_px": 12,
+    "blurball_agreement_peak": 0.699999988079071,
+    "blurball_solo_peak": 0.949999988079071,
+    "coordinate_policy": "CHOOSE_EXISTING_BLURBALL_CENTER_OR_YOLO_BOX_CENTER_NO_BLEND",
+    "experimental": true,
+    "revision": "conservative-source-candidates-v1",
+    "score_policy": "RAW_MODEL_EVIDENCE_NEVER_AVERAGED_OR_PROBABILITY_CALIBRATED",
+    "thresholds_fitted": false,
+    "warmup_policy": "ABSTAIN_UNTIL_THREE_REAL_CONSECUTIVE_SOURCE_FRAMES",
+    "within_model_ambiguity_ratio": 0.8,
+    "yolo_agreement_score": 0.25,
+    "yolo_proposal_score": 0.10000000149011612,
+    "yolo_solo_score": 0.949999988079071
+  },
+  "audit": {
+    "status": "PASS",
+    "frames_accounted_for": 9164,
+    "index_offsets_verified": true,
+    "file_sha256": {
+      "manifest.json": "7913345aa6690ee57504f0a102c9694f1d35a1a946b59fdc0e5336917369cdfb",
+      "diagnostic_summary.json": "ec3b1ce2a7b4d1b42b0a1c67c7301c90eaafd0f5df2cf12287063ece5ef4ff4d",
+      "completion.json": "66dfae19e20045dd342380a5065118fed56569b795908ce031dc4e01e34f9517",
+      "frames.jsonl": "b84903bfc2494e42bbf8f45b3d8cab69b010046d0e9a47211d419e0bc950e618",
+      "frames.idx": "67b085675c6b72839c32f1d425b3d836d2f59abf4b9b06ca23785472651361af"
+    },
+    "source_and_model_files": {
+      "source": {
+        "path": "C:\\Users\\Adi\\Downloads\\Video Project 6.mp4",
+        "available": true,
+        "sha256_match": true
+      },
+      "yolo_model": {
+        "path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\models\\yolov11_ttgames.engine",
+        "available": true,
+        "sha256_match": true
+      },
+      "blurball_model": {
+        "path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\models\\blurball_fp32.engine",
+        "available": true,
+        "sha256_match": true
+      }
+    },
+    "decoded_pixels_independently_recomputed": false,
+    "candidate_ground_truth_verified_by_hashes": false,
+    "selection_and_baseline_policies_recomputed": true,
+    "counters": {
+      "consecutive_pixel_duplicates": 0,
+      "causal_warmup_frames": 2,
+      "yolo_candidates": 5972,
+      "yolo_invalid_candidates": 1,
+      "blurball_candidates": 1793,
+      "blurball_invalid_candidates": 0,
+      "standalone_yolo_selected_frames": 2557,
+      "standalone_blurball_causal_selected_frames": 1254,
+      "experimental_selector_selected_frames": 15
+    },
+    "selector_reason_histogram": {
+      "AMBIGUOUS_BLURBALL_CANDIDATES": 32,
+      "AMBIGUOUS_YOLO_CANDIDATES": 309,
+      "BLURBALL_CAUSAL_WARMUP": 2,
+      "BLURBALL_ONLY_INSUFFICIENT_EVIDENCE": 835,
+      "DETECTOR_DISAGREEMENT": 402,
+      "NO_ELIGIBLE_CANDIDATE": 5746,
+      "SPATIAL_AGREEMENT_BLURBALL_COORDINATE": 12,
+      "STRONG_BLURBALL_ONLY": 3,
+      "YOLO_ONLY_INSUFFICIENT_EVIDENCE": 1823
+    }
+  },
+  "hypothesis_counts": {
+    "standalone_yolo": {
+      "selected_frames": 2557,
+      "abstained_frames": 6607,
+      "candidate_count": 5972
+    },
+    "standalone_blurball_causal": {
+      "selected_frames": 1254,
+      "abstained_frames": 7910,
+      "candidate_count": 1793
+    },
+    "experimental_selector": {
+      "selected_frames": 15,
+      "abstained_frames": 9149,
+      "selected_model_counts": {
+        "blurball": 15
+      }
+    }
+  },
+  "selector_reason_histogram": {
+    "AMBIGUOUS_BLURBALL_CANDIDATES": 32,
+    "AMBIGUOUS_YOLO_CANDIDATES": 309,
+    "BLURBALL_CAUSAL_WARMUP": 2,
+    "BLURBALL_ONLY_INSUFFICIENT_EVIDENCE": 835,
+    "DETECTOR_DISAGREEMENT": 402,
+    "NO_ELIGIBLE_CANDIDATE": 5746,
+    "SPATIAL_AGREEMENT_BLURBALL_COORDINATE": 12,
+    "STRONG_BLURBALL_ONLY": 3,
+    "YOLO_ONLY_INSUFFICIENT_EVIDENCE": 1823
+  },
+  "accuracy": null,
+  "gates": null,
+  "matching": {
+    "tolerance_source_px": 4.0,
+    "comparison": "STRICT_DISTANCE_LESS_THAN_TOLERANCE",
+    "reference_coordinates": "Unscaled CSV source pixels; zero-based Frame -> one-based journal frame_id",
+    "wrong_visible_localization": "One false positive and one missed visible reference",
+    "recall_definition": "Correctly localized detections / ALL visible reference frames"
+  },
+  "accuracy_measured": false,
+  "settings_selected_before_scoring": true,
+  "thresholds_fitted": false,
+  "confidence_calibrated": false,
+  "promotion_approved": false,
+  "unlabeled_policy": "Accuracy is null without explicit binary reference CSV; user-declared no-ball never becomes automatic ground truth",
+  "remaining_gates": [
+    "Independent recordings and venue sessions with known checkpoint lineage",
+    "Broad ball/blur/occlusion and explicit negative reference comparisons",
+    "Confidence/uncertainty calibration",
+    "Native live capture-to-display timing"
+  ]
+}

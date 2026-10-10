@@ -65,29 +65,30 @@ async function stopChild(child, shutdown) {
 }
 
 class EngineSession {
-  constructor({ executable, ballModel, sceneModel, dataRoot, runtimeDirectories = [], onFailure = () => {} }) {
-    Object.assign(this, { executable, ballModel, sceneModel, dataRoot, runtimeDirectories, onFailure });
-    this.child = null; this.url = null; this.mode = null;
+  constructor({ executable, ballModel, blurballModel, sceneModel, dataRoot, runtimeDirectories = [], onFailure = () => {} }) {
+    Object.assign(this, { executable, ballModel, blurballModel, sceneModel, dataRoot, runtimeDirectories, onFailure });
+    this.child = null; this.url = null; this.mode = null; this.video = null; this.ballBackend = 'yolo';
   }
   async start(mode, video) {
     if (!['simulation', 'live'].includes(mode)) throw Error('Unknown source mode');
     if (mode === 'live' && video) throw Error('Live mode cannot load a recording');
     if (mode === 'simulation' && (!video || !fs.statSync(video).isFile() || !/\.(mp4|mov|avi|mkv|webm|m4v)$/i.test(video))) throw Error('Select an existing supported recording');
-    for (const required of [this.executable, this.ballModel, this.sceneModel]) if (!fs.existsSync(required)) throw Error(`Required application resource missing: ${required}`);
+    const model = this.ballBackend === 'blurball' ? this.blurballModel : this.ballModel;
+    for (const required of [this.executable, model, this.sceneModel]) if (!required || !fs.existsSync(required)) throw Error(`Required application resource missing: ${required}`);
     if (mode === 'simulation' && this.mode === mode && this.child && !ended(this.child)) {
-      await enginePacket(this.url, `LOAD_VIDEO:${video}`, this.child.pid); return this.context();
+      await enginePacket(this.url, `LOAD_VIDEO:${video}`, this.child.pid); this.video=video; return this.context();
     }
     await this.stop();
     const port = await freePort();
     fs.mkdirSync(path.join(this.dataRoot, 'logs'), { recursive: true });
     const log = fs.createWriteStream(path.join(this.dataRoot, 'logs', `engine-${Date.now()}.log`));
-    const args = [mode === 'live' ? '--live' : '--sim', '--port', String(port), '--data-root', this.dataRoot, this.ballModel, '--scene-engine', this.sceneModel];
+    const args = [mode === 'live' ? '--live' : '--sim', '--port', String(port), '--data-root', this.dataRoot, '--ball-backend', this.ballBackend, model, '--scene-engine', this.sceneModel];
     if (video) args.push('--video', video);
     const child = spawn(this.executable, args, {
       cwd: this.dataRoot, windowsHide: true, stdio: ['ignore', 'pipe', 'pipe'],
       env: { ...process.env, PATH: [...this.runtimeDirectories, process.env.PATH || ''].join(path.delimiter), CUDA_VISIBLE_DEVICES: '0' },
     });
-    this.child = child; this.url = `ws://127.0.0.1:${port}`; this.mode = mode;
+    this.child = child; this.url = `ws://127.0.0.1:${port}`; this.mode = mode; this.video=video || null;
     child.on('error', error => { child.spawnError = error; this.onFailure(error); });
     child.stdout.pipe(log, { end: false }); child.stderr.pipe(log, { end: false });
     child.on('exit', (code, signal) => { log.end(); if (!child.expectedExit) this.onFailure(Error(`Engine stopped (${code ?? signal}). See the application logs.`)); });
@@ -100,7 +101,16 @@ class EngineSession {
       return this.context();
     } catch (error) { await this.stop(); throw error; }
   }
-  context() { return { backendUrl: this.url, mode: this.mode }; }
+  context() { return { backendUrl: this.url, mode: this.mode, ballBackend: this.ballBackend }; }
+  async setBallBackend(value) {
+    if (!['yolo','blurball'].includes(value)) throw Error('Unknown ball model');
+    const model=value==='blurball'?this.blurballModel:this.ballModel;
+    if (!model || !fs.existsSync(model)) throw Error('Selected ball model is not installed');
+    if (value===this.ballBackend) return this.context();
+    const mode=this.mode, video=this.video;
+    await this.stop(); this.ballBackend=value;
+    return mode ? this.start(mode, video) : this.context();
+  }
   async stop() {
     const child = this.child, url = this.url;
     if (!child) return;
@@ -108,7 +118,7 @@ class EngineSession {
       try { await enginePacket(url, 'SHUTDOWN', child.pid, 1500); }
       catch (error) { if (child.exitCode === null) console.error('[desktop] Graceful engine shutdown unavailable:', error.message); }
     });
-    this.child = null; this.url = null; this.mode = null;
+    this.child = null; this.url = null; this.mode = null; this.video=null;
   }
 }
 module.exports = { freePort, untilReady, enginePacket, stopChild, EngineSession };

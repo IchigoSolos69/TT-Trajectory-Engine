@@ -1,0 +1,11 @@
+{
+  "train": [
+    "synthetic_train"
+  ],
+  "val": [
+    "synthetic_val"
+  ],
+  "test": [
+    "synthetic_test"
+  ]
+}

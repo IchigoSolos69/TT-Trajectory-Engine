@@ -1,0 +1,1798 @@
+PAGE 1
+2
+nd
+Reading
+July 3, 2022 15:16 0218-348X 2240156
+OPEN ACCESS
+Fractals, Vol. 30, No. 5 (2022) 2240156 (23 pages)
+(cid:2)c The Author(s)
+DOI:10.1142/S0218348X22401569
+VIDEO-BASED TABLE TENNIS TRACKING
+AND TRAJECTORY PREDICTION USING
+CONVOLUTIONAL NEURAL NETWORKS
+∗ ∗ ∗
+HAOXUAN LI, SABA GHAZANFAR ALI, JUNHAO ZHANG,
+BIN SHENG,
+∗,††,¶¶
+PING LI,
+†
+YOUNHYUN JUNG,
+‡
+JIHONG WANG,
+§,¶¶
+PO YANG, ¶ PING LU, (cid:3),¶¶ KHAN MUHAMMAD ∗∗,‡‡,¶¶
+and LIJIUAN MAO
+§,§§,¶¶
+∗ Department of Computer Science and Engineering
+Shanghai Jiao Tong University, Shanghai, China
+†
+The Hong Kong Polytechnic University
+Hong Kong, China
+‡ Gachon University, Gyeonggi-do, Korea
+§ Shanghai University of Sport, Shanghai, China
+¶ The University of Sheffield, Sheffield, UK
+(cid:3)
+State Key Laboratory of Mobile Network
+and Mobile Multimedia Technology
+ZTE Corporation, Shenzhen, China
+∗∗
+Visual Analytics for Knowledge Laboratory (VIS2KNOW Lab)
+Department of Applied Artificial Intelligence, School of Convergence
+College of Computing and Informatics, Sungkyunkwan University
+Seoul 03063, Republic of Korea
+†† shengbin@sjtu.edu.cn
+‡‡
+khan.muhammad@ieee.org
+§§
+maolijuan@sus.edu.cn
+¶¶
+Corresponding authors.
+ThisisanOpenAccessarticleinthe“SpecialIssueSectiononFractalAI-BasedAnalysesandApplicationstoComplexSystems:
+PartIII”,editedbyYelizKaraca(UniversityofMassachusetts MedicalSchool,USA),DumitruBaleanu (CankayaUniversity,
+Turkey), Majaz Moonis (University of Massachusetts Medical School, USA), Yu-Dong Zhang (University of Leicester, UK)
+& Osvaldo Gervasi (Perugia University,Italy) published by World Scientific Publishing Company. It is distributed underthe
+terms of the Creative Commons Attribution 4.0 (CC-BY) License which permits use, distribution and reproduction in any
+medium, provided theoriginal work is properly cited.
+2240156-1
+moc.cifitneicsdlrow.www
+morf
+dedaolnwoD
+.03.2202
+slatcarF
+.selcitra
+sseccA
+nepO
+rof
+tpecxe
+,dettimrep
+ton
+yltcirts
+si
+noitubirtsid
+dna
+esu-eR
+.62/90/01
+no
+4d88:bf2b:1c4e:8b5a:328:3101:102:5042
+yb
+
+PAGE 2
+2
+nd
+Reading
+July 3, 2022 15:16 0218-348X 2240156
+H. Li et al.
+Received August 6, 2021
+Accepted November 10, 2021
+Published July 4, 2022
+Abstract
+One of the fascinating aspects of sports rivalry is that anything can happen. The significant
+difficulty is that computer-aided systems must address how to record and analyze many game
+events, and fractal AI plays an essential role in dealing with complex structures, allowing
+effective solutions. In table tennis, we primarily concentrate on two issues: ball tracking and
+trajectory prediction. Based on these two components, we can get ball parameters such as
+velocity and spin, perform data analysis, and even create a ping-pong robot application based
+on fractals. However, most existing systems rely on a traditional method based on physical
+analysis and a non-machine learning tracking algorithm, which can be complex and inflexible.
+As mentioned earlier, to overcome the problem, we proposed an automatic table tennis-aided
+systembasedonfractalAIthatallowssolvingcomplexissuesandhighstructuralcomplexityof
+objecttrackingandtrajectoryprediction.Forobjecttracking,ourproposedalgorithmisbased
+onstructuredoutputConvolutionalNeuralNetwork(CNN)basedondeeplearningapproaches
+and a trajectory prediction model based on Long Short-Term Memory (LSTM) and Mixture
+DensityNetworks(MDN).Thesemodelsareintuitiveandstraightforwardandcanbeoptimized
+bytrainingiterativelyonalargeamountofdata.Moreover,weconstructatabletennisauxiliary
+system based on these models currently in practice.
+Keywords: Table Tennis; Deep Learning; Object Tracking; Trajectory; Fractal AI Prediction.
+1. INTRODUCTION In table tennis, another application that requires
+the use of computer vision technology is table ten-
+The fractal AI method plays a significant role
+6
+nis robots. In this field, Zhang and Xiong, Mu¨lling
+in learning complex, and patterns and features
+7
+et al. and Japan’s OMRON company developed
+that have no characteristics length but are of self-
+robotgamesthatcanfighthumantabletennisplay-
+1–3
+similarity. Therefore, in recent years, with the
+ers. Although these applications involve computer
+developmentandreliabilityofcomputervisiontech-
+vision, sensors, robot control, and other theories,
+nology, specific applications of computers in the
+computer vision plays a significant role. For exam-
+field of sports have also continued to appear. The
+ple, the accurate and fast-tracking of the ping-pong
+fractal method aims to estimate the fractal dimen-
+ball and the estimation of information such as tra-
+sion and analyze the relationship between fractal
+jectory, speed, and rotation speed are all crucial
+4
+dimensionand other parameters. Someareused as
+to the subsequent strokes and the usability of the
+auxiliarysystemsinsportsgames,suchaseagleeyes
+entire system.
+in tennis, badminton, and other games; goal deter-
+Generally, designing a table tennis robot sys-
+mination in football matches; and as data visual- tem must solve two fundamental problems. First,
+ization and analysis tools, such as player movement the ping-pong ball is tracked in each frame of
+distances in football games, heatmaps, and techni- the camera to record the position information of
+cal statistics. Several models have been developed the ball. Second, based on the sequence of posi-
+to calculate fractal dimension according to different tion information, it must predict the ball’s trajec-
+subjectsofinterest,e.g.trackingalgorithmsincom- tory and landing point on the table. The signifi-
+5
+putervision andmachinelearningrelated theories. cance of prediction is to obtain the ball’s movement
+2240156-2
+moc.cifitneicsdlrow.www
+morf
+dedaolnwoD
+.03.2202
+slatcarF
+.selcitra
+sseccA
+nepO
+rof
+tpecxe
+,dettimrep
+ton
+yltcirts
+si
+noitubirtsid
+dna
+esu-eR
+.62/90/01
+no
+4d88:bf2b:1c4e:8b5a:328:3101:102:5042
+yb
+
+PAGE 3
+2
+nd
+Reading
+July 3, 2022 15:16 0218-348X 2240156
+Video-Based Table Tennis Tracking and Trajectory Prediction
+information in advance to allow time for the robot In recent years, the real-time performance of
+arm to move to a suitable position and determine the depth tracking framework has attracted wide-
+the way of hitting the ball. Because table tennis spread attention. Researchers have proposed a
+has the characteristics of small size, few features, lightweight deeplearning-basedframeworkthatcan
+and fast movement, a tracking algorithm needs to be tracked in real-time. For example, in Ref. 13, a
+be specially designed to meet these requirements. five-layer convolutional neural network is used to
+In addition, hitting a ping-pong ball will produce return to the location of the target in the image,
+various rotations, bringing significant challenges to and remove the online learning step, allowing the
+trajectory prediction. algorithm to process more than 100 frames per sec-
+Though traditional methods have established ond. On the other hand, object detection is also a
+complete frameworks and can achieve good practi- widely used area. Even if the target detection task
+calresults,they stillhavesomeshortcomings.First, is primarily classified in the target object compared
+thecharacteristicsbasedonmanuallyselectivecolor to the target tracking, the object’s position is in
+or shape indicate that the robustness is insuffi- the image. But some of the critical techniques in
+cient. The performance will significantly fluctuate target object detection have a great inspiration to
+in video shooting conditions, the present occasion, our tracking model.
+or a complex background. Second, the features are In addition to convolutional neural networks,
+fixed to form when the algorithm is designed and deep learning, a Recursive Neural Network (RNN)
+cannot be flexible, and it is impossible to obtain is specifically used to resolve sequence prediction,
+better characteristics by more sample training. In such as natural language processing. For example,
+addition, traditional table tennis trajectory predic- in Ref. 14, we use RNN to train on man handwrit-
+tions include three stages, including rebound and ing sequences, allowing the writing to predict and
+rebound before a rebound. For the problems men- even mimic different styles to automatically gener-
+tionedearlier,traditionalmachinelearningmethods ate. Likewise, in Ref. 15, training LSTM on bas-
+show limitations. ketball game data predicts the ball trajectory and
+However, deep learning-based approaches have judges whether it goes in the hoop. Therefore, in
+overcome these problems by improving the perfor- this work, we solve the challenges of trajectory pre-
+manceoftabletennisrobots.Withtheimprovement diction of table tennis, which can be visually con-
+of computer computing power and the emergence verted to the prediction problem of the coordinate
+of many labeled datasets for model training, the sequence designed from deep learning, and propose
+potential of deep neural networks has been contin- a novel table tennis tracking system. In sum, the
+uously explored, and deep learning has become an following are the contributions of our paper:
+advanced research direction in recent years. Frac-
+tal Net, 8 first proposed by Gustav, was widely (cid:129) CNN-based Tracking Algorithm: Based on a
+revived dueto its powerfulfeaturelearning capabil- structural output convolutional neural network,
+ity. There are two main contributions. On the one our network outputs a probability map that rep-
+hand, they introduce Fractal Net as the first sim- resents the location of the tracking target in the
+plealternative toResNet.Atthesametime,Fractal image. We also refer to the target assessment,
+Net certificates that explicit residual learning is not designed an enclosureback to theback lapse, and
+a requirement for building ultra-deep neural net- enhanced tracking result accuracy.
+works. 2,8 In Ref. 9, winning the ImageNet image (cid:129) TrajectoryPredictionModelBasedonLSTM:We
+classification competition, deep learning techniques employ a three-dimensional coordinate sequence
+based on models such as CNN can extract better of table tennis to train the model, predict the
+features and are widely used in computer vision, entire table tennis trajectory, and automatically
+natural language processing, and other fields. The process the ball rebound on the play. Thus, it
+problem even exceeds the traditional manual fea- significantly simplifiestheproblemoftabletennis
+ture selection method in some respects. For exam- trajectory and uses it as a tracking framework.
+ple,R-CNN 10 isusedforobjectdetectioninimages, (cid:129) Construction of Tracking Framework: We have
+11
+LSTM is used for various sequence prediction designed a complete tracking framework. At the
+12
+problems, and Q-Learning is used for strategy sametime,weusethisframeworktocollectahost
+learning problems such as game AI. of table tennis trajectory data for analysis.
+2240156-3
+moc.cifitneicsdlrow.www
+morf
+dedaolnwoD
+.03.2202
+slatcarF
+.selcitra
+sseccA
+nepO
+rof
+tpecxe
+,dettimrep
+ton
+yltcirts
+si
+noitubirtsid
+dna
+esu-eR
+.62/90/01
+no
+4d88:bf2b:1c4e:8b5a:328:3101:102:5042
+yb
+
+PAGE 4
+2
+nd
+Reading
+July 3, 2022 15:16 0218-348X 2240156
+H. Li et al.
+2. METHODOLOGY more than just the target’s position, it can also dis-
+tinguish between table tennis, other objects, and
+The framework proposed in this paper can be used
+non-objects. Therefore, after the convolution layer,
+in ship trajectory classification. Taking advantage
+a classification head is added, and in the training
+of the high timeliness of CNN’s model construc-
+phase, two tasks are jointly trained. The loss func-
+tion, the modular reading and identification input
+tion is defined as
+of data information are carried out. At the same
+time, in order to prevent the loss of local informa-
+(cid:2)50 (cid:2)50
+tion in the modeling process, the data is serialized L(p,s) =L cls(s,s∗ )+λ −(1−t
+ij
+)
+into multiple sub-sequences and transmitted to the
+i j
+CNNnetwork to improve theintegrity of prediction
+data.Duetothespatialandtemporalcorrelation of ×log(1−p )−t log(p ), (1)
+ij ij ij
+ships in navigation, the LSTM model with memory
+characteristics isusedtopredicttheordereddataof
+where p and s are the probability maps and cat-
+ships. Therefore, this combined model can not only
+egory scores of the output, respectively.
+s∗
+is the
+support more data input, but also ensure that the
+target output category, t is an element of the tar-
+predicted time state is more stable. ij
+get output probability map, with a value of 0 or
+1. L cls is a Softmax loss function, usually used for
+classification tasks. λ adjusts the weight of the loss
+2.1. Tracking Algorithm Based
+function of the two tasks.
+on Structured CNN Output
+We employed a table tennis image from a table
+Since the table tennis tracking framework needs to tennis competition shooting from the high-speed
+meetreal-timetrackingrequirements,thecandidate cameratotrainthenetwork.Thesepicturescontain
+image of the neural network needs to be as small as positive and antique examples. The correct exam-
+possible. Due to this, the CNN model can directly ple contains images of table tennis. For the typical
+outputasurroundingboxindicatingthetargetposi- example,thedisplacementisrandomlyadded,mak-
+tion without a feature vector. Thus,simplifying the ing the target (table tennis) uniformly distributed
+network structure, avoiding more complex calcu- inthepicture,ascaled zoomwithinacertainrange,
+lations. SO-DLT 16 provides an idea to solve this and finally the unified cut into 100× sizes. The
+problem. antique includes a background image and an inter-
+The CNN model of this paper is shown in Fig. 1. ference image. Target output refers to the descrip-
+Similarly, in SO-DLT, the network is input to an tion in SO-DLT; for the typical example, the value
+image of 100×100 and outputs a probability map of the probability map is set to 1; for the reverse
+of 50×50. The convolution layer uses a pre-trained example, the probability map, all values are 0. Fig-
+CaffeNet and fine-tuning on a table tennis training ure 2 shows some training data. The two columns
+set. Above the convolution layer, there is a space of the left are numbered input images and tar-
+pyramid pooling layer, which is used to retain more get outputs, and the right side is two listed as an
+location information. Finally, two full-connection example.
+layers output 2500-dimensional vector transform in Figure 3 shows the performance of the model on
+50 × 50 matrices. Since the CNN model outputs the validation set. It can be seen that for the input
+Fig. 1 CNN model network structure.
+2240156-4
+moc.cifitneicsdlrow.www
+morf
+dedaolnwoD
+.03.2202
+slatcarF
+.selcitra
+sseccA
+nepO
+rof
+tpecxe
+,dettimrep
+ton
+yltcirts
+si
+noitubirtsid
+dna
+esu-eR
+.62/90/01
+no
+4d88:bf2b:1c4e:8b5a:328:3101:102:5042
+yb
+
+PAGE 5
+2
+nd
+Reading
+July 3, 2022 15:16 0218-348X 2240156
+Video-Based Table Tennis Tracking and Trajectory Prediction
+2.1.1. Regression Layer
+However, from Fig. 3, the envelope from the prob-
+ability map is not ideal. An incorrect surrounding
+box means the error of location information, but it
+will also cause drift or even loss of the entire track-
+ing framework. Although the probability map can
+give a more accurate estimate of the object’s posi-
+tion, it is poor in the object’s border. The shape of
+theprobability mapchanges andasimplethreshold
+method may cause more errors. Infested envelopes
+notonlymeantheerroroflocationinformation,but
+they will also cause drift or even loss of the entire
+tracking framework.
+We focus on the object detection field. The
+Fig. 2 Results of theCNN model on thevalidation set.
+enveloped box obtained after the transformation is
+the output of the entire network. The high-level
+image containing thetarget, theoutputisdisplayed
+semanticinformation(candidatearealayer)andlow
+as a mass consisting of a high probability value,
+layer location information cancorrectly identify the
+and the group corresponds to the position of the
+objectintheinputimageandgivetheenvelopebox.
+table tennis in the input image. This can be more
+For example, the probability map’s envelope case
+clearly seen on the three-dimensional probability
+can be considered a candidate area in the above-
+map shown in Fig. 3b. The farther from the cen-
+structured output CNN. Unlike the production of
+ter, the lower the probability value. Therefore, a
+this envelope, we proposed to realize this enclosure
+simple threshold method can be used to obtain a
+to the low-level convolution layer. The feature is
+surrounding box, and this enclosure is used as the
+input to the returning layer to obtain a more pre-
+model’s output.
+cise chamber.
+(a) (b)
+Fig. 3 Samplefigurecaption.(a)Forinputscontainingthetarget,thenetworkgeneratesawhitecommunicationshape;for
+thereverse example, the outputis close to all 0. (b) 3D representation of theoutput probability map.
+2240156-5
+moc.cifitneicsdlrow.www
+morf
+dedaolnwoD
+.03.2202
+slatcarF
+.selcitra
+sseccA
+nepO
+rof
+tpecxe
+,dettimrep
+ton
+yltcirts
+si
+noitubirtsid
+dna
+esu-eR
+.62/90/01
+no
+4d88:bf2b:1c4e:8b5a:328:3101:102:5042
+yb
+
+PAGE 6
+2
+nd
+Reading
+July 3, 2022 15:16 0218-348X 2240156
+H. Li et al.
+This paper refers to the Fast R-CNN 17 design, using the new model. One is the motion model in
+adding a regional pooling layer (ROI pooling layer) the tracking framework. Given the position of the
+to the network. This pilot layer uses the enve- last frame of the tracking target, it predicts the
+lope case obtained from the above probability map, place that may appear in the next frame. Theother
+which is cropped on a characteristic of a low-level
+convolutionlayer andisscaledtoanewfeaturemap
+of a seven×seven size. A returning layer above this
+feature is added. Considering that the positional
+accuracyoftheconvolution layer cannotbetoolow,
+this paper selects a circuit in Conv 1. The return-
+ing layer is essentially a thorough attachment layer,
+but the output is fixed to 4 real numbers, repre-
+senting the displacement and long width of the XY
+direction. The newly added neural network layer
+is directly attached to the pre-training structured
+output CNN. During training, the returning layer
+will be trained separately while the other layers are
+frozen.For theloss function,werefertothemethod
+in the R-CNN, which uses a Smooth L1 Loss layer.
+First, the four simulations predicted by the
+returning layer are not an absolute value of the dis-
+placement and size of the target enclosure but are
+a transformation of the candidate zone to the tar-
+get enclosure. These indicate that the transformed
+Fig. 4 Network structure of the returned layer. The net-
+value can be normalized, and the training difficulty
+work structureof thereturned layer. Usethecandidate area
+can be reduced. At the same time, we refer to the
+in the low-level convolution layer feature map cut, and the
+designoftheR-CNNlossfunction,whencomparing pool is used to become a feature map of the fixed size. Sub-
+network output and target output, the SmoothL1 sequently,fourrealnumbersareoutput,indicatingtheinclu-
+process is used instead of simple L1 or L2 sions of thereturn.
+(cid:3)
+0.5x2 if|x| < 1
+smooth L1(x) =
+|x|−0.5 otherwise
+(2)
+L2 is used in the vicinity of the origin, and the
+remainingportion is the sameas L1. This can effec-
+tively avoid gradient explosion. The newly added
+network layer is shown in Fig. 4. Like the training
+datausedandthepreviousstructuredoutputCNN,
+onlythetargetoutputischangedto4realnumbers,
+indicating the target enclosure’s XY coordinates
+and long width. The effect of the returning layer
+can be seen in Fig. 5. The returning layer can be
+effectively fine-tuned to the original envelope box,
+closer to the detection target.
+Fig.5 Resultsofthereturninglayerontheverificationset.
+2.2. Trajectory Prediction Model
+The result of the returninglayer on theverification set. The
+Based on LSTM
+red rectangle comes from the structured output CNN; the
+green rectangle is the output of the returning layer. At this
+Recurrent Neural Network (RNN) and its variant
+point,thispaperhasimplementedanend-to-endCNNmodel
+Long Short-Term Memory (LSTM) are widely used
+that can directly obtain the precise position of the target
+to solve sequence prediction. In table tennis robot
+objectfrom theinputimage,andonlytheforward operation
+system design, two problems need to be solved by needsto be performed.
+2240156-6
+moc.cifitneicsdlrow.www
+morf
+dedaolnwoD
+.03.2202
+slatcarF
+.selcitra
+sseccA
+nepO
+rof
+tpecxe
+,dettimrep
+ton
+yltcirts
+si
+noitubirtsid
+dna
+esu-eR
+.62/90/01
+no
+4d88:bf2b:1c4e:8b5a:328:3101:102:5042
+yb
+
+PAGE 7
+2
+nd
+Reading
+July 3, 2022 15:16 0218-348X 2240156
+Video-Based Table Tennis Tracking and Trajectory Prediction
+is trajectory prediction. Given a small section of
+table tennis coordinate sequence, the subsequent
+coordinate sequence is automatically generated. As
+we can see, these two problems are suitable for
+solving a recurrent neural network model. For the
+motion model, the known table tennis coordinate
+sequence can be input into the neural network, and
+the final output can be used to predict the coor-
+dinates in the next frame. The known coordinate
+seriesisalsoinputintotheneuralnetworktoupdate
+the internal state vector for trajectory prediction.
+Then,thenewcoordinatesarerecursivelygenerated
+and connected to the input to create a sequence.
+From this sequence, the landing point information
+oftabletennisandsomeattributes intheflightpro-
+cess can be calculated. Fig. 7 Internalstructureof LSTM.
+The recurrent neural network gets its name
+because of its internal recursive structure. In the LSTM has made a unique design for this problem.
+moststraightforwardcyclicneuralnetwork,thenet- As shown in Fig. 6, the state transition is modified
+work parameters only include the state transforma- byaddinganewinternalstatevector Ctandapath
+tion matrix W h, the input transformation matrix toconnectthetwostatessothattheoldinformation
+h
+W h, and the output transformation matrix W y. can bepassedtomultiplerecursions.Thefigurecan
+x h
+There are only two kinds of operations: receiv- also show the structure of the multiplication oper-
+ing input and updating status and computational ation of σ functions followed by an element. This
+output. structure allows the neural network to learn what
+information is retained in the previous state and
+h t = tanh(W hh h t−1 +W xh x t ), (3) added data.
+y = W h . (4)
+t hy t
+2.2.1. Trajectory Prediction Model
+By simply overlaying the hidden layer, a more
+Design
+complex network structure can be achieved. Usu-
+ally, we can also connect the output of other net- Figure 7 shows the structure of the trajectory pre-
+works to the hidden layer of RNN to provide initial diction model used in this paper. The LSTMmodel
+information. For example, in the image capturing accepts a three-dimensional vector: the xyz coordi-
+task, we connect the output of CNN to RNN as the nateoftheping-pongballatt timeastheinput.For
+initial state, and then make the recursive structure theoutput,wefollow thepractice inRef. 15, which
+of RNN to generate a text sequence to describe the is not only to output a three-dimensional coordi-
+input image. nate of the moment t+1 but also to add a Mixture
+Duetostructuraldefects,thestateofRNNatone of Density Networks (MDN) to LSTM to output
+recursion may affect the state at a future recursion. multiple parameters of multi-dimensional Gaussian
+distribution, which represents the probability dis-
+tribution of the next coordinate predicted by the
+model on xyz. In this work, the Gaussian distribu-
+tion represents the displacement from the current
+coordinate to the next coordinate, the probability
+distribution of velocity.
+First, the model, which only outputs three-
+dimensional coordinates and the loss function dur-
+ing training, generally uses the Euclidean distance
+between thetarget coordinates andtheactual coor-
+dinates. For the model that outputs the parame-
+Fig. 6 Structureof LSTM. ters of Gaussian distribution, the probability value
+2240156-7
+moc.cifitneicsdlrow.www
+morf
+dedaolnwoD
+.03.2202
+slatcarF
+.selcitra
+sseccA
+nepO
+rof
+tpecxe
+,dettimrep
+ton
+yltcirts
+si
+noitubirtsid
+dna
+esu-eR
+.62/90/01
+no
+4d88:bf2b:1c4e:8b5a:328:3101:102:5042
+yb
+
+PAGE 8
+2
+nd
+Reading
+July 3, 2022 15:16 0218-348X 2240156
+H. Li et al.
+of the target results in this Gaussian distribution the probability of output velocity v is
+can be used as the loss function to increase the
+(cid:2)K
+probabilityvalueasmuchaspossible.Becausethere p(v|c)= θ (c)p(v|c)
+k
+may be some errors in the training data itself, the
+k , (6)
+Gaussian distribution can tolerate such errors more
+(cid:2)K
+than the absolute distance, which is helpful in the s.t. θ (c) = 1
+k
+convergence of the model. Second, hybrid density
+k
+networks are often used to model objects with mul-
+whereθ istheweightofeachGaussiandistribution,
+k
+tiple states. For table tennis, because the ball has
+and p is the probability distribution function of
+k
+flight,collision, andotherconditions,asingleGaus-
+each Gaussian distribution.
+sian distribution may not be able to describe all
+To train the network with MDN, because the
+possiblestatechanges.WhenmultipleGaussiandis-
+network’s output represents a mixed Gaussian dis-
+tributions are used, the neural network can deter-
+tribution, the Euclidean distance from the target
+minewhich state to predictby adjustingthe weight
+coordinates cannot be directly used as the loss
+of each distribution. For example, when the ball is
+function. Instead, the network can be trained by
+about to collide with the table, the importance of
+maximizingtheprobabilityvalueofthetargetcoor-
+the Gaussian distribution that predicts the state
+dinates in the Gaussian distribution. The loss func-
+of “bounce” should be more significant, while the
+tion is
+weight of the distribution that indicates “keep fly- (cid:10) (cid:11)
+(cid:2)K
+ing” should be smaller. L(v∗,x) = −log θ (c(x))p (v∗|c(x)) , (7)
+MDN works like a fully connected network. k k
+k
+It accepts the intermediate state of LSTM as
+where v∗ is the target output, x is the input
+input and outputs multiple parameters of multi-
+three-dimensional coordinate, and c(x) represents
+dimensional Gaussian distribution. Seven param-
+the intermediate state of the output after LSTM
+eters represent each Gaussian distribution: the
+mean and standard deviation on the xyz axis accepts x.
+μ σ μ σ μ σ , and the correlation ρ of the xy In trajectory prediction, the model takes a sam-
+x x y y z z xy
+ple from the output mixed Gaussian distribution,
+axis. Because in the trajectory of table tennis, the
+xy-axis is parallel to the table, while the z-axis is and the calculated new coordinates are re-input
+to the network. A predicted trajectory is obtained
+perpendicular to the table, it is only assumed that
+xy correlates. For a single Gaussian distribution, after several cycles. When LSTM is used as the
+the probability of input state c and output velocity motion model of the tracking framework, it is like a
+v is quantumfiltertosamplemultiplecandidateregions
+⎛ ⎛ ⎞ from the mixed Gaussian distribution.
+v −μ T
+⎜ x x
+p(v|c) = 1 2 exp ⎜ ⎝ − 2 1 ⎜ ⎝v y −μ y ⎟ ⎠ 3. INTEGRATED TRACKING
+v −μ
+z z FRAMEWORK
+⎛ ⎞
+σ2 σ σ σ 0 −1 The system proposed in this paper needs to be
+⎜ x x y xy ⎟ used in a specific actual environment configura-
+×⎝σ σ σ σ2 0⎠
+x y xy y tion.Specifically,twohigh-speedcamerasareplaced
+0 0 σ2 on one side of the table, and the area of the
+z
+⎛ ⎞ ⎞ table is photographed synchronously through hard-
+v −μ
+x x ⎟ ware triggers in parallel and does not move in the
+⎜ ⎟
+×⎝v y −μ y ⎠ ⎟ ⎠ . (5) wholeprocess.Toensurethatthethree-dimensional
+coordinates can be calculated accurately later, the
+v −μ
+z z
+models and specifications of the camera need to be
+For multiple Gaussian distributions, the model consistent. The world coordinate system is estab-
+sets a weight for each Gaussian distribution, and lished with a corner of the ball table as the origin,
+the sum of the weights is 1 so that the sum of the as shown in Fig. 8. The x-axis is along the bottom
+wholeprobability distributionis 1. For example, for line of the table, the y-axis is along the edge of the
+MDN, input state c with K Gaussian distributions, table, and the z-axis is perpendicular to the table.
+2240156-8
+moc.cifitneicsdlrow.www
+morf
+dedaolnwoD
+.03.2202
+slatcarF
+.selcitra
+sseccA
+nepO
+rof
+tpecxe
+,dettimrep
+ton
+yltcirts
+si
+noitubirtsid
+dna
+esu-eR
+.62/90/01
+no
+4d88:bf2b:1c4e:8b5a:328:3101:102:5042
+yb
+
+PAGE 9
+2
+nd
+Reading
+July 3, 2022 15:16 0218-348X 2240156
+Video-Based Table Tennis Tracking and Trajectory Prediction
+target in the image. This framework first looks for
+possible areas of table tennis. Because the camera
+is permanently fixed and there are not too many
+moving objects in the whole scene, the foreground
+region can be extracted by background subtraction
+to narrow the search range. These regions are used
+as target candidate regions, and then inputinto the
+CNN model for calculation. Finally, the candidate
+image with the highest probability value is output
+as the tracking target. Note that this system does
+not rely heavily on background subtraction. It only
+needs to find the target’s initial position in the first
+few frames, and then it can continue to track using
+the other steps of the algorithm. This means that
+Fig. 8 World coordinate settings.
+you do not need to keep the entire scene still all
+the time. Of course, in the central part of the algo-
+The projection matrix of the two cameras to the
+rithm, we can still use background subtraction as
+ball table needs to be calculated in advance to cal-
+an auxiliary method to provide candidate regions
+culate the three-dimensional coordinates from the
+for tracking or skip this step directly.
+two-dimensional coordinates obtained by the two
+The test method is similar to the landing point
+cameras or to project the three-dimensional coordi-
+prediction, and the results are shown in Table 7.
+nates to the camera plane.
+3.1.2. Model tracking using CNN
+3.1. Framework Design
+With the candidate region obtained in the previ-
+The next step is to build the entire tracking frame- ous step, the bounding box of the target can be
+work. At each moment, it obtains an image from obtained using the CNN model. For performance
+two synchronous cameras, tracks and receives the reasons, the CNN model works in two modes. If no
+three-dimensional coordinates of the table tennis target is found in the current tracking framework,
+ball after a series of calculations and predicts the the CNN model acts as the target detector and
+trajectory simultaneously. The whole process can takes all candidate regions as input. If the target
+be divided into the three steps described below and has been found in the previous frame, as a tracker,
+shown in Fig. 9. onlythecandidateareanearthecurrenttargetposi-
+tion is taken as input. Before entering the network,
+the candidate area is enlarged by several pixels to
+3.1.1. Extract region of tracking
+ensure that the complete target can be included.
+targets
+Then, depending on the number of candidate areas
+The first thing to solve is how to get the initial we inputinto the network uniformly as one or more
+bounding box, that is, how to detect the tracking batches. The boundingbox with the highest proba-
+bilityvalueistakenasthefinaloutputintheoutput
+result. After this step, the two cameras receive a
+two-dimensional coordinate, respectively. Through
+the camera projection matrix obtained in advance,
+the three-dimensional coordinates of table tennis
+can be obtained.
+3.1.3. Predict trajectory using LSTM
+After several cycles, the frame can get a contin-
+uous sequence of coordinates. The trajectory and
+landing point predictions can be carried out by
+inputting this sequence into the LSTM model and
+Fig. 9 Flowchart of tracking framework. automatically generatingthesubsequentcoordinate
+2240156-9
+moc.cifitneicsdlrow.www
+morf
+dedaolnwoD
+.03.2202
+slatcarF
+.selcitra
+sseccA
+nepO
+rof
+tpecxe
+,dettimrep
+ton
+yltcirts
+si
+noitubirtsid
+dna
+esu-eR
+.62/90/01
+no
+4d88:bf2b:1c4e:8b5a:328:3101:102:5042
+yb
+
+PAGE 10
+2
+nd
+Reading
+July 3, 2022 15:16 0218-348X 2240156
+H. Li et al.
+sequence. In addition, we can also use the LSTM Algorithm 1. Single View Tracking Algorithm
+model as the motion model in the tracking frame-
+1: Input: Proposals candidate area array
+work, input the coordinates obtained in each cycle,
+2: Output:theboundingboxofthetrackingtarget
+and make it output by only one parameter of the Ensure: Augmented image I
+aug
+mixed Gaussian model, like the Kalman filter, to
+3: if last frame tracked then
+predict the possible position of the tracking tar-
+4: for all p in Proposals and
+get in the next frame and reduce the search range
+TOO FAR AWAY(last box, p) do
+of the tracking. In addition, because table tennis 5: remove p from Proposals
+movement is regular, the LSTM model can directly 6: end for
+predict the position of the ball after several frames 7: Proposals Proposals+
+throughthetrajectorypredictionmethod.Whenan GET CONTEXT(last box)
+occlusion occurs, or the speed of table tennis is too 8: end if
+fast, the CNN tracking model may lose the target. 9: Probabilities, Boxes CNN PREDICT( Propos-
+Atthis point,thepredictionof LSTMisusedas the als)
+tracking result, and when the CNN model searches 10: Max id ARGMAX(Probabilities)
+for the target again, the whole tracking framework 11: Probability Probabilities[Max id]
+can continue to work. 12: Box Boxes[Max id]
+Inadditiontotheabovemainmodules,thetrack- 13: if Box Boxes[Max id] then
+ing algorithm includes some steps to deal with 14: execute last frame tracked false;
+exceptional cases. These steps come from many 15: return None;
+best practices in target tracking and are critical 16: end if
+to the robustness of the entire tracking framework. 17: if last frame tracked or Probability > thresh-
+Algorithm 1 shows the specific steps of single view old high then
+tracking. 18: returnBox
+In the above algorithm, first, the candidate 19: else
+regions of the input are screened. Since the motion 20: return RUNNING AVERAGE(Box,
+of the target object is usually continuous, the can- last box)
+didate regions far from the previous frame can be 21: end if
+excluded. The context of the last frame position
+is also taken as a candidate region. The candi-
+the actual one such that the search box is too large
+date region is then entered into the CNN model,
+to detect the targets inside the search box.
+which returns the probability value and bounding
+When a single tracking fails, the algorithm will
+box for each region. When all probability values
+also select the next frame of coordinates predicted
+are less than a set threshold, the algorithm deter-
+by the trajectory prediction model as the tracking
+mines that the tracking has failed. Otherwise, the
+result according to the number of consecutive fail-
+algorithm selects the highest probability value and
+uresordeterminethelossofthewholetrackingpro-
+the correspondingboundingbox. Finally, according
+cess and re-carry out the first step of the frame and
+to the size of the probability value, the bounding
+afterward search the tracking target in the entire
+box is returned directly or the size of the bound-
+image.
+ing box is averaged with the previous frames and
+then returned. This step is due to the slow change
+of the bounding box size in a short time, while the 4. EXPERIMENTAL RESULTS
+bounding box size of the output of the CNN model AND ANALYSIS
+fluctuates to a certain extent. When the probabil-
+4.1. Structured CNN Output
+ity value is greater than a higher threshold (such as
+0.95), the framework considers the output of CNN For the implementation of the CNN model, this
+to be more reliable. Otherwise, based on the above paper uses an open-source depth learning frame-
+assumptions, it will be averaged with the previous work Caffe, 18 which is primarily used in deep learn-
+frames. In the actual measurement, when the aver- ing research. Many of the famous depth learning
+aging method is not used, the tracker can easily fail models are implemented on Caffe, such as AlexNet
+19 20
+because the predicted bounding box is larger than and VGGNet in image classification, FCNT
+2240156-10
+moc.cifitneicsdlrow.www
+morf
+dedaolnwoD
+.03.2202
+slatcarF
+.selcitra
+sseccA
+nepO
+rof
+tpecxe
+,dettimrep
+ton
+yltcirts
+si
+noitubirtsid
+dna
+esu-eR
+.62/90/01
+no
+4d88:bf2b:1c4e:8b5a:328:3101:102:5042
+yb
+
+PAGE 11
+2
+nd
+Reading
+July 3, 2022 15:16 0218-348X 2240156
+Video-Based Table Tennis Tracking and Trajectory Prediction
+in target tracking, and R-CNN in target detec-
+tion. The network structure is modified directly
+by Caffe to alter the network structure and make
+fineadjustments of some network layers. Compared
+with retraining the entire network, the fine-tuning
+task is quite complicated, and the number of train-
+ing data required is more minor, reducing the time
+andeffortneeded tocollect andlabeldata. We used
+the prototype declaration file to define the network
+of the structured output CNN and the regression
+layer of the box and use the Caffe command-line
+interface to complete training and testing. In addi-
+tion, this paper uses Caffe’s C ++ interface to Fig. 10 Deep network visualization tool interface. The
+encapsulate functions using the model for use in interface of thedeep network visualization tool and therun-
+the production environment. First, five convolu- ning status of theCNN network.
+tional layers are obtained. Their weights from the
+pre-trained CaffeNet are fine-tuned, the original response of the neuron. The middle and lower right
+fully connected layer is removed, the new network arethepicturesinthedatasetthatmaketheneuron
+layer is connected to, and training is from scratch. produce the maximum response and their saliency
+The whole training is divided into two steps. First, maps.
+joint training is performed on classified tasks and Bychangingtheinputimage,itcanbefoundthat
+structured output CNN so that the network can theNo.19neuronintheconv5layerrespondstothe
+distinguish between table tennis objects and out- corresponding position of the target object, and it
+put probability. The second step removes the clas- is more evident than other neurons. The specific
+sification layer, adding a bounding box regression observation of this neuron shows that the response
+layer, freeing all the remaining network layers, and of this neuron mainly comes from the ping-pong
+training the regression layer. part of the input graph from the prominent map
+We use learning rate 10 −6 for the first layer, and in the lower-left corner of Fig. 11. The generated
+5×10 −6 for other layers. The weight decay value is image in the upper right corner also shows that the
+10topreventtraining.Thispapercollects tableten- neuron mainly learns the characteristics of “white”
+nis pictures from 30 table tennis videos, randomly and “round.”
+addsdisplacement and zoom, anduniformlycuts to
+100×100 sizes. Approximately 40,000 images were
+gathered, of which about 20,000 were included in
+table tennis, and the rest as a background or con-
+tained examples of other interferers (such as racket,
+skin). For the firststage, a total of 5 cycles of train-
+ing is 20,000 cycles, and the learning rate of each
+cycle is multiplied by the attenuation coefficient of
+0.1. In the second stage, only table tennis pictures
+are used to train the regression layer, with four
+cycles and 12,000 cycles. Figure 10 shows the pri-
+mary interface of the tool. The upper left corner is
+the input image.
+The central part of the interface is the inter-
+mediate result of a layer in the network, which is
+the characteristic diagram of conv5 in this figure.
+A significant map of the neuron generated using
+Fig. 11 Comparison of saliency maps of different convolu-
+the deconvolution layer is displayed in the lower-
+tional layers. The three columns from left to right are the
+left corner when a neuron is selected. The upper input image, the saliency map of conv359 and the saliency
+right corner shows the image that maximizes the map of conv519.
+2240156-11
+moc.cifitneicsdlrow.www
+morf
+dedaolnwoD
+.03.2202
+slatcarF
+.selcitra
+sseccA
+nepO
+rof
+tpecxe
+,dettimrep
+ton
+yltcirts
+si
+noitubirtsid
+dna
+esu-eR
+.62/90/01
+no
+4d88:bf2b:1c4e:8b5a:328:3101:102:5042
+yb
+
+PAGE 12
+2
+nd
+Reading
+July 3, 2022 15:16 0218-348X 2240156
+H. Li et al.
+Comparedwiththelower layer neurons,itcanbe 4.1.1. Performance analysis
+found that the features learned by the conv5 layer
+For comparison, this paper trains a new model
+are more robust. In contrast, the No. 59 neuron,
+based on VGGNet. VGGNet has a deeper net-
+which can also produce an obvious response in the
+work level than CaffeNet. Therefore, more layers of
+target object’s corresponding position, are selected
+the network can learn more semantic features. The
+from the conv3 layer. This time we use a saliency
+achievements in image classification can also show
+map calculated backward, that is, neurons, to com-
+that improving the depth of the network can effec-
+pare the gradients of the inputimages. As shown in
+tively enhance accuracy. The VGGNet-16 selected
+Fig. 11, for an input image (the first line) that does
+in this paper contains 13 convolution layers, which
+not contain an occlusion, there is little difference
+are divided into five groups from conv1 to conv5.
+in the saliency map of the two neurons. However,
+Each group of convolution layers relates to a two
+fortheinputcontaining interference,theconfidence
+pooling layer. The size of the conv1-2-layer fea-
+map range of the conv3 neuron is more extensive;
+ture map used as the input of the ROI pooling
+that is, the interference will also cause the neuron’s
+layer is 50 × 50. Compared with the 23 × 23 of
+response, while the reaction of the conv5 neuron
+the CaffeNet, the position accuracy of the regres-
+is limited to the range of the target object. Thus,
+sion layer can be improved to a certain extent. But
+it can be seen that the higher convolution layer can
+also, because there are more layers of VGGNet, the
+learnsemanticfeaturesandcandistinguishbetween
+amount of calculation is more enormous, and the
+target objects and distractors.
+running time will be significantly higher than that
+In addition to theinternal situation of the neural
+of CaffeNet. The training of the model is also more
+network, we can also test whether the whole neural
+complex, and the super-parameters need to be fine-
+networkhaslearnedtheability topredictthetarget
+tuned carefully.
+object’s position in the input image. For the last
+First, the classification performance is tested on
+layer of the structured output CNN, that is, the
+the test set of the dataset mentioned above. As
+probability graph of 50×50 sizes, using the above
+showninTable1,becausethetwo-classificationtask
+toolbox to do the same operation, you can get the
+itself is relatively simple, the accuracy of differ-
+result of Fig. 12. It can be seen from the graph
+ent models has reached a higher value. Thus, the
+that the significant image obtained by deconvolu-
+classification accuracy to a certain extent ensures
+tion operation on the structured output layer also
+that the tracking algorithm will not misclassify
+corresponds to the position of the target object in
+interfering objects as tracking targets. Second,
+the inputimage. The complete response image gen-
+Table 2 shows the IoU scores of prediction bound-
+erated is also like a white circular object. The most
+ing boxes and target bounding boxes of different
+responsive picture in the dataset also happens to
+models on the test set of the above regression
+contain the entire ping-pong ball. From this, it can
+tasks. Themodel’s score with theregression layer is
+be inferred that the neural network has been stud-
+higher than that without the regression layer, while
+ied effectively.
+VGGNet gets a higher score than CaffeNet with or
+without the regression layer.
+Table 1 Classification Perfor-
+mance on Test Dataset.
+CaffeNet VGGNet
+0.985 0.997
+Table2 ComparisonofIoU Scores ofCNNModels
+on the Regression Task Test Set.
+CaffeNet VGGNet
+Structuredoutput CNN 0.51 0.61
+Regression layer 0.61 0.75
+Fig. 12 Visualization results of structured output layer.
+2240156-12
+moc.cifitneicsdlrow.www
+morf
+dedaolnwoD
+.03.2202
+slatcarF
+.selcitra
+sseccA
+nepO
+rof
+tpecxe
+,dettimrep
+ton
+yltcirts
+si
+noitubirtsid
+dna
+esu-eR
+.62/90/01
+no
+4d88:bf2b:1c4e:8b5a:328:3101:102:5042
+yb
+
+PAGE 13
+2
+nd
+Reading
+July 3, 2022 15:16 0218-348X 2240156
+Video-Based Table Tennis Tracking and Trajectory Prediction
+Table 3 Comparison of CNN Model Running 4.1.2. Tracking framework
+Speed.
+In this simple framework, only a small amount of
+CaffeNet VGGNet samples are taken at each frame near the target
+positionofthepreviousframe.Thecandidateregion
+Convolution layer (ms) 1 9.87
+is input into the CNN model to obtain the object’s
+Structured output(ms) 0.47 0.61
+boundingbox in this frame. Although in thefollow-
+Regression layer (ms) 1.26 1.65
+Overall run time (ms) 2.93 12.63 ing test, the framework even carries out only one
+sampling, only intercepting the context of the tar-
+getlocation ofthepreviousstructureasacandidate
+In this paper, the time performance of the model region, it can still achieve good tracking results.
+is tested on a host configured with GTX 1060 3G. The simple framework is tested on the table ten-
+As can be seen from Table 3, the running speed of nisvideotest set, andaccordingto theperformance
+CaffeNetisfasterthanthatofVGGNet,andthedif- index mentioned in Ref. 21, the success curve and
+ference is mainly reflected in the convolution layer. theprecision curveare drawn,as shownin Fig. 14a.
+There is little difference in time between the struc- Thesuccesscurveindicatesthatinthetrackingpro-
+turedoutputand regression layers becausethey use cess, thecoincidence rateof thepredicted bounding
+the same structure. box and the target bounding box is more signifi-
+Duringtracking,theCNNframeworkoftenneeds cant than a certain threshold, that is, the ratio of
+toprocessmultipleinputimagesinoneframe.Using the number of frames tracked successfully to the
+the parallel computing ability of GPU, putting total number of frames. The abscissa is the thresh-
+multiple input images into a batch, and inputting old, and the ordinate is the ratio of the number of
+them into the network simultaneously, instead of successful frames. Usually, the curve’s Area Under
+processing only one idea at a time, can improve the Curve(AUC)iscalculated togetanumberbetween
+processing speed. This section tests the uptime of 0and1.Thehigherthevalue,thebettertheperfor-
+the network under different batch size settings, as manceofthetracker.Theaccuracycurverepresents
+shown in Fig. 13. It can be seen that the intercept the ratio of the number of frames in which the dis-
+of the two curves on the y-axis is greater than 0, tancebetween thepredictedtarget position andthe
+which means that it is more efficient to process a actual place is less than a certain threshold.
+batch at the same time than to process a single This index is also significant for table tennis
+image multiple times. tracking because of the need to obtain accurate
+coordinates for trajectory prediction. Usually, the
+value of the curve is selected when the threshold
+is 20 pixels (precision@20) to measure the perfor-
+mance of the tracker. The value range is also in the
+field of 0–1. The tracking framework is tested using
+the above different CNN models, and the compari-
+son results are shown in Fig. 14b.
+A comparison of AUC and precision 20 scores is
+shown in Table 4. As can be seen from the chart
+and table, the performance of the VGGNet-based
+model is better than that of the CaffeNet model
+in all indicators. From the tracking test of a sin-
+gle video, it can be observed that due to the lower
+Table4 TargetTrackingIndicatorsTestedonthe
+Table Tennis Video Dataset.
+CaffeNet VGGNet
+AUC 0.51 0.61
+Fig. 13 Comparison of running speeds of different batch PRECISION@20 0.61 0.75
+sizes.
+2240156-13
+moc.cifitneicsdlrow.www
+morf
+dedaolnwoD
+.03.2202
+slatcarF
+.selcitra
+sseccA
+nepO
+rof
+tpecxe
+,dettimrep
+ton
+yltcirts
+si
+noitubirtsid
+dna
+esu-eR
+.62/90/01
+no
+4d88:bf2b:1c4e:8b5a:328:3101:102:5042
+yb
+
+PAGE 14
+2
+nd
+Reading
+July 3, 2022 15:16 0218-348X 2240156
+H. Li et al.
+(a) (b)
+Fig. 14 Target tracking indicators tested on thetable tennis video dataset. The commonly used target tracking indicators,
+as well as thecomparison of different models on these indicators. (a) success curve.(b) precision curve.
+(a) (b)
+Fig.15 Comparisonoftraditionaltrackingalgorithmsanddeeplearningtrackingalgorithms.(a)successcurve.(b)precision
+curve.
+accuracyoftheCaffeNetmodel,itiseasytoseethat frame, when the predicted bounding box is larger
+the target cannot be fully included in the search than the actual bounding box, it will cause the
+box, resulting in the loss of the target. In addition, search box to become larger and larger such that
+because the search box of the next frame is deter- the model cannot recognize the target objects that
+mined by the target bounding box of the previous are too small in the search box.
+2240156-14
+moc.cifitneicsdlrow.www
+morf
+dedaolnwoD
+.03.2202
+slatcarF
+.selcitra
+sseccA
+nepO
+rof
+tpecxe
+,dettimrep
+ton
+yltcirts
+si
+noitubirtsid
+dna
+esu-eR
+.62/90/01
+no
+4d88:bf2b:1c4e:8b5a:328:3101:102:5042
+yb
+
+PAGE 15
+2
+nd
+Reading
+July 3, 2022 15:16 0218-348X 2240156
+Video-Based Table Tennis Tracking and Trajectory Prediction
+Finally, Fig. 16 also shows the actual tracking
+effect of each of the above models, as well as the
+comparison with the actual value. It can be seen
+that the traditional method easily loses the target
+in the case of complex background, and in the case
+ofsuccessfultracking,theoutputofthemodelbased
+on deep learning has a higher coincidence rate with
+the real value.
+4.2. LSTM: Trajectory Prediction
+Fig. 16 Visualization of the tracking performance of each Model
+model on thetable tennis videodataset.
+For theimplementation of theLSTMmodel,weuse
+the open-source Tensorflow1 deep learning frame-
+This paper also implements a simple track-
+work. Due to MDN and other operations such as
+ing framework based on color features and the
+Gaussian distribution sampling, the derivation pro-
+CamShiftalgorithmtocomparewiththetraditional
+cess is more complex, so the Tensorflow framework
+methods.Thetracking frameworkiscomparedwith
+is chosen to implement. For example, Fig. 17a gen-
+the deep learning framework on the same video
+erates a network structure based on the calculation
+data set, and the results are shown in Fig. 15b.
+diagram, whichcan help tocheck whethertheoper-
+In the actual test, it is found that the traditional
+ation is correct. With the statistics of the network
+method is easy to drift when there are background
+weight and the intermediate results in the training
+interferers (arm, table sideline). Even if the track-
+process in Fig. 17b, we can have a more specific
+ing is successful, the target cannot be surrounded
+understanding of the quality of the training results
+by a small response area. In fact, in the use of
+andimprovetheefficiencyofparameteradjustment.
+traditional methods, the environment will be con- This paper uses the Python interface of Tensor-
+6
+strained. For example, only shoot the still table flow to write the structure, training, and testing
+area,onlyuseorangetabletennis.Inaddition,more code of the LSTM model. To use it in the real envi-
+auxiliary methods will be used, such as background ronment, we used the more efficient C++ interface
+subtraction and motion model based on Kalman to write the code that uses the LSTM model to
+filter. predict.
+(a) (b)
+Fig. 17 Network structureand statistics generated byTensorflow. (a) Network structureof theLSTM modelgenerated by
+Tensorflow. (b) Distribution of a certain weight in thenetwork statistics.
+2240156-15
+moc.cifitneicsdlrow.www
+morf
+dedaolnwoD
+.03.2202
+slatcarF
+.selcitra
+sseccA
+nepO
+rof
+tpecxe
+,dettimrep
+ton
+yltcirts
+si
+noitubirtsid
+dna
+esu-eR
+.62/90/01
+no
+4d88:bf2b:1c4e:8b5a:328:3101:102:5042
+yb
+
+PAGE 16
+2
+nd
+Reading
+July 3, 2022 15:16 0218-348X 2240156
+H. Li et al.
+one unit in time as the target output. Thus, for
+three-dimensional coordinate information at time t,
+thetarget outputisthecoordinateof thetrajectory
+at time t. To restore the error of the real measure-
+ment trajectory, noise is added to the input data,
+but the target output is not processed.
+The LSTM model used in this paper contains
+two hidden layers, and the length of the state
+vector of each layer is 64. The mixed Gaussian net-
+work predicts two multidimensional Gaussian dis-
+tributions. The number of Gaussian distributions
+dependsonthenumberofstates.Becausetableten-
+nismainlyhastwoconditionsofflightandrebound,
+Fig. 18 Training data of LSTM model. two Gaussian distributions are enough to describe
+these states, but too many distributions may lead
+4.2.1. Model training to overfitting. The model trains 30 cycles on the
+training set, traverses the whole training set every
+This paper trains the LSTMmodel on the 3D coor- process. The initial learning rate is 5×10 − 3, and
+dinate dataset of table tennis trajectories. First
+each cycle is multiplied by the attenuation coeffi-
+of all, 20,000 ping-pong trajectories are generated
+cient of 0.95.
+usingtheopen-sourcephysicsengineBullet3. Then,
+the initial speed, position, and direction are ran-
+4.2.2. Performance analysis
+domlyselected todiversifythedataasmuchaspos-
+sible. Part of the trajectory is shown in Fig. 18. Figure 19 shows the results of the trained model
+In addition, a small number of ping-pong tracks on the validation set. It can be seen that a pre-
+arecollected by high-speedcameras. Inthetraining dictable trajectory that is very close to the tar-
+process, we intercept a complete track of table ten- get trajectory can be generated by inputting the
+nis as input and translate the same track backward initial coordinates into the neural network. The
+(a) (b)
+Fig. 19 Trajectory prediction results. (a) Theprediction result when 30 coordinates are input.(b) The result of inputting
+4 coordinates.
+2240156-16
+moc.cifitneicsdlrow.www
+morf
+dedaolnwoD
+.03.2202
+slatcarF
+.selcitra
+sseccA
+nepO
+rof
+tpecxe
+,dettimrep
+ton
+yltcirts
+si
+noitubirtsid
+dna
+esu-eR
+.62/90/01
+no
+4d88:bf2b:1c4e:8b5a:328:3101:102:5042
+yb
+
+PAGE 17
+2
+nd
+Reading
+July 3, 2022 15:16 0218-348X 2240156
+Video-Based Table Tennis Tracking and Trajectory Prediction
+fewercoordinatesenteredmeansthatthemodelcan Table7 PerformanceofLandingPointPredictionof
+22
+make predictions earlier. With the increase of the LSTM Model with Extended Kalman Filter.
+number of input coordinates, the predicted trajec-
+Input Sequence Length 4 10 30
+tory is closer to the target. It can also be seen that
+the model can accurately predict the collision event Average error (mm) 6.39 6.38 6.38
+Ideal average error (mm) 0.72 0.64 0.62
+and change the trajectory direction when the coor-
+dinates are relative to the ball table.
+As mentioned earlier, an essential task of trajec-
+tory prediction of a table tennis robot is to pre- higher accuracy when there are more input coordi-
+dict the landing point accurately. The next part is nates.However,astheinputdecreases,theaccuracy
+to test the performance of the LSTM model land- of the conventional model falls faster. This paper
+ing point prediction. For a point in the sequence, found that this is due to the lack of input informa-
+if its z coordinate is less than the z coordinate of tion, and the model cannot obtain additional infor-
+the two adjacent points, it will be regarded as the mation from pre-training.
+landingpoint.Thequality ofthemodelismeasured For the LSTM model, we also made a network
+by calculating the distance between the predicted analysis to know its internal operation to observe
+landing point and the target landing point. A test whether the MDN network has learned to pre-
+is carried out on a test set containing 4000 tracks, dict the rebound of ping-pong balls on the table.
+and a comparison is made by changing the initial As mentioned above, the MDN model outputs two
+sequence length of the input. Because there is noise parameters of the multi-dimensional Gaussian dis-
+in the input track, which may impact the predic- tribution. When a bounce occurs, the Gaussian
+tion results, we have carried out the same test on weight of the predicted “bounce” action should be
+the input without noise, and the results are shown higher. Because it is mainly the z coordinate that
+in Table 5. It can be seen that with the increase in changes during the bounce, the multi-dimensional
+the number of input coordinates, the prediction is Gaussian distribution is projected onto the z-axis.
+more accurate. When the input is in an ideal state, The result is shown in Fig. 20. Because the Gaus-
+the prediction accuracy of different input lengths sian distribution represents the displacement from
+is improved. For example, when the input sequence thecurrentcoordinatetothenextframe,theinstan-
+size is 30, the error is less than 40mm. The actual taneous velocity on the z-axis should be less than
+diameter of the ping-pong ball is 40mm, so this 0 before the bounce and greater than 0 after the
+error is acceptable. bounce. The figure shows this situation correctly:
+To compare with the traditional methods, this before the rebound, the mean of the two Gaussian
+paper also implements a trajectory prediction distributions is less than 0, but after the rebound,
+model based on the Extended Kalman Filter and the standard deviation of the Gaussian distribution
+tests the landing point prediction according to with a mean greater than 0 is more minor and has
+Ref.22.TheresultsareshowninTable6.Compared a higher weight.
+with the LSTM model, the traditional model has Finally, we also test the time performance of the
+LSTM model. This time the model is run in CPU
+mode. On the CPU of Intel i7-6700 3.40GHz, the
+Table 5 Performance of Landing Point Prediction
+of LSTM Model. average time for making a prediction is 0.35ms.
+Input Sequence Length 4 10 30
+4.3. Integrated Tracking Structure
+Averageerror (mm) 181.93 79.73 36.48 23
+This paper uses the Codebook algorithm to sub-
+Idealaverage error (mm) 162.6 73.26 33.65
+tract the background on the YCrCb channel of the
+image.Becausethevideoisfilmedwithahigh-speed
+Table 6 Performance of Landing Point Prediction
+camera under indoor lighting conditions, there will
+22 of LSTM Model with Extended Kalman Filter. be frequent brightness changes and noise, as shown
+Input SequenceLength 4 10 30 in Fig. 21. However, by operating on the YCrCb
+channel, the Codebookmethod can reasonably deal
+Average error (mm) 621.16 90.16 17.93
+withregularbrightnesschangesandignorethenoise
+Ideal average error (mm) 599.28 79.38 14.05
+generated by the light.
+2240156-17
+moc.cifitneicsdlrow.www
+morf
+dedaolnwoD
+.03.2202
+slatcarF
+.selcitra
+sseccA
+nepO
+rof
+tpecxe
+,dettimrep
+ton
+yltcirts
+si
+noitubirtsid
+dna
+esu-eR
+.62/90/01
+no
+4d88:bf2b:1c4e:8b5a:328:3101:102:5042
+yb
+
+PAGE 18
+2
+nd
+Reading
+July 3, 2022 15:16 0218-348X 2240156
+H. Li et al.
+(a) (b)
+Fig. 20 TMDN predictstable tennisrebound action. The internalstate of MDN duringthereboundof theping-pongball.
+(a) The output of MDN before rebound.(b) MDN after rebound Output.
+M 3×3 and the distortion coefficient of the cam-
+era are obtained by using the built-in calibration
+function of OpenCV. Then, the internal parameter
+matrix is used to convert the 3D coordinates of the
+camera coordinate system into the 2D coordinates
+of the camera plane
+⎡ ⎤
+⎡ ⎤ X
+u c ⎢ ⎥
+⎢ ⎥ ⎢Y ⎥
+Z c ⎣v⎦ = M 3×3 ⎢ ⎣Z c⎥ ⎦ . (8)
+c
+1
+1
+Fig. 21 Noise of input video. Then, the ping-pong table region in the image is
+identified by the color feature, and the boundary
+A separate candidate region is obtained from the line is obtained by Hough transform, as shown in
+foreground image by morphological operation, and Fig. 23. The coordinates of the four corners of the
+the candidate region is filtered according to the ball table are obtained through the intersection of
+shape, size, and other features. Then the candidate the boundary line. Then the external parameter
+region is input into the CNN model. The result is matrix from the camera to the ball table is cal-
+shown in Fig. 22. culated, including the rotation matrix R 3×3 and
+In the stage of collecting training data, we also the displacement matrix T 3×1. Finally, the external
+use background subtraction to automatically cut parametermatrixisusedfortheconversionbetween
+table tennis pictures in videos with less motion the camera coordinate system and the world coor-
+interference to improve tagging efficiency. dinate system
+⎡ ⎤ ⎡ ⎤
+X X
+c (cid:18) (cid:19) w
+4.3.1. 3D coordinate reconstruction ⎢ ⎥ ⎢ ⎥
+First of all, using the chessboard calibration ⎢ ⎢ Y c ⎥ ⎥= R 3×3 T 3×1 ⎢ ⎢ Y w ⎥ ⎥, (9)
+⎣Z ⎦ 0 1 ⎣Z ⎦
+method, the chessboard pictures are taken from c w
+multiple angles, and the internal parameter matrix 1 1
+2240156-18
+moc.cifitneicsdlrow.www
+morf
+dedaolnwoD
+.03.2202
+slatcarF
+.selcitra
+sseccA
+nepO
+rof
+tpecxe
+,dettimrep
+ton
+yltcirts
+si noitubirtsid
+dna
+esu-eR
+.62/90/01
+no
+4d88:bf2b:1c4e:8b5a:328:3101:102:5042
+yb
+
+PAGE 19
+2
+nd
+Reading
+July 3, 2022 15:16 0218-348X 2240156
+Video-Based Table Tennis Tracking and Trajectory Prediction
+(a) (b)
+Fig. 22 Background subtraction result. (a) Inputimage. (b) The extracted foreground area.
+Fig. 23 Extracting theboundary line of thetable.
+⎡ ⎤
+⎡ ⎤ X Thedrop-offstatisticsshowninFig.28canbetter
+u (cid:18) (cid:19) w
+⎢ ⎥ characterize the player’s offensive options and help
+Z c ⎢ ⎣v ⎥ ⎦= M 3×3 R 3 0 ×3 T 3 1 ×1 ⎢ ⎢ ⎣Z Y w ⎥ ⎥ ⎦ . (10) players better train.
+w
+1
+1 4.4. Tracking Framework
+Performance
+Finally, combining the above two formulas, we
+know the two-dimensional coordinates of a certain To meet the real-time requirements, this paperuses
+point in the two camera planes and use the fol- C++toimplementthetrackingframeworkanduses
+lowing formula to calculate the three-dimensional Qt to write a graphical interface. The operation
+coordinates. of the program is shown in Fig. 24. The top of
+Z is the Z coordinate of the point in a cam- the interface offers tracking from two perspectives:
+c
+era coordinate system, which is an unknown num- table tennis’s instantaneous speed at the bottom
+ber, and u,v are the coordinates of the point in the left. The top view of the table at the lower right
+planeofthecamera.Ristherotationmatrix,andT shows the position of table tennis (green) and the
+is the displacement matrix. Finally, X ,Y ,Z are actual landing point (red) in real-time, as well as
+w w w
+the three-dimensional coordinate in the world coor- the predicted location of the impact point (yellow).
+dinate system, which requires the solution. There We encapsulatetheCNNmodelbasedonCaffe, the
+are four unknowns, and each of the two cameras LSTM model based on Tensorflow, and the com-
+providesoneoftheaboveequationstosolvedirectly puter vision method used in the framework into
+by linear algebra. dynamic libraries, which are linked in the main
+2240156-19
+moc.cifitneicsdlrow.www
+morf
+dedaolnwoD
+.03.2202
+slatcarF
+.selcitra
+sseccA
+nepO
+rof
+tpecxe
+,dettimrep
+ton
+yltcirts
+si
+noitubirtsid
+dna
+esu-eR
+.62/90/01
+no
+4d88:bf2b:1c4e:8b5a:328:3101:102:5042
+yb
+
+PAGE 20
+2
+nd
+Reading
+July 3, 2022 15:16 0218-348X 2240156
+H. Li et al.
+Fig. 24 Graphical interface of ping-pongtracking system.
+Fig. 25 Video test taken with actual environment.
+Fig. 26 Trajectory prediction in actual environment.
+program of the framework. The program can run
+successfully on Ubuntu16.04.
+This work tests the reliability of the tracking in the virtual environment. Prediction starts when
+framework in a real environment. As shown in the ball flies over the net until it bounces off the
+Fig. 25, when a synchronized camera is used to table. It can be seen from Fig. 24 that the tracking
+shoot a video of two table tennis players playing framework records the trajectory of the table ten-
+againsteach other,therewillbedisturbances(play- nisrelatively completely andpredictsthetrajectory
+ers moving in the distance) and occlusion (occlu- more accurately.
+sionof nearbyrackets) continuously throughoutthe We have fully implemented the table tennis
+process. Figure 26 shows the trajectory prediction tracking framework. However, the framework only
+2240156-20
+moc.cifitneicsdlrow.www
+morf
+dedaolnwoD
+.03.2202
+slatcarF
+.selcitra
+sseccA
+nepO
+rof
+tpecxe
+,dettimrep
+ton
+yltcirts
+si
+noitubirtsid
+dna
+esu-eR
+.62/90/01
+no
+4d88:bf2b:1c4e:8b5a:328:3101:102:5042
+yb
+
+PAGE 21
+2
+nd
+Reading
+July 3, 2022 15:16 0218-348X 2240156
+Video-Based Table Tennis Tracking and Trajectory Prediction
+Fig. 27 Instantaneousspeed statistics of table tennis.
+Fig. 28 Statistics of table tennis placement.
+accomplishes two fundamental problems: table ten- (paralleltothesideline)isreversedwhenhittingthe
+nis tracking and trajectory prediction. More work ball and decreases during flight.
+can be done based on the framework. In addition
+to the landing point prediction and hitting time
+5. CONCLUSION
+determination of the table tennis robot mentioned
+at the beginning of this paper can also be statisti- In this paper, fractal AI provides an effective solu-
+cally and analyzed based on many trajectory data tion to deal with the complex structural predic-
+obtained by tracking. For example, the instanta- tion and tracking via designing a framework based
+neous speed curve of a table tennis ball is shown on deep learning, the aim of which is to replace
+in Fig. 27. Excluding the noise caused by a small the traditional methods with more intuitive ideas
+amount of tracking failure, some physical laws can and more robust performance, to solve the two fun-
+beobserved,suchasthez-axisspeed(perpendicular damental problems of table tennis tracking sys-
+to the table) reverses when bouncing and decreases tem, namely, tracking and trajectory prediction.
+linearly duringflight. For example, they-axis speed First, we proposed a structured output CNN and
+2240156-21
+moc.cifitneicsdlrow.www
+morf
+dedaolnwoD
+.03.2202
+slatcarF
+.selcitra
+sseccA
+nepO
+rof
+tpecxe
+,dettimrep
+ton
+yltcirts
+si
+noitubirtsid
+dna
+esu-eR
+.62/90/01
+no
+4d88:bf2b:1c4e:8b5a:328:3101:102:5042
+yb
+
+PAGE 22
+2
+nd
+Reading
+July 3, 2022 15:16 0218-348X 2240156
+H. Li et al.
+boundingboxregressionmodel,successfullyapplied and ++reward or punish the network through the
+to the table tennis track. In addition, we convert gameoperation,sothatitcanlearntomakecorrect
+the LSTM model used for sequence prediction to actions at a specific time and obtain higher game
+the problem of ping-pong trajectory prediction and scores. More powerful network structure and sim-
+puts forward a more straightforward and intuitive ple training methods make deep learning become
+solution than the traditional method. Finally, it the main direction of table tennis robot design.
+integrates each model to achieve a complete track-
+ing framework. We have carried out various experi- ACKNOWLEDGMENTS
+ments on the network model, explored the internal
+This work was supported in part by the National
+operation mode of the network, and confirmed the
+Natural Science Foundation of China under Grants
+availability of the model. We also write a graphical
+62077037and61872241,inpartbyShanghaiMunic-
+interface program to show the actual effect of the
+ipal Science and Technology Major Project under
+framework.
+Grant 2021SHZDZX0102, in part by the Science
+Compared with the traditional computer vision
+and Technology Commission of Shanghai Munici-
+methods, the proposed framework does not need
+pality underGrants 18410750700 and 17411952600,
+to manually select features to track table tennis
+inpartbyShanghaiLin-GangAreaSmartManufac-
+and does not need to predict the trajectory based
+turing Special Project under Grant ZN2018020202-
+on many physical formulas. Input and output are
+3, and in part by Project of Shanghai Municipal
+clearly defined in all models, and many exceptional
+Health Commission(2018ZHYL0230). Haoxuan Li
+cases canbesolved automatically withinthemodel.
+and Saba Ghazanfar Ali contributed equally to this
+Compared with the general tracking algorithm, the
+work.
+framework is specially designed for the tracking
+problem of table tennis, which solves the problem
+of finding the tracking target in the first frame, REFERENCES
+removes the online learning process through the
+1. L. Wang, Y. Wu, J. Xu, H. Zhang, X. Wang, J. Yu,
+pre-training of a large number of table tennis pic- Q.SunandZ.Zhao,Statuspredictionby3Dfractal
+tures, and improves the processing speed. A more net CNN based on remote sensing images, Fractals
+reasonable motion model is designed according to 28 (2020) 2040018.
+the characteristics of table tennis. 2. B.Liu,L.JinandC.Hu,Fractalcharacterizationof
+These are the several future directions where silty beds/laminae and its implications for the pre-
+we can employ tracking and trajectory predictions; dictionofshaleoilreservoirsinQingshankouforma-
+tion of Northern Songliao Basin, Northeast China,
+(1) The rotation information of table tennis is mea-
+Fractals 27 (2019) 1940009.
+sured by the method based on computer vision,
+3. Y.Karaca,D.Baleanu,M.Moonis,K.Muhammad,
+andthemeasurementresultsareintegrated intothe
+Y.-D. Zhang and O. Gervasi, Editorial, Fractals 29
+existing framework to improve the performance of
+(2021) 2102002.
+tracking and trajectory prediction. (2) Deep learn-
+4. Y.Liu,X.Pang,X.Zhao,A.Stein,X.Zhang,Q.Ji,
+ing can be used to recognize human actions. In
+M. Qu and J. Dong, Prediction of the Antarctic
+table tennis video, athletes’ body movements are marginalICE zone extent based upon its multifrac-
+also an important source of information. By iden- tal property, Fractals 29 (2021) 2102002-1.
+tifying the player’s swing, additional information 5. R. Pin˜a-Vega,M. Valtierra-Rodriguez,C. A. Perez-
+can be provided for ball tracking. It can also ana- RamirezandJ.P.Amezquita-Sanchez,Earlypredic-
+lyze the human body movements separately, such tionofsuddencardiacdeathusingfractaldimension
+as the offensive characteristics and tactical analy- and ECG signals, Fractals 29 (2021) 2150077.
+6. Y.ZhangandR.Xiong,Real-timevisionsystemfor
+sis of athletes. Based on the strong ability of deep
+a ping-pong robot, Sci. Sin. Inf. 42 (2012) 1115.
+learning in image recognition and the existing work
+7. K. Mu¨lling, J. Kober, O. Kroemer and J. Peters,
+related to deep learning attitude analysis, it can
+Learningtoselectandgeneralizestrikingmovements
+be easily transferred to table tennis video analy-
+in robot table tennis, Int. J. Robot. Res. 32 (2013)
+sis. (3) The reinforcement learning method is used
+263.
+to realize the design of table tennis robot. In depth
+8. L. Xi, B. Sun and J. Yao, Fractality of substitution
+learning methods, such as reinforcement learning, networks,Imagenetclassificationwithdeepconvolu-
+can directly take the game picture pixels as input, tional neural networks, Fractals 27 (2019) 1950034.
+2240156-22
+moc.cifitneicsdlrow.www
+morf
+dedaolnwoD
+.03.2202
+slatcarF
+.selcitra
+sseccA
+nepO
+rof
+tpecxe
+,dettimrep
+ton
+yltcirts
+si
+noitubirtsid
+dna
+esu-eR
+.62/90/01
+no
+4d88:bf2b:1c4e:8b5a:328:3101:102:5042
+yb
+
+PAGE 23
+2
+nd
+Reading
+July 3, 2022 15:16 0218-348X 2240156
+Video-Based Table Tennis Tracking and Trajectory Prediction
+9. A. Krizhevsky, I. Sutskever and G. E. Hinton, Ima- 18. Y. Jia, E. Shelhamer, J. Donahue, S. Karayev,
+genet classification with deep convolutional neural J.Long,R.Girshick,S.GuadarramaandT.Darrell,
+networks, Adv. Neural Inf. Process. Syst. 25 (2012) Caffe: Convolutional architecture for fast feature
+1097. embedding, in Proceedings of the 22nd ACM Inter-
+10. R. Girshick, J. Donahue, T. Darrell and J. Malik, national Conference on Multimedia (ACM, 2014),
+Rich feature hierarchies for accurate object detec- pp. 675–678.
+tion and semantic segmentation, in Proceedings of 19. K. Simonyan and A. Zisserman, Very deep convo-
+the IEEE Conference on Computer Vision and Pat- lutional networks for large-scale image recognition,
+tern Recognition (IEEE, 2014), pp. 580–587. arXiv:1409.1556.
+11. S. Hochreiter and J. Schmidhuber, Long short-term 20. L. Wang, W. Ouyang, X. Wang and H. Lu,
+memory, Neural Comput. 9 (1997) 1735. Visualtrackingwithfullyconvolutionalnetworks,in
+12. V. Mnih, K. Kavukcuoglu, D. Silver, A. Graves, IEEEInternationalConferenceonComputerVision
+I. Antonoglou, D. Wierstra and M. Riedmiller, (IEEE, 2015), pp. 3119–3127.
+Playing atari with deep reinforcement learning, 21. Y.Wu,J.LimandM.-H.Yang,Onlineobjecttrack-
+arXiv:1312.5602. ing:A benchmark,inProceedings of the IEEE Con-
+13. D.Held,S.ThrunandS.Savarese,Learningtotrack ference on Computer Vision and Pattern Recogni-
+at 100 FPS with deep regressionnetworks,in Euro- tion (IEEE, 2013), pp. 2411–2418..
+pean Conference on Computer Vision (Springer, 22. Y. Zhang, R. Xiong, Y. Zhao and J. Wang, Real-
+2016), pp. 749–765. time spin estimation of ping-pong ball using its
+14. A.Graves,Generatingsequenceswithrecurrentneu- natural brand, IEEE Trans. Instrum. Measure. 64
+ral networks, arXiv:1308.0850. (2015) 2280.
+15. R. Shah and R. Romijnders, Transferring rich 23. K. Kim, T. H. Chalidabhongse, D. Harwood and
+feature hierarchies for robust visual tracking, L.Davis,Real-timeforeground–backgroundsegmen-
+arXiv:1608.03793. tation using codebook mode, Real-time Imag. 11
+16. N. Wang, S. Li, A. Gupta and D.-Y. Yeung, (2005) 172.
+arXiv:1501.04587.
+17. R. Girshick, Fast R-CNN, in Proceedings of the
+IEEEInternationalConferenceonComputerVision
+(IEEE, 2015), pp. 1440–1448.
+2240156-23
+moc.cifitneicsdlrow.www
+morf
+dedaolnwoD
+.03.2202
+slatcarF
+.selcitra
+sseccA
+nepO
+rof
+tpecxe
+,dettimrep
+ton
+yltcirts
+si
+noitubirtsid
+dna
+esu-eR
+.62/90/01
+no
+4d88:bf2b:1c4e:8b5a:328:3101:102:5042
+yb

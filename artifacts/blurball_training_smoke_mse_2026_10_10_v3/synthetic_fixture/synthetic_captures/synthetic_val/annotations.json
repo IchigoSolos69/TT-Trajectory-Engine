@@ -1,0 +1,341 @@
+{
+  "frame_1.jpg": {
+    "reviewed": true,
+    "reviewed_classes": {
+      "ball": true,
+      "person": false,
+      "table": false
+    },
+    "ball": [],
+    "person": [],
+    "table": [],
+    "source_frame": 1,
+    "elapsed_ms": 0.0,
+    "geometry": {
+      "visibility": "visible",
+      "blur_streak": {
+        "endpoints": [
+          [
+            0.4,
+            0.4
+          ],
+          [
+            0.4,
+            0.4
+          ]
+        ],
+        "source_width": 1920,
+        "source_height": 1080,
+        "reviewed": true,
+        "method": "manual_streak_endpoints"
+      }
+    }
+  },
+  "frame_2.jpg": {
+    "reviewed": true,
+    "reviewed_classes": {
+      "ball": true,
+      "person": false,
+      "table": false
+    },
+    "ball": [],
+    "person": [],
+    "table": [],
+    "source_frame": 2,
+    "elapsed_ms": 16.666666666666668,
+    "geometry": {
+      "visibility": "visible",
+      "blur_streak": {
+        "endpoints": [
+          [
+            0.42000000000000004,
+            0.4
+          ],
+          [
+            0.42000000000000004,
+            0.4
+          ]
+        ],
+        "source_width": 1920,
+        "source_height": 1080,
+        "reviewed": true,
+        "method": "manual_streak_endpoints"
+      }
+    }
+  },
+  "frame_3.jpg": {
+    "reviewed": true,
+    "reviewed_classes": {
+      "ball": true,
+      "person": false,
+      "table": false
+    },
+    "ball": [],
+    "person": [],
+    "table": [],
+    "source_frame": 3,
+    "elapsed_ms": 33.333333333333336,
+    "geometry": {
+      "visibility": "visible",
+      "blur_streak": {
+        "endpoints": [
+          [
+            0.44,
+            0.4
+          ],
+          [
+            0.44,
+            0.4
+          ]
+        ],
+        "source_width": 1920,
+        "source_height": 1080,
+        "reviewed": true,
+        "method": "manual_streak_endpoints"
+      }
+    }
+  },
+  "frame_4.jpg": {
+    "reviewed": true,
+    "reviewed_classes": {
+      "ball": true,
+      "person": false,
+      "table": false
+    },
+    "ball": [],
+    "person": [],
+    "table": [],
+    "source_frame": 4,
+    "elapsed_ms": 50.0,
+    "geometry": {
+      "visibility": "visible",
+      "blur_streak": {
+        "endpoints": [
+          [
+            0.3996,
+            0.4
+          ],
+          [
+            0.40040000000000003,
+            0.4
+          ]
+        ],
+        "source_width": 1920,
+        "source_height": 1080,
+        "reviewed": true,
+        "method": "manual_streak_endpoints"
+      }
+    }
+  },
+  "frame_5.jpg": {
+    "reviewed": true,
+    "reviewed_classes": {
+      "ball": true,
+      "person": false,
+      "table": false
+    },
+    "ball": [],
+    "person": [],
+    "table": [],
+    "source_frame": 5,
+    "elapsed_ms": 66.66666666666667,
+    "geometry": {
+      "visibility": "visible",
+      "blur_streak": {
+        "endpoints": [
+          [
+            0.41960000000000003,
+            0.4
+          ],
+          [
+            0.42040000000000005,
+            0.4
+          ]
+        ],
+        "source_width": 1920,
+        "source_height": 1080,
+        "reviewed": true,
+        "method": "manual_streak_endpoints"
+      }
+    }
+  },
+  "frame_6.jpg": {
+    "reviewed": true,
+    "reviewed_classes": {
+      "ball": true,
+      "person": false,
+      "table": false
+    },
+    "ball": [],
+    "person": [],
+    "table": [],
+    "source_frame": 6,
+    "elapsed_ms": 83.33333333333333,
+    "geometry": {
+      "visibility": "visible",
+      "blur_streak": {
+        "endpoints": [
+          [
+            0.4396,
+            0.4
+          ],
+          [
+            0.4404,
+            0.4
+          ]
+        ],
+        "source_width": 1920,
+        "source_height": 1080,
+        "reviewed": true,
+        "method": "manual_streak_endpoints"
+      }
+    }
+  },
+  "frame_7.jpg": {
+    "reviewed": true,
+    "reviewed_classes": {
+      "ball": true,
+      "person": false,
+      "table": false
+    },
+    "ball": [],
+    "person": [],
+    "table": [],
+    "source_frame": 7,
+    "elapsed_ms": 100.0,
+    "geometry": {
+      "visibility": "visible",
+      "blur_streak": {
+        "endpoints": [
+          [
+            0.36000000000000004,
+            0.375
+          ],
+          [
+            0.44,
+            0.42500000000000004
+          ]
+        ],
+        "source_width": 1920,
+        "source_height": 1080,
+        "reviewed": true,
+        "method": "manual_streak_endpoints"
+      }
+    }
+  },
+  "frame_8.jpg": {
+    "reviewed": true,
+    "reviewed_classes": {
+      "ball": true,
+      "person": false,
+      "table": false
+    },
+    "ball": [],
+    "person": [],
+    "table": [],
+    "source_frame": 8,
+    "elapsed_ms": 116.66666666666667,
+    "geometry": {
+      "visibility": "visible",
+      "blur_streak": {
+        "endpoints": [
+          [
+            0.38000000000000006,
+            0.375
+          ],
+          [
+            0.46,
+            0.42500000000000004
+          ]
+        ],
+        "source_width": 1920,
+        "source_height": 1080,
+        "reviewed": true,
+        "method": "manual_streak_endpoints"
+      }
+    }
+  },
+  "frame_9.jpg": {
+    "reviewed": true,
+    "reviewed_classes": {
+      "ball": true,
+      "person": false,
+      "table": false
+    },
+    "ball": [],
+    "person": [],
+    "table": [],
+    "source_frame": 9,
+    "elapsed_ms": 133.33333333333334,
+    "geometry": {
+      "visibility": "visible",
+      "blur_streak": {
+        "endpoints": [
+          [
+            0.4,
+            0.375
+          ],
+          [
+            0.48,
+            0.42500000000000004
+          ]
+        ],
+        "source_width": 1920,
+        "source_height": 1080,
+        "reviewed": true,
+        "method": "manual_streak_endpoints"
+      }
+    }
+  },
+  "frame_10.jpg": {
+    "reviewed": true,
+    "reviewed_classes": {
+      "ball": true,
+      "person": false,
+      "table": false
+    },
+    "ball": [],
+    "person": [],
+    "table": [],
+    "source_frame": 10,
+    "elapsed_ms": 150.0,
+    "geometry": {
+      "visibility": "absent",
+      "blur_streak": null
+    }
+  },
+  "frame_11.jpg": {
+    "reviewed": true,
+    "reviewed_classes": {
+      "ball": true,
+      "person": false,
+      "table": false
+    },
+    "ball": [],
+    "person": [],
+    "table": [],
+    "source_frame": 11,
+    "elapsed_ms": 166.66666666666666,
+    "geometry": {
+      "visibility": "absent",
+      "blur_streak": null
+    }
+  },
+  "frame_12.jpg": {
+    "reviewed": true,
+    "reviewed_classes": {
+      "ball": true,
+      "person": false,
+      "table": false
+    },
+    "ball": [],
+    "person": [],
+    "table": [],
+    "source_frame": 12,
+    "elapsed_ms": 183.33333333333334,
+    "geometry": {
+      "visibility": "absent",
+      "blur_streak": null
+    }
+  }
+}

@@ -1,0 +1,880 @@
+PAGE 1
+sensors
+Article
+Ball Tracking and Trajectory Prediction for
+Table-Tennis Robots
+Hsien-ILin1,* ,ZhangguoYu2andYi-ChenHuang1
+1 GraduateInstituteofAutomationTechnology,NationalTaipeiUniversityofTechnology,No.1,Sec.3,
+ZhongxiaoE.Rd.,Taipei10608,Taiwan;john6402j@gmail.com
+2 SchoolofMechatronicalEngineering,BeijingInstituteofTechnology,Beijing100081,China;yuzg@bit.edu.cn
+* Correspondence:sofin@ntut.edu.tw;Tel.:+886-2-27713343
+(cid:1)(cid:2)(cid:3)(cid:1)(cid:4)(cid:5)(cid:6)(cid:7)(cid:8)(cid:1)
+(cid:1)(cid:2)(cid:3)(cid:4)(cid:5)(cid:6)(cid:7)
+Received:26November2019;Accepted:30December2019;Published:7January2020
+Abstract: Sports robots have become a popular research topic in recent years. For table-tennis
+robots,balltrackingandtrajectorypredictionarethemostimportanttechnologies. Severalmethods
+weredevelopedinpreviousresearchefforts,andtheycanbedividedintotwocategories: physical
+models and machine learning. The former use algorithms that consider gravity, air resistance,
+the Magnus effect, and elastic collision. However, estimating these external forces require high
+samplingfrequenciesthatcanonlybeachievedwithhigh-efficiencyimagingequipment. Thisstudy
+thusemployedmachinelearningtolearntheflighttrajectoriesofping-pongballs, whichconsist
+oftwoparabolictrajectories: onebeginningattheservingpointandendingatthelandingpoint
+onthetable, andtheotherbeginningatthelandingpointandendingatthestrikingpointofthe
+robot. Weestablishedtwoartificialneuralnetworkstolearnthesetwotrajectories. Weconducted
+asimulationexperimentusing200real-worldtrajectoriesastrainingdata. Themeanerrorsofthe
+proposeddual-networkmethodandasingle-networkmodelwere39.6mmand42.9mm,respectively.
+Theresultsindicatethatthepredictionperformanceoftheproposeddual-networkmethodisbetter
+thanthatofthesingle-networkapproach.Wealsousedthephysicalmodeltogenerate330trajectories
+fortrainingandthesimulationtestresultsshowthatthetrainedmodelachievedasuccessrateof
+97% out of 30 attempts, which was higher than the success rate of 70% obtained by the physical
+model. A physical experiment presented a mean error and standard deviation of 36.6 mm and
+18.8mm,respectively. Theresultsalsoshowthatevenwithoutthetimestamps,theproposedmethod
+maintainsitspredictionperformancewiththeadditionaladvantagesof15%fewerparametersinthe
+overallnetworkand54%shortertrainingtime.
+Keywords: table-tennisrobots;balltrackingandtrajectoryprediction;artificialneuralnetworks
+1. Introduction
+Recentyearshaveseenthegradualmaturingofsensory,machinevision,andcontroltechnologyin
+smartrobots.Severaldomesticandforeignstudiesexploredtheapplicabilityofrobotstosports.KUKA
+AGRoboticsoncemadeacommercialinwhichoneoftheirrobotsplayedtabletennisagainstahuman,
+andOmrononcegaveademonstrationwithoneoftheirsuspendedroboticarmsplayingtabletennis
+againstahumanatanautomationexhibition. Table-tennisrobotsuseawiderangeoftechnologies,
+including object recognition, object tracking, 3D reconstruction, object trajectory prediction, robot
+motion planning, and system integration. This as well as the fact that they are easy to showcase
+attractedtheattentionofmanyresearchers.
+Aping-pongballtrajectorysystemcombinesvision,3Dspace,andpredictionalgorithms,noneof
+whicharedispensable. Thevisionsystemmustbeabletodetectandpositiontheball[1,2]. Thedata
+capturedbycamerasaretwo-dimensional(2D),sothree-dimensional(3D)datacannotbederivedby
+Sensors2020,20,333;doi:10.3390/s20020333 www.mdpi.com/journal/sensors
+
+PAGE 2
+Sensors2020,20,333 2of23
+simplysearchingforthelocationsofobjectpixels. Weietal. [3]proposedamethodthatusesasingle
+camera to calculate object positions. In addition to using image recognition to locate the current
+pixelsoftheball,theyalsousedtheshadowoftheflyingballonthetabletotriangulatethespatial
+locationoftheball. However,itisdifficulttodetecttheshadowofasphere,andthesourcesoflightin
+generalenvironmentsarecomplexandunpredictable. Theirproposedapproachwasonlyusefulif
+therewasonlyasingleclearlightsourceintheenvironmentwithnosunlightorotherlightsources.
+Theinstallationoftwoormorecamerascanbeusedtoestablishstereopsis. Detectionofanobjectfrom
+multipleperspectivescanincreasethedimensionsoftheimagedataandenablesimplecalculationsof
+3Ddata. Refs.[4,5]bothadoptedtwocamerastotracktheballintheirvisionsystem. Toincreasethe
+visualcoverageandaccuracyofthevisionsystem,Chenetal. [6]installedtwohigh-speedcameras
+abovetherobotandabovetheopponent,whichamountedtofourcamerascoveringtheentiretable.
+Yangetal. [7]usedsixcamerastocoverthetable(threeoneachside)toachievehighprecisionfor
+everypossiblelocationoftheball.
+The processing speed of the vision system is another key factor because it indirectly affects
+predictionofthedirectionoftheball,particularlyinpredictionmethodsusingphysicalmodels. Liu[8]
+proposedanonboardstereocamerasystemtoestimateping-pongballtrajectoriesinrealtimeunder
+the asynchronous observations from different cameras. Graphics processing units (plGPU) have
+becomepopularcomputercomponentsintherecenttrendofdeeplearninginimageclassification
+becausetheymakethegraphicscardlessdependentonthecentralprocessingunit(CPU)andimprove
+theperformanceofgraphicscomputing. Lampertetal. [9]employedanNVIDIAGeForceGTX280
+graphics card and a CUDA framework to accelerate image processing and used four cameras to
+establish3Dspace. Theirsystemneededonly5mstoprocessa3Dlocation. Furthermore,German
+companyNerianlaunchedareal-time3Dstereovisioncorethatusesafield-programmablegatearray
+(FPGA)asthehardwareforparallelcomputation[10]. Itcancompletemoretasksperclockcycle,send
+thecomputationresultstoapersonalcomputer,andpresentsgoodperformanceinobjectrecognition
+and3Dcomputation.Severalstudiesusedcameraarraystorealizehigh-speedreal-timeobjecttracking
+andtrajectoryprediction. Zhangetal. [11]usedatotalofthreecameras,oneofwhichwasapan-tilt
+camerawitharesolutionof640×480pixels;itssamplingfrequencycouldreachlessthan5ms,andit
+couldsimultaneouslyfollowaflyingballandanalyzeitsstatus.
+Accurate prediction of the ball trajectory is vital to the capacity of the robot to hit the ball.
+Existingpredictionmethodscanbedividedintotwocategories:physicalmodelsandmachinelearning.
+Physicalmodelsassesstheexternalforcesaffectingthetrajectoryoftheball,suchasconstantgravity
+and air resistance. Balls with self-rotation are subject to a lateral force perpendicular to the plane
+formedbytheangularvelocityvectorandthemotionvelocityvectoroftherotation. Thisforce,known
+as the Magnus effect, causes deflection in the flight trajectory of the ball. Ping-pong balls are not
+heavy,sothedeflectionisgreaterthanthatitwouldbewithheavierobjects[12,13]. Wangetal. [14]
+proposedaphysicalmodeltopredictballtrajectoriesoftopspin,backspin,rightwardspin,leftward
+spin,andcombinedspin. Huangetal. [15]proposedaphysicalmodelthatconsiderstheself-rotation
+oftheball. Itusesareal-timevisionsystemtoobtainaseriesoftrajectorypointsandacamerasystem
+combiningDSPandFPGAandfitsthe3Ddataintoaquadraticpolynomial,whichisthenusedto
+obtainthecurrentflyingvelocity. Intheirexperiments,theirproposedmethodhadgoodpredictive
+abilitieswhenthesamplingtimewas1ms. However,iftheconsecutivetrajectorypointswerenot
+denseenoughorifthesamplingfrequencywastoolow,theaccuracyofcurrentvelocityestimatesis
+affected. Inputtingtheseestimatesintocomplexformulacalculationswouldthenincreasedistortion
+inthefinalresults. Zhangetal. [11]usedtwohigh-resolutioncamerastoanalyzetheself-rotationof
+theball. Zhaoetal. [16]usedanultrahigh-speedcameratoanalyzethecollisionbetweenaping-pong
+ballandthetableanddevelopedaphysicalmodelforself-rotationandcollisioneffects. Ballstatus
+estimates can also be obtained using various filters, such a fuzzy filter [17], an extended Kalman
+filter[18],andanunscentedKalmanfilter[19]. Otherstudiespresentedanalysesoftheaerodynamics
+andthefrictionbetweenping-pongballsandtables[20,21].
+
+PAGE 3
+Sensors2020,20,333 3of23
+Machine learning has also tended towards table-tennis research in recent years. Some of the
+table-tennisrobotsdevelopedinthesestudiesemployedlocallyweightedregressionalgorithmsto
+learn hitting movements [22,23]. In machine learning algorithms, machines analyze data to find
+regularitiesandthenusetheregularitiestomakepredictionsofunknowndata. Zhaoetal. formulated
+thelikelihoodofping-pongballmotionstateasaGaussianMixtureModel(GMM)[24].Dengetal. [25]
+proposedaball-sizelikelihoodtoestimatetheballposition. Payeuretal. [26]usedanartificialneural
+network(ANN)tolearnandpredictthetrajectoriesofmovingobjects;however,theymerelyperformed
+simulation experiments of simple trajectories and did not develop a novel vision system or robot.
+Nakashimaetal. Nakashimaetal. [27]usedaback-propagationartificialneuralnetwork(BPANN)to
+learnstrikingpoints. Theinputsaretheinitiallocationandvelocitydifferenceoftheballinafree-fall
+model,andtheoutputsarethestrikingpointanddisplacementbetweenstrikingpointsestimated
+usingsimplephysics. Althoughtheirsimulationresultsweregood,themodelrequires20trajectory
+points for fitting, which implies that the sampling frequency of the vision system must be high.
+Zhangetal. [3]alsomadeanattemptwithfourinitialtrajectorypointsandtimestampsastheinputs
+ofthenetworkandthelocationandvelocityofthestrikingpointastheoutputs.
+Ourobjectiveistotrackandpredictping-pongballtrajectoriesforarobottohittheball. Due
+tothefactsthatphysicalmodelsforballflightpredictionrequireadvancedvisionequipmentand
+thatmostphysicalmodelsarefairlycomplex,weadoptedmachinelearningtoachievepredictionof
+ping-pongballtrajectorieswithlimitedequipment. Toachievebetterprediction,thisstudyincluded
+a ball tracking system, 3D reconstruction, and ball trajectory prediction. The novelty of this work
+isthattheflighttrajectorybetweentheservingpointandtheendoftheroboticarmwasviewedas
+twoparabolasandtwoseparateANNswereusedtolearnthesetwoparabolas. Theballtrajectory
+predictionstrategyproposedinthisstudymakesthefollowingcontributions:
+• WeproposeanANN-basedapproachtolearnhistoricaltrajectorydata,therebydoingawaywith
+theneedforacomplexflighttrajectorymodel.
+• Theproposedmethodcanswiftlypredictwheretherobotshouldstriketheballbasedontheball
+locationdatafromonlyafewinstantsafteritisserved,therebygivingtherobottimetoreact.
+• TheinputsofANNsaregenerallyaccompaniedbytimestampdata. Weverifiedthatremoving
+thetimestampdatareducestheparameterdemandoftheentirenetworkandgreatlyshortens
+networktrainingtime.
+Figure1showstheflowoftheproposedmethod. Therearethreemainparts:3Dconstruction,
+ping-pongballtracking,andping-pongtrajectoryprediction.3Dconstructionandping-pongballtracking
+areusedtoobtaintheaccurateballcurrentposition.Tohittheball,weproposethedualneuralnetworks
+topredicttheballpositiononthehittingplane.ThesethreepartsareexplainedinSection2.
+Ping-Pong Ball
+3D Construction Ping-Pong Ball Tracking
+Trajectory Prediction
+Calculation of 3D
+Dual Neural Networks
+Location
+Selection of Trajectory
+Image Projection
+Regression Model
+Figure1.Flowoftheproposedmethod.
+Theremainderofthispaperisorganizedasfollows. Section2introducestheframeworkfor3D
+reconstruction,andSection3explainstheballtrajectorypredictionmethodproposedinthisstudy.
+Section4presentstheexperimentresults,andSection5containsourconclusion.
+
+PAGE 4
+Sensors2020,20,333 4of23
+2. 3DReconstructionFramework
+2.1. HardwareSetup
+Figure2displaysthe3Dspacesystemofthisstudy. ThevisionsystemcomprisesthreeIDScolor
+industrialcameraswith1.3megapixelresolution. TheFPSofthecameraswassetat169,andeachhad
+tocovermostofthetablesurfacewithintheirfieldofview. Thecameraswereplacedonbothsidesof
+thetable: oneontheright(camera#1),oneontheleft(camera#2),andanauxiliarycamera(camera#3).
+Thefarthestvisibledistanceofthecamerasystemwasapproximately220cmtofacilitatethewidest
+rangeoftracking. Inaddition,wenotedwhetherthecolorofthebackgroundwouldinterferewith
+tracking. Thetable-tennisrobotwasaStäubliindustrialrobotarm,whichhassixdegreesoffreedom,
+repeatability of ±0.02 mm, a reach of 670 mm, and a maximum speed of 8.0 m/s at the endpoint.
+Weusedthehigh-precisionPhoenixTechnologiesInc. VZ4000v3Dmotioncapturesystem,whichcan
+achieveanaccuracyof0.015mmwithinadistanceof1.2m,toanalyze3Derrorsintheimages.
+Figure2.3Dreconstructionsystemoftable-tennisrobot.
+Camerasynchronizationisanimportantissueinthemulti-cameravisionsystem. Whencomputer
+CPUsusemultithreading,thevariousthreadsmaynotbeexecutedatthesametimedependingonthe
+resourceallocationdecisionsoftheCPUatthetime. Thus,thetimingatwhichthecamerascapture
+images may not be the same. We used a master camera to send image capture signals. The slave
+camerasaswellasthemastercamerawaitforthesignal. Figure3showsthesynchronizationprocess
+ofthecamerasystem. Tovalidatethesynchronizationprocess,wecollectedonehundredtrajectories
+withsynchronizedandunsynchronizedprocedures. Curvefittingwasperformedforeachtrajectory,
+and then the mean-square error was analyzed. The mean-square errors with synchronized and
+unsynchronizedprocedureswere7.7mmand12.1mm,respectively. Theresultvalidatedthatthe
+synchronizationprocedurehelpedthemulti-cameravisionsystemtoacquiresynchronizedimages.
+Figure4showsthecontrolofthecameraswiththesamplingtimeof0.007s. Threads1to3arethe
+imageprocessingflowforeachofthethreecameras. Whentheballisgettingawayfromcamera#1
+andcamera#2,the3Dpositionerrorwillincrease. Therefore,theauxiliarycamera#3isusedtoreduce
+theerror. Thetimingofusingcamera#3iswhenthex-axispositionoftheballisgreaterthan700mm
+(therobotsideistheorigin),camera#1andcamera#2areused;otherwise,camera#1orcamera#2is
+usedwiththeauxiliarycamera#3dependingonwhethertheballfallstotheleftorrightofthetable.
+
+PAGE 5
+Sensors2020,20,333 5of23
+Figure3.Synchronizationprocedureofthemulti-cameravisionsystem.
+Figure4.Controlofthecameras.
+2.2. 3DReconstruction
+Weusedtwoindustrialcamerastoestablisha3Dspace. Usingthepixellocationsofthetarget
+fromtwoperspectives,wepositionedthelocationofthetargetinthe3Dspace. Thecoordinatesystem
+ofthecameraswasthenconvertedintothecoordinatesystemoftherobotarm. Inthisway,deriving
+the 3D location of an object in images from the camera system would also give us the location of
+theobjectinthe3Dspace. Thisapproachincludedcameracalibrationandtriangulation. However,
+theerrorincreaseswhentheobjectisfurtherawayfromthecamerasystem. Thisisbecausethepixel
+featuresofobjectsfurtherawayarenotasclearandthepixelresolutionatthisdistancehasreachedits
+limits. WewillgiveacompleteexplanationinSection2.4.
+
+PAGE 6
+Sensors2020,20,333 6of23
+2.3. Ping-PongBallTracking
+Totracktheball,thefieldofviewofthecamerasmustencompasstheentiretable,whichincludes
+variouscomplexcolorsandnoise. Tosimplifyimagesegmentation,wepaintedtheping-pongball
+bluetodistinguishotherobjectsandthebackground. AGaussianblurisfirstappliedtotheimages
+capturedbythecamerastoremovenoiseandfacilitatethesubsequentrecognitionprocess. HSVcolor
+spaceconversionisthenusedtoreducetheimpactofbrightlightsources,andthenathresholdvalue
+iseasilysetforthecoloroftheballtoobtainabinaryimage. Tomakethetargetobjectmorecomplete,
+morphologicaloperatorserosionanddilationareappliedandthenthemedianvaluesofthebinaryimage
+arecalculatedtoserveastheballposition.Performingtheseprocessesonimageswithlargefieldsofview
+istime-consuming.Tosavetime,weemployedtheregion-of-interest(ROI)operation.Oncethecamera
+trackedtheball,thenonlytheROIintheimagesisprocessed.TheFPSwassetat169inthisstudy.When
+anentireimagewith1280×1024pixelsissubjectedtotheobjectrecognitionprocedure,theaverage
+frequencyisapproximately50.7times/s. IfanROIisadopted,thensubjectingtheROI(animageof
+200×200pixels)toobjectrecognitionresultsinanestimatedfrequencyof514.5times/s.Clearly,theROI
+mechanismcansignificantlyincreasetheefficiencyofobjectrecognition.
+2.3.1. ImageProjection
+The camera calibration was to obtain pixel scale, intrinsic matrix, and extrinsic matrix of the
+camera. Figure5showsthatcameracalibrationwasconductedusingthecheckerboarddatafrom
+30 images of a 13 × 9 checkerboard with 60 × 60 mm2 at various angles, depths, and locations.
+Tables1–4presenttheintrinsicandextrinsicparametersoftherightandleftcameras.
+Figure5.Calibrationusingcheckerboardatdifferentpositions.
+Table1.Intrinsicparametersoftherightcamera.
+UAxis VAxis Error+ Error−
+FocalLength(pix) 1043.25281 1049.54675 2.24798 2.12426
+PrincipalPoint(pix) 633.44849 561.99736 2.89133 2.42647
+PixelError(pix) 0.26777 0.30308
+
+PAGE 7
+Sensors2020,20,333 7of23
+Table2.Intrinsicparametersoftheleftcamera.
+UAxis VAxis Error+ Error−
+FocalLength(pix) 1049.44688 1052.73077 1.52311 1.51341
+PrincipalPoint(pix) 597.44982 513.76570 2.18344 1.66587
+PixelError(pix) 0.23623 0.26618
+Table3.Extrinsicparametersoftherightcamera.
+XAxis Y Axis ZAxis
+Translationvector(mm) 669.420640 −371.402272 2129.031554
+−0.821611 −0.568894 −0.036249
+Rotationmatrix −0.262626 0.434195 −0.861686
+0.505947 −0.698451 −0.506146
+PixelError(pix) 0.21674 0.33150
+Table4.Extrinsicparametersoftheleftcamera.
+XAxis Y Axis ZAxis
+Translationvector(mm) −90.227708 −381.155522 2279.359066
+−0.850091 0.526621 0.003993
+Rotationmatrix 0.265893 0.435734 −0.859905
+−0.454585 −0.729936 −0.510438
+PixelError(pix) 0.15424 0.32854
+2.3.2. Calculationof3DLocation
+AsshowninFigure6,thelocationofthetargetobjectcanbeobtainedwhenitiswithinviewof
+thetwocameras. P isthelocationoftheobject,andO andO denotetherespectiveorigins
+Left Right
+ofthecoordinatesystemsoftheleftandrightcameras. P andP representthepixellocationsofthe
+l r
+objectintheimagestakenbytheleftandrightcameras. Figure6showsthattheplaneformedby
+O ,O , and P isdefinedasanepipolarplane. Thischaracteristiccanbeusedtoidentifythe
+Left Right
+physicalrelationshipbetweenthetwocameras[28]. Anotherapproachistoassumethat Ml and Mr
+w w
+arehomogeneousmatricesconvertingworldcoordinatestoleftandrightcameracoordinatesusing
+theextrinsicparametersofthecameras,respectively. With Mr asanexample,formulacalculations
+w
+produceMw,asshowninEquation(1).MultiplyingMl byMwthengivesMl,asshowninEquation(2).
+r w r r
+Thisistherotationandtranslationmatrixconvertingthecoordinatesintherightcamerasystemto
+thoseintheleftcamerasystem.
+(cid:34) (cid:35)
+(Rr )T −(Rr )T(Tr)
+Mw = w w w (1)
+r 0 1
+1X3
+(Mr) = (Mw)(Mw) (2)
+l l r
+Figure6showsthecentersoftheleftandrightcamerasbothpointedattarget P. Thevectors
+pointingfromthecentersofthetwocamerastothepixellocationofthetargetobjectaredefinedasP˜
+l
+andP˜ ,asshownbelow:
+r
+ (cid:48) 
+(x −c )s
+l lx lx
+P˜ = (y (cid:48) −c )s  (3)
+l  l ly ly
+f
+l
+
+PAGE 8
+Sensors2020,20,333 8of23
+ (cid:48) 
+(x −c )s
+r rx rx
+P˜
+r
+= 
+
+(y
+r
+(cid:48) −c
+ry
+)s
+ry
+
+
+(4)
+f
+r
+(cid:48) (cid:48)
+wherex andy isthepixellocationoftheobjectintheleftimage;c andc istheimagecenterofthe
+l l lx ly
+(cid:48) (cid:48)
+leftcamera;s ands arethescalecoefficientsoftheleftcamera;x andy isthepixellocationofthe
+lx ly r r
+objectintherightimage;c andc istheimagecenteroftherightcamera,ands ands arethe
+rx ry rx ry
+scalecoefficientsoftherightcamera.
+Figure6.Calculationof3Dlocation.
+Inthe3Dspace,thesetwovectorsintersectatthelocationofthetargetobject. However,thisonly
+occurs in ideal circumstances. Figure 7 displays the more likely circumstance in which the two
+vectorsareskewanddonotintersect. Thus,weassumethatthetargetobjectislocatedatthemiddle
+pointofthelinesegmentthatistheshortestdistancebetweenthetwovectors. Basedonrigidbody
+transformation,vector P˜ oftherightcameracanbeconvertedintoavectorwithregardtotheleft
+r
+camera system using Ml, the physical relationship between the two cameras, which is Rl and Tl.
+r r r
+Equation(5)representsthedistancetowhichthevectorshouldextendtoreachP . Here,weassume
+up
+thereisanunknowncoefficient b. Similarly, Equation(6)representsthedistancetowhichtheleft
+vectorshouldextendtoreachP ,whereweassumethereisanunknowncoefficienta.
+down
+P = (Rl)bP˜ +Tl (5)
+up r r r
+P = aP˜ (6)
+down l
+ToderiveP ,wemustcalculatethedirectionalvectorqofthelinesegment. Thisvectorcanbe
+mid
+obtainedusingthecrossproductoftheleftandrightvectors,asshowninEquation(7). Pleasenote
+thatP˜ mustalsoundergocoordinaterotationconversionRl,andtheunitvectorofqis q .
+r r |q|
+q = P˜ ×(RlP˜ ) (7)
+l r r
+Thelengthofthelinesegmentisunknown, sowesupposethatcisthecoefficientoftheunit
+vectorofq. Basedonbasicconceptsofvectors,thislinesegmentcanbeexpressedasfollows:
+q
+P = P +c (8)
+up down |q|
+
+PAGE 9
+Sensors2020,20,333 9of23
+Furtherderivationgives
+c(P˜ ×RlP˜ )
+aP˜ + l r r = b(Rl)P˜ +Tl (9)
+l |P˜ ×RlP˜ | r r r
+l r r
+Supposethat
+A = (cid:104) P˜ l −R r lP˜ r | q q| 3×3 (cid:105)
+Equation(9)canbesimplifiedintoEquation(10):
+ 
+a
+b = A −1Tl. (10)
+  r
+c
+We can then derive coefficients a, b, and c, and use a and c to calculate P , as shown in
+mid
+Equation(12):
+1 q
+P = aP˜ + (c ) (11)
+mid l 2 |q|
+Here,P isthe3Dlocationofthetargetobjectwithregardtotheleftcameracoordinatesystem.
+mid
+UsingMw,wecanconvertthecoordinatesfromtheleftcamerasystemtotheworldcoordinatesystem,
+l
+asshowninEquation(12). Thismatrixcanbereverselyobtainedusingextrinsicparameter Ml ofthe
+w
+leftcamera.
+Pw = MwP (12)
+l mid
+Figure7.Twovectorsinaskewrelationship.
+2.4. EstimationErrorAnalysis
+Evenusingthealgorithmabovetocalculatethe3Dlocationofthetargetobject,errorsstillexistin
+thedata,andtheyincreasewiththedistancebetweenthetargetobjectandtheoriginsofthecamera
+coordinatesystems. Thissectionanalyzestheerrorsintheuseofthecamerasystemstocalculatethe
+locationsofthetargetobject. Here,weusedaPTImotioncapturesystemtoserveasthecontrolgroup
+forthe3Dlocationsobtainedusingthethreecameras. Figure8exhibitsthe25trackersthatweused.
+TheworldcoordinatesofthePTImotioncapturesystemoverlappedthoseofthecamerasystems,
+meaningthatthecamerasystemsandthePTImotioncapturesystemhadthesameworldcoordinates.
+Tocalculatetheerrors,weemployedtwostereopsisgroups,oneusingtherightcamera(camera#1)
+andtheleftcamera(camera#2)tocalculatethe3DlocationofthePTItrackerandtheotherusingthe
+
+PAGE 10
+Sensors2020,20,333 10of23
+leftcamera(camera#2)andtheauxiliarycamera(camera#3). Usingcubicinterpolation,wederived
+anewerrordistributiongraph. Figure9displaysthedistributionsoftheerrorsinterpolatedusing
+cubicpolynomialsinthetwostereopsisgroups. Ascanbeseen,theerrorsincreasewiththedistances
+betweentheleftandrightcamerasandthetrackersandishighestatTrackerNo. 21,wheretheerroris
+40mm. Withtheleftcameraandtheauxiliarycamera,thetwocamerasareclosertoTrackerNo. 21,
+sotheerrorreducestoapproximately25mm.
+Figure8.Locationsof25trackers.
+(a)
+(b)
+Figure 9. Distributions of the errors (a) using the right camera (camera#1) and the left camera
+(camera#2);(b)usingtheleftcamera(camera#2)andtheauxiliarycamera(camera#3).
+
+PAGE 11
+Sensors2020,20,333 11of23
+3. Ping-PongBallTrajectoryPrediction
+Ifatable-tennisrobotwantstohittheball,itmustbeabletoaccuratelypredictwheretheballis
+flying. Whenpeopleplaytabletennis,theballissubjectedtovariousexternalforcesthatimpactits
+flightdirectionandvelocity,includingairresistance,theMagnuseffect,gravity,andthereboundforce
+ofcollision. Thus,calculatingthevariousphysicalforceswithprecisionandthenpredictingtheflight
+trajectoryisdifficult. Inthissection,wepresentamachinelearningapproachthatenablesrobotsto
+predicttrajectories. Inthissection,wedemonstratethatthecoefficientsofapolynomialregression
+modelareadvantageoustorepresentandpredictballtrajectories.
+Figure10showstheflighttrajectoriesofaping-pongball. Theflighttrajectoriesaredividedinto
+twoparabolasP1andP2. ThefirstANNisresponsibleforlearningtheparabolaP1inthefigure,with
+theanteriorpositionsastheinputandtheregressioncoefficientofP1astheoutput. ThesecondANN
+learnsparabolaP2,withtheregressioncoefficientofP1astheinputandtheregressioncoefficientofP2
+astheoutput. Thetrajectorycoefficientsabovearetheparametersoftheirmathematicalexpressions.
+Oncethevisionsystemdetectstheanteriorpositions,thesystemwillimmediatelyderivethecoefficient
+P2ofthetrajectoryaftertheball’slandingpointonthetableandthencalculateadesignatedstriking
+point. Suppose f , f ,and f denotethemathematicalregressionformulasoftrajectoryP2alongthe
+x y z
+x, y, and z axes. Using f (t), the timing t of the designated striking point (x axis) is first derived.
+x
+Theresultingtisthensubstitutedinto f and f toobtaintheyandzcoordinatesofthestrikingpoint.
+y z
+Sincetheregressionmodelshouldbechosentopredicttheballtrajectory,weevaluateseveral
+modelssuchasexponential,Fourier,Gaussian,andpolynomialcurvefittingmethodsinSection3.1.
+Theresultshowsthatpolynomialcurvefittingisthemostsuitablemodeltopredicttheballtrajectory.
+InSection3.2,wealsotheoreticallyverifytheexistenceoftherelationshipbetweenthepolynomial
+coefficientsandballtrajectory. However,Section3.2showsthatcurvefittingishighlysensitiveto
+noiseintheinputdata. Thus,weproposetwoANNstomodeltherelationshipinSection3.4.
+Y-axis
+Z-axis
+X-axis
+Figure10.Diagramoftrajectoryprediction.
+3.1. SelectionofTrajectoryRegressionModel
+The data of any parabolic trajectory include time stamps and location data. Thus, we must
+decide which type of regression model to use to express the trajectory data. This process mainly
+involvesfindingtherelationshipbetweenasetofindependentanddependentvariablesandthen
+establishinganappropriatemathematicalequation,whichisreferredtoasaregressionmodel. Below,
+weinvestigatewhichtypeofregressionmodelismoresuitableforthetrajectorydata.
+Wecanuseexperimentdatatodetermineaminimalnumberofparametersofsuitableregression
+models. The experiment data comprised 10 random trajectories selected from the training data.
+Eachflighttrajectoryconsistsoftwoparabolictrajectories: thefirstfromtheinitialpointtothelanding
+pointandthesecondfromthelandingpointtotheendpoint. Wefittedthetwotrajectoriesusingfour
+typesofregressionmodels,namely,Gaussian,exponential,Fourier,andpolynomial,andexamined
+
+PAGE 12
+Sensors2020,20,333 12of23
+their results. We selected 10 random trajectories from the testing data to test R2 results of these
+models. TheredandbluebarsinFigure11indicatethemeanR2results. TheFourierandpolynomial
+regressionmodelspresentedreasonable R2 resultsforbothtrajectories, andtheirtestresultswere
+closetoeachother. However,thepolynomialregressionmodelusedthreeparameters,whereasthe
+Fourier regression model used four parameters. With our objective of minimizing the number of
+parameters,weultimatelychosethepolynomialregressionmodeltoexpresstheflighttrajectorydata.
+The polynomial regression model for the Z axis used three parameters, which was the quadratic
+polynomial. Forthe X andY axes,Figure12shows R2 ofeachtrajectoryandtheaverage R2 ofthe
+10randomtrajectorieswas0.9903usingthefirst-orderpolynomial,whichwascloseto1. Thus,theX
+andYaxeswererepresentedbythefirst-orderpolynomialregression.
+Mean R2 of Regression Models
+Figure11.Diagramoftrajectoryprediction.
+Figure12. R2ofthefirst-orderpolynomialregressionontheXandYaxes.
+3.2. TheoreticalVerificationofTrajectoryandPolynomialCoefficients
+Whenthetwopartsoftheping-pongballtrajectorycanbefittedusingapolynomial,itmeansthat
+thecoefficientsinthepolynomialeffectivelyexpressthetrajectory. WecouldthereforeuseANNsto
+predictthepolynomialcoefficientsoftheballtrajectories. Thepolynomialcoefficientsandconversion
+
+PAGE 13
+Sensors2020,20,333 13of23
+relationsbetweentrajectoriescanbeexpressedusingEquation(13). Supposethat(t ,q )isseveral
+k k
+setsofdatapointswherek =0,...,m,t isthetimevalue,andq isthepositionalvalue. Herethere
+k k
+existsauniquepolynomialq(t)usingthen order. Equation(14)establishestherelationmatrixpf
+th
+vectorsqanda,whichisknownastheVandermondematrixT[29]. Usingthepseudoinversematrix
+ofT,Equation(15)givescoefficientawhereaminimumsquared-errorexistsbetweenthecoefficient
+equationandthetrajectorydata.
+q(t) = a +a t1+···+a tn (13)
+0 1 n
+   
+q 0  1 t1 ... tn a 0
+  q 1   1 t 0 1 ... t 0 n   a 1  
+ .   1 1  . 
+   .  
+q =  .  =   .  = Ta (14)
+    
+   .  
+ .    . 
+   .  
+q m−1
+1 t1 ... tn
+a n−1
+q m m a
+m n
+a = T −1q (15)
+TheinputandoutputdataofANNsmustbeinterrelatedinacertainway;otherwise,training
+themodelmaybetootime-consuming,orpoorpredictionresultsmaybeproduced. Toverifythat
+theuseofANNstolearntrajectoriesinthisstudyisappropriate. Basedonthismathematicaltheory,
+thetrajectorypointdatacanbemappedontopolynomialcoefficientdatausingtheVandermonde
+matrix. Thus, a corresponding relationship exists between the elements of these two sets of data.
+When the trajectory points serve as the inputs of the ANN and the trajectory coefficients are the
+outputs,thenthemodelhasgoodlearningability.
+3.3. ComparisonofArtificialNeuralNetworkandPolynomialCurveFittingPredictions
+Inthepredictionprocedureofthisstudy,oncethevisionsystemreceivesthedatafromafew
+anteriorpositions,theANNofthefirsttrajectorycanthenpredictthefirsttrajectory. Todemonstrate
+theinadequacyofcurvefittingandthepredictionperformanceoftheANNforthefirsttrajectory,
+we predicted the landing point of the first trajectory using the proposed method and a quadratic
+polynomial resulting from curve fitting. We used 30 items of data to train the ANN for the first
+trajectoryandusedthetrainedANNandthetenanteriorpositionsinthetrajectorytopredictthe
+polynomialparametersofthefirsttrajectory.TheredcirclesandcrossesinFigure13showthetrajectory
+obtainedduringtesting. ThebluecurvepresentsthepolynomialtrajectoryoutputbythetrainedANN,
+andthegreencurveshowsthesubsequenttrajectorytrendafterthedatafromthetenanteriorpositions
+werereceived. Themeanerrorandstandarddeviationofthequadraticpolynomialwere19.2mmand
+11.8mm,respectively;however,fortheANN,themeanerrorandstandarddeviationofthequadratic
+polynomialwere10.8mmand10.0mm,respectively. Theerrorsinthelandingpointpredictionsofthe
+ANNweresmallerthanthoseofthequadraticpolynomial. Oncesomeerrorsexistincapturingtheten
+anteriorpositionsoftheball,Figure13showsthattheANNisresistanttonoise;evenifaninputnode
+containsnoiseoritsdataisincomplete,thesingledatadoesnotgreatlyimpacttheoverallresult.
+
+PAGE 14
+Sensors2020,20,333 14of23
+Figure13.Trajectorybasedontenpositions(Blue:ANN;green:quadraticpolynomialresultingfrom
+curvefitting).
+3.4. TwoANNsinTrajectoryPrediction
+Three things can be obtained from a complete flight trajectory: the trajectory before landing,
+thetrajectoryafterlanding,andtenanteriorpositions. Figure14displaystheprocedureofgenerating
+therequiredtrainingdata. First,thelowestpointintheoveralltrajectoryalongthezaxisisidentified,
+demarcatingthedataofthefirstandsecondtrajectory. Thefirsttrajectoryisbetweentheinitialpoint
+andthelowestpoint,andthesecondtrajectoryisbetweenthelowestpointandtheendofthetrajectory.
+Bothtrajectoriesarethenexpressedusingpolynomialregressiontoextractthetrajectoryparametersand
+thedataofthetenanteriorpositions.Thedataofthetenanteriorpositionsandtheparametersofthefirst
+trajectorythenserveasthetrainingdataforthefirstANN(NetworkModel1),andtheparametersofthe
+firstandsecondtrajectoriesserveasthetrainingdataforthesecondANN(NetworkModel2).
+Wedefinedthe3DpolynomialofthefirsttrajectoryasEquation(18),wherea ,b ,a ,b ,a ,b ,c
+1 1 2 2 3 3 3
+aretheX-,Y-,andZ-axiscoefficientsofthefirsttrajectory.Wedefinedthe3Dpolynomialofthesecond
+(cid:48) (cid:48) (cid:48) (cid:48) (cid:48) (cid:48) (cid:48)
+trajectoryasEquation(21), where a , b , a , b , a , b , c arethe X-, Y-, and Z-axiscoefficientsofthe
+1 1 2 2 3 3 3
+secondtrajectory.Equations(22)and(23)arethecorrespondinginputsandoutputsofthetwonetworks.
+X = a t+b (16)
+1 1
+Y = a t+b (17)
+2 2
+Z = a t2+b t+c (18)
+3 3 3
+(cid:48) (cid:48)
+X = a t+b (19)
+1 1
+(cid:48) (cid:48)
+Y = a t+b (20)
+2 2
+Z = a (cid:48) t2+b (cid:48) t+c (cid:48) (21)
+3 3 3
+[P i ,t i ] i=1,...,10 −− N − e − tw −− or − k − m −− o − d − el −→ 1 [a 1 ,b 1 ,a 2 ,b 2 ,a 3 ,b 3 ,c 3 ] (22)
+(cid:48) (cid:48) (cid:48) (cid:48) (cid:48) (cid:48) (cid:48)
+[a ,b ,a ,b ,a ,b ,c ] Networkmodel1 [a ,b ,a ,b ,a ,b ,c ] (23)
+1 1 2 2 3 3 3 −−−−−−−−−−−−−→ 1 1 2 2 3 3 3
+
+PAGE 15
+Sensors2020,20,333 15of23
+Figure14.Procedureofgeneratingtherequiredtrainingdata.
+4. ExperimentalResults
+In this section, we present a series of experiments conducted to demonstrate the prediction
+performance of the proposed method. In Section 4.1, we compare the striking point prediction
+performanceoftheproposeddual-networkmethodandasingleANN[3]usingtheexperimentaldata.
+InSection4.2,wecomparethestrikingpointpredictionperformanceoftheproposeddual-network
+methodandaphysicalmodel. Section4.3presentsanexperimentinvestigatingtheinfluenceoftime
+dataremoval,andSection4.4analyzestheerrorsoftheproposedmethodinaphysicalexperiment.
+Figure15showstheflighttrajectorydatacollectedfromhumandemonstrations,inwhichtheping-pong
+ballwashitfromtheservingsidetoarobotarmontheoppositeside. Thefirsttrajectoriespassedover
+thenetandlandedonthetableontherobot’sside. Wecollecteddatafromatotalof200trajectories,
+amongwhich170trajectorieswereusedastrainingdataand30trajectoriescomprisedthetestingdata.
+OncetheANNsweretrained,weusedthetestingdatatoexaminetheirpredictiveabilities. Weused
+acirclewithadiameterof75mmtosimulatetheareaofthepaddleandcalculatedtheerrors,standard
+deviation,thenumberofballsthathittherangeofthepaddle,andthesuccessrates.
+Figure15.Flighttrajectorydatacollectedfromhumandemonstrations.
+4.1. Dual-Networkvs. Single-NetworkApproach
+[3]usedasingleANNtopredictthestrikingpoints. Theinputswerethedataoffouranterior
+positions,andtheoutputswerethestrikingpointandtheaccelerationoftheballintheX,Y,andZ
+directions. Weconductedanexperimenttocomparethissingle-networkapproachwiththeproposed
+method. The inputs of the single network increased to ten anterior positions so that they were
+
+PAGE 16
+Sensors2020,20,333 16of23
+consistentwiththeinputsoftheproposedmethod. Theinput,hidden,andoutputlayersofthemodel
+structureinthesingle-networkapproachwere40,10,and6. Incontrast,theinput,hidden,andoutput
+layersofthemodelstructureinourdual-networkapproachwere40,10,and7,andthesecondmodel
+wassetas7-20-7.Thebothnetworksusedthemean-squareerrorasthelossfunctionandthehyperbolic
+tangentsigmoidastheactivationfunction.Thenumberofepochswas10,000.TheLevenberg–Marquardt
+algorithmwasusedforoptimization.Table5summarizesthedetailsofthetwoANNs.Afterapplying
+thetrainedmodelstothetestingdata,wecalculatedtheoverallmeanerror,standarddeviation,andthe
+successrateofballsfallingwithintheboundariesofthepaddle.Figure16presentsthemeanerrorsofthe
+proposedmethodandthesingle-networkapproach(39.6mmand42.9mm),aswellastheirsuccessrates
+(89%and86.7%).Basedontheexperimentresults,wecanconcludethatthepredictionperformanceof
+theproposedmethodisbetterthanthatofthesingle-networkapproach.Thedifferencebetweenthese
+twomethodsiswhethertheyconsidertheprocessoftheballlandingpoint(includingthelandingonthe
+table).Anormalping-pongballtrajectoryconsistsoftwotrajectoriesinwhichtheflightprocessofthe
+balloffersdata.Thesingle-networkapproachonlyconsidersthedataoftheanteriorpositionsandthe
+finalstrikingpoint,soitspredictionperformanceislimited.
+The average of mean error The average of mean success rate
+(a) (b)
+Figure 16. Performance results of proposed dual-network method and single-network approach:
+(a)meanerror;(b)meansuccessrate.
+Table5.DetailsofthetwoANNs.
+1stANN 2ndANN
+Inputnodenumber 40 7
+Hiddennodenumber 10 20
+Outputnodenumber 6 7
+Activationfun. Hyperbolictangentsigmoid Hyperbolictangentsigmoid
+Lossfun. Mean-squareerror Mean-squareerror
+Epochnumber 10,000 10,000
+Optimizer Levenberg–Marquardt Levenberg–Marquardt
+4.2. PhysicalModelTesting
+Inthissection,weuseanormalphysicalformulatopredictthestrikingpoint. Themethodwas
+basicallythesame: usethedataofthetenanteriorpoints,asshowninFigure17,tocalculatetheinitial
+velocity in three dimensions and derive the striking point while taking into account gravitational
+accelerationg,airresistance,andelasticcollision. Elasticcollisionisassociatedwiththecoefficientof
+restitutionoftheball,whichcanbeobtainedfromreal-worldtrajectories. Forthesakeofaccuracy,
+weadded130real-worldtrajectoriestocalculatethiscoefficient. Thepredictionprocessofthephysical
+modelwasasfollows:
+
+PAGE 17
+Sensors2020,20,333 17of23
+1. Usingthe330trajectories,weobtainedthemeanvelocitiesbeforeandaftercollisionandthenthe
+meancollisioncoefficient. BasedontheformulaforthecoefficientofrestitutioninEquation(24),
+weconcludedthatthemeancoefficientwas0.9203.
+Relativevelocityaftercollision
+e = (24)
+Relativevelocitybeforecollision
+2. TheYandZpositionsofthetestingtrajectoriesatx=400mm(thestrikingpoint),i.e.,Y andZ ,
+true true
+wereusedtocalculatetheerrorsinthefinalpredictionresultsbyselecting100randomtrajectories.
+3. Thedatafromthetenanteriorpositionsofthetestingtrajectorieswereobtained,andthenthe
+initialvelocitiesintheX,Y,andZdirections,i.e.,v ,v ,andv ,usingpolynomialregression.
+x y z
+4. The downward accelerate a was defined with air resistance taken into account as shown in
+z
+Equation(25),wheregdenotesgravitationalaccelerationandequals9.81m/s2;mistheweight
+ofthepingpongball,whichisapproximately2.7×10−3kg;C istheresistancecoefficientand
+d
+equals0.5;ρ denotesairfluiddensity,whichis1.29kg/m3;and Aisthecross-sectionalareaof
+a
+theball,whichisroughly1.3×10−3 m2. Themathematicalformulaindicatesthatthevelocity
+andaccelerationoftheobjectchangewithtime. Here,wesetsamplingtimeT tobe0.005s.
+s
+C ·ρ ·A
+a = g− d a v2 (25)
+z 2m z
+5. UsingthephysicalformulasinEquations(26)–(28),wederivedthenextdisplacement(acceleration
+andvelocityareupdatedateachsamplingtime).
+1
+S = v T + a T2 (26)
+z z s 2 z s
+v t+1 = v t +a t T s (27)
+C ·ρ ·A
+a t+1 = g+ d a v t+1 (28)
+2m
+6. Whentheballreachedthetable(Zdirection),weusedthemeancollisioncoefficientobtainedin
+thefirststeptocalculatethevelocityoftheballafterlanding,asshowninEquation(29). Oncethe
+velocitywascalculated,wecouldcontinuetocalculatethepositionoftheballintheZdirection.
+v = v ·e (29)
+after before
+7. Not considering the influences of friction between the ball and the table surface and the
+self-rotation of the ball, we could calculate the displacement of the ball in the X direction at
+eachsamplingtimeusingEquations(30)and(31). Thevelocityandaccelerationoftheballinthis
+directionalsochangedwithtime,allthewaytothestrikingpoint(x=400mm). Thetimingofthe
+strikingpoint,T ,wasthenrecorded.
+end
+C ·ρ ·A
+a = d a v2 (30)
+x 2m x
+1
+S = v T + a T2 (31)
+x x s 2 x s
+8. Finally, we used the initial velocity in the Y direction, v , air resistance acceleration, a in
+y y
+Equation(32),andtimingofstrikingpoint,T ,toderivethestrikingpointintheYdirection.
+end
+
+PAGE 18
+Sensors2020,20,333 18of23
+UsingthepredictedY andZpositionsofthestrikingpoint,Y andZ ,andtheactual
+predict predict
+strikingpoint,Y andZ (Step2),wethencalculatedtheerrorusingEquation(33).
+true true
+C ·ρ ·A
+a = d a v2 (32)
+y 2m y
+(cid:113)
+Error= (Y −Y )2+(Z −Z )2 (33)
+predict true predict true
+Figure17.Strikingpointpredictionusingphysicalmodel.
+Usingthephysicalpredictionmethodabove,weselected30testingtrajectoriestocalculatestriking
+pointpredictionerrors. Thesuccessrateofballshittingthepaddlewas70%,andFigure18shows
+thattheoverallmeanerrorandstandarddeviationofstrikingpositionwere57.9mmand30.3mm,
+respectively. The success rate of 70% of the physical model was worse than 97% of the proposed
+dual-networkmethod. Inreality,theballtrajectoryisaffectedbythefrictionofthetablesurfaceand
+theMagnuseffect,butitisdifficulttoobtainprecisemeasurementsofthemwithoutmoreadvanced
+visionequipment[20].
+Figure18.Strikingpositionerrorofthephysicalmodel.
+
+PAGE 19
+Sensors2020,20,333 19of23
+4.3. RemovalofTimeData
+The vision system in this study had a fixed sampling time. Based on the training data, the
+averagetimeintervalwas0.0075sandthestandarddeviationwas5.19×10−4. Theinputsofthefirst
+ANNincludetimestampdata,whichcomprisessteadyvalues. Forthisreason,wetriedremoving
+thetimestampsfromtheinputandthentestedtheresultingperformance. Weusedthedatafrom
+all 330 trajectories, with 30 trajectories serving as the testing data and ten training sessions each.
+AsshowninFigure19,therearenosignificantdifferencesbetweenthepredictionresultsofthetwo
+conditions. Thus, removing the time stamps from the input of the first ANN does not affect its
+predictionperformance.
+Figure19.Predictionerroroftheproposeddual-networkmethodwithandwithouttimestamps.
+This approach has its advantages. It simplifies the entire network because the inputs of the
+firstANNwerereducedfrom40nodesto30nodes(seeEquation(22)),whichalsomeansthatthe
+numberofparametersinthefirstANNdecreased. Theoriginalpredictionmodelcontainedatotalof
+1178parameters(ofwhichthefirstANNaccountedfor871parameters),whereasthecurrentmodel
+had998parameters(ofwhichthefirstANNaccountedfor691parameters). Thisrepresentsa15%
+reduction in the overall number of parameters. The two conditions also differed in training time.
+Figure20showsthetrainingtimeofthetentestsconductedforeachcondition. Themeantraining
+timewas457sforthemodelwiththetimestampsand209sforthemodelwithoutthetimestamps,
+representinga54%reductionintrainingtime.
+Figure20.Trainingtimeofthedual-networkmethodwithandwithouttimestamps.
+
+PAGE 20
+Sensors2020,20,333 20of23
+4.4. StrikingPointErrors
+Tomeasurethepredictionerroroftheproposedmethod,weconductedanexperimentasfollows.
+This experiment was done by covering the front of the paddle held by the robot arm with a piece
+ofwhitepaperandthencoveringthatwithapieceofcarbonpaper. Whentherobotarmstruckthe
+ping-pongballwiththepaddle,theballleftamarkonthewhitepaper,andthepositionoftherobotarm
+atthetimewasalsorecorded.Thedistancebetweenthecenterofthepaddleandthestrikingpoints(block
+dots)indicatethepredictionerrors,whichwemeasuredusingaverniercaliper.Theareathattherobot
+armcouldstrikewas20cm×18cm,whichequals360cm2. Weconductedthreesetsofexperiments
+with ten trials each, which produced a total of 30 records. Figure 21 displays the first trials of the
+strikingpointsrecordedoncarbonpaperinourphysicalexperiment. Figure22showsthatthethirty
+trialsandtheoverallmeanerrorwas36.6mm,andthestandarddeviationwas18.8mm. Figure23
+showsthestrikingaccuracywithrespecttothepaddlearea. Theyellowcirclerepresentsthemeanof
+errorandthegreenarearepresentsastandarddeviationoferror. Obviously,theareaofstrikingerror
+ismuchsmallerthanthepaddlearea,whichmeansthattherobotwasabletostriketheball.
+Figure21.Strikingpointsoncarbonpaper.
+Figure22.Overallstrikingerrors.
+
+PAGE 21
+Sensors2020,20,333 21of23
+Figure23. Strikingaccuracywithrespecttothepaddlearea: thegreenarearepresentstheareaof
+strikingerrorcenterwiththemean(yellow)andastandarddeviation.
+4.5. ExperimentDiscussion
+In Section 4.1, we compared the striking point prediction performance of the dual-network
+methodandasingleANN.InSection4.2,wecomparedthestrikingpointpredictionperformance
+ofthephysicalmodel. Table6summariesthepredictionerroramongtheproposeddual-network
+method,singlenetwork,andphysicalmodel. Theresultsshowthattheproposedmethodhasless
+trajectoryerrorthantheothermethods.
+Table6.Comparisonofthepredictionerroramongtheproposeddual-networkmethod,singlenetwork,
+andphysicalmodel.
+ProposedDualNetworks SingleNetwork PhysicalModel
+Mean(mm) 39.553 42.858 57.862
+5. Conclusions
+Thisstudydevelopedaping-pongballtrajectorypredictionsystemthatincludedballrecognition,
+3Dpositioning,andballtrajectoryprediction. Trajectorypredictionperformanceiskeytowhether
+atable-tennisrobotcanhitthepingpongball. However,mostexistingstudiesdevelopedphysical
+modelsforprediction,whichcanonlyachievegoodpredictioneffectsiftheyhavehigh-frequency
+visionsystemstoanalyzeballstatusinrealtime. Suchadvancedequipmentisnotreadilyaccessible
+andmakesitdifficulttoconductfundamentalstudies.Wethereforeadoptedmachinelearningtopredict
+theflighttrajectoriesofping-pongballs,whichuseshistoricaldatatolearntheregularitieswithin.There
+isnoneedtoestablishacomplexphysicalmodel,andfairlygoodpredictionresultscanbeachievedeven
+withgeneralindustrialcamerasreadilyavailableonthemarket.Eachcompleteflighttrajectoryconsists
+ofalandingpointonthetableandtwoparabolictrajectories.WeusedtwoANNstolearnthefeaturesof
+theseflighttrajectories.ThefirstANNlearnsthefirstflighttrajectory.Oncethevisionsystemreceivesthe
+anteriorpositions,itcaninstantlypredictthefirsttrajectory. Wedemonstratedthatthisapproachwas
+superiortocurvefittingduetothelimitedamountofdataandnoisefilteringcapabilities. Thesecond
+ANNlearnsthesecondflighttrajectory.Oncethefirsttrajectoryisknown,thesecondflighttrajectorycan
+beinstantlypredicted.ThetwoANNswerethencombined.
+A comparison of the ANN and curve fitting approaches revealed that the use of data from
+tenanteriorpositionsresultedinmeanerrorsof10.8mminthepredictionresultsoftheANNand
+19.2mminthoseofthequadraticpolynomialresultingfromcurvefitting. Weconductedasimulation
+experiment using 200 real-world trajectories as training data. The mean errors of the proposed
+
+PAGE 22
+Sensors2020,20,333 22of23
+dual-networkmethodandasingle-networkmodelwere39.6mmand42.9mm,respectively,andthe
+meansuccessrateswere88.99%and86.66%. Theseresultsindicatethatthepredictionperformanceof
+theproposeddual-networkmethodisbetterthanthatofthesingle-networkapproach. Wealsoused
+asimplephysicalmodeltopredictstrikingpoints. Weemployed330real-worldtrajectories,andthe
+resultingmeanerrorandsuccessratewere57.9mmand70%. Thesuccessrateof70%ofthephysical
+modelwasworsethan97%oftheproposeddual-networkmethod. Intheproposeddual-network
+method,theinputsofthefirstANNincludetimestamps. Asourvisionsystemtakessamplesatfixed
+timeintervals,littlevariationexistsinthetimestampdata. Wethustriedremovingthetimestamps
+fromthedata. Weused330trajectoriesfortraining. Themeanerrorsoftheproposedmethodwith
+andwithoutthetimestampswere27.5mmand26.3mm,andthemeansuccessrateswere98.67%
+and97.33%. Theresultsshowthatevenwithoutthetimestamps,theproposedmethodmaintains
+itspredictionperformancewiththeadditionaladvantagesof15%fewerparametersintheoverall
+networkand54%shortertrainingtime. Finally,wetestedthestrikingabilityofourrobotarm,which
+producedameanerrorandstandarddeviationof36.6mmand18.8mm,respectively.
+AuthorContributions:Conceptualization,H.-I.L.andY.-C.H.;methodology,H.-I.L.andY.-C.H.;software,Y.-C.H.;
+validation,H.-I.L.andY.-C.H.;formalanalysis,H.-I.L.andY.-C.H.;investigation,H.-I.L.andY.-C.H.;resources,
+H.-I.L.andZ.Y.;datacuration,Y.-C.H.;writing—originaldraftpreparation,H.-I.L.;writing—reviewandediting,
+H.-I.L.; visualization, H.-I.L.; supervision, H.-I.L. and Z.Y.; project administration, H.-I.L. and Z.Y.; funding
+acquisition,H.-I.L.andZ.Y.Allauthorshavereadandagreedtothepublishedversionofthemanuscript.
+Funding:ThisresearchwasfundedbyNationalTaipeiUniversityofTechnologygrantnumberNTUT-BIT-105-1.
+ConflictsofInterest:Theauthorsdeclarenoconflictofinterest.
+References
+1. Shi,Q.;Li,C.;Wang,C.;Luo,H.;Huang,Q.;Fukuda,T. Designandimplementationofanomnidirectional
+visionsystemforrobotperception. Mechatronics2017,41,58–66.
+2. Koç,O.;Maeda,G.;Peters,J. Onlineoptimaltrajectorygenerationforrobottabletennis. Robot.Auton.Syst.
+2018,105,121–137.
+3. Zhang,Y.H.;Wei,W.;Yu,D.;Zhong,C.W. Atrackingandpredictingschemeforpingpongrobot. J.Zhejiang
+Univ.Sci.C2011,12,110–115.
+4. Li, H.; Wu, H.; Lou, L.; Kühnlenz, K.; Ravn, O. Ping-pong robotics with high-speed vision system.
+In Proceedings of the 2012 12th International Conference on Control Automation Robotics & Vision
+(ICARCV),Guangzhou,China,5–7December2012;pp.106–111.
+5. Liu,J.;Fang,Z.;Zhang,K.;Tan,M.Improvedhigh-speedvisionsystemfortabletennisrobot. InProceedings
+ofthe2014IEEEInternationalConferenceonMechatronicsandAutomation,Tianjin,China,3–6August
+2014;pp.652–657.
+6. Chen,X.;Huang,Q.;Zhang,W.;Yu,Z.;Li,R.;Lv,P. Ping-pongtrajectoryperceptionandpredictionbyaPC
+basedHighspeedfour-cameravisionsystem. InProceedingsofthe20119thWorldCongressonIntelligent
+ControlandAutomation,Taipei,Taiwan,21–25June2011;pp.1087–1092.
+7. Yang,P.;Xu,D.;Zhang,Z.;Chen,G.;Tan,M. Avisionsystemwithmultiplecamerasdesignedforhumanoid
+robotstoplaytabletennis. InProceedingsofthe2011IEEEInternationalConferenceonAutomationScience
+andEngineering,Trieste,Italy,24–27August2011;pp.737–742.
+8. Liu,Y.;Liu,L.Accuratereal-timeballtrajectoryestimationwithonboardstereocamerasystemforhumanoid
+ping-pongrobot. Robot.Auton.Syst.2018,101,34–44.
+9. Lampert,C.H.;Peters,J. Real-timedetectionofcoloredobjectsinmultiplecamerastreamswithoff-the-shelf
+hardwarecomponents. J.Real-TimeImageProcess.2012,7,31–41.
+10. Schauwecker,K. Real-TimeStereoVisiononFPGAswithSceneScan. InForumBildverarbeitung2018;KIT
+ScientificPublishing:Deutschland,Germany,2018,pp.339.
+11. Zhang,Y.;Zhao,Y.;Xiong,R.;Wang,Y.;Wang,J.;Chu,J. Spinobservationandtrajectorypredictionof
+aping-pongball. InProceedingsofthe2014IEEEInternationalConferenceonRoboticsandAutomation
+(ICRA),HongKong,China,31May–7June2014;pp.4108–4114.
+
+PAGE 23
+Sensors2020,20,333 23of23
+12. Zhao,Y.;Zhang,Y.;Xiong,R.;Wang,J.Optimalstateestimationofspinningping-pongballusingcontinuous
+motionmodel. IEEETrans.Instrum.Meas.2015,64,2208–2216.
+13. Zhang, Z.; Xu, D.; Tan, M. Visualmeasurementandpredictionofballtrajectoryfortabletennisrobot.
+IEEETrans.Instrum.Meas.2010,59,3195–3205.
+14. Wang,P.;Zhang,Q.;Jin,Y.;Ru,F. Studiesandsimulationsontheflighttrajectoriesofspinningtabletennis
+ballviahigh-speedcameravisiontrackingsystem. Proc.Inst.Mech.Eng.PartPJ.SportsEng.Technol.2019,
+233,210–226.
+15. Huang, Y.; Xu, D.; Tan, M.; Su, H. Trajectory prediction of spinning ball for ping-pong player
+robot. InProceedingsofthe2011IEEE/RSJInternationalConferenceonIntelligentRobotsandSystems,
+SanFrancisco,CA,USA,25–30September2011;pp.3434–3439.
+16. Zhao,Y.; Xiong,R.; Zhang,Y. Reboundmodelingofspinningping-pongballbasedonmultiplevisual
+measurements. IEEETrans.Instrum.Meas.2016,65,1836–1846.
+17. Su,H.;Fang,Z.;Xu,D.;Tan,M. Trajectorypredictionofspinningballbasedonfuzzyfilteringandlocal
+modelingforroboticping–pongplayer. IEEETrans.Instrum.Meas.2013,62,2890–2900.
+18. Zhang,Y.;Xiong,R.;Zhao,Y.;Wang,J. Real-timespinestimationofping-pongballusingitsnaturalbrand.
+IEEETrans.Instrum.Meas.2015,64,2280–2290.
+19. Wang,Q.;Zhang,K.;Wang,D. Thetrajectorypredictionandanalysisofspinningballforatabletennis
+robotapplication. InProceedingsofthe4thAnnualIEEEInternationalConferenceonCyberTechnologyin
+Automation,ControlandIntelligent,HongKong,China,4–7June2014;pp.496–501.
+20. Nakashima,A.;Ogawa,Y.;Kobayashi,Y.;Hayakawa,Y. Modelingofreboundphenomenonofarigidball
+withfrictionandelasticeffects. InProceedingsofthe2010AmericanControlConference,Baltimore,MD,
+USA,30June–2July2010;pp.1410–1415.
+21. Bao,H.;Chen,X.;Wang,Z.T.;Pan,M.;Meng,F.Bouncingmodelforthetabletennistrajectorypredictionand
+thestrategyofhittingtheball. InProceedingsofthe2012IEEEInternationalConferenceonMechatronics
+andAutomation,Chengdu,China,5–8August2012;pp.2002–2006.
+22. Matsushima,M.;Hashimoto,T.;Takeuchi,M.;Miyazaki,F. Alearningapproachtorobotictabletennis.
+IEEETrans.Robot.2005,21,767–771.
+23. Miyazaki,F.; Matsushima,M.; Takeuchi,M. Learningtodynamicallymanipulate: Atabletennisrobot
+controlsaballandrallieswithahumanbeing.InAdvancesinRobotControl;Springer:Berlin/Heidelberg,
+Germany,2006;pp.317–341.
+24. Zhao,Y.;Xiong,R.;Zhang,Y. Modelbasedmotionstateestimationandtrajectorypredictionofspinningball
+forping-pongrobotsusingexpectation-maximizationalgorithm. J.Intell.Robot.Syst.2017,87,407–423.
+25. Deng,Z.;Cheng,X.;Ikenaga,T. Ball-likeobservationmodelandmulti-peakdistributionestimationbased
+particle filter for 3D Ping-pong ball tracking. In Proceedings of the 2017 Fifteenth IAPR International
+ConferenceonMachineVisionApplications(MVA),Nagoya,Japan,8–12May2017;pp.390–393.
+26. Payeur, P.; Le-Huy, H.; Gosselin, C.M. Trajectory prediction for moving objects using artificial neural
+networks. IEEETrans.Ind.Electron.1995,42,147–158.
+27. Nakashima,A.;Takayanagi,K.;Hayakawa,Y. Alearningmethodforreturningballinrobotictabletennis.
+InProceedingsofthe2014InternationalConferenceonMultisensorFusionandInformationIntegrationfor
+IntelligentSystems(MFI),Beijing,China,28–29September2014;pp.1–6.
+28. Zhang,Z. Determiningtheepipolargeometryanditsuncertainty: Areview. Int. J.Comput. Vis. 1998,
+27,161–195.
+29. Biagiotti,L.;Melchiorri,C. TrajectoryPlanningforAutomaticMachinesandRobots;SpringerScience&Business
+Media:Berlin/Heidelberg,Germany,2008.
+(cid:13)c 2020bytheauthors.LicenseeMDPI,Basel,Switzerland.Thisarticleisanopenaccess
+articledistributedunderthetermsandconditionsoftheCreativeCommonsAttribution
+(CCBY)license(http://creativecommons.org/licenses/by/4.0/).

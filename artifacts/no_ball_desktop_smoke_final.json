@@ -1,0 +1,168 @@
+{
+  "started_at": "2026-10-09T13:46:42.830Z",
+  "packaged": true,
+  "electron": "44.7.0",
+  "checks": [
+    "Sandboxed native window with isolated, typed preload bridge",
+    "Launcher training review opens without starting an inference backend or camera",
+    "Launcher live control starts only live mode; camera remains unauthorized",
+    "End session releases its backend process",
+    "Native recording selection bridge handles Unicode/spaces and analyzes every frame",
+    "Desktop renders footage and native controls; review API, current assets and favicon load",
+    "Footage, 2D and 3D retain the same paused frame and authoritative table coordinates",
+    "Actual Chromium renderer saves and reloads reviewed fixture annotations at its exact dynamic loopback origin",
+    "Actual pointer drag creates a reviewed source-size streak through GUI Save, preserving prior boxes",
+    "Packaged Chromium previews and explicitly confirms a source-bound no-ball interval without reviewing scene classes",
+    "Review drafts persist in an application-owned file independent of the HTTP port",
+    "Invalid video preserves the active recording",
+    "Canceling recording selection preserves the session",
+    "Closing the native window stops both application-owned services and frees their ports"
+  ],
+  "renderer_errors": [],
+  "security": {
+    "node": "undefined",
+    "bridge": "function",
+    "isolated": "undefined",
+    "launcher": true
+  },
+  "live": {
+    "pid": 23796,
+    "url": "ws://127.0.0.1:64881",
+    "camera_active": false
+  },
+  "recording": {
+    "pid": 32052,
+    "url": "ws://127.0.0.1:58002",
+    "analysis": {
+      "analyzed_frames": 360,
+      "coverage": "ALL_SOURCE_FRAMES",
+      "requested_frame": 0,
+      "status": "COMPLETE",
+      "total_frames": 360,
+      "waiting_for_analysis": false
+    },
+    "source_id": 1
+  },
+  "http": [
+    {
+      "endpoint": "/",
+      "status": 200
+    },
+    {
+      "endpoint": "/training-review",
+      "status": 200
+    },
+    {
+      "endpoint": "/api/training-review",
+      "status": 200
+    },
+    {
+      "endpoint": "/favicon.ico",
+      "status": 200
+    }
+  ],
+  "rendered": {
+    "toolbar": true,
+    "canvas": true,
+    "frame": 120,
+    "buttons": [
+      "Open recording…",
+      "Live camera",
+      "End session",
+      "Open recording…"
+    ],
+    "painted_frame": 120
+  },
+  "spatial_views": {
+    "radar": {
+      "frame": "120",
+      "x": "-1.8386",
+      "y": "1.2105"
+    },
+    "volumetric": {
+      "frame": "120",
+      "x": "-1.8386",
+      "y": "1.2105"
+    }
+  },
+  "training_review": {
+    "origin": "http://127.0.0.1:49765",
+    "status": 200,
+    "saved": true,
+    "annotation": {
+      "reviewed": true,
+      "ball": [
+        [
+          0.2,
+          0.3,
+          0.01,
+          0.01
+        ]
+      ],
+      "person": [],
+      "table": [],
+      "reviewed_at": "2026-10-09T13:46:56.616Z",
+      "geometry": {
+        "landmarks": {},
+        "landmarks_reviewed": false,
+        "visibility": "visible",
+        "blur": "unknown",
+        "events": [],
+        "events_reviewed": false
+      },
+      "source_frame": 120,
+      "elapsed_ms": 1000,
+      "reviewed_classes": {
+        "ball": true,
+        "person": false,
+        "table": false
+      }
+    },
+    "revision": "380d1c4a9d72078a5ba9504199fa2e345a1c575ebd3bdd94334b92cd2073f7c6"
+  },
+  "streak_review": {
+    "endpoints": [
+      [
+        0.3005021015547944,
+        0.39956744385574655
+      ],
+      [
+        0.3999821007761046,
+        0.44956856794628863
+      ]
+    ],
+    "source_width": 1630,
+    "source_height": 1003,
+    "center": [
+      0.3502421011654495,
+      0.4245680059010176
+    ],
+    "half_length_px": 84.86538752625073,
+    "axis_rad": 0.29995222818299005,
+    "method": "manual_streak_endpoints",
+    "reviewed": true
+  },
+  "absence_review": {
+    "sampled_frames": 3,
+    "explicit_gui_confirmation": true,
+    "scene_classes_unreviewed": true,
+    "interval_review": {
+      "start_source_frame": 1,
+      "end_source_frame": 3,
+      "method": "manual_interval",
+      "review_id": "fe418fcf-09b1-4107-a0ed-e0e0f79ed382",
+      "reviewed_at": "2026-10-09T13:46:58.377Z",
+      "original_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "session_id": "SYNTHETIC_SMOKE_ONLY",
+      "index_sha256": "afbc03fe7ce2c7024a53491e35711900e5c7eb85a0ebf24aa47fc941bf81b6aa",
+      "previous_annotation_revision": "ecc24993fa3742d10497eabc26299ec857058937fe4af4d094a870098dc0e49e",
+      "sampled_frames": 3,
+      "image_sha256": "7ccd24c2b8c39ec0c0920d1e9d2e6269e2037cd86bd22d6b50c69e52fdf942b0"
+    }
+  },
+  "frontend_origin": "http://127.0.0.1:49765",
+  "data_root": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\desktop_test_1791553602645",
+  "ok": true,
+  "finished_at": "2026-10-09T13:46:59.058Z",
+  "clean_runtime_path": true
+}

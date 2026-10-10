@@ -7,6 +7,7 @@ import cv2
 import numpy as np
 import torch
 import tensorrt as trt
+from lighting_preprocessing import green_channel_rgb
 
 
 class Detector:
@@ -93,7 +94,7 @@ def variants(frame):
         adaptive[:, :, 0] = cv2.addWeighted(adjusted[:, :, 0], .65, cv2.createCLAHE(clipLimit=1.5, tileGridSize=(16, 16)).apply(adjusted[:, :, 0]), .35, 0)
     else:
         adaptive = lab.copy()
-    return {'raw': frame, 'gamma': cv2.cvtColor(adjusted, cv2.COLOR_LAB2BGR),
+    return {'raw': frame, 'green_channel': green_channel_rgb(frame), 'gamma': cv2.cvtColor(adjusted, cv2.COLOR_LAB2BGR),
             'clahe': cv2.cvtColor(clahe, cv2.COLOR_LAB2BGR),
             'adaptive': cv2.cvtColor(adaptive, cv2.COLOR_LAB2BGR) if median > 160 else frame}, {'median_luma': median, 'gamma': gamma, 'adaptive_applied': median > 160}
 
@@ -130,13 +131,16 @@ def main(args):
                         cv2.circle(panel, (round(x * 768 / frame.shape[1]), round(y * 432 / frame.shape[0])), 8, (0, 180, 255), 2)
                     cv2.putText(panel, f"{name}: score {result['score']:.3f} (unreviewed)", (12, 25), cv2.FONT_HERSHEY_SIMPLEX, .6, (0, 255, 255), 1)
                     panels.append(panel)
-                if not cv2.imwrite(str(args.output / f'comparison_{fid}.jpg'), np.vstack([np.hstack(panels[:2]), np.hstack(panels[2:])])):
+                if len(panels) % 2:
+                    panels.append(np.zeros_like(panels[0]))
+                if not cv2.imwrite(str(args.output / f'comparison_{fid}.jpg'), np.vstack([np.hstack(panels[i:i+2]) for i in range(0,len(panels),2)])):
                     raise RuntimeError('Cannot save comparison image')
             print(f'frame {fid}: ' + ', '.join(f"{name}={result['score']:.3f}" for name, result in results.items()), flush=True)
     finally:
         capture.release()
     report = {'video': str(args.video), 'decode_policy': 'Sequential source-frame enumeration; no random seek', 'engine_sha256': hashlib.sha256(args.engine.read_bytes()).hexdigest(),
               'scope': 'Unlabeled offline TensorRT response comparison, not native C++ parity, precision/recall or live performance',
+              'preprocessing_note': 'green_channel replicates the green channel into RGB without changing coordinates; this is an input experiment, not a display tint or automatic filter',
               'promoted': False, 'accuracy': None, 'accuracy_reason': 'No reviewed ground truth for these frames', 'frames': rows}
     (args.output / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
 

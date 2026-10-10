@@ -29,3 +29,21 @@ Initial packaging attempted to copy the old 5.57 GB public video and exhausted a
 ## Remaining limits
 
 The release is unsigned and portable, not an MSI/NSIS installer. It requires Windows and a GPU/driver compatible with the bundled TensorRT engines. Normal close/end-session cleanup is verified; forced desktop-process termination and a 30-minute soak are not verified. The earlier accuracy, calibration, uncertainty and advanced-analytics acceptance failures remain in `REQUIREMENTS_LEDGER.md`; desktop conversion does not resolve them.
+
+## October 9: native BlurBall and final precision package
+
+The final package is installed in the standard application folder, with the previous release retained as `desktop/dist/TT Trajectory Engine before precision`. Native backend SHA-256 is `85b693c29b6ada72d1444b86c325f87bd3aff846fddeace903b6fec7919b3366` and frontend build is `mqJ8YZ4aT5bj980UF9QJg`. The package guard verifies a completed frontend build before creating its output. [Delivery manifest](artifacts/blurball_release_delivery.json).
+
+[Final packaged runtime checks](artifacts/blurball_desktop_smoke_final.json) passed with developer runtime directories excluded: 360/360 fixture frames, 272/272 BlurBall recording frames, actual model-selector restart/cache identity, invalid/canceled recording preservation, exact analysis/frame/table-coordinate agreement across footage/2D/3D and owned service cleanup. No renderer errors occurred. The browser supplied its genuine Origin header for annotation POST/save/reload, which returned HTTP200. An actual pointer drag and GUI save persisted a reviewed source-coordinate blur streak without changing the previous ball box. The off-default forecast rendered exactly the native frame-30 points.
+
+Hidden-window capture initially returned a stale compositor image despite correct DOM assertions. The final test primes capture, waits for painting, rechecks current UI state and then captures. Root inspected the [saved streak](artifacts/blurball_desktop_smoke_final.streak.png), [forecast frame30](artifacts/blurball_desktop_smoke_final.forecast.png) and [BlurBall frame120](artifacts/blurball_desktop_smoke_final.blurball.png). The native picker remains tested at its API boundary, not by manually clicking the OS dialog. Neither this package check nor the causal file replay is a live camera accuracy/latency test.
+
+[The precision release report](PRECISION_RELEASE_REPORT.md) records model results, the qualitative original-phone improvement, forecast regressions and outstanding training/calibration/physical/live gates. YOLO and scene weights remain unchanged; BlurBall is separately selectable and experimental. No original review labels were rewritten.
+
+## October 9: easier negative review package
+
+The separate `desktop/dist/TT Trajectory Engine training review v2/` package is selected by `launch_desktop.bat`, preserving the existing standard release. Its native/backend and all three detector engines retain the precision release's hashes. The production review build adds source/image-bound interval absence confirmation; the native launcher and Session menu can open Training review without starting a backend or camera.
+
+[Final clean-PATH package checks](artifacts/no_ball_desktop_smoke_final.json) passed with no renderer errors: direct review navigation with `engine.child == null`, explicit fixture interval preview/checkbox/save, scene classes left unreviewed, existing streak pointer/save regression, 360/360-frame source analysis, exact paused frame/coordinate agreement, invalid/canceled source preservation, file-backed drafts and service cleanup. Root inspected [the interval review screenshot](artifacts/no_ball_desktop_smoke_final.absence.png). A navigation race in the test was repaired by waiting for review loading to finish before replacing its page. These tests do not mark any actual recording absent or establish detector accuracy.
+
+The [new implementation report](HYBRID_PRECISION_IMPLEMENTATION.md) records the original no-ball import and full causal hypothesis diagnostic. No model weights changed. Normal close/reopen is necessary to leave an already-running older version because single-instance behavior otherwise focuses it. Camera hardware, manual OS-dialog clicking and prolonged soak remain unverified.

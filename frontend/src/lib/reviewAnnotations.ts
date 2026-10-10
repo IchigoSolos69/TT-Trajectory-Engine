@@ -10,7 +10,8 @@ export function ballReviewProblem(labels:Labels):string{
   const visibility=labels.geometry?.visibility??'unknown';
   if(labels.ball.length&&visibility==='absent')return 'Ball boxes conflict with “Not in frame”.';
   if(labels.ball.length&&visibility==='occluded')return 'A fully hidden ball cannot have an observed box. Correct visibility or remove the box.';
-  if(!labels.ball.length&&['visible','partial'].includes(visibility))return 'The ball is tagged visible but has no box. Place its box or correct the visibility.';
+  if(labels.geometry?.blur_streak&&['absent','occluded','unknown'].includes(visibility))return 'A blur label needs visible or partly visible ball evidence. Clear the streak or correct visibility.';
+  if(!labels.ball.length&&!labels.geometry?.blur_streak&&['visible','partial'].includes(visibility))return 'The ball is tagged visible but has no box. Place its box, label its streak, or correct the visibility.';
   if(!labels.ball.length&&visibility==='unknown')return 'Click the ball, mark “Not in frame”, or skip if you cannot tell.';
   return '';
 }

@@ -1,0 +1,22 @@
+{
+  "001": {
+    "native_analysis_id": "1791526513809868_28444",
+    "native_frames": 193,
+    "comparison_frames": 193,
+    "accepted_presence_mismatches": [],
+    "max_selected_score_delta": 4.9609374999981526e-05,
+    "native_corners_frames": 1,
+    "native_max_speed_kmh": 0.0,
+    "scope": "Raw detector acceptance/score parity against saved native run; no trajectory/accuracy parity"
+  },
+  "demo5": {
+    "native_analysis_id": "1791528592320735_39620",
+    "native_frames": 106,
+    "comparison_frames": 106,
+    "accepted_presence_mismatches": [],
+    "max_selected_score_delta": 4.9609374999981526e-05,
+    "native_corners_frames": 0,
+    "native_max_speed_kmh": 0.0,
+    "scope": "Raw detector acceptance/score parity against saved native run; no trajectory/accuracy parity"
+  }
+}

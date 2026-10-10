@@ -1,0 +1,46 @@
+{
+  "session_id": "iphone_same_venue_session_1",
+  "split": null,
+  "contains_ground_truth": false,
+  "scope": "Full sequential decoder count/timestamps plus sampled image import; not accuracy evaluation or independent codec validation",
+  "recordings": [
+    {
+      "clip": "phone_452627e98a3c2652_1",
+      "source": "recorded_camera",
+      "capture_origin": "unspecified",
+      "session_id": "iphone_same_venue_session_1",
+      "original_path": "C:\\Users\\Adi\\Downloads\\Video Project 6.mp4",
+      "original_sha256": "452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706",
+      "original_bytes": 468664555,
+      "source_frames": 9164,
+      "reported_source_frames": 9164,
+      "frame_count_discrepancy": 0,
+      "source_fps_average": 30.0,
+      "full_source_decode_counted": true,
+      "source_interval_ms_p50": 33.333333333333485,
+      "source_interval_ms_min": 33.33333333325572,
+      "source_interval_ms_max": 33.33333333337214,
+      "codec_fourcc": "h264",
+      "width": 1920,
+      "height": 1080,
+      "burst_frames": 5,
+      "timestamp_basis": "opencv_ffmpeg_source_pts_ms",
+      "opencv_version": "5.0.0",
+      "sampled_interval_ms_min": 33.33333333325572,
+      "sampled_interval_ms_max": 33.33333333337214,
+      "sampled_frames": 300,
+      "contains_ground_truth": false,
+      "split": null,
+      "sampling": "60 evenly spaced five-consecutive-frame bursts",
+      "selection": {
+        "method": "uniform",
+        "start_source_frame": null,
+        "requested_bursts": 60
+      },
+      "capture_note": "User-declared no-ball scene from the same earlier gameplay session. Edit/cut history is unverified. Confirm absence explicitly; people/table remain unreviewed.",
+      "rotation_handling": "decoder default; inspect imported orientation",
+      "hdr_metadata": null,
+      "hdr_metadata_reason": "Not exposed by this OpenCV decoder"
+    }
+  ]
+}

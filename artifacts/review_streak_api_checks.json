@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "scope": "Production route execution with actual NextRequest and isolated fixture, not browser rendering",
+  "checks": [
+    "explicit review only",
+    "streak-only save",
+    "existing boxes/scene geometry preserved",
+    "source JPEG dimensions",
+    "unknown/occluded exclusion",
+    "exact origin guard",
+    "immutable history",
+    "skip and clear persistence"
+  ]
+}

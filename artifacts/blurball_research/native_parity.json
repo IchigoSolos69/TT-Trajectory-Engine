@@ -1,0 +1,430 @@
+{
+  "scope": "Native C++ preprocessing, TensorRT logits, weighted centroid and blur component parity on 18 real source windows; not accuracy or live latency.",
+  "windows": [
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\001.mp4",
+      "frame_ids": [
+        1,
+        2,
+        3
+      ],
+      "max_logit_error": 1.5545721054077148,
+      "channels": [
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        }
+      ]
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\001.mp4",
+      "frame_ids": [
+        2,
+        3,
+        4
+      ],
+      "max_logit_error": 1.0989761352539062,
+      "channels": [
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        }
+      ]
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\001.mp4",
+      "frame_ids": [
+        3,
+        4,
+        5
+      ],
+      "max_logit_error": 0.7375006675720215,
+      "channels": [
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        }
+      ]
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\001.mp4",
+      "frame_ids": [
+        38,
+        39,
+        40
+      ],
+      "max_logit_error": 0.7832527160644531,
+      "channels": [
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        }
+      ]
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\001.mp4",
+      "frame_ids": [
+        39,
+        40,
+        41
+      ],
+      "max_logit_error": 1.3618969917297363,
+      "channels": [
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        }
+      ]
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\001.mp4",
+      "frame_ids": [
+        40,
+        41,
+        42
+      ],
+      "max_logit_error": 0.7143945693969727,
+      "channels": [
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        }
+      ]
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\001.mp4",
+      "frame_ids": [
+        78,
+        79,
+        80
+      ],
+      "max_logit_error": 1.0233964920043945,
+      "channels": [
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        }
+      ]
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\001.mp4",
+      "frame_ids": [
+        79,
+        80,
+        81
+      ],
+      "max_logit_error": 1.080005168914795,
+      "channels": [
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        }
+      ]
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\001.mp4",
+      "frame_ids": [
+        80,
+        81,
+        82
+      ],
+      "max_logit_error": 1.2757644653320312,
+      "channels": [
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        }
+      ]
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\demo5.mp4",
+      "frame_ids": [
+        1,
+        2,
+        3
+      ],
+      "max_logit_error": 2.6002378463745117,
+      "channels": [
+        {
+          "pytorch_count": 0,
+          "native_count": 0
+        },
+        {
+          "pytorch_count": 0,
+          "native_count": 0
+        },
+        {
+          "pytorch_count": 0,
+          "native_count": 0
+        }
+      ]
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\demo5.mp4",
+      "frame_ids": [
+        2,
+        3,
+        4
+      ],
+      "max_logit_error": 1.4914178848266602,
+      "channels": [
+        {
+          "pytorch_count": 3,
+          "native_count": 3
+        },
+        {
+          "pytorch_count": 0,
+          "native_count": 0
+        },
+        {
+          "pytorch_count": 0,
+          "native_count": 0
+        }
+      ]
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\demo5.mp4",
+      "frame_ids": [
+        3,
+        4,
+        5
+      ],
+      "max_logit_error": 1.0123558044433594,
+      "channels": [
+        {
+          "pytorch_count": 0,
+          "native_count": 0
+        },
+        {
+          "pytorch_count": 0,
+          "native_count": 0
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        }
+      ]
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\demo5.mp4",
+      "frame_ids": [
+        38,
+        39,
+        40
+      ],
+      "max_logit_error": 1.5520172119140625,
+      "channels": [
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        }
+      ]
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\demo5.mp4",
+      "frame_ids": [
+        39,
+        40,
+        41
+      ],
+      "max_logit_error": 1.4809417724609375,
+      "channels": [
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 2,
+          "native_count": 2
+        }
+      ]
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\demo5.mp4",
+      "frame_ids": [
+        40,
+        41,
+        42
+      ],
+      "max_logit_error": 1.816971778869629,
+      "channels": [
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 2,
+          "native_count": 2
+        }
+      ]
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\demo5.mp4",
+      "frame_ids": [
+        78,
+        79,
+        80
+      ],
+      "max_logit_error": 1.1779375076293945,
+      "channels": [
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        }
+      ]
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\demo5.mp4",
+      "frame_ids": [
+        79,
+        80,
+        81
+      ],
+      "max_logit_error": 2.794496536254883,
+      "channels": [
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        }
+      ]
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\demo5.mp4",
+      "frame_ids": [
+        80,
+        81,
+        82
+      ],
+      "max_logit_error": 2.5096282958984375,
+      "channels": [
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        },
+        {
+          "pytorch_count": 1,
+          "native_count": 1
+        }
+      ]
+    }
+  ],
+  "max_logit_error": 2.794496536254883,
+  "max_center_delta_source_px": 1.3467357148892518,
+  "max_peak_delta": 0.0032802224321777373,
+  "max_blur_extent_delta_source_px": 1.5533005427977429,
+  "max_component_mass_relative_delta": 0.326006984216241,
+  "unmatched_components": 0,
+  "engine_sha256": "48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f",
+  "versions": {
+    "torch": "2.14.0+cu130"
+  },
+  "passed": false
+}

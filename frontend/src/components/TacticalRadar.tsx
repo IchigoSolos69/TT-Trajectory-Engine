@@ -4,16 +4,16 @@ import type { TrajectorySample } from '../types/telemetry';
 interface RadarProps {
   x: number; y: number; speedKmh?: number; isBounce?: boolean;
   impactPoints?: Array<{ x: number; y: number }>;
-  hasBall?: boolean; frameId?: number;
+  hasBall?: boolean; frameId?: number; analysisId?: string;
   trajectory?: TrajectorySample[];
 }
 
-export default function TacticalRadar({ x, y, speedKmh = 0, impactPoints = [], hasBall = false, frameId = 0, trajectory=[] }: RadarProps) {
+export default function TacticalRadar({ x, y, speedKmh = 0, impactPoints = [], hasBall = false, frameId = 0, analysisId='', trajectory=[] }: RadarProps) {
   const left = Math.min(0, hasBall ? x : 0) - .2;
   const top = Math.min(0, hasBall ? y : 0) - .2;
   const width = Math.max(1.525, hasBall ? x : 0) + .2 - left;
   const height = Math.max(2.74, hasBall ? y : 0) + .2 - top;
-  return <div aria-label="2D table plane projection" data-frame-id={frameId} data-ball-x={hasBall ? x : ''} data-ball-y={hasBall ? y : ''} className="w-full p-4 bg-slate-950/80 rounded-2xl border border-slate-800 flex flex-col items-center">
+  return <div aria-label="2D table plane projection" data-analysis-id={analysisId} data-frame-id={frameId} data-ball-x={hasBall ? x : ''} data-ball-y={hasBall ? y : ''} className="w-full p-4 bg-slate-950/80 rounded-2xl border border-slate-800 flex flex-col items-center">
     <div className="w-full text-xs font-mono text-cyan-300 mb-3">TOP-DOWN TABLE PROJECTION · FRAME {frameId}</div>
     <svg className="w-full h-[390px]" viewBox={`${left} ${top} ${width} ${height}`} role="img" aria-label="Ball projected onto the table plane">
       <rect x="0" y="0" width="1.525" height="2.74" fill="#115e59" stroke="#e2e8f0" strokeWidth=".012" />

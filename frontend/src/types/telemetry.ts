@@ -8,7 +8,7 @@ export interface BallTelemetry {
   vy: number;            // Image-space Y velocity (normalized units/s)
   vz: number | null;     // Unobserved without supported physical reconstruction.
   speed_kmh: number;     // Absolute speed in km/h
-  confidence: number;    // Detection confidence 0..1
+  confidence: number;    // Model score 0..1; see ball_model.score_kind.
   is_bounce: boolean;
   bounce_x?: number;
   bounce_y?: number;
@@ -23,6 +23,9 @@ export interface PlayerDetection {
 }
 
 export interface TelemetryFrame {
+  ball_flight?: {status:'EXPERIMENTAL_FORECAST'|'UNAVAILABLE';reason:string;method:string;coordinate_basis:'source_pixels';reference_frame:number;reference_timestamp:number;segment_id:number;support_frames:number[];maximum_horizon_s:number;fit_rmse_px:number|null;uncertainty:null;uncertainty_reason:string;points:Array<{timestamp:number;pixel:[number,number]}>};
+  ball_model?: {backend: 'yolo'|'blurball';model_sha256: string;experimental: boolean;score_kind: string;score_calibrated: boolean;temporal_policy: string;lookahead_frames: number;warmup_frames: number;heatmap_threshold: number|null;timestamp_basis: string};
+  ball_blur?: {center_px:[number,number];endpoints_px:[[number,number],[number,number]];extent_px:number;axis_deg:number;component_mass:number;heatmap_peak:number;axis_directed:false;exposure_seconds:null;gpu_ms:number}|null;
   schema_version?: number;
   analysis_id?: string;
   presentation_epoch?: number;

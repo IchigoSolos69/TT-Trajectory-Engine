@@ -1,0 +1,62 @@
+{
+  "synthetic_regression_passed": true,
+  "backend_sha256": "85b693c29b6ada72d1444b86c325f87bd3aff846fddeace903b6fec7919b3366",
+  "session_id": "iphone_same_venue_session_1",
+  "real_optimizer_check_passed": true,
+  "checkpoint_unchanged": true,
+  "partition": "unassigned",
+  "backend_unchanged": true,
+  "guard_tests": 8,
+  "models": {
+    "blurball_experimental": {
+      "unchanged": true,
+      "path": "models/blurball_fp32.engine",
+      "sha256": "48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f"
+    },
+    "scene": {
+      "unchanged": true,
+      "path": "models/scene.engine",
+      "sha256": "5eb0ecbfe0cddb8631cc89fbf6e7a2145d2a4a6b10595034afd4ab8b1a454cee"
+    },
+    "ball": {
+      "unchanged": true,
+      "path": "models/yolov11_ttgames.engine",
+      "sha256": "2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9"
+    }
+  },
+  "staging_tests": 17,
+  "date": "2026-10-10",
+  "ready_for_candidate_fitting": false,
+  "whole_plan_complete": false,
+  "remaining": [
+    "INDEPENDENT_VALIDATION_TEST_SESSIONS_MISSING",
+    "FROZEN_SPLITS_MISSING",
+    "TEMPORAL_CONTINUITY_NOT_AUDITED",
+    "NO_ACCURACY_OR_PROMOTION_EVIDENCE"
+  ],
+  "counts": {
+    "visible_point_frames": 6,
+    "visible_streak_frames": 2,
+    "absent_frames": 293,
+    "unknown_or_excluded_frames": 431,
+    "all_visible_windows": 3,
+    "all_absent_windows": 175,
+    "mixed_visible_absent_windows": 0
+  },
+  "evidence": {
+    "artifacts/reviewed_training_smoke_guard_tests_2026_10_10_v1.log": "6c6b943d9f8f8ae445470880599748b96576bba17e52f7d42918afb443f3e7ae",
+    "artifacts/blurball_reviewed_training_smoke_qfl_2026_10_10_v1/report.json": "8e0a958f9cdf9fb84ee13dc9ded077d0c7bd6024f6768b4d4ce8b14d7e40256a",
+    "artifacts/reviewed_training_stage_2026_10_10_v1/tests.log": "13c177a43549dccebea0b4a6918f9bad6f831ce20a7ea9183878b5d7aff8be7b",
+    "artifacts/real_training_readiness_2026_10_10_v2.json": "3e933cc611345116c3853c215a99cff1a2a967a1ea93917a8169c551141cdc9c",
+    "artifacts/blurball_training_smoke_mse_2026_10_10_v3/report.json": "405119a5c4a9cb10e8544eb173e2dd1ff01f4627fcf43071fb8efc1cf80d70e5",
+    "artifacts/reviewed_training_stage_2026_10_10_v1/windows.jsonl": "e331301d27288dddc3fd74f008401f463c1320a088018935402d67004f0a6b4d",
+    "artifacts/reviewed_training_stage_2026_10_10_v1/manifest.json": "6180aa1b1759b35996d5a4e47f53876d32628152330e46d97e7153fefc06ffdb"
+  },
+  "checkpoint_saved": false,
+  "promotion_approved": false,
+  "timezone": "Asia/Calcutta",
+  "scope": "Reviewed single-session data handoff and two in-memory optimizer checks; no candidate fine-tuning or deployment",
+  "saved_review_metadata_reverified": true,
+  "accuracy_measured": false,
+  "checkpoint_sha256": "3545206c7155194ea654899d33579c88c9fd8e82c632cbdbae3b0c0ec3f2985f"
+}

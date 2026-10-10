@@ -61,8 +61,16 @@ inline std::string previewJpeg(const cv::Mat& image){
     for(size_t i=0;i<bytes.size();i+=3){unsigned n=unsigned(bytes[i])<<16;if(i+1<bytes.size())n|=unsigned(bytes[i+1])<<8;if(i+2<bytes.size())n|=bytes[i+2];result+=chars[n>>18];result+=chars[(n>>12)&63];result+=i+1<bytes.size()?chars[(n>>6)&63]:'=';result+=i+2<bytes.size()?chars[n&63]:'=';}return result;
 }
 
+inline std::string ballProvenance(const std::string& backend,const std::string& hash,bool live){
+    const bool blur=backend=="blurball";
+    return json({{"backend",quote(backend)},{"model_sha256",quote(hash)},{"experimental",blur?"true":"false"},
+        {"score_kind",quote(blur?"uncalibrated_heatmap_peak":"detector_score")},{"score_calibrated","false"},
+        {"temporal_policy",quote(blur?(live?"causal_channel_2":"all_windows_two_frame_lookahead"):"single_frame")},
+        {"lookahead_frames",blur&&!live?"2":"0"},{"warmup_frames",blur&&live?"2":"0"},
+        {"heatmap_threshold",blur?"0.7":"null"},{"timestamp_basis",quote("nominal_source_fps_or_live_capture_clock")}});
+}
 inline int runController(std::string video,const std::string& ballEngine,const std::string& sceneEngine,
-                         int port,float threshold,bool intelligence,int maxFrames,const std::filesystem::path& root){
+                         int port,float threshold,bool intelligence,int maxFrames,const std::filesystem::path& root,const std::string& ballBackend="yolo"){
     using Clock=std::chrono::steady_clock;
     TelemetryServer server(port);if(!server.start())throw std::runtime_error("Recording server failed to start");
     AnalysisChild child;std::unique_ptr<JournalReader> journal;std::filesystem::path directory;
@@ -84,10 +92,15 @@ inline int runController(std::string video,const std::string& ballEngine,const s
         auto candidateLock=std::shared_ptr<void>(sourceHandle,[](void* handle){CloseHandle(handle);});
         cv::VideoCapture candidate(source.u8string(),cv::CAP_FFMPEG);cv::Mat first;
         const double rate=candidate.get(cv::CAP_PROP_FPS);const int count=int(candidate.get(cv::CAP_PROP_FRAME_COUNT));
-        if(!candidate.isOpened()||!std::isfinite(rate)||rate<=0||count<1||!candidate.read(first)||!candidate.set(cv::CAP_PROP_POS_FRAMES,0))throw std::runtime_error("Recording cannot be decoded; current recording is unchanged");
+        if(!candidate.isOpened()||!std::isfinite(rate)||rate<=0||count<1||!candidate.read(first))throw std::runtime_error("Recording cannot be decoded; current recording is unchanged");
+        // FFmpeg's one-frame MJPG decoder can report a successful seek to zero
+        // yet remain at EOF. A fresh decoder preserves the validated first frame.
+        candidate.release();
+        if(!candidate.open(source.u8string(),cv::CAP_FFMPEG))throw std::runtime_error("Recording replay could not reopen; current recording is unchanged");
         Object identity{{"schema_version","2"},{"algorithm_revision",quote("complete-recording-v1")},{"source_sha256",quote(sha256(source))},
             {"source_path",quote(source.u8string())},{"total_frames",std::to_string(count)},{"source_fps",std::to_string(rate)},
             {"ball_model_sha256",quote(ballHash)},{"scene_model_sha256",quote(sceneHash)},
+            {"ball_model",ballProvenance(ballBackend,ballHash,false)},{"ball_preprocess_revision",quote(ballBackend=="blurball"?"opencv-affine-rgb-imagenet-v1":"yolo-letterbox-v1")},
             {"runtime_sha256",quote(runtimeHash)},{"confidence_threshold",std::to_string(threshold)},{"experimental_intelligence",intelligence?"true":"false"},{"scene_interval_frames","1"}};
         const auto request=json(identity);std::filesystem::path reusable;
         if(!maxFrames)for(const auto& entry:std::filesystem::directory_iterator(cacheRoot)){
@@ -111,7 +124,7 @@ inline int runController(std::string video,const std::string& ballEngine,const s
         displayed=0;playhead=1;pendingSeek=0;++epoch;shown.clear();jpeg.clear();error.clear();server.playbackPaused=false;
         if(reusable.empty()){
             std::vector<std::wstring> args{L"--sim",L"--video",source.wstring(),L"--analysis-worker",next.wstring(),
-                L"--data-root",root.wstring(),
+                L"--data-root",root.wstring(),L"--ball-backend",std::filesystem::u8path(ballBackend).wstring(),
                 std::filesystem::u8path(ballEngine).wstring(),L"--scene-engine",std::filesystem::u8path(sceneEngine).wstring(),L"--confidence",std::to_wstring(threshold)};
             if(intelligence)args.push_back(L"--experimental-intelligence");
             if(maxFrames){args.push_back(L"--max-frames");args.push_back(std::to_wstring(maxFrames));}
@@ -148,6 +161,7 @@ inline int runController(std::string video,const std::string& ballEngine,const s
             auto packet=shown;
             if(packet.empty()){FramePresentation empty;empty.totalFrames=total;packet=object(TelemetryServer::serializeToJSON(0,{},float(fps),"simulation",nullptr,0,0,nullptr,std::filesystem::u8path(video).filename().u8string(),&empty));}
             packet["schema_version"]="2";packet["analysis_id"]=quote(analysisId);packet["source_id"]=std::to_string(epoch);packet["presentation_epoch"]=std::to_string(epoch);
+            packet["ball_model"]=ballProvenance(ballBackend,ballHash,false);
             packet["preview_jpeg"]=quote(jpeg);packet["video_error"]=quote(error);packet["video_picker_open"]=picker.valid()?"true":"false";
             packet["paused"]=server.playbackPaused?"true":"false";packet["ended"]=(complete&&displayed==total)?"true":"false";
             packet["playback_rate"]=std::to_string(server.playbackRate.load());packet["total_frames"]=std::to_string(total);packet["skipped_frames"]="0";

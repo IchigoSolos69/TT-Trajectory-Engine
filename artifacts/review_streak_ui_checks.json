@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "scope": "Production page handler execution, not browser rendering",
+  "checks": [
+    "optional mode",
+    "normalized endpoint overlay",
+    "draft-only drawing",
+    "explicit save payload",
+    "source dimensions",
+    "existing box preservation",
+    "clear",
+    "point axis unresolved",
+    "skip unreviewed"
+  ]
+}

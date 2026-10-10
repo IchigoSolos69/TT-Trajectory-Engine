@@ -2,7 +2,7 @@
 
 A high-performance Table Tennis Match Analysis engine combining a low-latency C++ inference backend (TensorRT + OpenCV + ByteTrack-style tracking + WebSockets) and a modern Next.js TypeScript dashboard with real-time canvas visualization and Magnus spin aerodynamics simulation.
 
-**Run locally:** double-click `launch_engine.bat`, or `desktop/dist/TT Trajectory Engine/TT Trajectory Engine.exe`. The Windows application includes its own runtime, native recording picker and live/recording session controls. No external browser or internet connection is needed. See [DESKTOP_APP.md](DESKTOP_APP.md) and [DESKTOP_VERIFICATION.md](DESKTOP_VERIFICATION.md).
+**Run locally:** double-click `launch_desktop.bat` (also reached through `launch_engine.bat`). It selects the updated training-review package when present and retains the previous release. The Windows application includes its own runtime, native recording picker and live/recording session controls. No external browser or internet connection is needed. See [DESKTOP_APP.md](DESKTOP_APP.md) and [DESKTOP_VERIFICATION.md](DESKTOP_VERIFICATION.md).
 
 ---
 
@@ -11,6 +11,8 @@ A high-performance Table Tennis Match Analysis engine combining a low-latency C+
 See [VERIFICATION.md](VERIFICATION.md) for the deployed model hashes, before/after detector metrics, live-camera smoke test, playback measurements, screenshots/traces, and limitations. The current application uses separate ball and person/table models and synchronized backend footage. Historical performance tables farther below describe older benchmark configurations; they are not current live-stream performance claims.
 
 For room/camera adaptation, the live Visualizer now has an explicit **Record training clip** control. See [TRAINING_LIVE.md](TRAINING_LIVE.md) for clean local capture, reviewed labels, recording-level train/validation/test splits, and candidate training. Recording does not automatically label frames or replace a deployed model.
+
+The native launcher now opens **Training review** directly. No-ball recordings support preview-and-confirm intervals over saved images, with source/image provenance, preserved person/table review status and immutable annotation history. [The hybrid precision plan](HYBRID_PRECISION_PLAN.md) and [implementation evidence](HYBRID_PRECISION_IMPLEMENTATION.md) track the negative-data, filter and staged YOLO/BlurBall work. Filters and model suggestions remain experimental until labeled comparisons pass.
 
 Simulation includes **Open recording…** for local game videos. The dashboard retains per-strike speed history. The 2D and 3D views share the same source-frame table-plane projection; airborne height is unknown. Rotation is estimated from visible ball markings when resolvable, otherwise shown as **UNRESOLVED**. It estimates the camera-axis component only.
 

@@ -11,15 +11,16 @@ interface TrajectoryCanvasProps {
   showTableCorners?: boolean;
   showVelocityVector?: boolean;
   showHeatmap?: boolean;
+  showForecast?: boolean;
 }
 
 export const TrajectoryCanvas: React.FC<TrajectoryCanvasProps> = ({ currentFrame,
   historyLength = 25, showPlayerBoxes = true, showTableCorners = true,
-  showVelocityVector = true, showHeatmap = false }) => {
+  showVelocityVector = true, showHeatmap = false, showForecast = false }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pending = useRef<TelemetryFrame | null>(null);
-  const options = useRef({ historyLength, showPlayerBoxes, showTableCorners, showVelocityVector, showHeatmap });
-  options.current = { historyLength, showPlayerBoxes, showTableCorners, showVelocityVector, showHeatmap };
+  const options = useRef({ historyLength, showPlayerBoxes, showTableCorners, showVelocityVector, showHeatmap, showForecast });
+  options.current = { historyLength, showPlayerBoxes, showTableCorners, showVelocityVector, showHeatmap, showForecast };
   const [displayed, setDisplayed] = useState<TelemetryFrame | null>(null);
   const [decodeError, setDecodeError] = useState(false);
   const memory = useRef<{last: TelemetryFrame | null; trail: Array<{x:number;y:number}>; impacts: Array<{x:number;y:number}>}>({last:null,trail:[],impacts:[]});
@@ -34,6 +35,7 @@ export const TrajectoryCanvas: React.FC<TrajectoryCanvasProps> = ({ currentFrame
       if (!f?.preview_jpeg) {
         if (last) {
           canvasRef.current?.getContext('2d')?.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+          if(canvasRef.current){delete canvasRef.current.dataset.frameId;delete canvasRef.current.dataset.analysisId;delete canvasRef.current.dataset.ballBackend;delete canvasRef.current.dataset.forecastPoints;}
           last = null; trail = []; impacts = []; setDisplayed(null);
           memory.current={last,trail,impacts};
         }
@@ -51,11 +53,14 @@ export const TrajectoryCanvas: React.FC<TrajectoryCanvasProps> = ({ currentFrame
         // Commit image and all its annotations together. No independent video clock.
         canvas.width = image.width; canvas.height = image.height;
         canvas.dataset.frameId = String(f.frame_id);
+        canvas.dataset.analysisId = f.analysis_id??'';
+        canvas.dataset.ballBackend = f.ball_model?.backend??'yolo';
         canvas.dataset.source = f.mode;
         const w = canvas.width, h = canvas.height;
         ctx.drawImage(image, 0, 0, w, h);
         const o = options.current;
-        if (!last || last.mode !== f.mode || last.source_id !== f.source_id || f.frame_id < last.frame_id) {trail=[]; impacts=[];}
+        canvas.dataset.forecastPoints='[]';
+        if (!last || last.analysis_id !== f.analysis_id || last.mode !== f.mode || last.source_id !== f.source_id || f.frame_id < last.frame_id) {trail=[]; impacts=[];}
         if (!f.ball || (last && f.frame_id-last.frame_id > f.fps*.2)) trail=[];
         if (f.ball && f.frame_id !== last?.frame_id) {
           trail.push({x:f.ball.x,y:f.ball.y}); trail=trail.slice(-o.historyLength);
@@ -105,7 +110,12 @@ export const TrajectoryCanvas: React.FC<TrajectoryCanvasProps> = ({ currentFrame
         if(f.ball) {
           const b=f.ball,x=b.x*w,y=b.y*h;
           ctx.strokeStyle='#fbbf24';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,8,0,Math.PI*2);ctx.stroke();
-          label(`${f.ball_observation?.state==='DETECTOR_ONLY'||!f.ball_observation?'BALL CANDIDATE':'BALL'} ${(b.confidence*100).toFixed(0)}%${f.table_position?` · ~${b.speed_kmh.toFixed(1)} km/h`:''}`,x+12,y-10,'#fbbf24');
+          const score=f.ball_model?.backend==='blurball'?`peak ${b.confidence.toFixed(2)}`:`score ${(b.confidence*100).toFixed(0)}%`;
+          label(`${f.ball_observation?.state==='DETECTOR_ONLY'||!f.ball_observation?'BALL CANDIDATE':'BALL'} ${score}${f.table_position?` · ~${b.speed_kmh.toFixed(1)} km/h`:''}`,x+12,y-10,'#fbbf24');
+          if(f.ball_blur){
+            const [a,c]=f.ball_blur.endpoints_px,sx=w/(f.source_width||w),sy=h/(f.source_height||h);
+            ctx.strokeStyle='rgba(167,139,250,.8)';ctx.beginPath();ctx.moveTo(a[0]*sx,a[1]*sy);ctx.lineTo(c[0]*sx,c[1]*sy);ctx.stroke();
+          }
           if(o.showVelocityVector && Math.hypot(b.vx,b.vy)>0) {
             const dx=b.vx*w*.035,dy=b.vy*h*.035;
             const scale=Math.min(1,65/Math.max(1,Math.hypot(dx,dy)));
@@ -114,6 +124,13 @@ export const TrajectoryCanvas: React.FC<TrajectoryCanvasProps> = ({ currentFrame
             ctx.lineTo(ex-8*Math.cos(angle-.45),ey-8*Math.sin(angle-.45));ctx.moveTo(ex,ey);
             ctx.lineTo(ex-8*Math.cos(angle+.45),ey-8*Math.sin(angle+.45));ctx.stroke();
           }
+        }
+        if(o.showForecast&&f.ball_flight?.status==='EXPERIMENTAL_FORECAST'&&f.ball_flight.reference_frame===f.frame_id){
+          const sx=w/(f.source_width||w),sy=h/(f.source_height||h),points=f.ball_flight.points;
+          ctx.setLineDash([4,5]);ctx.strokeStyle='#c4b5fd';ctx.lineWidth=2;ctx.beginPath();
+          points.forEach((p,i)=>i?ctx.lineTo(p.pixel[0]*sx,p.pixel[1]*sy):ctx.moveTo(p.pixel[0]*sx,p.pixel[1]*sy));ctx.stroke();ctx.setLineDash([]);
+          const tip=points.at(-1);if(tip)label('FORECAST · ≤50 ms · image plane',tip.pixel[0]*sx+8,tip.pixel[1]*sy+20,'#c4b5fd');
+          canvas.dataset.forecastPoints=JSON.stringify(points);
         }
         last=f;setDisplayed(f);setDecodeError(false);
         memory.current={last,trail,impacts};
@@ -125,7 +142,7 @@ export const TrajectoryCanvas: React.FC<TrajectoryCanvasProps> = ({ currentFrame
     };
     tick();
     return()=>{stopped=true;};
-  }, [currentFrame,historyLength,showPlayerBoxes,showTableCorners,showVelocityVector,showHeatmap]);
+  }, [currentFrame,historyLength,showPlayerBoxes,showTableCorners,showVelocityVector,showHeatmap,showForecast]);
 
   return <div className="relative w-full h-full bg-black rounded-xl overflow-hidden border border-slate-800">
     <canvas ref={canvasRef} aria-label="Source footage with synchronized ball, person and table detections" className="w-full h-full object-contain" />
@@ -134,9 +151,11 @@ export const TrajectoryCanvas: React.FC<TrajectoryCanvasProps> = ({ currentFrame
     </div>}
     {displayed && <div className="absolute top-3 left-3 right-3 flex flex-wrap gap-2 text-[10px] font-mono pointer-events-none">
       <span className="bg-slate-950/85 text-cyan-300 px-3 py-2 rounded-lg">{displayed.mode==='live'?'LIVE CAMERA':displayed.source_video} · FRAME {displayed.frame_id}</span>
+      {displayed.ball_model?.backend==='blurball'&&<span className="bg-slate-950/85 text-violet-300 px-3 py-2 rounded-lg">BLURBALL · EXPERIMENTAL · {displayed.ball_model.lookahead_frames?'2-FRAME LOOKAHEAD':'CAUSAL'}{displayed.ball_blur?` · blur extent ${displayed.ball_blur.extent_px.toFixed(1)} px · undirected axis`:''}</span>}
       <span className="bg-slate-950/85 text-amber-300 px-3 py-2 rounded-lg">{displayed.ball?displayed.ball_observation?.state==='DETECTOR_ONLY'||!displayed.ball_observation?'BALL CANDIDATE · UNVALIDATED':'BALL '+displayed.ball_observation.state:'SEARCHING FOR BALL'}</span>
       {displayed.scene_frame_id!==undefined&&displayed.scene_frame_id!==displayed.frame_id&&<span className="bg-slate-950/85 text-slate-300 px-3 py-2 rounded-lg">Scene observed at frame {displayed.scene_frame_id}</span>}
       <span className="bg-slate-950/85 text-emerald-300 px-3 py-2 rounded-lg">{displayed.table_corners?.length===4?'TABLE SURFACE ESTIMATED':'TABLE CALIBRATION UNAVAILABLE'}</span>
+      {showForecast&&displayed.ball_flight&&<span className="bg-slate-950/85 text-violet-200 px-3 py-2 rounded-lg">FORECAST EXPERIMENT · {displayed.ball_flight.status==='EXPERIMENTAL_FORECAST'?`fit RMSE ${displayed.ball_flight.fit_rmse_px?.toFixed(1)} px · uncertainty uncalibrated`:displayed.ball_flight.reason.replaceAll('_',' ')}</span>}
     </div>}
     {decodeError && <p role="alert" className="absolute bottom-3 left-3 text-rose-300 bg-slate-950 p-2">Source image could not be decoded.</p>}
     <div className="absolute bottom-3 left-3 bg-slate-950/80 px-3 py-2 rounded-lg text-[10px] text-slate-300 font-mono">Amber: ball · Violet: people · Green: table · Confidence is a model score</div>

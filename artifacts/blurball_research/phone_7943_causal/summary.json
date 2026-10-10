@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "scope": "Unlabeled original-phone causal prefix diagnostic, not accuracy/recall or live latency",
+  "source": "C:/Users/Adi/Downloads/recordings/IMG_7943.MOV",
+  "source_sha256": "c343f0cdb72df492b3de2a69278e4d9c6884e9a22e80a5db69b903a2a9129e7f",
+  "source_fps_nominal": 59.912144,
+  "decoded_prefix_frames": 1694,
+  "selected_observations": 390,
+  "model": {
+    "backend": "blurball",
+    "experimental": true,
+    "heatmap_threshold": 0.7,
+    "lookahead_frames": 0,
+    "model_sha256": "48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f",
+    "score_calibrated": false,
+    "score_kind": "uncalibrated_heatmap_peak",
+    "temporal_policy": "causal_channel_2",
+    "timestamp_basis": "nominal_source_fps_or_live_capture_clock",
+    "warmup_frames": 2
+  },
+  "reported_failure_window": {
+    "to": 1694,
+    "selected_frames": 15,
+    "from": 1680
+  },
+  "reported_frame": {
+    "visual_observation": "Marker overlaps the visible ball streak rather than the ceiling feature; root inspected original imported JPEG and overlays1680/1685/1694",
+    "heatmap_peak_uncalibrated": 0.824374,
+    "reviewed_reference_label_available": false,
+    "frame": 1685,
+    "overlay": "frame_1685.jpg",
+    "center_px": [
+      1087.952271,
+      578.530212
+    ]
+  },
+  "annotations": [
+    {
+      "path": "training_data/live/phone_c343f0cdb72df492_1/annotations.json",
+      "sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38",
+      "saved_entries": 30,
+      "reviewed_entries": 0
+    },
+    {
+      "path": "training_data/live/phone_c343f0cdb72df492_2/annotations.json",
+      "sha256": "d51e0f6c248f078b728a7add29b3a0a3ab8f0ee6c43ad35b58b6023a4209dd3c",
+      "saved_entries": 15,
+      "reviewed_entries": 0
+    },
+    {
+      "path": "training_data/live/phone_c343f0cdb72df492_3/annotations.json",
+      "sha256": "d51e0f6c248f078b728a7add29b3a0a3ab8f0ee6c43ad35b58b6023a4209dd3c",
+      "saved_entries": 15,
+      "reviewed_entries": 0
+    }
+  ],
+  "precision": null,
+  "recall": null,
+  "localization_error": null,
+  "physical_trajectory_verified": false,
+  "camera_opened": false,
+  "live_latency_measured": false,
+  "limitations": [
+    "Phone labels remain unreviewed and were not rewritten",
+    "One venue/session cannot establish independent live generalization",
+    "Frame1848 is beyond this prefix",
+    "Timestamps use nominal source FPS; true MOV PTS/seek integrity remains unfinished",
+    "Detection does not supply grey-table calibration, height or spin"
+  ]
+}

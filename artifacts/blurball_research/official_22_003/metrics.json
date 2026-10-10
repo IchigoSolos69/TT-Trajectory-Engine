@@ -1,0 +1,140 @@
+{
+  "scope": "One official match22 clip, not the entire dataset or live-camera accuracy",
+  "label_sha256": "9573cfecf3c3a45178ef1cc4c1d9539e7bb1e5981bb125434d67a87ba3cd53ea",
+  "prediction_sha256": "aed95d98080ae2fbfe0b926247238f8a830425ce110ea4c8fda62c36c4f087e2",
+  "matching": "One proposal per source frame; strict distance < 4.0 SOURCE pixels",
+  "reference_coordinates": "Unscaled official CSV source pixels; zero-based CSV -> one-based source IDs",
+  "recall_definition": "Correctly localized detections / ALL visible reference frames",
+  "settings_selected_before_scoring": true,
+  "full_recording": {
+    "yolo": {
+      "frames": 272,
+      "visible_reference_frames": 270,
+      "absent_reference_frames": 2,
+      "tp": 12,
+      "wrong_location_predictions": 258,
+      "absent_false_positives": 2,
+      "no_prediction_visible_frames": 0,
+      "true_negatives": 0,
+      "precision": 0.04411764705882353,
+      "recall": 0.044444444444444446,
+      "f1": 0.04428044280442805,
+      "upstream_recall_convention": 1.0,
+      "localization_all_visible_predictions": {
+        "count": 270,
+        "median_source_px": 154.78488741297048,
+        "p95_source_px": 464.4080360048096,
+        "rmse_source_px": 266.9749111579172
+      }
+    },
+    "blurball_offline": {
+      "frames": 272,
+      "visible_reference_frames": 270,
+      "absent_reference_frames": 2,
+      "tp": 260,
+      "wrong_location_predictions": 4,
+      "absent_false_positives": 0,
+      "no_prediction_visible_frames": 6,
+      "true_negatives": 2,
+      "precision": 0.9848484848484849,
+      "recall": 0.9629629629629629,
+      "f1": 0.9737827715355806,
+      "upstream_recall_convention": 0.9774436090225563,
+      "localization_all_visible_predictions": {
+        "count": 264,
+        "median_source_px": 1.0072110187920844,
+        "p95_source_px": 2.702123460737158,
+        "rmse_source_px": 2.5465181575086397
+      }
+    },
+    "blurball_causal": {
+      "frames": 272,
+      "visible_reference_frames": 270,
+      "absent_reference_frames": 2,
+      "tp": 254,
+      "wrong_location_predictions": 6,
+      "absent_false_positives": 0,
+      "no_prediction_visible_frames": 10,
+      "true_negatives": 2,
+      "precision": 0.9769230769230769,
+      "recall": 0.9407407407407408,
+      "f1": 0.9584905660377359,
+      "upstream_recall_convention": 0.9621212121212122,
+      "localization_all_visible_predictions": {
+        "count": 260,
+        "median_source_px": 1.1065674472078706,
+        "p95_source_px": 2.9238411285110906,
+        "rmse_source_px": 2.269094910039928
+      }
+    }
+  },
+  "after_two_frame_causal_warmup": {
+    "yolo": {
+      "frames": 270,
+      "visible_reference_frames": 268,
+      "absent_reference_frames": 2,
+      "tp": 12,
+      "wrong_location_predictions": 256,
+      "absent_false_positives": 2,
+      "no_prediction_visible_frames": 0,
+      "true_negatives": 0,
+      "precision": 0.044444444444444446,
+      "recall": 0.04477611940298507,
+      "f1": 0.04460966542750929,
+      "upstream_recall_convention": 1.0,
+      "localization_all_visible_predictions": {
+        "count": 268,
+        "median_source_px": 153.64052496741874,
+        "p95_source_px": 464.4245065545127,
+        "rmse_source_px": 265.2604895051981
+      }
+    },
+    "blurball_offline": {
+      "frames": 270,
+      "visible_reference_frames": 268,
+      "absent_reference_frames": 2,
+      "tp": 260,
+      "wrong_location_predictions": 2,
+      "absent_false_positives": 0,
+      "no_prediction_visible_frames": 6,
+      "true_negatives": 2,
+      "precision": 0.9923664122137404,
+      "recall": 0.9701492537313433,
+      "f1": 0.9811320754716981,
+      "upstream_recall_convention": 0.9774436090225563,
+      "localization_all_visible_predictions": {
+        "count": 262,
+        "median_source_px": 1.0048970559182537,
+        "p95_source_px": 2.6847088969344433,
+        "rmse_source_px": 1.3942177705955485
+      }
+    },
+    "blurball_causal": {
+      "frames": 270,
+      "visible_reference_frames": 268,
+      "absent_reference_frames": 2,
+      "tp": 254,
+      "wrong_location_predictions": 6,
+      "absent_false_positives": 0,
+      "no_prediction_visible_frames": 8,
+      "true_negatives": 2,
+      "precision": 0.9769230769230769,
+      "recall": 0.9477611940298507,
+      "f1": 0.962121212121212,
+      "upstream_recall_convention": 0.9694656488549618,
+      "localization_all_visible_predictions": {
+        "count": 260,
+        "median_source_px": 1.1065674472078706,
+        "p95_source_px": 2.9238411285110906,
+        "rmse_source_px": 2.269094910039928
+      }
+    }
+  },
+  "deployment_approved": false,
+  "remaining_gates": [
+    "Broad match/live negatives and blur/occlusion comparisons",
+    "Confidence and uncertainty calibration",
+    "Native integration and capture-to-display timing",
+    "Independent venue sessions"
+  ]
+}

@@ -31,3 +31,11 @@ test('IPC navigation trust rejects external content and unintended local paths',
 test('live source never substitutes a recording',async()=>{
   const engine=new EngineSession({});await assert.rejects(engine.start('live','clip.mov'),/cannot load/);assert.equal(engine.child,null);
 });
+
+test('model selection rejects arbitrary values and missing resources before stopping a session',async()=>{
+  const engine=new EngineSession({ballModel:__filename});
+  engine.child={pid:123};engine.mode='live';
+  await assert.rejects(engine.setBallBackend('../arbitrary.engine'),/Unknown ball model/);
+  await assert.rejects(engine.setBallBackend('blurball'),/not installed/);
+  assert.equal(engine.child.pid,123);assert.equal(engine.mode,'live');assert.equal(engine.ballBackend,'yolo');
+});

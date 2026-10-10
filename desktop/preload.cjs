@@ -4,6 +4,8 @@ contextBridge.exposeInMainWorld('ttDesktop', {
   getContext: () => ipcRenderer.invoke('desktop:context'),
   openRecording: () => ipcRenderer.invoke('desktop:recording'),
   startLive: () => ipcRenderer.invoke('desktop:live'),
+  openTrainingReview: () => ipcRenderer.invoke('desktop:review'),
+  setBallBackend: value => ipcRenderer.invoke('desktop:ball-model', value),
   endSession: () => ipcRenderer.invoke('desktop:end'),
   showDataDirectory: () => ipcRenderer.invoke('desktop:data'),
   getReviewDrafts: () => ipcRenderer.invoke('desktop:drafts-read'),

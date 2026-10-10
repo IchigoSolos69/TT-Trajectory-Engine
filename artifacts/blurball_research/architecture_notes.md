@@ -46,3 +46,41 @@ The streak axis is undirected (180° ambiguity); source-frame motion can orient 
 - [Detector and postprocessor](https://github.com/cogsys-tuebingen/blurball/blob/main/src/detectors/blurball_postprocessor.py)
 - [Video runner](https://github.com/cogsys-tuebingen/blurball/blob/main/src/runners/inference.py)
 - [Dataset preprocessing](https://github.com/cogsys-tuebingen/blurball/blob/main/src/dataloaders/dataset_loader.py)
+
+## Existing native analyses of the user's downloaded clips
+
+Read-only audit of complete saved analyses; these are proposal coverage, **not localization accuracy**:
+
+| Saved source / analysis | Accounted frames | Positive ball proposal | Table box frames | Four-corner frames | Max speed / strikes |
+|---|---:|---:|---:|---:|---|
+| `001.mp4`, `1791526513809868_28444` | 193/193 | 112 (58.03%) | 3 | 1 | 0 km/h / 0 |
+| `demo5.mp4`, `1791528592320735_39620` | 106/106 | 88 (83.02%) | 1 | 0 | 0 km/h / 0 |
+
+Both completion manifests say COMPLETE and every `video_error` is empty. Both used deployed ball SHA256 `2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9`, threshold 0.25 and experimental intelligence false. Thus these recordings decoded and generated many ball hypotheses, while physical analysis was unavailable due to almost entirely missing table calibration. Candidate score ranges were 0.2517–0.7891 and 0.2629–0.6152 respectively. Both final strikes blocks are empty. This does not establish whether any individual proposal was the true ball.
+
+## Accessible official reference annotations and evaluator conventions
+
+Read-only public WebDAV directory listing at `https://cloud.cs.uni-tuebingen.de/public.php/webdav/`, with public share token `C3pJEPKWQAkono7`, exposes match directories 00–25 plus small midpoint and endpoint annotation archives. The midpoint archive is 1,591,844 bytes, SHA256 `74ea49d3ce1a27f09edf1e3525348ac717e50f8f024f226baec941026237faf7`; it was inspected in memory without downloading the full dataset. It contains 465 entries and CSVs such as `all_csv_annotations/22_csv_003.csv`.
+
+The source config lists matches 22–25 as test. `22/rallies_videos/003.mp4` is only 2,058,437 bytes, making a small official labeled comparison feasible. Its CSV contains 272 frames: 270 Visibility=1, two Visibility=0. Header is `Frame,Visibility,X,Y,theta,l`.
+
+`src/datasets/tabletennis.py:16–46` loads X/Y directly and marks only Visibility=1 visible. There is no explicit unknown/occluded annotation class in that loader; do not claim such evaluation subsets from these two codes alone. Predicted positions are inverse-affine transformed into the source image before the evaluator receives them. Reference coordinates in the inspected CSV reach x=980.54; another match-22 CSV reaches x=1275.3, so the CSVs are not 512-pixel input coordinates. Check actual reference video dimensions rather than scaling labels by assumption.
+
+`src/configs/runner/eval_blurball.yaml:14` sets localization threshold **4 source pixels**, with a strict `<` comparison in `src/utils/blur_evaluator.py:38–39`. The runner's default function argument `dist_thresh=10` is only used for a separate false-positive-list condition; it is not the evaluator's acceptance threshold. Official recall uses TP/(TP+FN), excluding incorrectly localized visible predictions counted as FP1. For this project's fixed detection gates, report recall TP/(TP+FN+FP1), with FP1 contributing a false positive and a missed true location, or display both conventions explicitly. Otherwise incorrectly localized predictions can falsely inflate reported recall. The official RMSE accumulates errors for all visible frames with a prediction, including misplaced proposals.
+
+Two absent frames are insufficient to establish absent-ball false-positive safety; this labeled subset is exploratory evidence, not a full model promotion gate. CSV theta/l are consumed without length rescaling when generating targets (`dataset_loader.py:183–197`), while XY is affine transformed. Verify the annotation's blur-length convention independently before treating exported source-scaled blur length as directly comparable to CSV `l`.
+
+The public frame extraction script uses `ffmpeg -i "$video" -start_number 0 -vsync 0 -an -y .../%05d.png`. It does not resize, convert FPS or remove duplicates. Source frame 0 corresponds to the first sequentially decoded frame. A CSV/video length discrepancy must remain a reported alignment failure rather than being repaired through an assumed cadence.
+
+## Verified isolated ONNX / TensorRT export
+
+The earlier export feasibility inference was subsequently tested using `python_tools/export_blurball_candidate.py`, without modifying any deployed model. See `artifacts/blurball_research/export/report.json` and `export_runtime.log`.
+
+- Installed Torch 2.14.0+cu130, TensorRT 11.3.0.99, ONNX 1.22.0; NVIDIA GeForce RTX 5050 Laptop GPU.
+- Checkpoint SHA256 `3545206c7155194ea654899d33579c88c9fd8e82c632cbdbae3b0c0ec3f2985f` loaded with `weights_only=True` and strict parameter matching.
+- Fixed-shape opset-17 ONNX export and ONNX checker passed. TensorRT parser produced no errors, and a strongly typed FP32 engine with TF32 disabled built successfully in 27.49 seconds.
+- Engine contract `[1,9,288,512]` FP32 → `[1,3,288,512]` FP32; SHA256 `48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f`.
+- Tested 18 real consecutive-frame windows from the user's original `001.mp4` and `demo5.mp4`: three overlapping windows around source frame 3, 40 and 80 per source. Maximum logit difference 0.0000391; maximum heatmap probability difference 0.00000174. All 51 matched connected components agreed, with zero unmatched components and maximum centroid difference 0.000209 source pixels.
+- Offline GPU forward timing across those 18 passes: Torch median 25.38 ms, TensorRT FP32 median 9.85 ms and p95 10.02 ms. These exclude capture, RGB/affine preprocessing, transfer, component extraction, other models, telemetry and rendering. Existing application/research work may share the GPU; this is export experiment timing, not a controlled sustained benchmark or live latency result. No 120 FPS claim follows from these measurements.
+
+Numerical export parity therefore passed this finite experiment. Detector accuracy, native C++ integration, prolonged stability, FP16 conversion and live performance remain separate acceptance work. The engine cannot replace the YOLO engine file directly: its temporal input and heatmap output contracts require a dedicated adapter and source-frame mapping.

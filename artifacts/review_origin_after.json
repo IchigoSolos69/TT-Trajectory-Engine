@@ -1,0 +1,28 @@
+{
+  "expectedOld": false,
+  "requestOrigin": "http://127.0.0.1:50448",
+  "requests": [
+    {
+      "origin": "http://127.0.0.1:50448",
+      "status": 400,
+      "body": {
+        "error": "Invalid clip"
+      }
+    },
+    {
+      "origin": "http://localhost:50448",
+      "status": 403,
+      "body": {
+        "error": "Same-origin review required"
+      }
+    },
+    {
+      "origin": "https://untrusted.example",
+      "status": 403,
+      "body": {
+        "error": "Same-origin review required"
+      }
+    }
+  ],
+  "log": "  ▲ Next.js 14.2.35\n  - Local:        http://127.0.0.1:50448\n  - Network:      http://127.0.0.1:50448\n\n ✓ Starting...\n ✓ Ready in 68ms\n[training-review] Error: Invalid clip\n    at P (C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\frontend\\.next-desktop\\standalone\\.next-desktop\\server\\app\\api\\training-review\\route.js:1:1902)\n    at S (C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\frontend\\.next-desktop\\standalone\\.next-desktop\\server\\app\\api\\training-review\\route.js:1:4291)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\frontend\\.next-desktop\\standalone\\node_modules\\next\\dist\\compiled\\next-server\\app-route.runtime.prod.js:6:38411\n    at async e_.execute (C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\frontend\\.next-desktop\\standalone\\node_modules\\next\\dist\\compiled\\next-server\\app-route.runtime.prod.js:6:27880)\n    at async e_.handle (C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\frontend\\.next-desktop\\standalone\\node_modules\\next\\dist\\compiled\\next-server\\app-route.runtime.prod.js:6:39943)\n    at async doRender (C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\frontend\\.next-desktop\\standalone\\node_modules\\next\\dist\\server\\base-server.js:1366:42)\n    at async cacheEntry.responseCache.get.routeKind (C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\frontend\\.next-desktop\\standalone\\node_modules\\next\\dist\\server\\base-server.js:1588:28)\n    at async NextNodeServer.renderToResponseWithComponentsImpl (C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\frontend\\.next-desktop\\standalone\\node_modules\\next\\dist\\server\\base-server.js:1496:28)\n    at async NextNodeServer.renderPageComponent (C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\frontend\\.next-desktop\\standalone\\node_modules\\next\\dist\\server\\base-server.js:1924:24)\n"
+}

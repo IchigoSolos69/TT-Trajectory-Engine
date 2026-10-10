@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "source_splits": {
+    "train": [
+      "synthetic_train"
+    ],
+    "val": [
+      "synthetic_val"
+    ],
+    "test": [
+      "synthetic_test"
+    ]
+  },
+  "split_manifest_sha256": "f22151568f36dc6790a53ddb276946193e575f061f1c1b380b0d245055f32a34",
+  "accepted_counts": {
+    "train": 4,
+    "val": 4,
+    "test": 4
+  },
+  "excluded": {
+    "burst_or_dimension_boundary": 18
+  },
+  "ready_for_training": true,
+  "capture_lineage": [
+    {
+      "clip": "synthetic_train",
+      "split": "train",
+      "session_id": "SYNTHETIC_ONLY_train",
+      "annotations_sha256": "76002f4fadafa7e7516e6795f70b986d7090115b377ca7287da0ff21e845bc4c",
+      "capture_sha256": "1f0452caac439d34ea916ea26d2f889f349622fd597bf04316fe28aec5417a45",
+      "index_sha256": "8276d266926098c556ae8cd1da5feeb748d593287ef151155eb01e78e8f8bac0"
+    },
+    {
+      "clip": "synthetic_val",
+      "split": "val",
+      "session_id": "SYNTHETIC_ONLY_val",
+      "annotations_sha256": "76002f4fadafa7e7516e6795f70b986d7090115b377ca7287da0ff21e845bc4c",
+      "capture_sha256": "cc29a40b3df67b3a8e241036b431cbfdb6ca4ddbcbcc1f17f09a7f405b898e8b",
+      "index_sha256": "8276d266926098c556ae8cd1da5feeb748d593287ef151155eb01e78e8f8bac0"
+    },
+    {
+      "clip": "synthetic_test",
+      "split": "test",
+      "session_id": "SYNTHETIC_ONLY_test",
+      "annotations_sha256": "76002f4fadafa7e7516e6795f70b986d7090115b377ca7287da0ff21e845bc4c",
+      "capture_sha256": "2ba95967db014ef3ca4c632dfc15ea619b443dce42da72c5e0d7d3d75850412c",
+      "index_sha256": "8276d266926098c556ae8cd1da5feeb748d593287ef151155eb01e78e8f8bac0"
+    }
+  ],
+  "scope": "Explicitly reviewed causal blur-training handoff only; counts do not establish accuracy or sufficient sample size.",
+  "label_convention": "Blur-streak center and half-length in original source pixels; undirected axis, null for zero length. Unknowns excluded."
+}

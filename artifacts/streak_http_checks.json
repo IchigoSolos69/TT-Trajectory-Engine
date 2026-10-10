@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "standalone": true,
+  "scope": "Compiled server HTTP requests with actual source JPEG and isolated fixture",
+  "source_dimensions": {
+    "height": 540,
+    "width": 960
+  },
+  "checks": [
+    "source dimensions verified",
+    "explicit streak review",
+    "all original boxes preserved",
+    "streak-only labels accepted",
+    "mismatched dimensions rejected",
+    "clear state persists after GET"
+  ],
+  "fixture_root": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\review_api_1791545965305"
+}

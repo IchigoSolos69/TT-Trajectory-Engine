@@ -1,0 +1,452 @@
+{
+  "schema_version": 1,
+  "scope": "Read-only saved-label structural readiness. Label correctness and temporal continuity are not proven. No GPU work, fitting, installation or label mutation.",
+  "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+  "python_executable": "C:\\Users\\Adi\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+  "dependency_metadata": {
+    "torch": "2.14.0+cu130",
+    "torchvision": "0.29.0",
+    "ultralytics": "8.4.155",
+    "numpy": "2.2.6",
+    "opencv-python": "5.0.0.93",
+    "PyYAML": "6.0.3",
+    "hydra-core": null,
+    "omegaconf": null,
+    "wandb": null,
+    "timm": null,
+    "imgaug": null,
+    "onnx": "1.22.0",
+    "tensorrt": "11.3.0.99"
+  },
+  "project_torchvision_overlay": true,
+  "frozen_live_splits_exists": false,
+  "totals": {
+    "saved_reviewed": 30,
+    "ball_reviewed_flag": 30,
+    "sampled_frames": 750,
+    "eligible_scene_frames": 30,
+    "eligible_ball_positive": 19
+  },
+  "sessions": {
+    "iphone_same_venue_session_1": 750
+  },
+  "unique_source_frames": 732,
+  "repeated_saved_source_frames": {
+    "('452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706', 3571)": [
+      [
+        "phone_452627e98a3c2652_1",
+        "frame_116.jpg"
+      ],
+      [
+        "phone_452627e98a3c2652_2",
+        "frame_55.jpg"
+      ]
+    ],
+    "('452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706', 5434)": [
+      [
+        "phone_452627e98a3c2652_1",
+        "frame_176.jpg"
+      ],
+      [
+        "phone_452627e98a3c2652_2",
+        "frame_72.jpg"
+      ]
+    ],
+    "('452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706', 5435)": [
+      [
+        "phone_452627e98a3c2652_1",
+        "frame_177.jpg"
+      ],
+      [
+        "phone_452627e98a3c2652_2",
+        "frame_73.jpg"
+      ]
+    ],
+    "('452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706', 5436)": [
+      [
+        "phone_452627e98a3c2652_1",
+        "frame_178.jpg"
+      ],
+      [
+        "phone_452627e98a3c2652_2",
+        "frame_74.jpg"
+      ]
+    ],
+    "('452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706', 5437)": [
+      [
+        "phone_452627e98a3c2652_1",
+        "frame_179.jpg"
+      ],
+      [
+        "phone_452627e98a3c2652_2",
+        "frame_75.jpg"
+      ]
+    ],
+    "('452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706', 7297)": [
+      [
+        "phone_452627e98a3c2652_1",
+        "frame_236.jpg"
+      ],
+      [
+        "phone_452627e98a3c2652_2",
+        "frame_103.jpg"
+      ]
+    ],
+    "('452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706', 7298)": [
+      [
+        "phone_452627e98a3c2652_1",
+        "frame_237.jpg"
+      ],
+      [
+        "phone_452627e98a3c2652_2",
+        "frame_104.jpg"
+      ]
+    ],
+    "('452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706', 7299)": [
+      [
+        "phone_452627e98a3c2652_1",
+        "frame_238.jpg"
+      ],
+      [
+        "phone_452627e98a3c2652_2",
+        "frame_105.jpg"
+      ]
+    ],
+    "('452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706', 8232)": [
+      [
+        "phone_452627e98a3c2652_1",
+        "frame_270.jpg"
+      ],
+      [
+        "phone_452627e98a3c2652_2",
+        "frame_106.jpg"
+      ]
+    ],
+    "('452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706', 8383)": [
+      [
+        "phone_452627e98a3c2652_1",
+        "frame_271.jpg"
+      ],
+      [
+        "phone_452627e98a3c2652_2",
+        "frame_112.jpg"
+      ]
+    ],
+    "('452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706', 8384)": [
+      [
+        "phone_452627e98a3c2652_1",
+        "frame_272.jpg"
+      ],
+      [
+        "phone_452627e98a3c2652_2",
+        "frame_113.jpg"
+      ]
+    ],
+    "('452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706', 8385)": [
+      [
+        "phone_452627e98a3c2652_1",
+        "frame_273.jpg"
+      ],
+      [
+        "phone_452627e98a3c2652_2",
+        "frame_114.jpg"
+      ]
+    ],
+    "('452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706', 8386)": [
+      [
+        "phone_452627e98a3c2652_1",
+        "frame_274.jpg"
+      ],
+      [
+        "phone_452627e98a3c2652_2",
+        "frame_115.jpg"
+      ]
+    ],
+    "('c343f0cdb72df492b3de2a69278e4d9c6884e9a22e80a5db69b903a2a9129e7f', 1688)": [
+      [
+        "phone_c343f0cdb72df492_1",
+        "frame_21.jpg"
+      ],
+      [
+        "phone_c343f0cdb72df492_2",
+        "frame_9.jpg"
+      ]
+    ],
+    "('c343f0cdb72df492b3de2a69278e4d9c6884e9a22e80a5db69b903a2a9129e7f', 1689)": [
+      [
+        "phone_c343f0cdb72df492_1",
+        "frame_22.jpg"
+      ],
+      [
+        "phone_c343f0cdb72df492_2",
+        "frame_10.jpg"
+      ]
+    ],
+    "('c343f0cdb72df492b3de2a69278e4d9c6884e9a22e80a5db69b903a2a9129e7f', 1690)": [
+      [
+        "phone_c343f0cdb72df492_1",
+        "frame_23.jpg"
+      ],
+      [
+        "phone_c343f0cdb72df492_2",
+        "frame_11.jpg"
+      ]
+    ],
+    "('c343f0cdb72df492b3de2a69278e4d9c6884e9a22e80a5db69b903a2a9129e7f', 1691)": [
+      [
+        "phone_c343f0cdb72df492_1",
+        "frame_24.jpg"
+      ],
+      [
+        "phone_c343f0cdb72df492_2",
+        "frame_12.jpg"
+      ]
+    ],
+    "('c343f0cdb72df492b3de2a69278e4d9c6884e9a22e80a5db69b903a2a9129e7f', 1692)": [
+      [
+        "phone_c343f0cdb72df492_1",
+        "frame_25.jpg"
+      ],
+      [
+        "phone_c343f0cdb72df492_2",
+        "frame_13.jpg"
+      ]
+    ]
+  },
+  "captures": [
+    {
+      "clip": "phone_031b178c51bfae75_1",
+      "session_id": "iphone_same_venue_session_1",
+      "split": null,
+      "sampled_frames": 30,
+      "capture_origin": "iphone",
+      "continuity_metadata": {},
+      "counts": {
+        "saved_reviewed": 0,
+        "ball_reviewed_flag": 0
+      },
+      "errors": [],
+      "annotations_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38",
+      "capture_sha256": "5708667b19430d604b2fd4554b888664112527af927726880f1ea0bdac4304a5",
+      "index_sha256": "2a0ab8fb272257123573dd74b1847897b1a81b27179de153a2836d1168ffd77c"
+    },
+    {
+      "clip": "phone_1383e588b7ee3783_1",
+      "session_id": "iphone_same_venue_session_1",
+      "split": null,
+      "sampled_frames": 30,
+      "capture_origin": "iphone",
+      "continuity_metadata": {},
+      "counts": {
+        "saved_reviewed": 0,
+        "ball_reviewed_flag": 0
+      },
+      "errors": [],
+      "annotations_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38",
+      "capture_sha256": "196d8be359b92d93dd510f43d147951fdf3b479a64c03bc81bbc376b7197469c",
+      "index_sha256": "62562e065d243180d200550c2c2dac73fdeb413fa337ff22e9ffb39e44a908a8"
+    },
+    {
+      "clip": "phone_211157624ce0f530_1",
+      "session_id": "iphone_same_venue_session_1",
+      "split": null,
+      "sampled_frames": 30,
+      "capture_origin": "iphone",
+      "continuity_metadata": {},
+      "counts": {
+        "saved_reviewed": 0,
+        "ball_reviewed_flag": 0
+      },
+      "errors": [],
+      "annotations_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38",
+      "capture_sha256": "ae3c4bd582acce34b1095cf4d54ed5e2c2e23121b3e4682168a7a573c77d34ac",
+      "index_sha256": "df98dfac5eb6220f6633aa807c16e55322af3125223390da7f8c2e5384b31cc0"
+    },
+    {
+      "clip": "phone_3adaa646b1413bfa_1",
+      "session_id": "iphone_same_venue_session_1",
+      "split": null,
+      "sampled_frames": 30,
+      "capture_origin": "iphone",
+      "continuity_metadata": {},
+      "counts": {
+        "saved_reviewed": 0,
+        "ball_reviewed_flag": 0
+      },
+      "errors": [],
+      "annotations_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38",
+      "capture_sha256": "7350371ae93039ff5ca53987d41a3173e4575b9fd3a26d8c6afc7145d1296155",
+      "index_sha256": "291b7a4a79ba76b58b7a7cf091be54b54cde20dce6e5b60e09074902074b5430"
+    },
+    {
+      "clip": "phone_452627e98a3c2652_1",
+      "session_id": "iphone_same_venue_session_1",
+      "split": null,
+      "sampled_frames": 300,
+      "capture_origin": "unspecified",
+      "continuity_metadata": {},
+      "counts": {
+        "saved_reviewed": 0,
+        "ball_reviewed_flag": 0
+      },
+      "errors": [],
+      "annotations_sha256": "85fe25dc0f5a0dda0c4d64defa51d1017ea60c1b49406880e09e6767fd5590a2",
+      "capture_sha256": "de6a66de9ccf4c5915bc53ddb5debfe3161b8cfc39d19f315bf3699983b57a29",
+      "index_sha256": "38957991c5426d7588afa3ebd7c38207ba040b263bddcf7e5a1c12ed23c9b153"
+    },
+    {
+      "clip": "phone_452627e98a3c2652_2",
+      "session_id": "iphone_same_venue_session_1",
+      "split": null,
+      "sampled_frames": 120,
+      "capture_origin": "unspecified",
+      "continuity_metadata": {},
+      "counts": {
+        "saved_reviewed": 0,
+        "ball_reviewed_flag": 0
+      },
+      "errors": [],
+      "annotations_sha256": "55bf87bc78241e21d5792780c9718829d43e0c8ca2d46da0283963bb8e1ef6f9",
+      "capture_sha256": "b1a07a68137da6749dddead290bf5b93f7ddfb1abbdb4a32e512610a338d6e21",
+      "index_sha256": "f7a46c794263025b73c3a24c74db771a6ae32516716fc89ca051b85b03b56bd3"
+    },
+    {
+      "clip": "phone_61f027143f6c8d57_1",
+      "session_id": "iphone_same_venue_session_1",
+      "split": null,
+      "sampled_frames": 30,
+      "capture_origin": "iphone",
+      "continuity_metadata": {},
+      "counts": {
+        "saved_reviewed": 0,
+        "ball_reviewed_flag": 0
+      },
+      "errors": [],
+      "annotations_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38",
+      "capture_sha256": "ce2589c193869787b0dddb0d3e123341adbd4444defe81273d4d1b351acd01c0",
+      "index_sha256": "72de4c6c6670d1bedd7a0e48bdef23de2be00acf8eda5e5f834edfffc3020113"
+    },
+    {
+      "clip": "phone_8b5ea69a091d17fd_1",
+      "session_id": "iphone_same_venue_session_1",
+      "split": null,
+      "sampled_frames": 30,
+      "capture_origin": "iphone",
+      "continuity_metadata": {},
+      "counts": {
+        "saved_reviewed": 0,
+        "ball_reviewed_flag": 0
+      },
+      "errors": [],
+      "annotations_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38",
+      "capture_sha256": "6b0eb35e54469f0d4ecf991547a614b3431d6aa67938c95fd009a49654eeae27",
+      "index_sha256": "a34b11b2a851025391f9409bcc1252143b6202b00c96ff5232585ff22a6123d0"
+    },
+    {
+      "clip": "phone_c343f0cdb72df492_1",
+      "session_id": "iphone_same_venue_session_1",
+      "split": null,
+      "sampled_frames": 30,
+      "capture_origin": "iphone",
+      "continuity_metadata": {},
+      "counts": {
+        "saved_reviewed": 0,
+        "ball_reviewed_flag": 0
+      },
+      "errors": [],
+      "annotations_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38",
+      "capture_sha256": "369f993088df4b1b055e4a04d47a0a92a71efac6f9f5feba6a8a6d50796fa55f",
+      "index_sha256": "216158e0ee6d3e9f090c81822867db378a2125769b6d51ff63f758f02a8defb1"
+    },
+    {
+      "clip": "phone_c343f0cdb72df492_2",
+      "session_id": "iphone_same_venue_session_1",
+      "split": null,
+      "sampled_frames": 15,
+      "capture_origin": "iphone",
+      "continuity_metadata": {},
+      "counts": {
+        "saved_reviewed": 0,
+        "ball_reviewed_flag": 0
+      },
+      "errors": [],
+      "annotations_sha256": "d51e0f6c248f078b728a7add29b3a0a3ab8f0ee6c43ad35b58b6023a4209dd3c",
+      "capture_sha256": "cc754802c5bcef8144edd6d19c6fb9d72a522dea0f7c496c373c6ad64311b6d4",
+      "index_sha256": "7399ac530fcc93a3b09e633c301feab27d9adf0316ad8767d1b8530e28814575"
+    },
+    {
+      "clip": "phone_c343f0cdb72df492_3",
+      "session_id": "iphone_same_venue_session_1",
+      "split": null,
+      "sampled_frames": 15,
+      "capture_origin": "iphone",
+      "continuity_metadata": {},
+      "counts": {
+        "saved_reviewed": 0,
+        "ball_reviewed_flag": 0
+      },
+      "errors": [],
+      "annotations_sha256": "d51e0f6c248f078b728a7add29b3a0a3ab8f0ee6c43ad35b58b6023a4209dd3c",
+      "capture_sha256": "a6745001ec94478ee568f8f3bffdc999b9bf8a4f075bb73c027d0ce2ec858447",
+      "index_sha256": "36759a7a9cfbb199964011fe442138e6000b3b8053284704d0a891d95ec0f80a"
+    },
+    {
+      "clip": "phone_e197222a3322d1af_1",
+      "session_id": "iphone_same_venue_session_1",
+      "split": null,
+      "sampled_frames": 30,
+      "capture_origin": "iphone",
+      "continuity_metadata": {},
+      "counts": {
+        "saved_reviewed": 0,
+        "ball_reviewed_flag": 0
+      },
+      "errors": [],
+      "annotations_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38",
+      "capture_sha256": "5074ea239105c397e7b0da07b8cf0c5f44b586d38f9ac60958cc74f9af5c1941",
+      "index_sha256": "aa8b3be371bb99f5fc5f3399afeed4628c6120345dd5302ea1542eab7d685ad4"
+    },
+    {
+      "clip": "phone_e23544b0c4c1a850_1",
+      "session_id": "iphone_same_venue_session_1",
+      "split": null,
+      "sampled_frames": 30,
+      "capture_origin": "iphone",
+      "continuity_metadata": {},
+      "counts": {
+        "saved_reviewed": 30,
+        "ball_reviewed_flag": 30,
+        "eligible_scene_frames": 30,
+        "eligible_ball_positive": 19
+      },
+      "errors": [],
+      "annotations_sha256": "2d561e8c9c53aed3a491d27e8a66115075011c5483f24345763cdcb44f6639df",
+      "capture_sha256": "575c8d339d34c1c6b62673e021379d104f3e1ded78aaf875ee1b88756587720e",
+      "index_sha256": "d9bfc7720e84193b5415b956eac599bbdafba92a634219a4f08cebba3adb34cd"
+    },
+    {
+      "clip": "phone_fa4e98c1cc92b86c_1",
+      "session_id": "iphone_same_venue_session_1",
+      "split": null,
+      "sampled_frames": 30,
+      "capture_origin": "iphone",
+      "continuity_metadata": {},
+      "counts": {
+        "saved_reviewed": 0,
+        "ball_reviewed_flag": 0
+      },
+      "errors": [],
+      "annotations_sha256": "8cc5d21abe5cbc62b5236b5e79b82f9d9b8b10c528a82cd1678eaebe5a7b0d38",
+      "capture_sha256": "a084e74cd5de1a6333f25fe1a783c8086e8bea517ffa457f72915e9091c3fcf3",
+      "index_sha256": "ba258ddd871959d5b524095eeb567306d6d7d3c7e0b5e85af247e4b9a93685b4"
+    }
+  ],
+  "ready_for_real_training": false,
+  "blockers": [
+    "Only one real gameplay session; independent validation/test sessions unavailable",
+    "No frozen live splits manifest",
+    "New no-ball images remain unreviewed; declaration is not saved frame ground truth",
+    "Cut/edit/duplicate history remains unspecified; adjacent source IDs alone do not establish temporal continuity",
+    "No executed BlurBall backward/optimizer-step evidence found in inspected reports; export/parity are forward-only"
+  ]
+}

@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { createHash, randomUUID } from 'node:crypto';
-import {validateGeometry,ReviewGeometry} from '../../../lib/reviewGeometry';
+import {validateGeometry,ReviewGeometry,jpegDimensions,createBlurStreak} from '../../../lib/reviewGeometry';
+import {localReviewOrigin,sameOriginReview} from '../../../lib/reviewOrigin';
+import {previewAbsenceInterval,reviewedAbsence,IndexedReviewFrame,AbsenceProvenance} from '../../../lib/reviewAbsence';
 
 export const runtime='nodejs';
 export const dynamic='force-dynamic';
@@ -28,8 +30,7 @@ async function frameIndex(dir:string){
   return text.split('\n').slice(0,-1).filter(Boolean).map(line=>JSON.parse(line));
 }
 function localRequest(req:NextRequest){
-  const host=req.nextUrl.hostname;
-  if(!['localhost','127.0.0.1','[::1]'].includes(host))throw Error('Training review is available on localhost only');
+  localReviewOrigin(req);
 }
 export async function GET(req:NextRequest){
   try{
@@ -53,7 +54,7 @@ export async function GET(req:NextRequest){
     }
     const raw=await readAnnotations(dir);
     let capture=null;
-    try { const manifest=JSON.parse(await fs.readFile(path.join(dir,'capture.json'),'utf8')); capture={source:manifest.source,original_name:typeof manifest.original_path==='string'?path.basename(manifest.original_path):undefined,session_id:manifest.session_id,source_fps_average:manifest.source_fps_average,frame_count_discrepancy:manifest.frame_count_discrepancy,capture_note:manifest.capture_note}; }
+    try { const manifest=JSON.parse(await fs.readFile(path.join(dir,'capture.json'),'utf8')); capture={source:manifest.source,original_name:typeof manifest.original_path==='string'?path.basename(manifest.original_path):undefined,session_id:manifest.session_id,source_fps_average:manifest.source_fps_average,frame_count_discrepancy:manifest.frame_count_discrepancy,capture_note:manifest.capture_note,full_source_decode_counted:manifest.full_source_decode_counted,source_frames:manifest.source_frames}; }
     catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;}
     return NextResponse.json({frames:await frameIndex(dir),annotations:JSON.parse(raw),revision:revision(raw),capture});
   }catch(error){console.error('[training-review]',error);return NextResponse.json({error:'Cannot read this local capture. Check the server log.'},{status:400});}
@@ -63,9 +64,49 @@ export async function POST(req:NextRequest){
   let lockPath:string|undefined;
   try{
     localRequest(req);
-    if(req.headers.get('origin')!==req.nextUrl.origin)return NextResponse.json({error:'Same-origin review required'},{status:403});
+    if(!sameOriginReview(req))return NextResponse.json({error:'Same-origin review required'},{status:403});
     const rawBody=await req.text();if(rawBody.length>100_000)throw Error('Review too large');
     const body=JSON.parse(rawBody),dir=await directory(body.clip);
+    if(body.action!==undefined){
+      if(!['preview_ball_absence_interval','confirm_ball_absence_interval'].includes(body.action))throw Error('Invalid review action');
+      const captureRaw=await fs.readFile(path.join(dir,'capture.json'),'utf8'),capture=JSON.parse(captureRaw);
+      if(capture.source!=='recorded_camera'||capture.full_source_decode_counted!==true||!Number.isSafeInteger(capture.source_frames)||capture.source_frames<1||!Number.isSafeInteger(capture.sampled_frames)||capture.sampled_frames<1||!(/^[0-9a-f]{64}$/).test(capture.original_sha256)||typeof capture.session_id!=='string'||!capture.session_id.trim())throw Error('Bulk absence review requires a completed recording import with source and session identity.');
+      const indexRaw=await fs.readFile(path.join(dir,'frames.jsonl'),'utf8');
+      if(!indexRaw.endsWith('\n')||indexRaw.split('\n').slice(0,-1).some(line=>!line.trim()))throw Error('Capture index is incomplete. Finish importing before bulk review.');
+      const frames:IndexedReviewFrame[]=indexRaw.split('\n').slice(0,-1).map(line=>JSON.parse(line));
+      if(frames.length!==capture.sampled_frames)throw Error('Capture index count differs from the completed import.');
+      if(frames.some(frame=>frame.source_frame>capture.source_frames))throw Error('Capture index exceeds the decoded source frames.');
+      if(body.end_source_frame>capture.source_frames)throw Error('Interval exceeds the decoded source frames.');
+      if(body.action==='confirm_ball_absence_interval'){
+        if(body.confirm_absence!==true)throw Error('Explicit no-ball confirmation is required.');
+        lockPath=path.join(dir,'.review.lock');
+        try{lock=await fs.open(lockPath,'wx');}catch(e){if((e as NodeJS.ErrnoException).code==='EEXIST')return NextResponse.json({error:'Another review is being saved; retry shortly.'},{status:409});throw e;}
+      }
+      const raw=await readAnnotations(dir);
+      if(body.revision!==revision(raw))return NextResponse.json({error:'Annotations changed. Reload this clip before bulk review.'},{status:409});
+      const annotations=JSON.parse(raw),interval={start_source_frame:body.start_source_frame,end_source_frame:body.end_source_frame};
+      if(!annotations||typeof annotations!=='object'||Array.isArray(annotations))throw Error('Invalid saved annotation dictionary.');
+      const preview=previewAbsenceInterval(frames,annotations,interval);
+      const images:Record<string,string>={};
+      for(const frame of preview.selected){
+        const imagePath=await fs.realpath(path.join(dir,frame.file));
+        if(path.dirname(imagePath).toLowerCase()!==dir.toLowerCase())throw Error('Frame escapes clip');
+        const image=await fs.readFile(imagePath);jpegDimensions(image);
+        images[frame.file]=createHash('sha256').update(image).digest('hex');
+      }
+      const token=revision(JSON.stringify({clip:body.clip,interval,annotation:revision(raw),capture:revision(captureRaw),index:revision(indexRaw),files:preview.selected,images}));
+      if(body.action==='preview_ball_absence_interval')return NextResponse.json({preview:true,preview_token:token,revision:revision(raw),interval,affected_frames:preview.selected.length,frames:preview.selected,conflicts:preview.conflicts,original_sha256:capture.original_sha256,session_id:capture.session_id});
+      if(body.preview_token!==token)return NextResponse.json({error:'The interval or capture changed. Preview it again before confirming.'},{status:409});
+      if(preview.conflicts.length)return NextResponse.json({error:'Existing visible or hidden ball evidence conflicts with absence. Resolve those frames individually.',conflicts:preview.conflicts},{status:409});
+      if(await fs.readFile(path.join(dir,'capture.json'),'utf8')!==captureRaw||await fs.readFile(path.join(dir,'frames.jsonl'),'utf8')!==indexRaw)return NextResponse.json({error:'Capture changed while saving. Preview the interval again.'},{status:409});
+      const provenance:AbsenceProvenance={...interval,method:'manual_interval',review_id:randomUUID(),reviewed_at:new Date().toISOString(),original_sha256:capture.original_sha256,session_id:capture.session_id,index_sha256:revision(indexRaw),previous_annotation_revision:revision(raw),sampled_frames:preview.selected.length};
+      for(const frame of preview.selected)annotations[frame.file]=reviewedAbsence(annotations[frame.file],frame,provenance,images[frame.file]);
+      const history=path.join(dir,'annotation_history');await fs.mkdir(history,{recursive:true});
+      try{await fs.writeFile(path.join(history,revision(raw)+'.json'),raw,{flag:'wx'});}catch(e){if((e as NodeJS.ErrnoException).code!=='EEXIST')throw e;}
+      const next=JSON.stringify(annotations,null,2),temporary=path.join(dir,randomUUID()+'.review.tmp');
+      await fs.writeFile(temporary,next,{flag:'wx'});await fs.rename(temporary,path.join(dir,'annotations.json'));
+      return NextResponse.json({saved:true,revision:revision(next),annotations,affected_frames:preview.selected.length,interval_review:provenance});
+    }
     if(body.scope!==undefined&&!['ball','all'].includes(body.scope))throw Error('Invalid review scope');
     const selected=body.scope==='ball'?['ball'] as const:classes;
     if(!/^frame_[0-9]+\.jpg$/.test(body.file))throw Error('Invalid frame');
@@ -81,6 +122,14 @@ export async function POST(req:NextRequest){
     }
     labels.reviewed_at=new Date().toISOString();
     labels.geometry=validateGeometry(body.labels.geometry);
+    if(labels.geometry.blur_streak){
+      if(!['visible','partial'].includes(labels.geometry.visibility))throw Error('Blur endpoints require visible or partly visible ball evidence');
+      const imagePath=await fs.realpath(path.join(dir,body.file));
+      if(path.dirname(imagePath).toLowerCase()!==dir.toLowerCase())throw Error('Frame escapes clip');
+      const size=jpegDimensions(await fs.readFile(imagePath)),streak=labels.geometry.blur_streak;
+      if(streak.source_width!==size.width||streak.source_height!==size.height)throw Error('Blur source dimensions changed. Reload the frame before saving.');
+      labels.geometry.blur_streak=createBlurStreak(streak.endpoints[0],streak.endpoints[1],size,body.reviewed===true);
+    }
     if(labels.reviewed&&labels.geometry.visibility==='absent'&&labels.ball.length)throw Error('Absent-ball tag conflicts with reviewed ball boxes');
     const sourceFrame=frames.find(f=>f.file===body.file)!;
     labels.source_frame=sourceFrame.source_frame;
@@ -98,11 +147,11 @@ export async function POST(req:NextRequest){
       if(body.scope==='ball'){
         labels.person=previous?.person??[];labels.table=previous?.table??[];
         const oldGeometry=previous?.geometry;
-        if(oldGeometry)labels.geometry={...oldGeometry,visibility:labels.geometry.visibility,blur:labels.geometry.blur};
+        if(oldGeometry)labels.geometry={...oldGeometry,visibility:labels.geometry.visibility,blur:labels.geometry.blur,blur_streak:labels.geometry.blur_streak};
       }
       if(flags.ball&&labels.geometry.visibility==='absent'&&labels.ball.length)throw Error('Absent-ball tag conflicts with reviewed ball boxes');
       if(body.reviewed===true&&labels.geometry.visibility==='occluded'&&labels.ball.length)throw Error('A fully occluded ball cannot have an observed box');
-      if(body.reviewed===true&&!labels.ball.length&&['visible','partial'].includes(labels.geometry.visibility))throw Error('Visible ball needs a box. Use absent or hidden/unknown only when appropriate.');
+      if(body.reviewed===true&&!labels.ball.length&&!labels.geometry.blur_streak&&['visible','partial'].includes(labels.geometry.visibility))throw Error('Visible ball needs a box or explicitly reviewed streak. Use absent or hidden/unknown only when appropriate.');
       if(body.reviewed===true&&!labels.ball.length&&labels.geometry.visibility==='unknown')throw Error('An empty ball label needs explicit absent or occluded visibility.');
       labels.reviewed_classes=flags;labels.reviewed=Object.values(flags).some(Boolean);
     }

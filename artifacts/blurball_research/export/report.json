@@ -1,0 +1,675 @@
+{
+  "experiment": "Isolated BlurBall fixed-shape ONNX/TensorRT FP32 parity",
+  "promoted": false,
+  "repo": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\blurball_research\\source",
+  "checkpoint_sha256": "3545206c7155194ea654899d33579c88c9fd8e82c632cbdbae3b0c0ec3f2985f",
+  "network_source_sha256": "e5dbaf53f5ce146526a04325c0d35d1bf337b89f675a9806bab59a002a6ded43",
+  "sources": [
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\001.mp4",
+      "sha256": "6d0633f8dabf93fa50df7e9d3280fde27cebee858f8af1c10085d5af6fb0e972"
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\demo5.mp4",
+      "sha256": "9e71cc8ba7e303403b1b9f0ea60914f270e8a178cf9af4d5ecd25e98b88d54be"
+    }
+  ],
+  "versions": {
+    "torch": "2.14.0+cu130",
+    "tensorrt": "11.3.0.99",
+    "onnx": "1.22.0"
+  },
+  "gpu": "NVIDIA GeForce RTX 5050 Laptop GPU",
+  "live_capture_to_display_latency_ms": null,
+  "scope": "Offline export feasibility and numerical parity; not native C++ integration, accuracy or live performance.",
+  "parity_passed": true,
+  "stage": "complete",
+  "onnx_sha256": "8840d9260db13b72c9c1ca5dca4fcecc2f27b488a8e6fe5f204b6fcf3b7ebd52",
+  "engine_build": {
+    "build_wall_s": 27.490070100000594,
+    "workspace_limit_bytes": 536870912,
+    "precision": "Strongly typed FP32 ONNX tensors; TensorRT TF32 disabled",
+    "parser_errors": []
+  },
+  "engine_sha256": "48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f",
+  "engine_io": [
+    {
+      "name": "frames",
+      "shape": [
+        1,
+        9,
+        288,
+        512
+      ],
+      "dtype": "DataType.FLOAT",
+      "mode": "TensorIOMode.INPUT"
+    },
+    {
+      "name": "heatmap_logits",
+      "shape": [
+        1,
+        3,
+        288,
+        512
+      ],
+      "dtype": "DataType.FLOAT",
+      "mode": "TensorIOMode.OUTPUT"
+    }
+  ],
+  "windows": [
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\001.mp4",
+      "source_frame_ids": [
+        1,
+        2,
+        3
+      ],
+      "max_logit_error": 2.0503997802734375e-05,
+      "mean_logit_error": 2.504927806512569e-06,
+      "max_heatmap_probability_error": 7.450580596923828e-07,
+      "pytorch_gpu_forward_ms": 25.05254364013672,
+      "tensorrt_gpu_forward_ms": 9.715328216552734,
+      "counts": [
+        {
+          "channel": 0,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 1,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 2,
+          "pytorch": 1,
+          "tensorrt": 1
+        }
+      ],
+      "unmatched_components": 0,
+      "max_centroid_delta_source_px": 5.611479049770276e-05,
+      "matched_components": 3
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\001.mp4",
+      "source_frame_ids": [
+        2,
+        3,
+        4
+      ],
+      "max_logit_error": 2.193450927734375e-05,
+      "mean_logit_error": 2.4545545329601737e-06,
+      "max_heatmap_probability_error": 5.960464477539062e-07,
+      "pytorch_gpu_forward_ms": 25.510719299316406,
+      "tensorrt_gpu_forward_ms": 9.795295715332031,
+      "counts": [
+        {
+          "channel": 0,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 1,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 2,
+          "pytorch": 1,
+          "tensorrt": 1
+        }
+      ],
+      "unmatched_components": 0,
+      "max_centroid_delta_source_px": 7.513940234333007e-05,
+      "matched_components": 3
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\001.mp4",
+      "source_frame_ids": [
+        3,
+        4,
+        5
+      ],
+      "max_logit_error": 3.24249267578125e-05,
+      "mean_logit_error": 2.5304148039140273e-06,
+      "max_heatmap_probability_error": 2.980232238769531e-07,
+      "pytorch_gpu_forward_ms": 25.209087371826172,
+      "tensorrt_gpu_forward_ms": 9.80185604095459,
+      "counts": [
+        {
+          "channel": 0,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 1,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 2,
+          "pytorch": 1,
+          "tensorrt": 1
+        }
+      ],
+      "unmatched_components": 0,
+      "max_centroid_delta_source_px": 2.203382352759906e-05,
+      "matched_components": 3
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\001.mp4",
+      "source_frame_ids": [
+        38,
+        39,
+        40
+      ],
+      "max_logit_error": 2.002716064453125e-05,
+      "mean_logit_error": 2.507713816157775e-06,
+      "max_heatmap_probability_error": 8.344650268554688e-07,
+      "pytorch_gpu_forward_ms": 25.372352600097656,
+      "tensorrt_gpu_forward_ms": 9.896672248840332,
+      "counts": [
+        {
+          "channel": 0,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 1,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 2,
+          "pytorch": 1,
+          "tensorrt": 1
+        }
+      ],
+      "unmatched_components": 0,
+      "max_centroid_delta_source_px": 7.379737937687995e-05,
+      "matched_components": 3
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\001.mp4",
+      "source_frame_ids": [
+        39,
+        40,
+        41
+      ],
+      "max_logit_error": 2.002716064453125e-05,
+      "mean_logit_error": 2.4173236852220725e-06,
+      "max_heatmap_probability_error": 3.8743019104003906e-07,
+      "pytorch_gpu_forward_ms": 25.345056533813477,
+      "tensorrt_gpu_forward_ms": 9.846207618713379,
+      "counts": [
+        {
+          "channel": 0,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 1,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 2,
+          "pytorch": 1,
+          "tensorrt": 1
+        }
+      ],
+      "unmatched_components": 0,
+      "max_centroid_delta_source_px": 1.953484860410363e-05,
+      "matched_components": 3
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\001.mp4",
+      "source_frame_ids": [
+        40,
+        41,
+        42
+      ],
+      "max_logit_error": 3.910064697265625e-05,
+      "mean_logit_error": 2.484679498593323e-06,
+      "max_heatmap_probability_error": 5.438923835754395e-07,
+      "pytorch_gpu_forward_ms": 25.426143646240234,
+      "tensorrt_gpu_forward_ms": 9.859264373779297,
+      "counts": [
+        {
+          "channel": 0,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 1,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 2,
+          "pytorch": 1,
+          "tensorrt": 1
+        }
+      ],
+      "unmatched_components": 0,
+      "max_centroid_delta_source_px": 6.938491734192894e-05,
+      "matched_components": 3
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\001.mp4",
+      "source_frame_ids": [
+        78,
+        79,
+        80
+      ],
+      "max_logit_error": 2.09808349609375e-05,
+      "mean_logit_error": 2.434720499877585e-06,
+      "max_heatmap_probability_error": 5.960464477539062e-07,
+      "pytorch_gpu_forward_ms": 25.469951629638672,
+      "tensorrt_gpu_forward_ms": 9.849184036254883,
+      "counts": [
+        {
+          "channel": 0,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 1,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 2,
+          "pytorch": 1,
+          "tensorrt": 1
+        }
+      ],
+      "unmatched_components": 0,
+      "max_centroid_delta_source_px": 5.036961958002669e-05,
+      "matched_components": 3
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\001.mp4",
+      "source_frame_ids": [
+        79,
+        80,
+        81
+      ],
+      "max_logit_error": 2.09808349609375e-05,
+      "mean_logit_error": 2.470515937602613e-06,
+      "max_heatmap_probability_error": 7.450580596923828e-07,
+      "pytorch_gpu_forward_ms": 25.35865592956543,
+      "tensorrt_gpu_forward_ms": 9.837056159973145,
+      "counts": [
+        {
+          "channel": 0,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 1,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 2,
+          "pytorch": 1,
+          "tensorrt": 1
+        }
+      ],
+      "unmatched_components": 0,
+      "max_centroid_delta_source_px": 2.4189325963630323e-05,
+      "matched_components": 3
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\001.mp4",
+      "source_frame_ids": [
+        80,
+        81,
+        82
+      ],
+      "max_logit_error": 2.193450927734375e-05,
+      "mean_logit_error": 2.5117317363765324e-06,
+      "max_heatmap_probability_error": 1.7434358596801758e-06,
+      "pytorch_gpu_forward_ms": 25.496639251708984,
+      "tensorrt_gpu_forward_ms": 9.851648330688477,
+      "counts": [
+        {
+          "channel": 0,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 1,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 2,
+          "pytorch": 1,
+          "tensorrt": 1
+        }
+      ],
+      "unmatched_components": 0,
+      "max_centroid_delta_source_px": 3.0291837434766072e-05,
+      "matched_components": 3
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\demo5.mp4",
+      "source_frame_ids": [
+        1,
+        2,
+        3
+      ],
+      "max_logit_error": 2.765655517578125e-05,
+      "mean_logit_error": 2.4299736196553567e-06,
+      "max_heatmap_probability_error": 1.6987323760986328e-06,
+      "pytorch_gpu_forward_ms": 25.33888053894043,
+      "tensorrt_gpu_forward_ms": 10.327936172485352,
+      "counts": [
+        {
+          "channel": 0,
+          "pytorch": 0,
+          "tensorrt": 0
+        },
+        {
+          "channel": 1,
+          "pytorch": 0,
+          "tensorrt": 0
+        },
+        {
+          "channel": 2,
+          "pytorch": 0,
+          "tensorrt": 0
+        }
+      ],
+      "unmatched_components": 0,
+      "max_centroid_delta_source_px": 0.0,
+      "matched_components": 0
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\demo5.mp4",
+      "source_frame_ids": [
+        2,
+        3,
+        4
+      ],
+      "max_logit_error": 3.62396240234375e-05,
+      "mean_logit_error": 2.408965201539104e-06,
+      "max_heatmap_probability_error": 1.4901161193847656e-06,
+      "pytorch_gpu_forward_ms": 25.42937660217285,
+      "tensorrt_gpu_forward_ms": 9.828384399414062,
+      "counts": [
+        {
+          "channel": 0,
+          "pytorch": 3,
+          "tensorrt": 3
+        },
+        {
+          "channel": 1,
+          "pytorch": 0,
+          "tensorrt": 0
+        },
+        {
+          "channel": 2,
+          "pytorch": 0,
+          "tensorrt": 0
+        }
+      ],
+      "unmatched_components": 0,
+      "max_centroid_delta_source_px": 4.534122285308755e-05,
+      "matched_components": 3
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\demo5.mp4",
+      "source_frame_ids": [
+        3,
+        4,
+        5
+      ],
+      "max_logit_error": 1.811981201171875e-05,
+      "mean_logit_error": 2.27636041927326e-06,
+      "max_heatmap_probability_error": 1.2516975402832031e-06,
+      "pytorch_gpu_forward_ms": 25.322111129760742,
+      "tensorrt_gpu_forward_ms": 9.894944190979004,
+      "counts": [
+        {
+          "channel": 0,
+          "pytorch": 0,
+          "tensorrt": 0
+        },
+        {
+          "channel": 1,
+          "pytorch": 0,
+          "tensorrt": 0
+        },
+        {
+          "channel": 2,
+          "pytorch": 1,
+          "tensorrt": 1
+        }
+      ],
+      "unmatched_components": 0,
+      "max_centroid_delta_source_px": 0.00013328009568602494,
+      "matched_components": 1
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\demo5.mp4",
+      "source_frame_ids": [
+        38,
+        39,
+        40
+      ],
+      "max_logit_error": 2.288818359375e-05,
+      "mean_logit_error": 2.400347966613481e-06,
+      "max_heatmap_probability_error": 8.642673492431641e-07,
+      "pytorch_gpu_forward_ms": 25.436031341552734,
+      "tensorrt_gpu_forward_ms": 9.96281623840332,
+      "counts": [
+        {
+          "channel": 0,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 1,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 2,
+          "pytorch": 1,
+          "tensorrt": 1
+        }
+      ],
+      "unmatched_components": 0,
+      "max_centroid_delta_source_px": 0.00020856937181906764,
+      "matched_components": 3
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\demo5.mp4",
+      "source_frame_ids": [
+        39,
+        40,
+        41
+      ],
+      "max_logit_error": 3.528594970703125e-05,
+      "mean_logit_error": 2.467529157001991e-06,
+      "max_heatmap_probability_error": 1.3113021850585938e-06,
+      "pytorch_gpu_forward_ms": 25.439456939697266,
+      "tensorrt_gpu_forward_ms": 9.845439910888672,
+      "counts": [
+        {
+          "channel": 0,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 1,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 2,
+          "pytorch": 2,
+          "tensorrt": 2
+        }
+      ],
+      "unmatched_components": 0,
+      "max_centroid_delta_source_px": 0.00011330041231122663,
+      "matched_components": 4
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\demo5.mp4",
+      "source_frame_ids": [
+        40,
+        41,
+        42
+      ],
+      "max_logit_error": 2.2411346435546875e-05,
+      "mean_logit_error": 2.4524138098058756e-06,
+      "max_heatmap_probability_error": 9.08970832824707e-07,
+      "pytorch_gpu_forward_ms": 25.312448501586914,
+      "tensorrt_gpu_forward_ms": 9.867551803588867,
+      "counts": [
+        {
+          "channel": 0,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 1,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 2,
+          "pytorch": 2,
+          "tensorrt": 2
+        }
+      ],
+      "unmatched_components": 0,
+      "max_centroid_delta_source_px": 0.00010120267153632829,
+      "matched_components": 4
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\demo5.mp4",
+      "source_frame_ids": [
+        78,
+        79,
+        80
+      ],
+      "max_logit_error": 2.09808349609375e-05,
+      "mean_logit_error": 2.1410724002635106e-06,
+      "max_heatmap_probability_error": 5.066394805908203e-07,
+      "pytorch_gpu_forward_ms": 25.353792190551758,
+      "tensorrt_gpu_forward_ms": 9.887840270996094,
+      "counts": [
+        {
+          "channel": 0,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 1,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 2,
+          "pytorch": 1,
+          "tensorrt": 1
+        }
+      ],
+      "unmatched_components": 0,
+      "max_centroid_delta_source_px": 0.0001280776094988202,
+      "matched_components": 3
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\demo5.mp4",
+      "source_frame_ids": [
+        79,
+        80,
+        81
+      ],
+      "max_logit_error": 2.09808349609375e-05,
+      "mean_logit_error": 2.2608780909649795e-06,
+      "max_heatmap_probability_error": 4.76837158203125e-07,
+      "pytorch_gpu_forward_ms": 25.39027214050293,
+      "tensorrt_gpu_forward_ms": 9.838624000549316,
+      "counts": [
+        {
+          "channel": 0,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 1,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 2,
+          "pytorch": 1,
+          "tensorrt": 1
+        }
+      ],
+      "unmatched_components": 0,
+      "max_centroid_delta_source_px": 3.529149483471272e-05,
+      "matched_components": 3
+    },
+    {
+      "source": "C:\\Users\\Adi\\Downloads\\demo5.mp4",
+      "source_frame_ids": [
+        80,
+        81,
+        82
+      ],
+      "max_logit_error": 2.193450927734375e-05,
+      "mean_logit_error": 2.22273752115143e-06,
+      "max_heatmap_probability_error": 5.662441253662109e-07,
+      "pytorch_gpu_forward_ms": 25.612831115722656,
+      "tensorrt_gpu_forward_ms": 9.868191719055176,
+      "counts": [
+        {
+          "channel": 0,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 1,
+          "pytorch": 1,
+          "tensorrt": 1
+        },
+        {
+          "channel": 2,
+          "pytorch": 1,
+          "tensorrt": 1
+        }
+      ],
+      "unmatched_components": 0,
+      "max_centroid_delta_source_px": 8.245062575289202e-05,
+      "matched_components": 3
+    }
+  ],
+  "parity_criteria": {
+    "max_logit_error_below": 0.05,
+    "max_heatmap_probability_error_below": 0.005,
+    "max_centroid_delta_source_px_at_most": 0.5,
+    "unmatched_components": 0
+  },
+  "real_window_count": 18,
+  "offline_gpu_forward_ms": {
+    "pytorch": {
+      "passes": 18,
+      "median": 25.381312370300293,
+      "p95": 25.526036071777344
+    },
+    "tensorrt": {
+      "passes": 18,
+      "median": 9.85041618347168,
+      "p95": 10.017584228515625
+    }
+  },
+  "wall_s": 32.859370299993316
+}

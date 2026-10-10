@@ -1,0 +1,18 @@
+{
+  "reason": "INTERRUPTED_DIAGNOSTIC_WITH_DIRECTORY_METADATA_CACHE_MISREAD",
+  "diagnostic_pid": 18304,
+  "verified_executable": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\backend_cpp\\build\\Release\\eval_paired_ball_candidates.exe",
+  "original_sources_or_app_stopped": false,
+  "promotion_approved": false,
+  "user_cpu_100ns": 5352968750,
+  "analyzed_frames": 7204,
+  "total_frames": 9164,
+  "accuracy_measured": false,
+  "kernel_cpu_100ns": 2824062500,
+  "stage": null,
+  "status": "PARTIAL",
+  "verified_command": "\"C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\backend_cpp\\build\\Release\\eval_paired_ball_candidates.exe\" models/yolov11_ttgames.engine models/blurball_fp32.engine \"C:/Users/Adi/Downloads/Video Project 6.mp4\" artifacts/paired_ball_no_ball_v1",
+  "reported_stall_confirmed": false,
+  "initial_reported_analyzed_frames": 0,
+  "correction_evidence": "All committed records and uint64 offsets inspected after process termination; directory entry sizes were stale."
+}

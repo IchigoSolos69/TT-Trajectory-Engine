@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "native_runtime_sha256": "85b693c29b6ada72d1444b86c325f87bd3aff846fddeace903b6fec7919b3366",
+  "total_frames": 272,
+  "source_prefix_tail_complete": true,
+  "scene_frame_identity": true,
+  "selected_centers_match_native_evaluator": true,
+  "max_center_delta_px": 7.071067794012746e-7,
+  "max_overlay_delta_px": 0.07202405430554343,
+  "measured_ball_frames": 264,
+  "model_provenance_in_all_journal_frames": true,
+  "analysis_request_manifest_consistent": true,
+  "compatible_analysis_cache_reused": true,
+  "short_recordings": [
+    {
+      "frames": 1,
+      "emitted": 1,
+      "no_padding": true
+    },
+    {
+      "frames": 2,
+      "emitted": 2,
+      "no_padding": true
+    }
+  ],
+  "live_standby_provenance": true,
+  "live_file_rejected": true,
+  "camera_opened": false,
+  "logs": {
+    "controller": "[TelemetryServer] Starting WebSocket Broadcast Server on port 60342...\r\n[TelemetryServer] Listening for WebSocket clients on ws://localhost:60342\r\n[TelemetryServer] Incoming TCP connection accepted.\r\n[TelemetryServer] WebSocket Handshake successful!\r\n[Source] Opened C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\blurball_research\\official_22_003\\source.mp4; analysis=1791546688881897_40716 NEW\r\n",
+    "cache": "[TelemetryServer] Starting WebSocket Broadcast Server on port 60462...\r\n[TelemetryServer] Listening for WebSocket clients on ws://localhost:60462\r\n[TelemetryServer] Incoming TCP connection accepted.\r\n[TelemetryServer] WebSocket Handshake successful!\r\n[Source] Opened C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\blurball_research\\official_22_003\\source.mp4; analysis=1791546688881897_40716 CACHED\r\n",
+    "live": "[BlurBall] C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\models\\blurball_fp32.engine SHA-256 48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f | FP32 [1,9,288,512] -> [1,3,288,512]\r\n[TensorRTEngine] Loading engine file: C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\models\\scene.engine\r\n[TensorRTEngine] Metadata | Size: 7289076 bytes | Last Modified: 2026-09-24T19:04:21Z\r\n[TensorRTEngine] SHA-256 Checksum  : 5eb0ecbfe0cddb8631cc89fbf6e7a2145d2a4a6b10595034afd4ab8b1a454cee\r\n[TensorRTEngine] Runtime Git SHA   : 786dbd0bf341127b13f1127411d4ab1ab28414b4\r\n[TensorRTEngine] Compile-Time SHA  : UNKNOWN_BUILD_COMMIT\r\n[TensorRTEngine] TensorRT Library Version : 11.3.0 (raw: 110300)\r\n[TensorRT C++ Engine] WARNING The logger passed into createInferRuntime differs from one already registered for an existing builder, runtime, or refitter. So the current new logger is ignored, and TensorRT will use the existing one which is returned by nvinfer1::getLogger() instead.\r\n[TensorRT C++ Engine] Using an engine plan file across different models of devices is not supported and is likely to affect performance or even cause errors or deadlock.\r\n[TensorRTEngine] getTensorDataType | Tensor: 'images' [INPUT] -> Float32 (kFLOAT)\r\n[TensorRTEngine] getTensorDataType | Tensor: 'output0' [OUTPUT] -> Float32 (kFLOAT)\r\n[TensorRTEngine] CUDA buffers allocated successfully on Device GPU (Pinned Host Memory Enabled).\r\n[TensorRTEngine] Input Tensor Shape  : [1, 3, 640, 640] (Float32 CHW)\r\n[TensorRTEngine] Validated static detector output (FP32 I/O, FP16 compute)\r\n[TelemetryServer] Starting WebSocket Broadcast Server on port 60478...\r\n[TelemetryServer] Listening for WebSocket clients on ws://localhost:60478\r\n[Main] live source=selected camera (standby)\r\n[TelemetryServer] Incoming TCP connection accepted.\r\n[TelemetryServer] WebSocket Handshake successful!\r\n"
+  }
+}

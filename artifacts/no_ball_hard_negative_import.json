@@ -1,0 +1,543 @@
+{
+  "session_id": "iphone_same_venue_session_1",
+  "split": null,
+  "contains_ground_truth": false,
+  "scope": "Full sequential decoder count/timestamps plus sampled image import; not accuracy evaluation or independent codec validation",
+  "recordings": [
+    {
+      "clip": "phone_452627e98a3c2652_2",
+      "source": "recorded_camera",
+      "capture_origin": "unspecified",
+      "session_id": "iphone_same_venue_session_1",
+      "original_path": "C:\\Users\\Adi\\Downloads\\Video Project 6.mp4",
+      "original_sha256": "452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706",
+      "original_bytes": 468664555,
+      "source_frames": 9164,
+      "reported_source_frames": 9164,
+      "frame_count_discrepancy": 0,
+      "source_fps_average": 30.0,
+      "full_source_decode_counted": true,
+      "source_interval_ms_p50": 33.333333333333485,
+      "source_interval_ms_min": 33.33333333325572,
+      "source_interval_ms_max": 33.33333333337214,
+      "codec_fourcc": "h264",
+      "width": 1920,
+      "height": 1080,
+      "burst_frames": 5,
+      "timestamp_basis": "opencv_ffmpeg_source_pts_ms",
+      "opencv_version": "5.0.0",
+      "sampled_interval_ms_min": 33.33333333331393,
+      "sampled_interval_ms_max": 33.33333333337214,
+      "sampled_frames": 120,
+      "contains_ground_truth": false,
+      "split": null,
+      "sampling": "24 review-selected five-consecutive-frame bursts; hypotheses remain unreviewed",
+      "selection": {
+        "method": "review_selection",
+        "selection_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\no_ball_hard_negative_selection.json",
+        "selection_sha256": "e1eba02dbabf1a2cb7ad8084e0f3d59bccd9b94f150481a20faa17c2b9e1bc71",
+        "requested_bursts": 24,
+        "burst_frames": 5,
+        "selection_method": "deterministic_greedy_temporal_spatial_grid_v1",
+        "identity": {
+          "journal_directory": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\no_ball_blurball_causal_v1",
+          "source": "C:\\Users\\Adi\\Downloads\\Video Project 6.mp4",
+          "source_sha256": "452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706",
+          "source_frame_count": 9164,
+          "source_fps": 30.0,
+          "source_hash_verified": true,
+          "ball_model_sha256": "48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f",
+          "model_hash_verified": true,
+          "runtime_sha256": "10a4c09b4bfc891c4a512892c7e8f675a08887a8740f7f12ae4dd9fc57c1829b",
+          "runtime_hash_verified": true,
+          "journal_sha256": "5a980e14138dd5c694a8282a2d6ecf295b50ff903b79df8862e6dbdfc15d6217",
+          "index_sha256": "f338bb8b99b785b2024d4e8b5b6e6196273941357358a1f39e90f70ed1f7f73a",
+          "manifest_sha256": "963dde2222b8d410afba3d7ac675af0570df4d8112f12c9dde0863e7cf1f0adc",
+          "completion_sha256": "66dfae19e20045dd342380a5065118fed56569b795908ce031dc4e01e34f9517",
+          "model_provenance": {
+            "backend": "blurball",
+            "experimental": true,
+            "heatmap_threshold": 0.7,
+            "lookahead_frames": 0,
+            "model_sha256": "48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f",
+            "score_calibrated": false,
+            "score_kind": "uncalibrated_heatmap_peak",
+            "temporal_policy": "causal_channel_2",
+            "timestamp_basis": "nominal_source_fps_or_live_capture_clock",
+            "warmup_frames": 2
+          }
+        },
+        "truth": {
+          "declaration": "USER_DECLARED_NO_BALL",
+          "review_status": "UNREVIEWED",
+          "ground_truth_available": false,
+          "reason": "User declaration has not been confirmed through reviewed source-frame annotations; model output never becomes ground truth."
+        },
+        "bursts": [
+          {
+            "start_source_frame": 545,
+            "end_source_frame": 549,
+            "anchor_source_frame": 547,
+            "anchor_timestamp_s": 18.2,
+            "anchor_center_normalized": [
+              0.942895,
+              0.156679
+            ],
+            "anchor_uncalibrated_model_score": 0.741942,
+            "accepted_hypotheses_in_burst": 4,
+            "anchor_observation_run_length": 3,
+            "spatial_bin": {
+              "column": 3,
+              "row": 0
+            },
+            "temporal_bin": 0,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          },
+          {
+            "start_source_frame": 647,
+            "end_source_frame": 651,
+            "anchor_source_frame": 649,
+            "anchor_timestamp_s": 21.6,
+            "anchor_center_normalized": [
+              0.714746,
+              0.593173
+            ],
+            "anchor_uncalibrated_model_score": 0.852122,
+            "accepted_hypotheses_in_burst": 5,
+            "anchor_observation_run_length": 5,
+            "spatial_bin": {
+              "column": 2,
+              "row": 1
+            },
+            "temporal_bin": 0,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          },
+          {
+            "start_source_frame": 674,
+            "end_source_frame": 678,
+            "anchor_source_frame": 676,
+            "anchor_timestamp_s": 22.5,
+            "anchor_center_normalized": [
+              0.462419,
+              0.848987
+            ],
+            "anchor_uncalibrated_model_score": 0.870556,
+            "accepted_hypotheses_in_burst": 5,
+            "anchor_observation_run_length": 9,
+            "spatial_bin": {
+              "column": 1,
+              "row": 2
+            },
+            "temporal_bin": 0,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          },
+          {
+            "start_source_frame": 919,
+            "end_source_frame": 923,
+            "anchor_source_frame": 921,
+            "anchor_timestamp_s": 30.666667,
+            "anchor_center_normalized": [
+              0.282218,
+              0.663194
+            ],
+            "anchor_uncalibrated_model_score": 0.750303,
+            "accepted_hypotheses_in_burst": 4,
+            "anchor_observation_run_length": 4,
+            "spatial_bin": {
+              "column": 1,
+              "row": 1
+            },
+            "temporal_bin": 1,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          },
+          {
+            "start_source_frame": 2067,
+            "end_source_frame": 2071,
+            "anchor_source_frame": 2069,
+            "anchor_timestamp_s": 68.933333,
+            "anchor_center_normalized": [
+              0.719229,
+              0.681462
+            ],
+            "anchor_uncalibrated_model_score": 0.900343,
+            "accepted_hypotheses_in_burst": 5,
+            "anchor_observation_run_length": 13,
+            "spatial_bin": {
+              "column": 2,
+              "row": 2
+            },
+            "temporal_bin": 2,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          },
+          {
+            "start_source_frame": 2408,
+            "end_source_frame": 2412,
+            "anchor_source_frame": 2410,
+            "anchor_timestamp_s": 80.3,
+            "anchor_center_normalized": [
+              0.286855,
+              0.126115
+            ],
+            "anchor_uncalibrated_model_score": 0.829831,
+            "accepted_hypotheses_in_burst": 2,
+            "anchor_observation_run_length": 1,
+            "spatial_bin": {
+              "column": 1,
+              "row": 0
+            },
+            "temporal_bin": 3,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          },
+          {
+            "start_source_frame": 2475,
+            "end_source_frame": 2479,
+            "anchor_source_frame": 2477,
+            "anchor_timestamp_s": 82.533333,
+            "anchor_center_normalized": [
+              0.66209,
+              0.638889
+            ],
+            "anchor_uncalibrated_model_score": 0.79771,
+            "accepted_hypotheses_in_burst": 5,
+            "anchor_observation_run_length": 5,
+            "spatial_bin": {
+              "column": 2,
+              "row": 1
+            },
+            "temporal_bin": 3,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          },
+          {
+            "start_source_frame": 2612,
+            "end_source_frame": 2616,
+            "anchor_source_frame": 2614,
+            "anchor_timestamp_s": 87.1,
+            "anchor_center_normalized": [
+              0.720683,
+              0.734309
+            ],
+            "anchor_uncalibrated_model_score": 0.860705,
+            "accepted_hypotheses_in_burst": 5,
+            "anchor_observation_run_length": 6,
+            "spatial_bin": {
+              "column": 2,
+              "row": 2
+            },
+            "temporal_bin": 3,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          },
+          {
+            "start_source_frame": 3361,
+            "end_source_frame": 3365,
+            "anchor_source_frame": 3363,
+            "anchor_timestamp_s": 112.066667,
+            "anchor_center_normalized": [
+              0.65138,
+              0.597222
+            ],
+            "anchor_uncalibrated_model_score": 0.733511,
+            "accepted_hypotheses_in_burst": 3,
+            "anchor_observation_run_length": 3,
+            "spatial_bin": {
+              "column": 2,
+              "row": 1
+            },
+            "temporal_bin": 4,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          },
+          {
+            "start_source_frame": 3475,
+            "end_source_frame": 3479,
+            "anchor_source_frame": 3477,
+            "anchor_timestamp_s": 115.866667,
+            "anchor_center_normalized": [
+              0.370785,
+              0.834471
+            ],
+            "anchor_uncalibrated_model_score": 0.762743,
+            "accepted_hypotheses_in_burst": 4,
+            "anchor_observation_run_length": 4,
+            "spatial_bin": {
+              "column": 1,
+              "row": 2
+            },
+            "temporal_bin": 4,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          },
+          {
+            "start_source_frame": 3567,
+            "end_source_frame": 3571,
+            "anchor_source_frame": 3569,
+            "anchor_timestamp_s": 118.933333,
+            "anchor_center_normalized": [
+              0.865764,
+              0.526386
+            ],
+            "anchor_uncalibrated_model_score": 0.831142,
+            "accepted_hypotheses_in_burst": 1,
+            "anchor_observation_run_length": 1,
+            "spatial_bin": {
+              "column": 3,
+              "row": 1
+            },
+            "temporal_bin": 4,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          },
+          {
+            "start_source_frame": 4093,
+            "end_source_frame": 4097,
+            "anchor_source_frame": 4095,
+            "anchor_timestamp_s": 136.466667,
+            "anchor_center_normalized": [
+              0.753084,
+              0.610774
+            ],
+            "anchor_uncalibrated_model_score": 0.870462,
+            "accepted_hypotheses_in_burst": 5,
+            "anchor_observation_run_length": 5,
+            "spatial_bin": {
+              "column": 3,
+              "row": 1
+            },
+            "temporal_bin": 5,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          },
+          {
+            "start_source_frame": 4176,
+            "end_source_frame": 4180,
+            "anchor_source_frame": 4178,
+            "anchor_timestamp_s": 139.233333,
+            "anchor_center_normalized": [
+              0.301507,
+              0.699296
+            ],
+            "anchor_uncalibrated_model_score": 0.843929,
+            "accepted_hypotheses_in_burst": 5,
+            "anchor_observation_run_length": 24,
+            "spatial_bin": {
+              "column": 1,
+              "row": 2
+            },
+            "temporal_bin": 5,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          },
+          {
+            "start_source_frame": 5249,
+            "end_source_frame": 5253,
+            "anchor_source_frame": 5251,
+            "anchor_timestamp_s": 175.0,
+            "anchor_center_normalized": [
+              0.22396,
+              0.53779
+            ],
+            "anchor_uncalibrated_model_score": 0.791675,
+            "accepted_hypotheses_in_burst": 1,
+            "anchor_observation_run_length": 1,
+            "spatial_bin": {
+              "column": 0,
+              "row": 1
+            },
+            "temporal_bin": 6,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          },
+          {
+            "start_source_frame": 5433,
+            "end_source_frame": 5437,
+            "anchor_source_frame": 5435,
+            "anchor_timestamp_s": 181.133333,
+            "anchor_center_normalized": [
+              0.861323,
+              0.829861
+            ],
+            "anchor_uncalibrated_model_score": 0.713647,
+            "accepted_hypotheses_in_burst": 2,
+            "anchor_observation_run_length": 1,
+            "spatial_bin": {
+              "column": 3,
+              "row": 2
+            },
+            "temporal_bin": 7,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          },
+          {
+            "start_source_frame": 5651,
+            "end_source_frame": 5655,
+            "anchor_source_frame": 5653,
+            "anchor_timestamp_s": 188.4,
+            "anchor_center_normalized": [
+              0.486707,
+              0.649623
+            ],
+            "anchor_uncalibrated_model_score": 0.796678,
+            "accepted_hypotheses_in_burst": 3,
+            "anchor_observation_run_length": 3,
+            "spatial_bin": {
+              "column": 1,
+              "row": 1
+            },
+            "temporal_bin": 7,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          },
+          {
+            "start_source_frame": 6350,
+            "end_source_frame": 6354,
+            "anchor_source_frame": 6352,
+            "anchor_timestamp_s": 211.7,
+            "anchor_center_normalized": [
+              0.081023,
+              0.746528
+            ],
+            "anchor_uncalibrated_model_score": 0.746698,
+            "accepted_hypotheses_in_burst": 2,
+            "anchor_observation_run_length": 1,
+            "spatial_bin": {
+              "column": 0,
+              "row": 2
+            },
+            "temporal_bin": 8,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          },
+          {
+            "start_source_frame": 6558,
+            "end_source_frame": 6562,
+            "anchor_source_frame": 6560,
+            "anchor_timestamp_s": 218.633333,
+            "anchor_center_normalized": [
+              0.529297,
+              0.597222
+            ],
+            "anchor_uncalibrated_model_score": 0.701937,
+            "accepted_hypotheses_in_burst": 3,
+            "anchor_observation_run_length": 3,
+            "spatial_bin": {
+              "column": 2,
+              "row": 1
+            },
+            "temporal_bin": 8,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          },
+          {
+            "start_source_frame": 7054,
+            "end_source_frame": 7058,
+            "anchor_source_frame": 7056,
+            "anchor_timestamp_s": 235.166667,
+            "anchor_center_normalized": [
+              0.532879,
+              0.649894
+            ],
+            "anchor_uncalibrated_model_score": 0.732805,
+            "accepted_hypotheses_in_burst": 3,
+            "anchor_observation_run_length": 3,
+            "spatial_bin": {
+              "column": 2,
+              "row": 1
+            },
+            "temporal_bin": 9,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          },
+          {
+            "start_source_frame": 7223,
+            "end_source_frame": 7227,
+            "anchor_source_frame": 7225,
+            "anchor_timestamp_s": 240.8,
+            "anchor_center_normalized": [
+              0.494173,
+              0.656652
+            ],
+            "anchor_uncalibrated_model_score": 0.77166,
+            "accepted_hypotheses_in_burst": 4,
+            "anchor_observation_run_length": 3,
+            "spatial_bin": {
+              "column": 1,
+              "row": 1
+            },
+            "temporal_bin": 9,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          },
+          {
+            "start_source_frame": 7295,
+            "end_source_frame": 7299,
+            "anchor_source_frame": 7297,
+            "anchor_timestamp_s": 243.2,
+            "anchor_center_normalized": [
+              0.921875,
+              0.107639
+            ],
+            "anchor_uncalibrated_model_score": 0.712293,
+            "accepted_hypotheses_in_burst": 3,
+            "anchor_observation_run_length": 3,
+            "spatial_bin": {
+              "column": 3,
+              "row": 0
+            },
+            "temporal_bin": 9,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          },
+          {
+            "start_source_frame": 8232,
+            "end_source_frame": 8236,
+            "anchor_source_frame": 8234,
+            "anchor_timestamp_s": 274.433333,
+            "anchor_center_normalized": [
+              0.642027,
+              0.036737
+            ],
+            "anchor_uncalibrated_model_score": 0.796768,
+            "accepted_hypotheses_in_burst": 3,
+            "anchor_observation_run_length": 3,
+            "spatial_bin": {
+              "column": 2,
+              "row": 0
+            },
+            "temporal_bin": 10,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          },
+          {
+            "start_source_frame": 8382,
+            "end_source_frame": 8386,
+            "anchor_source_frame": 8384,
+            "anchor_timestamp_s": 279.433333,
+            "anchor_center_normalized": [
+              0.934924,
+              0.078659
+            ],
+            "anchor_uncalibrated_model_score": 0.762962,
+            "accepted_hypotheses_in_burst": 4,
+            "anchor_observation_run_length": 4,
+            "spatial_bin": {
+              "column": 3,
+              "row": 0
+            },
+            "temporal_bin": 10,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          },
+          {
+            "start_source_frame": 8839,
+            "end_source_frame": 8843,
+            "anchor_source_frame": 8841,
+            "anchor_timestamp_s": 294.666667,
+            "anchor_center_normalized": [
+              0.099588,
+              0.114093
+            ],
+            "anchor_uncalibrated_model_score": 0.912202,
+            "accepted_hypotheses_in_burst": 5,
+            "anchor_observation_run_length": 6,
+            "spatial_bin": {
+              "column": 0,
+              "row": 0
+            },
+            "temporal_bin": 11,
+            "reason": "ACCEPTED_BALL_HYPOTHESIS_IN_USER_DECLARED_NO_BALL_RECORDING"
+          }
+        ],
+        "temporal_continuity_reviewed": false,
+        "temporal_continuity_reason": "Source edit/cut/duplicate history remains unverified; review selection is not temporal training clearance."
+      },
+      "capture_note": "Review selected suspected ball hypotheses from the same earlier gameplay session; confirm ball absence explicitly. People/table remain unknown. Source cut/edit/duplicate history remains unverified; selected hypotheses are not ground-truth labels.",
+      "rotation_handling": "decoder default; inspect imported orientation",
+      "hdr_metadata": null,
+      "hdr_metadata_reason": "Not exposed by this OpenCV decoder"
+    }
+  ]
+}

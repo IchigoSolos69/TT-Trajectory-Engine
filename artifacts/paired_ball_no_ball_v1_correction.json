@@ -1,0 +1,12 @@
+{
+  "status": "CORRECTED_PARTIAL_RUN",
+  "analyzed_frames": 7204,
+  "expected_frames": 9164,
+  "consecutive_ids_and_offsets_verified": true,
+  "initial_stall_claim_withdrawn": true,
+  "frames_sha256": "fd6833c44d1e9046838cc21553d80e6d6bba9043e26bde627f4acfb7d6d5e41b",
+  "index_sha256": "fb3dff967ce41467c3a835f9ec2435f40d539124623279adf49eaefe2d121e45",
+  "accuracy_measured": false,
+  "models_or_app_changed": false,
+  "original_log_and_snapshot_preserved": true
+}

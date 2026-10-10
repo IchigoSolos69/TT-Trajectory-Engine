@@ -1,0 +1,851 @@
+{
+  "schema_version": 1,
+  "adapter": "reviewed_blurball_dataset_v1",
+  "source_commit": "2f0f5496f7ba4b5b1a36790749935121b2ce972d",
+  "model_input_shape": [
+    9,
+    288,
+    512
+  ],
+  "target_shape": [
+    3,
+    288,
+    512
+  ],
+  "input_order": "oldest_to_latest_RGB_CHW",
+  "normalization": {
+    "mean": [
+      0.48500001430511475,
+      0.4560000002384186,
+      0.4059999883174896
+    ],
+    "std": [
+      0.2290000021457672,
+      0.2240000069141388,
+      0.22499999403953552
+    ]
+  },
+  "affine": "upstream_uniform_max_dimension_zero_rotation",
+  "target_method": "continuous_binary_capsule_v1",
+  "streak_radius_output_px": 2.5,
+  "sharp_radius_output_px": 3.0,
+  "loss": {
+    "name": "heatmap",
+    "sub_name": "mse"
+  },
+  "loss_selection_note": "quality_focal is paper-described; train_blur default is mse; neither runs here",
+  "target_difference": "Continuous segment, no integer-length truncation; preserves exact reviewed geometry. Not upstream discrete-target bitwise parity.",
+  "augmentation": "none",
+  "partial_policy": "exclude_unresolved_truncated_streak_targets",
+  "accepted_counts": {
+    "train": 4,
+    "val": 4,
+    "test": 4
+  },
+  "adapter_excluded": {},
+  "source_checks": {
+    "sessions": {
+      "SYNTHETIC_ONLY_train": "train",
+      "SYNTHETIC_ONLY_val": "val",
+      "SYNTHETIC_ONLY_test": "test"
+    },
+    "decoded_unique_images": 36
+  },
+  "capture_lineage": [
+    {
+      "clip": "synthetic_train",
+      "split": "train",
+      "session_id": "SYNTHETIC_ONLY_train",
+      "annotations_sha256": "76002f4fadafa7e7516e6795f70b986d7090115b377ca7287da0ff21e845bc4c",
+      "capture_sha256": "1f0452caac439d34ea916ea26d2f889f349622fd597bf04316fe28aec5417a45",
+      "index_sha256": "8276d266926098c556ae8cd1da5feeb748d593287ef151155eb01e78e8f8bac0"
+    },
+    {
+      "clip": "synthetic_val",
+      "split": "val",
+      "session_id": "SYNTHETIC_ONLY_val",
+      "annotations_sha256": "76002f4fadafa7e7516e6795f70b986d7090115b377ca7287da0ff21e845bc4c",
+      "capture_sha256": "cc29a40b3df67b3a8e241036b431cbfdb6ca4ddbcbcc1f17f09a7f405b898e8b",
+      "index_sha256": "8276d266926098c556ae8cd1da5feeb748d593287ef151155eb01e78e8f8bac0"
+    },
+    {
+      "clip": "synthetic_test",
+      "split": "test",
+      "session_id": "SYNTHETIC_ONLY_test",
+      "annotations_sha256": "76002f4fadafa7e7516e6795f70b986d7090115b377ca7287da0ff21e845bc4c",
+      "capture_sha256": "2ba95967db014ef3ca4c632dfc15ea619b443dce42da72c5e0d7d3d75850412c",
+      "index_sha256": "8276d266926098c556ae8cd1da5feeb748d593287ef151155eb01e78e8f8bac0"
+    }
+  ],
+  "split_manifest_sha256": "f22151568f36dc6790a53ddb276946193e575f061f1c1b380b0d245055f32a34",
+  "export_hashes": {
+    "audit.json": "8af7a5fd16ad85d2d85bb6d378b2effc66d5e0ab2a149fd71511de5418fb289e",
+    "train.jsonl": "b16744edd3ea492a35d872e9f5f66ca16d8b6f670f9b1c44d3d801556808bea6",
+    "val.jsonl": "20de69d972feb20f3de434af715940a401cf36bb19e72df2c8b966c63716625e",
+    "test.jsonl": "36f83b01bbaf7bf9cd6cdc8d82192be77f2c08833d040c4cc8ef579aa2bb5b4c"
+  },
+  "scope": "SYNTHETIC ONLY: target/loader preview, no real labels, training or weights.",
+  "examples": [
+    {
+      "preview": "preview_sharp.png",
+      "input_shape": [
+        9,
+        288,
+        512
+      ],
+      "target_shape": [
+        3,
+        288,
+        512
+      ],
+      "provenance": {
+        "split": "train",
+        "clip": "synthetic_train",
+        "session_id": "SYNTHETIC_ONLY_train",
+        "latest_source_frame": 3,
+        "frames": [
+          {
+            "source_target": {
+              "visibility": "visible",
+              "endpoints_normalized": [
+                [
+                  0.4,
+                  0.4
+                ],
+                [
+                  0.4,
+                  0.4
+                ]
+              ],
+              "position_px": [
+                768.0,
+                432.0
+              ],
+              "half_length_px": 0.0,
+              "axis_rad": null,
+              "method": "manual_streak_endpoints"
+            },
+            "output_target": {
+              "visibility": "visible",
+              "center_px": [
+                204.8,
+                115.2
+              ],
+              "endpoints_px": [
+                [
+                  204.8,
+                  115.2
+                ],
+                [
+                  204.8,
+                  115.2
+                ]
+              ],
+              "half_length_px": 0.0,
+              "axis_deg": null,
+              "axis_directed": false
+            },
+            "source_frame": 1,
+            "elapsed_ms": 0.0,
+            "source_image_sha256": "b1289fa5296a297d373f8d8ca15f469ba8ff2f03b8e0d313897f6b3150b5c68c",
+            "source_dimensions": [
+              1920,
+              1080
+            ],
+            "source_to_output_affine": [
+              [
+                0.26666666666666666,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.26666666666666666,
+                0.0
+              ]
+            ]
+          },
+          {
+            "source_target": {
+              "visibility": "visible",
+              "endpoints_normalized": [
+                [
+                  0.42000000000000004,
+                  0.4
+                ],
+                [
+                  0.42000000000000004,
+                  0.4
+                ]
+              ],
+              "position_px": [
+                806.4000000000001,
+                432.0
+              ],
+              "half_length_px": 0.0,
+              "axis_rad": null,
+              "method": "manual_streak_endpoints"
+            },
+            "output_target": {
+              "visibility": "visible",
+              "center_px": [
+                215.04000000000002,
+                115.2
+              ],
+              "endpoints_px": [
+                [
+                  215.04000000000002,
+                  115.2
+                ],
+                [
+                  215.04000000000002,
+                  115.2
+                ]
+              ],
+              "half_length_px": 0.0,
+              "axis_deg": null,
+              "axis_directed": false
+            },
+            "source_frame": 2,
+            "elapsed_ms": 16.666666666666668,
+            "source_image_sha256": "4d72ffb550fdafbc8bf3aaf42869f24bf5bb186ff99cfc0db69f750e96a52161",
+            "source_dimensions": [
+              1920,
+              1080
+            ],
+            "source_to_output_affine": [
+              [
+                0.26666666666666666,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.26666666666666666,
+                0.0
+              ]
+            ]
+          },
+          {
+            "source_target": {
+              "visibility": "visible",
+              "endpoints_normalized": [
+                [
+                  0.44,
+                  0.4
+                ],
+                [
+                  0.44,
+                  0.4
+                ]
+              ],
+              "position_px": [
+                844.8,
+                432.0
+              ],
+              "half_length_px": 0.0,
+              "axis_rad": null,
+              "method": "manual_streak_endpoints"
+            },
+            "output_target": {
+              "visibility": "visible",
+              "center_px": [
+                225.27999999999997,
+                115.2
+              ],
+              "endpoints_px": [
+                [
+                  225.27999999999997,
+                  115.2
+                ],
+                [
+                  225.27999999999997,
+                  115.2
+                ]
+              ],
+              "half_length_px": 0.0,
+              "axis_deg": null,
+              "axis_directed": false
+            },
+            "source_frame": 3,
+            "elapsed_ms": 33.333333333333336,
+            "source_image_sha256": "95136501c7ae705ebc9f779cf6a60e9dcea74bf98975a63b0c3ad6d68b454631",
+            "source_dimensions": [
+              1920,
+              1080
+            ],
+            "source_to_output_affine": [
+              [
+                0.26666666666666666,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.26666666666666666,
+                0.0
+              ]
+            ]
+          }
+        ],
+        "target_method": "continuous_binary_capsule_v1",
+        "loss": {
+          "name": "heatmap",
+          "sub_name": "mse"
+        }
+      }
+    },
+    {
+      "preview": "preview_tiny_positive.png",
+      "input_shape": [
+        9,
+        288,
+        512
+      ],
+      "target_shape": [
+        3,
+        288,
+        512
+      ],
+      "provenance": {
+        "split": "train",
+        "clip": "synthetic_train",
+        "session_id": "SYNTHETIC_ONLY_train",
+        "latest_source_frame": 6,
+        "frames": [
+          {
+            "source_target": {
+              "visibility": "visible",
+              "endpoints_normalized": [
+                [
+                  0.3996,
+                  0.4
+                ],
+                [
+                  0.40040000000000003,
+                  0.4
+                ]
+              ],
+              "position_px": [
+                768.0,
+                432.0
+              ],
+              "half_length_px": 0.768000000000022,
+              "axis_rad": 0.0,
+              "method": "manual_streak_endpoints"
+            },
+            "output_target": {
+              "visibility": "visible",
+              "center_px": [
+                204.8,
+                115.2
+              ],
+              "endpoints_px": [
+                [
+                  204.59519999999998,
+                  115.2
+                ],
+                [
+                  205.00480000000002,
+                  115.2
+                ]
+              ],
+              "half_length_px": 0.20480000000002008,
+              "axis_deg": 0.0,
+              "axis_directed": false
+            },
+            "source_frame": 4,
+            "elapsed_ms": 50.0,
+            "source_image_sha256": "70d46c35e2dc1954d6954a1cfdb400c1cde387b4d08cb2f0ef2b05f0a0b8823a",
+            "source_dimensions": [
+              1920,
+              1080
+            ],
+            "source_to_output_affine": [
+              [
+                0.26666666666666666,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.26666666666666666,
+                0.0
+              ]
+            ]
+          },
+          {
+            "source_target": {
+              "visibility": "visible",
+              "endpoints_normalized": [
+                [
+                  0.41960000000000003,
+                  0.4
+                ],
+                [
+                  0.42040000000000005,
+                  0.4
+                ]
+              ],
+              "position_px": [
+                806.4000000000001,
+                432.0
+              ],
+              "half_length_px": 0.768000000000022,
+              "axis_rad": 0.0,
+              "method": "manual_streak_endpoints"
+            },
+            "output_target": {
+              "visibility": "visible",
+              "center_px": [
+                215.04000000000002,
+                115.2
+              ],
+              "endpoints_px": [
+                [
+                  214.83520000000001,
+                  115.2
+                ],
+                [
+                  215.24480000000003,
+                  115.2
+                ]
+              ],
+              "half_length_px": 0.20480000000000587,
+              "axis_deg": 0.0,
+              "axis_directed": false
+            },
+            "source_frame": 5,
+            "elapsed_ms": 66.66666666666667,
+            "source_image_sha256": "61e7f0350ca43afa3f2699997a6de2ff759ddf3f82d47d74d0b992df428fdfd8",
+            "source_dimensions": [
+              1920,
+              1080
+            ],
+            "source_to_output_affine": [
+              [
+                0.26666666666666666,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.26666666666666666,
+                0.0
+              ]
+            ]
+          },
+          {
+            "source_target": {
+              "visibility": "visible",
+              "endpoints_normalized": [
+                [
+                  0.4396,
+                  0.4
+                ],
+                [
+                  0.4404,
+                  0.4
+                ]
+              ],
+              "position_px": [
+                844.8,
+                432.0
+              ],
+              "half_length_px": 0.768000000000022,
+              "axis_rad": 0.0,
+              "method": "manual_streak_endpoints"
+            },
+            "output_target": {
+              "visibility": "visible",
+              "center_px": [
+                225.27999999999997,
+                115.2
+              ],
+              "endpoints_px": [
+                [
+                  225.07519999999997,
+                  115.2
+                ],
+                [
+                  225.48479999999998,
+                  115.2
+                ]
+              ],
+              "half_length_px": 0.20480000000000587,
+              "axis_deg": 0.0,
+              "axis_directed": false
+            },
+            "source_frame": 6,
+            "elapsed_ms": 83.33333333333333,
+            "source_image_sha256": "888987e622720bb9b158d476b2cd5005c8cb2163e6d60de6d92b9c76ba852a42",
+            "source_dimensions": [
+              1920,
+              1080
+            ],
+            "source_to_output_affine": [
+              [
+                0.26666666666666666,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.26666666666666666,
+                0.0
+              ]
+            ]
+          }
+        ],
+        "target_method": "continuous_binary_capsule_v1",
+        "loss": {
+          "name": "heatmap",
+          "sub_name": "mse"
+        }
+      }
+    },
+    {
+      "preview": "preview_diagonal.png",
+      "input_shape": [
+        9,
+        288,
+        512
+      ],
+      "target_shape": [
+        3,
+        288,
+        512
+      ],
+      "provenance": {
+        "split": "train",
+        "clip": "synthetic_train",
+        "session_id": "SYNTHETIC_ONLY_train",
+        "latest_source_frame": 9,
+        "frames": [
+          {
+            "source_target": {
+              "visibility": "visible",
+              "endpoints_normalized": [
+                [
+                  0.36000000000000004,
+                  0.375
+                ],
+                [
+                  0.44,
+                  0.42500000000000004
+                ]
+              ],
+              "position_px": [
+                768.0,
+                432.0
+              ],
+              "half_length_px": 81.40786202818494,
+              "axis_rad": 0.33806612283682597,
+              "method": "manual_streak_endpoints"
+            },
+            "output_target": {
+              "visibility": "visible",
+              "center_px": [
+                204.8,
+                115.20000000000002
+              ],
+              "endpoints_px": [
+                [
+                  184.32000000000002,
+                  108.0
+                ],
+                [
+                  225.27999999999997,
+                  122.40000000000002
+                ]
+              ],
+              "half_length_px": 21.70876320751597,
+              "axis_deg": 19.369762034901406,
+              "axis_directed": false
+            },
+            "source_frame": 7,
+            "elapsed_ms": 100.0,
+            "source_image_sha256": "15575768a48445e4aa227d6ee320af1d57a482333f527419668aaa142db1cd13",
+            "source_dimensions": [
+              1920,
+              1080
+            ],
+            "source_to_output_affine": [
+              [
+                0.26666666666666666,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.26666666666666666,
+                0.0
+              ]
+            ]
+          },
+          {
+            "source_target": {
+              "visibility": "visible",
+              "endpoints_normalized": [
+                [
+                  0.38000000000000006,
+                  0.375
+                ],
+                [
+                  0.46,
+                  0.42500000000000004
+                ]
+              ],
+              "position_px": [
+                806.4000000000001,
+                432.0
+              ],
+              "half_length_px": 81.40786202818494,
+              "axis_rad": 0.33806612283682597,
+              "method": "manual_streak_endpoints"
+            },
+            "output_target": {
+              "visibility": "visible",
+              "center_px": [
+                215.04000000000002,
+                115.20000000000002
+              ],
+              "endpoints_px": [
+                [
+                  194.56000000000003,
+                  108.0
+                ],
+                [
+                  235.52,
+                  122.40000000000002
+                ]
+              ],
+              "half_length_px": 21.708763207515986,
+              "axis_deg": 19.36976203490139,
+              "axis_directed": false
+            },
+            "source_frame": 8,
+            "elapsed_ms": 116.66666666666667,
+            "source_image_sha256": "34e9539947d74b3ff5e56b54092dcae9d5faf35af24b0df3cf187dc02b24a5fd",
+            "source_dimensions": [
+              1920,
+              1080
+            ],
+            "source_to_output_affine": [
+              [
+                0.26666666666666666,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.26666666666666666,
+                0.0
+              ]
+            ]
+          },
+          {
+            "source_target": {
+              "visibility": "visible",
+              "endpoints_normalized": [
+                [
+                  0.4,
+                  0.375
+                ],
+                [
+                  0.48,
+                  0.42500000000000004
+                ]
+              ],
+              "position_px": [
+                844.8,
+                432.0
+              ],
+              "half_length_px": 81.40786202818494,
+              "axis_rad": 0.33806612283682597,
+              "method": "manual_streak_endpoints"
+            },
+            "output_target": {
+              "visibility": "visible",
+              "center_px": [
+                225.27999999999997,
+                115.20000000000002
+              ],
+              "endpoints_px": [
+                [
+                  204.8,
+                  108.0
+                ],
+                [
+                  245.75999999999996,
+                  122.40000000000002
+                ]
+              ],
+              "half_length_px": 21.70876320751597,
+              "axis_deg": 19.369762034901406,
+              "axis_directed": false
+            },
+            "source_frame": 9,
+            "elapsed_ms": 133.33333333333334,
+            "source_image_sha256": "ff6e60e1ece2f5b5699e95a78570d28da197633fcded1d3de5d1d949db39bfff",
+            "source_dimensions": [
+              1920,
+              1080
+            ],
+            "source_to_output_affine": [
+              [
+                0.26666666666666666,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.26666666666666666,
+                0.0
+              ]
+            ]
+          }
+        ],
+        "target_method": "continuous_binary_capsule_v1",
+        "loss": {
+          "name": "heatmap",
+          "sub_name": "mse"
+        }
+      }
+    },
+    {
+      "preview": "preview_absent.png",
+      "input_shape": [
+        9,
+        288,
+        512
+      ],
+      "target_shape": [
+        3,
+        288,
+        512
+      ],
+      "provenance": {
+        "split": "train",
+        "clip": "synthetic_train",
+        "session_id": "SYNTHETIC_ONLY_train",
+        "latest_source_frame": 12,
+        "frames": [
+          {
+            "source_target": {
+              "visibility": "absent",
+              "position_px": null,
+              "half_length_px": null,
+              "axis_rad": null,
+              "method": "human_confirmed_absence"
+            },
+            "output_target": {
+              "visibility": "absent",
+              "center_px": null,
+              "endpoints_px": null,
+              "half_length_px": null,
+              "axis_deg": null,
+              "axis_directed": false
+            },
+            "source_frame": 10,
+            "elapsed_ms": 150.0,
+            "source_image_sha256": "9229685d35397b0b2a39f16682698edf3617546882f580e461cabbac72ce9db8",
+            "source_dimensions": [
+              1920,
+              1080
+            ],
+            "source_to_output_affine": [
+              [
+                0.26666666666666666,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.26666666666666666,
+                0.0
+              ]
+            ]
+          },
+          {
+            "source_target": {
+              "visibility": "absent",
+              "position_px": null,
+              "half_length_px": null,
+              "axis_rad": null,
+              "method": "human_confirmed_absence"
+            },
+            "output_target": {
+              "visibility": "absent",
+              "center_px": null,
+              "endpoints_px": null,
+              "half_length_px": null,
+              "axis_deg": null,
+              "axis_directed": false
+            },
+            "source_frame": 11,
+            "elapsed_ms": 166.66666666666666,
+            "source_image_sha256": "4f6b9d05a99dcc807b21b826e94b319408ec02c9fdf794f619145c268d92c24b",
+            "source_dimensions": [
+              1920,
+              1080
+            ],
+            "source_to_output_affine": [
+              [
+                0.26666666666666666,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.26666666666666666,
+                0.0
+              ]
+            ]
+          },
+          {
+            "source_target": {
+              "visibility": "absent",
+              "position_px": null,
+              "half_length_px": null,
+              "axis_rad": null,
+              "method": "human_confirmed_absence"
+            },
+            "output_target": {
+              "visibility": "absent",
+              "center_px": null,
+              "endpoints_px": null,
+              "half_length_px": null,
+              "axis_deg": null,
+              "axis_directed": false
+            },
+            "source_frame": 12,
+            "elapsed_ms": 183.33333333333334,
+            "source_image_sha256": "5315dcf786211aa2012d3d921da0a5a4b3123c2e65408818b333d9a0f04ee7f1",
+            "source_dimensions": [
+              1920,
+              1080
+            ],
+            "source_to_output_affine": [
+              [
+                0.26666666666666666,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.26666666666666666,
+                0.0
+              ]
+            ]
+          }
+        ],
+        "target_method": "continuous_binary_capsule_v1",
+        "loss": {
+          "name": "heatmap",
+          "sub_name": "mse"
+        }
+      }
+    }
+  ]
+}

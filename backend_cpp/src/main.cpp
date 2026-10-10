@@ -10,6 +10,8 @@
 #include "rally_intelligence.hpp"
 #include "hard_sample_selector.hpp"
 #include "recording_controller.hpp"
+#include "blurball_stream.hpp"
+#include "imageplane_flight.hpp"
 #include <future>
 #include <iostream>
 #include <thread>
@@ -35,6 +37,8 @@ static std::string base64(const std::vector<unsigned char>& bytes) {
 int runEngine(int argc,char** argv) try {
     bool isLiveMode = false;
     std::string enginePath = "models/yolov11_ttgames.engine";
+    std::string ballBackend = "yolo";
+    bool explicitBallEngine=false;
     std::string videoPath;
     std::string scenePath = "models/scene.engine";
     bool modeSpecified = false;
@@ -51,6 +55,9 @@ int runEngine(int argc,char** argv) try {
             if (modeSpecified) throw std::runtime_error("Specify exactly one source mode: --sim or --live.");
             modeSpecified = true;
             isLiveMode = arg == "--live";
+        } else if(arg=="--ball-backend" && i+1<argc){
+            ballBackend=argv[++i];
+            if(ballBackend!="yolo"&&ballBackend!="blurball")throw std::runtime_error("Unknown ball backend; choose yolo or blurball");
         } else if (arg == "--experimental-intelligence") {
             experimentalIntelligence=true;
         } else if(arg=="--data-root" && i+1<argc){
@@ -71,11 +78,13 @@ int runEngine(int argc,char** argv) try {
             if (!(confidenceThreshold > 0 && confidenceThreshold < 1)) throw std::runtime_error("--confidence must be between 0 and 1.");
         } else if (arg.rfind(".engine") != std::string::npos) {
             enginePath = arg;
+            explicitBallEngine=true;
             if (!std::filesystem::is_regular_file(enginePath)) throw std::runtime_error("Explicit engine file does not exist: " + enginePath);
         } else {
             throw std::runtime_error("Unknown or incomplete argument: " + arg);
         }
     }
+    if(ballBackend=="blurball"&&!explicitBallEngine)enginePath="models/blurball_fp32.engine";
     if (isLiveMode && !videoPath.empty()) throw std::runtime_error("--video is only permitted with --sim.");
     if(isLiveMode&&!analysisDirectory.empty())throw std::runtime_error("Recording analysis cannot open a live camera");
     if(!dataRoot.empty()){
@@ -103,11 +112,23 @@ int runEngine(int argc,char** argv) try {
     if(!dataRoot.empty()){std::filesystem::create_directories(dataRoot);projectRoot=dataRoot;}
     if(!isLiveMode&&analysisDirectory.empty()){
         cap.release();
-        return recording::runController(videoPath,TensorRTEngine::resolveEnginePath(enginePath),TensorRTEngine::resolveEnginePath(scenePath),serverPort,confidenceThreshold,experimentalIntelligence,maxFrames,projectRoot);
+        return recording::runController(videoPath,TensorRTEngine::resolveEnginePath(enginePath),TensorRTEngine::resolveEnginePath(scenePath),serverPort,confidenceThreshold,experimentalIntelligence,maxFrames,projectRoot,ballBackend);
     }
     const bool analysisWorker=!analysisDirectory.empty();
-    TensorRTEngine ballEngine(enginePath,640,640), sceneEngine(scenePath,640,640,2);
-    if(!ballEngine.init() || !sceneEngine.init()) throw std::runtime_error("Both ball and scene detectors must initialize; no fallback detections.");
+    TensorRTEngine sceneEngine(scenePath,640,640,2);
+    std::unique_ptr<TensorRTEngine> ballEngine;
+    std::unique_ptr<BlurBallEngine> blurEngine;
+    std::unique_ptr<BlurBallStream> blurStream;
+    if(ballBackend=="blurball"){
+        blurEngine=std::make_unique<BlurBallEngine>(TensorRTEngine::resolveEnginePath(enginePath));
+        blurStream=std::make_unique<BlurBallStream>(*blurEngine);
+    }else{
+        ballEngine=std::make_unique<TensorRTEngine>(enginePath,640,640);
+        if(!ballEngine->init())throw std::runtime_error("Ball detector initialization failed; no fallback detections");
+    }
+    if(!sceneEngine.init())throw std::runtime_error("Scene detector initialization failed; no fallback detections");
+    const std::string ballHash=blurEngine?blurEngine->getSha256Hash():ballEngine->getSha256Hash();
+    const std::string modelJson=recording::ballProvenance(ballBackend,ballHash,isLiveMode);
     TelemetryServer server(serverPort); if(!analysisWorker&&!server.start()) throw std::runtime_error("Telemetry server failed to start.");
     std::unique_ptr<recording::JournalWriter> journal;
     if(analysisWorker)journal=std::make_unique<recording::JournalWriter>(analysisDirectory,recording::readText(analysisDirectory/"request.json"));
@@ -119,9 +140,10 @@ int runEngine(int argc,char** argv) try {
     intelligence::RallyIntelligence rallyIntelligence;
     HardSampleSelector hardSamples;
     ObservedSpinEstimator spinEstimator;
+    ImagePlaneFlight flightEstimator;
     std::future<VideoSelection> videoPicker;
     int sourceId=1;
-    float liveTime=0;
+    double liveTime=0;
     using Clock=std::chrono::steady_clock;
     auto lastCapture=Clock::now(), lastPreview=Clock::now()-std::chrono::seconds(1), throughputStart=Clock::now();
     int throughputFrames=0;
@@ -129,7 +151,7 @@ int runEngine(int argc,char** argv) try {
     double playbackAnchorFrame=0;
     float previousRate=1;
     int activeCamera=-1, frameId=0, processed=0, previousFrame=0;
-    float sourceFps=isLiveMode?0.f:static_cast<float>(cap.get(cv::CAP_PROP_FPS));
+    double sourceFps=isLiveMode?0.:cap.get(cv::CAP_PROP_FPS);
     if(!isLiveMode && (!(sourceFps>0) || !std::isfinite(sourceFps))) throw std::runtime_error("Invalid source FPS");
     int totalFrames=isLiveMode?0:static_cast<int>(cap.get(cv::CAP_PROP_FRAME_COUNT));
     bool ended=false;
@@ -160,6 +182,7 @@ int runEngine(int argc,char** argv) try {
     float previousImageX=0,previousImageY=0;bool hadImageBall=false;
     std::cout<<"[Main] "<<mode<<" source="<<(isLiveMode?"selected camera (standby)":videoPath)<<std::endl;
     while(!server.shutdownRequested) {
+        preview.ballModelJson=modelJson;
         bool seekOneFrame=false;
         const auto start=Clock::now();
         auto requestedVideo=server.takeVideoRequest();
@@ -267,7 +290,11 @@ int runEngine(int argc,char** argv) try {
                 ++next; ++preview.skippedFrames;
             }
         }
-        if(!cap.read(frame) || frame.empty()) {
+        BlurBallStream::Frame blurFrame;
+        if(blurStream&&isLiveMode&&!cap.isOpened())blurStream->reset();
+        const bool frameRead=blurStream&&!isLiveMode?blurStream->nextRecording(cap,sourceFps,blurFrame):cap.read(frame);
+        if(blurStream&&!isLiveMode&&frameRead)frame=blurFrame.image;
+        if(!frameRead || frame.empty()) {
             if(isLiveMode) {std::cerr<<"[Hardware] Camera read failed; releasing source"<<std::endl;server.cameraAuthorized=false;continue;}
             if(frameId<totalFrames) throw std::runtime_error("Dataset decoding ended early at "+std::to_string(frameId));
             if(analysisWorker||maxFrames>0) break;
@@ -276,11 +303,13 @@ int runEngine(int argc,char** argv) try {
         const auto captured=Clock::now();
         float dt=isLiveMode?std::chrono::duration<float>(captured-lastCapture).count():1.f/sourceFps;
         lastCapture=captured; captureFps=1.f/std::max(dt,.001f);
-        frameId=isLiveMode?frameId+1:static_cast<int>(cap.get(cv::CAP_PROP_POS_FRAMES));
+        frameId=isLiveMode?frameId+1:blurStream?blurFrame.id:static_cast<int>(cap.get(cv::CAP_PROP_POS_FRAMES));
         if(!isLiveMode) dt=(frameId-previousFrame)/sourceFps;
         previousFrame=frameId;
         if(isLiveMode)liveTime+=dt;
-        preview.sourceTime=isLiveMode?liveTime:(frameId-1)/sourceFps;
+        preview.sourceTime=isLiveMode?liveTime:double(frameId-1)/sourceFps;
+        preview.ballModelJson=modelJson;
+        preview.ballBlurJson="null";
         if(isLiveMode) {
             if(server.trainingRecordingRequested && !recordingSession) {
                 if(server.activeLearningRequested&&!experimentalIntelligence){server.trainingRecordingRequested=false;preview.videoError="Hard-example capture requires --experimental-intelligence.";}
@@ -300,8 +329,28 @@ int runEngine(int argc,char** argv) try {
         }
         auto input=TensorRTEngine::preprocessOpenCVFrame(frame);
         const auto inferStart=Clock::now();
-        const auto detections=ballEngine.inferFrame(input,frame.cols,frame.rows,lowConfidence);
-        inferMs=std::chrono::duration<float,std::milli>(Clock::now()-inferStart).count();
+        std::vector<Detection> detections;
+        if(blurStream){
+            if(isLiveMode)blurFrame=blurStream->causal(frame,frameId,preview.sourceTime);
+            inferMs=blurFrame.inferMs;
+            if(blurFrame.selected){
+                const auto& observed=*blurFrame.selected;
+                auto detection=observed.detection;
+                // All downstream views/tracking use the heatmap's weighted
+                // centroid, not the streak bounding box's geometric midpoint.
+                detection.x=observed.pixelCenter.x/frame.cols-detection.w*.5f;
+                detection.y=observed.pixelCenter.y/frame.rows-detection.h*.5f;
+                detections.push_back(detection);
+                preview.ballBlurJson=recording::json({{"center_px","["+std::to_string(observed.pixelCenter.x)+","+std::to_string(observed.pixelCenter.y)+"]"},
+                    {"endpoints_px","[["+std::to_string(observed.blurEndpoints[0].x)+","+std::to_string(observed.blurEndpoints[0].y)+"],["+std::to_string(observed.blurEndpoints[1].x)+","+std::to_string(observed.blurEndpoints[1].y)+"]]"},
+                    {"extent_px",std::to_string(observed.blurExtentSourcePx)},{"axis_deg",std::to_string(observed.blurAxisDeg)},
+                    {"component_mass",std::to_string(observed.componentMass)},{"heatmap_peak",std::to_string(observed.heatmapPeak)},
+                    {"axis_directed","false"},{"exposure_seconds","null"},{"gpu_ms",std::to_string(blurFrame.gpuMs)}});
+            }
+        }else{
+            detections=ballEngine->inferFrame(input,frame.cols,frame.rows,lowConfidence);
+            inferMs=std::chrono::duration<float,std::milli>(Clock::now()-inferStart).count();
+        }
         tracks=tracker.update(detections);
         preview.measuredBall=!detections.empty() && detections.front().confidence>=confidenceThreshold;
         if(preview.measuredBall)preview.observedBall=detections.front();
@@ -342,7 +391,7 @@ int runEngine(int argc,char** argv) try {
             std::vector<cv::Point2f> points;cv::perspectiveTransform(std::vector<cv::Point2f>{trajectory.pixel},points,homography);
             trajectory.table=points.front();trajectory.positionValid=std::isfinite(trajectory.table.x)&&std::isfinite(trajectory.table.y);trajectory.accepted=true;
         }
-        preview.ballObservationState="DETECTOR_ONLY";preview.ballObservationReason="DETECTOR_SCORE_ONLY";
+        preview.ballObservationState="DETECTOR_ONLY";preview.ballObservationReason=blurStream?"EXPERIMENTAL_HEATMAP_PEAK":"DETECTOR_SCORE_ONLY";
         if(experimentalIntelligence){
             preview.ballObservationState=intelligence::name(trajectory.state);
             preview.ballObservationReason=trajectory.reason;
@@ -368,7 +417,7 @@ int runEngine(int argc,char** argv) try {
         }else hadImageBall=false;
         if(experimentalIntelligence)rallyIntelligence.update(trajectory,preview.scene,frame.size());
         if(isLiveMode&&recordingSession&&server.activeLearningRequested){
-            const auto metadata=hardSamples.select(frame,trajectory,detections,preview.scene,tableCalibration.valid(preview.sourceTime),ballEngine.getSha256Hash(),sceneEngine.getSha256Hash());
+            const auto metadata=hardSamples.select(frame,trajectory,detections,preview.scene,tableCalibration.valid(preview.sourceTime),ballHash,sceneEngine.getSha256Hash());
             if(!metadata.empty())recorder.offer(frame,frameId,metadata);
         }
         measuredPhysics=false;
@@ -389,7 +438,7 @@ int runEngine(int argc,char** argv) try {
             }
             preview.strikes.clear();preview.impacts.clear();
             for(const auto& event:rallyIntelligence.events)if(event.type=="STRIKE"&&event.status=="RULE_SUPPORTED")
-                preview.strikes.push_back({event.id,event.frame,float(event.time),float(cv::norm(event.outgoing))*3.6f});
+                preview.strikes.push_back({event.id,event.frame,event.time,float(cv::norm(event.outgoing))*3.6f});
             if(preview.strikes.size()>100)preview.strikes.erase(preview.strikes.begin(),preview.strikes.end()-100);
         }else if(trajectory.accepted && trajectory.positionValid) {
             const float px=trajectory.pixel.x,py=trajectory.pixel.y;
@@ -407,6 +456,11 @@ int runEngine(int argc,char** argv) try {
                 if(preview.impacts.size()>200)preview.impacts.erase(preview.impacts.begin());
             }
         } else physics.reset();
+        if(blurStream){
+            std::optional<cv::Point2f> observed;
+            if(preview.measuredBall){const auto& d=preview.observedBall;observed=cv::Point2f((d.x+d.w*.5f)*frame.cols,(d.y+d.h*.5f)*frame.rows);}
+            preview.ballFlightJson=flightEstimator.update(frameId,preview.sourceTime,frame.size(),observed,state.isStrike||state.isTableBounce);
+        }
         if(state.isStrike || state.isTableBounce)spinEstimator.reset();
         preview.observedSpin=ObservedSpin{};
         if(preview.measuredBall && preview.observedBall.confidence>=.6f) {
@@ -415,7 +469,7 @@ int runEngine(int argc,char** argv) try {
         }else spinEstimator.reset();
         if(publish) {
             if(experimentalIntelligence){
-                preview.intelligenceJson=intelligence::serialize(tableCalibration,trajectoryTracker,preview.sourceTime,ballEngine.getSha256Hash(),sceneEngine.getSha256Hash(),analysisWorker?1:180);
+                preview.intelligenceJson=intelligence::serialize(tableCalibration,trajectoryTracker,preview.sourceTime,ballHash,sceneEngine.getSha256Hash(),analysisWorker?1:180);
                 preview.intelligenceJson.pop_back();preview.intelligenceJson+=",\"rally_graph\":"+rallyIntelligence.json()+"}";
             }
             // Cumulative impacts survive preview throttling and dropped network packets.

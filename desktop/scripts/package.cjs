@@ -5,12 +5,16 @@ const crypto = require('node:crypto');
 const { imports } = require('./pe-dependencies.cjs');
 require('./icon.cjs');
 const root=path.resolve(__dirname,'../..'), desktop=path.join(root,'desktop');
-const output=path.join(desktop,'dist','TT Trajectory Engine');
+const releaseRoot=path.join(desktop,'dist');
+const output=process.env.TT_DESKTOP_OUTPUT_DIR?path.resolve(process.env.TT_DESKTOP_OUTPUT_DIR):path.join(releaseRoot,'TT Trajectory Engine');
+if(path.dirname(output)!==releaseRoot)throw Error('Release output must be a direct child of desktop/dist');
 const standalone=path.join(root,'frontend','.next-desktop','standalone');
 const executable=path.join(root,'backend_cpp','build','Release','tt_intelligence_candidate.exe');
 const electronPath=path.join(path.dirname(require.resolve('electron/package.json')),'dist');
-const required=[path.join(standalone,'server.js'),executable,path.join(root,'models','yolov11_ttgames.engine'),path.join(root,'models','scene.engine')];
+const required=[path.join(standalone,'server.js'),executable,path.join(root,'models','yolov11_ttgames.engine'),path.join(root,'models','scene.engine'),path.join(root,'models','blurball_fp32.engine'),path.join(root,'frontend','.next-desktop','BUILD_ID')];
 for(const file of required)if(!fs.existsSync(file))throw Error(`Build resource missing: ${file}. Run tools/build_desktop.ps1.`);
+const frontendBuild=fs.readFileSync(required[5],'utf8').trim();
+if(!frontendBuild)throw Error('Frontend production build is incomplete');
 // Refuse to overwrite a running/previous release. Builds use a verified directory.
 if(fs.existsSync(output))throw Error(`Release directory already exists: ${output}. Move it aside before packaging a new release.`);
 fs.mkdirSync(output,{recursive:true});
@@ -25,7 +29,7 @@ fs.cpSync(standalone,path.join(runtime,'frontend'),{recursive:true});
 fs.cpSync(path.join(root,'frontend','.next-desktop','static'),path.join(runtime,'frontend','.next-desktop','static'),{recursive:true});
 if(fs.existsSync(path.join(root,'frontend','public')))fs.cpSync(path.join(root,'frontend','public'),path.join(runtime,'frontend','public'),{recursive:true,filter:file=>!(/\.(mp4|mov|avi|mkv|webm|m4v)$/i.test(file))});
 fs.mkdirSync(path.join(runtime,'models'),{recursive:true});
-for(const name of ['yolov11_ttgames.engine','scene.engine','yolov11_ttgames.manifest.json','scene.manifest.json'])fs.copyFileSync(path.join(root,'models',name),path.join(runtime,'models',name));
+for(const name of ['yolov11_ttgames.engine','scene.engine','yolov11_ttgames.manifest.json','scene.manifest.json','blurball_fp32.engine','blurball.manifest.json','BlurBall-LICENSE.txt'])fs.copyFileSync(path.join(root,'models',name),path.join(runtime,'models',name));
 const backend=path.join(runtime,'backend');fs.mkdirSync(backend,{recursive:true});
 fs.copyFileSync(executable,path.join(backend,'tt_trajectory_engine.exe'));
 const searchDirectories=[path.dirname(executable),'C:/TensorRT/bin','C:/opencv/build/x64/vc16/bin','C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.4/bin/x64',...(process.env.PATH||'').split(path.delimiter)];
@@ -53,7 +57,7 @@ while(pending.length){
   }
 }
 const hash=file=>crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
-const manifest={schema_version:1,created_at:new Date().toISOString(),platform:'win32-x64',electron:require('electron/package.json').version,frontend_build:fs.readFileSync(path.join(root,'frontend','.next-desktop','BUILD_ID'),'utf8').trim(),native_runtime:[...copied].sort(),system_dependencies:[...new Set(system)].sort(),source_backend_sha256:hash(executable),models:{ball:hash(required[2]),scene:hash(required[3])},gpu_requirement:'NVIDIA driver and GPU compatible with the serialized TensorRT engines; built for the current RTX 5050 environment.'};
+const manifest={schema_version:1,created_at:new Date().toISOString(),platform:'win32-x64',electron:require('electron/package.json').version,frontend_build:frontendBuild,native_runtime:[...copied].sort(),system_dependencies:[...new Set(system)].sort(),source_backend_sha256:hash(executable),models:{ball:hash(required[2]),scene:hash(required[3]),blurball_experimental:hash(required[4])},gpu_requirement:'NVIDIA driver and GPU compatible with the serialized TensorRT engines; built for the current RTX 5050 environment.'};
 fs.writeFileSync(path.join(output,'release-manifest.json'),JSON.stringify(manifest,null,2));
 fs.writeFileSync(path.join(output,'README.txt'),'Double-click TT Trajectory Engine.exe. Keep this entire folder together.\r\nNo Node.js, Python, browser, or internet connection is required to run.\r\nRequires a compatible NVIDIA GPU/driver. Serialized TensorRT engines are hardware-specific.\r\nChoose a recording or a live session. Camera starts only after explicit authorization.\r\nWhen run inside the source project, existing training_data and analysis folders are retained.\r\nWhen moved outside the project, data and logs use %APPDATA%/TT Trajectory Engine.\r\nUse Help > Open local data and logs to find the active folder.\r\n');
 console.log(JSON.stringify({output,native_files:copied.size,manifest},null,2));

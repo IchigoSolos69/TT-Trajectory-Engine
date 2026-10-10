@@ -11,6 +11,7 @@ import math
 import re
 import shutil
 from pathlib import Path
+from review_absence_provenance import checked_interval_absence
 
 ROOT = Path(__file__).resolve().parents[1]
 CLASSES = ('ball', 'person', 'table')
@@ -94,9 +95,11 @@ def load_reviewed(captures, splits, classes=CLASSES):
             directory = (captures/clip).resolve()
             if not directory.is_relative_to(captures.resolve()):
                 raise ValueError('Recording path escapes capture directory')
-            check_capture_session(json.loads((directory/'capture.json').read_text()), split, sessions)
+            capture = json.loads((directory/'capture.json').read_text())
+            check_capture_session(capture, split, sessions)
             annotations = json.loads((directory/'annotations.json').read_text())
-            frames = [json.loads(line) for line in (directory/'frames.jsonl').read_text().splitlines()]
+            index_bytes = (directory/'frames.jsonl').read_bytes()
+            frames = [json.loads(line) for line in index_bytes.decode('utf-8').splitlines()]
             for row in frames:
                 filename = row['file']
                 if not re.fullmatch(r'frame_[0-9]+\.jpg', filename):
@@ -109,6 +112,7 @@ def load_reviewed(captures, splits, classes=CLASSES):
                 if not image.is_relative_to(directory):
                     raise ValueError('Image path escapes recording directory')
                 digest = hashlib.sha256(image.read_bytes()).hexdigest()
+                checked_interval_absence(annotations.get(filename, {}), capture, row, hashlib.sha256(index_bytes).hexdigest(), digest, directory/'annotation_history')
                 if digest in hashes:
                     if hashes[digest] != split:
                         raise ValueError('Identical image found across dataset splits')

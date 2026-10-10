@@ -1,0 +1,31 @@
+[
+  {
+    "path": "C:\\Users\\Adi\\Downloads\\2509.18387v1.pdf",
+    "sha256": "8f0caf4738504f5f4ff7c2c937530c1f05a7e314638bedba008d40ce7a4e953f",
+    "pages": 13,
+    "metadata": {
+      "Author": "Thomas Gossard; Filip Radovic; Andreas Ziegler; Andrea Zell",
+      "Creator": "arXiv GenPDF (tex2pdf:)",
+      "DOI": "https://doi.org/10.48550/arXiv.2509.18387",
+      "License": "http://creativecommons.org/licenses/by-sa/4.0/",
+      "PTEX.Fullbanner": "This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) kpathsea version 6.4.1",
+      "Producer": "pikepdf 8.15.1",
+      "Title": "BlurBall: Joint Ball and Motion Blur Estimation for Table Tennis Ball Tracking",
+      "Trapped": "False",
+      "arXivID": "https://arxiv.org/abs/2509.18387v1"
+    },
+    "text": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\research_papers\\2509.18387v1.txt"
+  },
+  {
+    "path": "C:\\Users\\Adi\\Downloads\\video-based-table-tennis-tracking-and-trajectory-prediction-using-convolutional-neural-networks.pdf",
+    "sha256": "81a4fe2d303fc419586e39ca01870d7032f916f2b2ea04fb9d6b46febe55dbe8",
+    "pages": 23,
+    "metadata": {
+      "Author": "HAOXUAN LI (*Department of Computer Science and Engineering, Shanghai Jiao Tong University, Shanghai, China), SABA GHAZANFAR ALI (*Department of Computer Science and Engineering, Shanghai Jiao Tong University, Shanghai, China), JUNHAO ZHANG (*Department of Computer Science and Engineering, Shanghai Jiao Tong University, Shanghai, China), BIN SHENG (*Department of Computer Science and Engineering, Shanghai Jiao Tong University, Shanghai, China), PING LI (†The Hong Kong Polytechnic University, Hong Kong, China), YOUNHYUN JUNG (‡Gachon University, Gyeonggi-do, Korea), JIHONG WANG (§Shanghai University of Sport, Shanghai, China), PO YANG (¶The University of Sheffield, Sheffield, UK), PING LU (∥State Key Laboratory of Mobile Network and Mobile Multimedia Technology, ZTE Corporation, Shenzhen, China), KHAN MUHAMMAD (**Visual Analytics for Knowledge Laboratory (VIS2KNOW Lab), Department of Applied Artificial Intelligence, School of Convergence, College of Computing and Informatics, Sungkyunkwan University, Seoul 03063, Republic of Korea), and LIJIUAN MAO (§Shanghai University of Sport, Shanghai, China)",
+      "Keywords": "Table Tennis,Deep Learning,Object Tracking,Trajectory,Fractal AI Prediction",
+      "Subject": "Fractals 2022.30:2240156",
+      "Title": "VIDEO-BASED TABLE TENNIS TRACKING AND TRAJECTORY PREDICTION USING CONVOLUTIONAL NEURAL NETWORKS"
+    },
+    "text": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\research_papers\\video-based-table-tennis-tracking-and-trajectory-prediction-using-convolutional-neural-networks.txt"
+  }
+]

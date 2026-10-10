@@ -1,0 +1,124 @@
+{
+  "scope": "Provisional evaluation of one source recording/prefix; checkpoint lineage is not established as blind validation",
+  "journal_directory": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\paired_ball_unicode_fixture_v1",
+  "source_interval": "CHRONOLOGICAL_PREFIX_ONLY",
+  "entire_recording_decoded": false,
+  "source_sha256": "3d4bb9a58bbc771b2e30a3adee3e0155a54cb7f05572a1a49c27acec8534e16d",
+  "yolo_model_sha256": "2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9",
+  "blurball_model_sha256": "48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f",
+  "fusion_sha256": "c580ac8e7f8271264798d500838f2b5d9f80612558b51ae79b745aff1b9f0b1b",
+  "runtime_binary_sha256_recorded_from_manifest": "0929c81cadb1c1f8be0d2280d77bdc1ad90cafe7d433d5fd8932e71db86ebe83",
+  "runtime_binary_current_file_reverified": true,
+  "runtime_binary_supplied_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\paired_ball_runtime_snapshots\\0929c81cadb1c1f8be0d2280d77bdc1ad90cafe7d433d5fd8932e71db86ebe83.exe",
+  "runtime_binary_sha256_current_file": "0929c81cadb1c1f8be0d2280d77bdc1ad90cafe7d433d5fd8932e71db86ebe83",
+  "runtime_binary_limitation_reason": null,
+  "selector_configuration": {
+    "agreement_radius_source_px": 12,
+    "blurball_agreement_peak": 0.699999988079071,
+    "blurball_solo_peak": 0.949999988079071,
+    "coordinate_policy": "CHOOSE_EXISTING_BLURBALL_CENTER_OR_YOLO_BOX_CENTER_NO_BLEND",
+    "experimental": true,
+    "revision": "conservative-source-candidates-v1",
+    "score_policy": "RAW_MODEL_EVIDENCE_NEVER_AVERAGED_OR_PROBABILITY_CALIBRATED",
+    "thresholds_fitted": false,
+    "warmup_policy": "ABSTAIN_UNTIL_THREE_REAL_CONSECUTIVE_SOURCE_FRAMES",
+    "within_model_ambiguity_ratio": 0.8,
+    "yolo_agreement_score": 0.25,
+    "yolo_proposal_score": 0.10000000149011612,
+    "yolo_solo_score": 0.949999988079071
+  },
+  "audit": {
+    "status": "PASS",
+    "frames_accounted_for": 12,
+    "runtime_binary_sha256_recorded_from_manifest": "0929c81cadb1c1f8be0d2280d77bdc1ad90cafe7d433d5fd8932e71db86ebe83",
+    "runtime_binary_current_file_reverified": true,
+    "runtime_binary_supplied_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\paired_ball_runtime_snapshots\\0929c81cadb1c1f8be0d2280d77bdc1ad90cafe7d433d5fd8932e71db86ebe83.exe",
+    "runtime_binary_sha256_current_file": "0929c81cadb1c1f8be0d2280d77bdc1ad90cafe7d433d5fd8932e71db86ebe83",
+    "runtime_binary_limitation_reason": null,
+    "index_offsets_verified": true,
+    "file_sha256": {
+      "manifest.json": "f6d92e667f0cb299e45ce60a2c1e11536bd66670ca8577b2fc6f65e3609a4963",
+      "diagnostic_summary.json": "7f396841c1085c66c17b5b1fc935a1bfa5e71f9dfee9cf685e4489c669a4a159",
+      "completion.json": "65aed11a16f3d1dcbe037941b123db0bca719a67a13b76181398f3c4c5429b31",
+      "frames.jsonl": "2fe79e84fd584d9ac99c96784c15cfa1dcb0a205bd1e3f7c5c9ffce5fb92693f",
+      "frames.idx": "65d393e25d238d592bad577bed5f7baf9af13f2f2e6c66141c6afbd040be764a"
+    },
+    "source_and_model_files": {
+      "source": {
+        "path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\replay fixture caf\u00e9.avi",
+        "available": true,
+        "sha256_match": true
+      },
+      "yolo_model": {
+        "path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\models\\yolov11_ttgames.engine",
+        "available": true,
+        "sha256_match": true
+      },
+      "blurball_model": {
+        "path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\models\\blurball_fp32.engine",
+        "available": true,
+        "sha256_match": true
+      }
+    },
+    "decoded_pixels_independently_recomputed": false,
+    "candidate_ground_truth_verified_by_hashes": false,
+    "selection_and_baseline_policies_recomputed": true,
+    "counters": {
+      "consecutive_pixel_duplicates": 0,
+      "causal_warmup_frames": 2,
+      "yolo_candidates": 15,
+      "yolo_invalid_candidates": 0,
+      "blurball_candidates": 0,
+      "blurball_invalid_candidates": 0,
+      "standalone_yolo_selected_frames": 1,
+      "standalone_blurball_causal_selected_frames": 0,
+      "experimental_selector_selected_frames": 0
+    },
+    "selector_reason_histogram": {
+      "BLURBALL_CAUSAL_WARMUP": 2,
+      "NO_ELIGIBLE_CANDIDATE": 10
+    }
+  },
+  "hypothesis_counts": {
+    "standalone_yolo": {
+      "selected_frames": 1,
+      "abstained_frames": 11,
+      "candidate_count": 15
+    },
+    "standalone_blurball_causal": {
+      "selected_frames": 0,
+      "abstained_frames": 12,
+      "candidate_count": 0
+    },
+    "experimental_selector": {
+      "selected_frames": 0,
+      "abstained_frames": 12,
+      "selected_model_counts": {}
+    }
+  },
+  "selector_reason_histogram": {
+    "BLURBALL_CAUSAL_WARMUP": 2,
+    "NO_ELIGIBLE_CANDIDATE": 10
+  },
+  "accuracy": null,
+  "gates": null,
+  "matching": {
+    "tolerance_source_px": 4.0,
+    "comparison": "STRICT_DISTANCE_LESS_THAN_TOLERANCE",
+    "reference_coordinates": "Unscaled CSV source pixels; zero-based Frame -> one-based journal frame_id",
+    "wrong_visible_localization": "One false positive and one missed visible reference",
+    "recall_definition": "Correctly localized detections / ALL visible reference frames"
+  },
+  "accuracy_measured": false,
+  "settings_selected_before_scoring": true,
+  "thresholds_fitted": false,
+  "confidence_calibrated": false,
+  "promotion_approved": false,
+  "unlabeled_policy": "Accuracy is null without explicit binary reference CSV; user-declared no-ball never becomes automatic ground truth",
+  "remaining_gates": [
+    "Independent recordings and venue sessions with known checkpoint lineage",
+    "Broad ball/blur/occlusion and explicit negative reference comparisons",
+    "Confidence/uncertainty calibration",
+    "Native live capture-to-display timing"
+  ]
+}
