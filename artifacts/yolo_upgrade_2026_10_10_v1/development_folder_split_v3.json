@@ -1,0 +1,638 @@
+{
+  "schema_version": 1,
+  "purpose": "DEVELOPMENT_CLIP_HOLDOUT_ONLY",
+  "created_at": "2026-10-11T13:34:25.775Z",
+  "inventory_sha256": "574fbaa519a20312ed95e741bfcf15d5adc260f36695e85a998531be2068a4c6",
+  "freshness_checked_by": "STREAM_SHA256_AND_STAT",
+  "sources": [
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\training\\iphone\\IMG_7939.MOV",
+      "relative_path": "training\\iphone\\IMG_7939.MOV",
+      "sha256": "e197222a3322d1af10dec810fe790561d292a2fa6468323ffbac970223f2c148",
+      "bytes": 40255966,
+      "source_mtime_ms": 1791459363000,
+      "requested_split": "train",
+      "effective_role": "train",
+      "known_session_ids": [
+        "iphone_same_venue_session_1"
+      ],
+      "matching_review_captures": [
+        "phone_e197222a3322d1af_1"
+      ],
+      "session_group_status": "KNOWN",
+      "folder_declared_domain": "iphone",
+      "declared_domain": "iphone",
+      "domain_provenance": "Existing original SHA and capture session metadata",
+      "mixed_match_highlights": false,
+      "prior_development_evidence": [],
+      "reason_codes": [],
+      "reason": "Previously reviewed same-session development footage; folder movement cannot establish independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\training\\iphone\\IMG_7940.MOV",
+      "relative_path": "training\\iphone\\IMG_7940.MOV",
+      "sha256": "fa4e98c1cc92b86c4c54e78486d7d1a93bfbde3b78e18860f5af4e09bf63f1a8",
+      "bytes": 202656983,
+      "source_mtime_ms": 1791459408000,
+      "requested_split": "train",
+      "effective_role": "train",
+      "known_session_ids": [
+        "iphone_same_venue_session_1"
+      ],
+      "matching_review_captures": [
+        "phone_fa4e98c1cc92b86c_1"
+      ],
+      "session_group_status": "KNOWN",
+      "folder_declared_domain": "iphone",
+      "declared_domain": "iphone",
+      "domain_provenance": "Existing original SHA and capture session metadata",
+      "mixed_match_highlights": false,
+      "prior_development_evidence": [],
+      "reason_codes": [],
+      "reason": "Previously reviewed same-session development footage; folder movement cannot establish independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\training\\iphone\\IMG_7941.MOV",
+      "relative_path": "training\\iphone\\IMG_7941.MOV",
+      "sha256": "61f027143f6c8d57e158d3ace53f88942c136bd73db5e01ae0daf1fe012fe51a",
+      "bytes": 1555385248,
+      "source_mtime_ms": 1791459633000,
+      "requested_split": "train",
+      "effective_role": "train",
+      "known_session_ids": [
+        "iphone_same_venue_session_1"
+      ],
+      "matching_review_captures": [
+        "phone_61f027143f6c8d57_1"
+      ],
+      "session_group_status": "KNOWN",
+      "folder_declared_domain": "iphone",
+      "declared_domain": "iphone",
+      "domain_provenance": "Existing original SHA and capture session metadata",
+      "mixed_match_highlights": false,
+      "prior_development_evidence": [],
+      "reason_codes": [],
+      "reason": "Previously reviewed same-session development footage; folder movement cannot establish independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\training\\iphone\\IMG_7942.MOV",
+      "relative_path": "training\\iphone\\IMG_7942.MOV",
+      "sha256": "031b178c51bfae75b7d9164ed4fc8d9b4881075e634b70591db28646621b04a8",
+      "bytes": 1491209723,
+      "source_mtime_ms": 1791460315000,
+      "requested_split": "train",
+      "effective_role": "train",
+      "known_session_ids": [
+        "iphone_same_venue_session_1"
+      ],
+      "matching_review_captures": [
+        "phone_031b178c51bfae75_1"
+      ],
+      "session_group_status": "KNOWN",
+      "folder_declared_domain": "iphone",
+      "declared_domain": "iphone",
+      "domain_provenance": "Existing original SHA and capture session metadata",
+      "mixed_match_highlights": false,
+      "prior_development_evidence": [],
+      "reason_codes": [],
+      "reason": "Previously reviewed same-session development footage; folder movement cannot establish independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\training\\iphone\\IMG_7943.MOV",
+      "relative_path": "training\\iphone\\IMG_7943.MOV",
+      "sha256": "c343f0cdb72df492b3de2a69278e4d9c6884e9a22e80a5db69b903a2a9129e7f",
+      "bytes": 62669919,
+      "source_mtime_ms": 1791461115000,
+      "requested_split": "train",
+      "effective_role": "train",
+      "known_session_ids": [
+        "iphone_same_venue_session_1"
+      ],
+      "matching_review_captures": [
+        "phone_c343f0cdb72df492_1",
+        "phone_c343f0cdb72df492_2",
+        "phone_c343f0cdb72df492_3"
+      ],
+      "session_group_status": "KNOWN",
+      "folder_declared_domain": "iphone",
+      "declared_domain": "iphone",
+      "domain_provenance": "Existing original SHA and capture session metadata",
+      "mixed_match_highlights": false,
+      "prior_development_evidence": [],
+      "reason_codes": [],
+      "reason": "Previously reviewed same-session development footage; folder movement cannot establish independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\training\\iphone\\IMG_7944.MOV",
+      "relative_path": "training\\iphone\\IMG_7944.MOV",
+      "sha256": "e23544b0c4c1a8506f529f4d53e75ecb9e0c98f7e529e03355086875cce433de",
+      "bytes": 1171883420,
+      "source_mtime_ms": 1791461202000,
+      "requested_split": "train",
+      "effective_role": "train",
+      "known_session_ids": [
+        "iphone_same_venue_session_1"
+      ],
+      "matching_review_captures": [
+        "phone_e23544b0c4c1a850_1"
+      ],
+      "session_group_status": "KNOWN",
+      "folder_declared_domain": "iphone",
+      "declared_domain": "iphone",
+      "domain_provenance": "Existing original SHA and capture session metadata",
+      "mixed_match_highlights": false,
+      "prior_development_evidence": [],
+      "reason_codes": [],
+      "reason": "Previously reviewed same-session development footage; folder movement cannot establish independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\training\\world_cup\\game_4.mp4",
+      "relative_path": "training\\world_cup\\game_4.mp4",
+      "sha256": "ddb2bc49915a99db46702825ff322759faa9205c846a1ba902419e38c1e23b39",
+      "bytes": 3947371986,
+      "source_mtime_ms": 1791654853768.2908,
+      "requested_split": "train",
+      "effective_role": "unassigned",
+      "known_session_ids": [],
+      "matching_review_captures": [],
+      "session_group_status": "UNASSIGNED",
+      "folder_declared_domain": "match",
+      "declared_domain": "match",
+      "domain_provenance": "User-organized footage-type folder; device/session provenance remains unverified",
+      "mixed_match_highlights": true,
+      "prior_development_evidence": [],
+      "reason_codes": [
+        "MIXED_MATCH_COMPILATION_NOT_INDEPENDENT"
+      ],
+      "reason": "User-declared mixed-match highlights; review and duplicate/source audit required for training/development, excluded from independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\training\\world_cup\\Top-Points-of-SnapYT.Ap1p.mp4",
+      "relative_path": "training\\world_cup\\Top-Points-of-SnapYT.Ap1p.mp4",
+      "sha256": "44c3a13842527e6f5c2f70b36dd63bb82b95a0e4a9ec38ecef885c36ed863a9a",
+      "bytes": 102628573,
+      "source_mtime_ms": 1791653381532.9963,
+      "requested_split": "train",
+      "effective_role": "unassigned",
+      "known_session_ids": [],
+      "matching_review_captures": [],
+      "session_group_status": "UNASSIGNED",
+      "folder_declared_domain": "match",
+      "declared_domain": "match",
+      "domain_provenance": "User-organized footage-type folder; device/session provenance remains unverified",
+      "mixed_match_highlights": true,
+      "prior_development_evidence": [],
+      "reason_codes": [
+        "MIXED_MATCH_COMPILATION_NOT_INDEPENDENT"
+      ],
+      "reason": "User-declared mixed-match highlights; review and duplicate/source audit required for training/development, excluded from independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\training\\world_cup\\Top-Points-of-SnapYT.App (2).mp4",
+      "relative_path": "training\\world_cup\\Top-Points-of-SnapYT.App (2).mp4",
+      "sha256": "5636be33bfd9eda5c563c7848b68031c0627c42abab26fb1b16bd2fd34381a9e",
+      "bytes": 132361226,
+      "source_mtime_ms": 1791653569767.9148,
+      "requested_split": "train",
+      "effective_role": "unassigned",
+      "known_session_ids": [],
+      "matching_review_captures": [],
+      "session_group_status": "UNASSIGNED",
+      "folder_declared_domain": "match",
+      "declared_domain": "match",
+      "domain_provenance": "User-organized footage-type folder; device/session provenance remains unverified",
+      "mixed_match_highlights": true,
+      "prior_development_evidence": [],
+      "reason_codes": [
+        "MIXED_MATCH_COMPILATION_NOT_INDEPENDENT"
+      ],
+      "reason": "User-declared mixed-match highlights; review and duplicate/source audit required for training/development, excluded from independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\training\\world_cup\\Top-Points-of-SnapYT.App (5).mp4",
+      "relative_path": "training\\world_cup\\Top-Points-of-SnapYT.App (5).mp4",
+      "sha256": "9733265679ba2c982132d5b8d9ac8660c6d04579b8695ab6520f9c0aff7935d9",
+      "bytes": 79941701,
+      "source_mtime_ms": 1791653715519.7383,
+      "requested_split": "train",
+      "effective_role": "unassigned",
+      "known_session_ids": [],
+      "matching_review_captures": [],
+      "session_group_status": "UNASSIGNED",
+      "folder_declared_domain": "match",
+      "declared_domain": "match",
+      "domain_provenance": "User-organized footage-type folder; device/session provenance remains unverified",
+      "mixed_match_highlights": true,
+      "prior_development_evidence": [],
+      "reason_codes": [
+        "MIXED_MATCH_COMPILATION_NOT_INDEPENDENT"
+      ],
+      "reason": "User-declared mixed-match highlights; review and duplicate/source audit required for training/development, excluded from independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\training\\world_cup\\Top-Points-of-SnapYT.App.mp4",
+      "relative_path": "training\\world_cup\\Top-Points-of-SnapYT.App.mp4",
+      "sha256": "ee8aeaa50ac5a6c6c49fddb5638c391072e6faa2f5182853bd5870ff386aef48",
+      "bytes": 76919152,
+      "source_mtime_ms": 1791628805234.3137,
+      "requested_split": "train",
+      "effective_role": "unassigned",
+      "known_session_ids": [],
+      "matching_review_captures": [],
+      "session_group_status": "UNASSIGNED",
+      "folder_declared_domain": "match",
+      "declared_domain": "match",
+      "domain_provenance": "User-organized footage-type folder; device/session provenance remains unverified",
+      "mixed_match_highlights": true,
+      "prior_development_evidence": [],
+      "reason_codes": [
+        "MIXED_MATCH_COMPILATION_NOT_INDEPENDENT"
+      ],
+      "reason": "User-declared mixed-match highlights; review and duplicate/source audit required for training/development, excluded from independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\training\\world_cup\\videoplayback.mp4",
+      "relative_path": "training\\world_cup\\videoplayback.mp4",
+      "sha256": "0aa1decf635d72e6978c5af4d2adbe6264b56331e8f4d3654c6a82d8bdce82dd",
+      "bytes": 140151956,
+      "source_mtime_ms": 1791653291378.1655,
+      "requested_split": "train",
+      "effective_role": "unassigned",
+      "known_session_ids": [],
+      "matching_review_captures": [],
+      "session_group_status": "UNASSIGNED",
+      "folder_declared_domain": "match",
+      "declared_domain": "match",
+      "domain_provenance": "User-organized footage-type folder; device/session provenance remains unverified",
+      "mixed_match_highlights": true,
+      "prior_development_evidence": [],
+      "reason_codes": [
+        "MIXED_MATCH_COMPILATION_NOT_INDEPENDENT"
+      ],
+      "reason": "User-declared mixed-match highlights; review and duplicate/source audit required for training/development, excluded from independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\validation\\iphone\\IMG_7938.MOV",
+      "relative_path": "validation\\iphone\\IMG_7938.MOV",
+      "sha256": "1383e588b7ee3783db3ad18c648d6cd27190985f2f34bce7e5a4f50b645998b9",
+      "bytes": 235736191,
+      "source_mtime_ms": 1791459100000,
+      "requested_split": "val",
+      "effective_role": "train",
+      "known_session_ids": [
+        "iphone_same_venue_session_1"
+      ],
+      "matching_review_captures": [
+        "phone_1383e588b7ee3783_1"
+      ],
+      "session_group_status": "KNOWN",
+      "folder_declared_domain": "iphone",
+      "declared_domain": "iphone",
+      "domain_provenance": "Existing original SHA and capture session metadata",
+      "mixed_match_highlights": false,
+      "prior_development_evidence": [],
+      "reason_codes": [
+        "SAME_IPHONE_SESSION_CROSS_FOLDER"
+      ],
+      "reason": "Previously reviewed same-session development footage; folder movement cannot establish independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\validation\\iphone\\IMG_7945.MOV",
+      "relative_path": "validation\\iphone\\IMG_7945.MOV",
+      "sha256": "3adaa646b1413bfa3d1d42466ea1f16bde3b201be8c6e0f860d13dc131ab50f8",
+      "bytes": 1776446413,
+      "source_mtime_ms": 1791461702000,
+      "requested_split": "val",
+      "effective_role": "train",
+      "known_session_ids": [
+        "iphone_same_venue_session_1"
+      ],
+      "matching_review_captures": [
+        "phone_3adaa646b1413bfa_1"
+      ],
+      "session_group_status": "KNOWN",
+      "folder_declared_domain": "iphone",
+      "declared_domain": "iphone",
+      "domain_provenance": "Existing original SHA and capture session metadata",
+      "mixed_match_highlights": false,
+      "prior_development_evidence": [],
+      "reason_codes": [
+        "SAME_IPHONE_SESSION_CROSS_FOLDER"
+      ],
+      "reason": "Previously reviewed same-session development footage; folder movement cannot establish independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\validation\\iphone\\Video Project 6.mp4",
+      "relative_path": "validation\\iphone\\Video Project 6.mp4",
+      "sha256": "452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706",
+      "bytes": 468664555,
+      "source_mtime_ms": 1791550417244.259,
+      "requested_split": "val",
+      "effective_role": "train",
+      "known_session_ids": [
+        "iphone_same_venue_session_1"
+      ],
+      "matching_review_captures": [
+        "phone_452627e98a3c2652_1",
+        "phone_452627e98a3c2652_2"
+      ],
+      "session_group_status": "KNOWN",
+      "folder_declared_domain": "iphone",
+      "declared_domain": "iphone",
+      "domain_provenance": "Existing original SHA and capture session metadata",
+      "mixed_match_highlights": false,
+      "prior_development_evidence": [],
+      "reason_codes": [
+        "SAME_IPHONE_SESSION_CROSS_FOLDER"
+      ],
+      "reason": "Previously reviewed same-session development footage; folder movement cannot establish independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\validation\\world_cup\\test_4.mp4",
+      "relative_path": "validation\\world_cup\\test_4.mp4",
+      "sha256": "c941fb0862daf47dbb8afc62117c21a921f649a7fdeee94fe5c16f9f2839be6d",
+      "bytes": 2250582415,
+      "source_mtime_ms": 1791654532587.2263,
+      "requested_split": "val",
+      "effective_role": "unassigned",
+      "known_session_ids": [],
+      "matching_review_captures": [],
+      "session_group_status": "UNASSIGNED",
+      "folder_declared_domain": "match",
+      "declared_domain": "match",
+      "domain_provenance": "User-organized footage-type folder; device/session provenance remains unverified",
+      "mixed_match_highlights": true,
+      "prior_development_evidence": [
+        {
+          "report": "artifacts/analyses/1791703787994746_17624/manifest.json",
+          "report_sha256": "8f589c042d033f2b28be645796e04b8fc8869cf2e8bc00d9e1cc60b6ae3d8186"
+        }
+      ],
+      "reason_codes": [
+        "MIXED_MATCH_COMPILATION_NOT_INDEPENDENT"
+      ],
+      "reason": "User-declared mixed-match highlights; review and duplicate/source audit required for training/development, excluded from independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\validation\\world_cup\\Top-Points-of-SnapYT.App (1).mp4",
+      "relative_path": "validation\\world_cup\\Top-Points-of-SnapYT.App (1).mp4",
+      "sha256": "e163890d46ef683f38d8fb6a616afa5b74064633147b29da839e257d94e348e6",
+      "bytes": 108739785,
+      "source_mtime_ms": 1791653423482.465,
+      "requested_split": "val",
+      "effective_role": "unassigned",
+      "known_session_ids": [],
+      "matching_review_captures": [],
+      "session_group_status": "UNASSIGNED",
+      "folder_declared_domain": "match",
+      "declared_domain": "match",
+      "domain_provenance": "User-organized footage-type folder; device/session provenance remains unverified",
+      "mixed_match_highlights": true,
+      "prior_development_evidence": [],
+      "reason_codes": [
+        "MIXED_MATCH_COMPILATION_NOT_INDEPENDENT"
+      ],
+      "reason": "User-declared mixed-match highlights; review and duplicate/source audit required for training/development, excluded from independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\validation\\world_cup\\Top-Points-of-SnapYT.App (4).mp4",
+      "relative_path": "validation\\world_cup\\Top-Points-of-SnapYT.App (4).mp4",
+      "sha256": "3edc45749c1ca28532234b33b136b431d072b9a3d78070b8b58902a31ef39e33",
+      "bytes": 113533717,
+      "source_mtime_ms": 1791653777116.016,
+      "requested_split": "val",
+      "effective_role": "unassigned",
+      "known_session_ids": [],
+      "matching_review_captures": [],
+      "session_group_status": "UNASSIGNED",
+      "folder_declared_domain": "match",
+      "declared_domain": "match",
+      "domain_provenance": "User-organized footage-type folder; device/session provenance remains unverified",
+      "mixed_match_highlights": true,
+      "prior_development_evidence": [],
+      "reason_codes": [
+        "MIXED_MATCH_COMPILATION_NOT_INDEPENDENT"
+      ],
+      "reason": "User-declared mixed-match highlights; review and duplicate/source audit required for training/development, excluded from independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\validation\\world_cup\\Top-Points-of-SnapYT.App (6).mp4",
+      "relative_path": "validation\\world_cup\\Top-Points-of-SnapYT.App (6).mp4",
+      "sha256": "6bb2774866591d6c7aebc34642f95cf28d7a27696668d3e9b144732665a8afe6",
+      "bytes": 167222378,
+      "source_mtime_ms": 1791653945684.2876,
+      "requested_split": "val",
+      "effective_role": "unassigned",
+      "known_session_ids": [],
+      "matching_review_captures": [],
+      "session_group_status": "UNASSIGNED",
+      "folder_declared_domain": "match",
+      "declared_domain": "match",
+      "domain_provenance": "User-organized footage-type folder; device/session provenance remains unverified",
+      "mixed_match_highlights": true,
+      "prior_development_evidence": [],
+      "reason_codes": [
+        "MIXED_MATCH_COMPILATION_NOT_INDEPENDENT"
+      ],
+      "reason": "User-declared mixed-match highlights; review and duplicate/source audit required for training/development, excluded from independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\validation\\world_cup\\videoplayback (1).mp4",
+      "relative_path": "validation\\world_cup\\videoplayback (1).mp4",
+      "sha256": "52495196e93bf550f1130a1e313ee481368488659f9fab714781819ebcc7e799",
+      "bytes": 102257033,
+      "source_mtime_ms": 1791653328043.2534,
+      "requested_split": "val",
+      "effective_role": "unassigned",
+      "known_session_ids": [],
+      "matching_review_captures": [],
+      "session_group_status": "UNASSIGNED",
+      "folder_declared_domain": "match",
+      "declared_domain": "match",
+      "domain_provenance": "User-organized footage-type folder; device/session provenance remains unverified",
+      "mixed_match_highlights": true,
+      "prior_development_evidence": [],
+      "reason_codes": [
+        "MIXED_MATCH_COMPILATION_NOT_INDEPENDENT"
+      ],
+      "reason": "User-declared mixed-match highlights; review and duplicate/source audit required for training/development, excluded from independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\seal\\iphone\\IMG_7936.MOV",
+      "relative_path": "seal\\iphone\\IMG_7936.MOV",
+      "sha256": "8b5ea69a091d17fdb3ebcf62d648a3b7f3e4954e081833eedfbd203a11c3fec0",
+      "bytes": 44294231,
+      "source_mtime_ms": 1791458891000,
+      "requested_split": "test",
+      "effective_role": "train",
+      "known_session_ids": [
+        "iphone_same_venue_session_1"
+      ],
+      "matching_review_captures": [
+        "phone_8b5ea69a091d17fd_1"
+      ],
+      "session_group_status": "KNOWN",
+      "folder_declared_domain": "iphone",
+      "declared_domain": "iphone",
+      "domain_provenance": "Existing original SHA and capture session metadata",
+      "mixed_match_highlights": false,
+      "prior_development_evidence": [],
+      "reason_codes": [
+        "SAME_IPHONE_SESSION_CROSS_FOLDER"
+      ],
+      "reason": "Previously reviewed same-session development footage; folder movement cannot establish independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\seal\\iphone\\IMG_7937.MOV",
+      "relative_path": "seal\\iphone\\IMG_7937.MOV",
+      "sha256": "211157624ce0f53068afe95e7d47138c03044d9b3c29ebde63aee964d665f2a7",
+      "bytes": 73281868,
+      "source_mtime_ms": 1791458966000,
+      "requested_split": "test",
+      "effective_role": "train",
+      "known_session_ids": [
+        "iphone_same_venue_session_1"
+      ],
+      "matching_review_captures": [
+        "phone_211157624ce0f530_1"
+      ],
+      "session_group_status": "KNOWN",
+      "folder_declared_domain": "iphone",
+      "declared_domain": "iphone",
+      "domain_provenance": "Existing original SHA and capture session metadata",
+      "mixed_match_highlights": false,
+      "prior_development_evidence": [],
+      "reason_codes": [
+        "SAME_IPHONE_SESSION_CROSS_FOLDER"
+      ],
+      "reason": "Previously reviewed same-session development footage; folder movement cannot establish independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\seal\\world_cup\\001.mp4",
+      "relative_path": "seal\\world_cup\\001.mp4",
+      "sha256": "6d0633f8dabf93fa50df7e9d3280fde27cebee858f8af1c10085d5af6fb0e972",
+      "bytes": 936115,
+      "source_mtime_ms": 1791526500557.9597,
+      "requested_split": "test",
+      "effective_role": "unassigned",
+      "known_session_ids": [],
+      "matching_review_captures": [],
+      "session_group_status": "UNASSIGNED",
+      "folder_declared_domain": "match",
+      "declared_domain": "match",
+      "domain_provenance": "User-organized footage-type folder; device/session provenance remains unverified",
+      "mixed_match_highlights": true,
+      "prior_development_evidence": [
+        {
+          "report": "artifacts/blurball_research/001_comparison/report.json",
+          "report_sha256": "7b0cdb9c5cb758519fb1127ea268f4a8788dfa35a73a2922a443895d5b4b300b"
+        }
+      ],
+      "reason_codes": [
+        "MIXED_MATCH_COMPILATION_NOT_INDEPENDENT",
+        "PREVIOUSLY_EXPOSED_SOURCE_NOT_BLIND_TEST"
+      ],
+      "reason": "User-declared mixed-match highlights; review and duplicate/source audit required for training/development, excluded from independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\seal\\world_cup\\demo5.mp4",
+      "relative_path": "seal\\world_cup\\demo5.mp4",
+      "sha256": "9e71cc8ba7e303403b1b9f0ea60914f270e8a178cf9af4d5ecd25e98b88d54be",
+      "bytes": 1112311,
+      "source_mtime_ms": 1791528380071.2656,
+      "requested_split": "test",
+      "effective_role": "unassigned",
+      "known_session_ids": [],
+      "matching_review_captures": [],
+      "session_group_status": "UNASSIGNED",
+      "folder_declared_domain": "match",
+      "declared_domain": "match",
+      "domain_provenance": "User-organized footage-type folder; device/session provenance remains unverified",
+      "mixed_match_highlights": true,
+      "prior_development_evidence": [
+        {
+          "report": "artifacts/blurball_research/demo5_comparison/report.json",
+          "report_sha256": "2b711679da9c8fe3e6ccc1e33a05f9cef63b25a917543919885605b21ca64ca0"
+        }
+      ],
+      "reason_codes": [
+        "MIXED_MATCH_COMPILATION_NOT_INDEPENDENT",
+        "PREVIOUSLY_EXPOSED_SOURCE_NOT_BLIND_TEST"
+      ],
+      "reason": "User-declared mixed-match highlights; review and duplicate/source audit required for training/development, excluded from independent validation/test",
+      "independent_release_evidence": false
+    },
+    {
+      "path": "C:\\Users\\Adi\\Downloads\\seal\\world_cup\\Top-Points-of-SnapYT.App (3).mp4",
+      "relative_path": "seal\\world_cup\\Top-Points-of-SnapYT.App (3).mp4",
+      "sha256": "08317f2e491b4225b28820b25a3d4beec4cd657677e0e0efbf2c516a08b6cc44",
+      "bytes": 139637102,
+      "source_mtime_ms": 1791653744063.5967,
+      "requested_split": "test",
+      "effective_role": "unassigned",
+      "known_session_ids": [],
+      "matching_review_captures": [],
+      "session_group_status": "UNASSIGNED",
+      "folder_declared_domain": "match",
+      "declared_domain": "match",
+      "domain_provenance": "User-organized footage-type folder; device/session provenance remains unverified",
+      "mixed_match_highlights": true,
+      "prior_development_evidence": [],
+      "reason_codes": [
+        "MIXED_MATCH_COMPILATION_NOT_INDEPENDENT"
+      ],
+      "reason": "User-declared mixed-match highlights; review and duplicate/source audit required for training/development, excluded from independent validation/test",
+      "independent_release_evidence": false
+    }
+  ],
+  "shared_sessions": [
+    {
+      "session_id": "iphone_same_venue_session_1",
+      "splits": [
+        "test",
+        "train",
+        "val"
+      ]
+    }
+  ],
+  "exact_cross_split_duplicates": [],
+  "folder_counts": {
+    "train": 12,
+    "val": 8,
+    "test": 5
+  },
+  "independent_release_evidence": false,
+  "production_registry_modified": false,
+  "sealed_test_labels_consumed": false,
+  "contains_automatically_reviewed_ground_truth": false,
+  "pc_camera_sources_supplied": false,
+  "outstanding": [
+    "Mixed-match highlights remain development-only; original-source/overlap audit is required before training",
+    "All new clips require explicitly reviewed ball targets and absences",
+    "Previously reviewed iPhone clips remain one training session regardless of folder",
+    "Actual PC-camera and independent paired A/B/C session footage remains required for the agreed release"
+  ]
+}

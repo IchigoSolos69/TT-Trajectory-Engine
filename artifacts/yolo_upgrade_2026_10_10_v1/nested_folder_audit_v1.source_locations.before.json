@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "sources": {
+    "fa4e98c1cc92b86c4c54e78486d7d1a93bfbde3b78e18860f5af4e09bf63f1a8": {
+      "paths": [
+        "C:\\Users\\Adi\\Downloads\\training\\IMG_7940.MOV"
+      ],
+      "reverified_at": "2026-10-11T07:34:15.609Z"
+    },
+    "61f027143f6c8d57e158d3ace53f88942c136bd73db5e01ae0daf1fe012fe51a": {
+      "paths": [
+        "C:\\Users\\Adi\\Downloads\\training\\IMG_7941.MOV"
+      ],
+      "reverified_at": "2026-10-11T07:34:17.388Z"
+    },
+    "031b178c51bfae75b7d9164ed4fc8d9b4881075e634b70591db28646621b04a8": {
+      "paths": [
+        "C:\\Users\\Adi\\Downloads\\training\\IMG_7942.MOV"
+      ],
+      "reverified_at": "2026-10-11T07:34:19.042Z"
+    },
+    "e23544b0c4c1a8506f529f4d53e75ecb9e0c98f7e529e03355086875cce433de": {
+      "paths": [
+        "C:\\Users\\Adi\\Downloads\\training\\IMG_7944.MOV"
+      ],
+      "reverified_at": "2026-10-11T07:34:20.839Z"
+    },
+    "e197222a3322d1af10dec810fe790561d292a2fa6468323ffbac970223f2c148": {
+      "paths": [
+        "C:\\Users\\Adi\\Downloads\\validation\\IMG_7939.MOV"
+      ],
+      "reverified_at": "2026-10-11T07:34:21.604Z"
+    },
+    "c343f0cdb72df492b3de2a69278e4d9c6884e9a22e80a5db69b903a2a9129e7f": {
+      "paths": [
+        "C:\\Users\\Adi\\Downloads\\validation\\IMG_7943.MOV"
+      ],
+      "reverified_at": "2026-10-11T07:34:21.677Z"
+    },
+    "3adaa646b1413bfa3d1d42466ea1f16bde3b201be8c6e0f860d13dc131ab50f8": {
+      "paths": [
+        "C:\\Users\\Adi\\Downloads\\validation\\IMG_7945.MOV"
+      ],
+      "reverified_at": "2026-10-11T07:34:23.649Z"
+    },
+    "452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706": {
+      "paths": [
+        "C:\\Users\\Adi\\Downloads\\validation\\Video Project 6.mp4"
+      ],
+      "reverified_at": "2026-10-11T07:34:24.719Z"
+    },
+    "8b5ea69a091d17fdb3ebcf62d648a3b7f3e4954e081833eedfbd203a11c3fec0": {
+      "paths": [
+        "C:\\Users\\Adi\\Downloads\\seal\\IMG_7936.MOV"
+      ],
+      "reverified_at": "2026-10-11T07:34:24.921Z"
+    },
+    "211157624ce0f53068afe95e7d47138c03044d9b3c29ebde63aee964d665f2a7": {
+      "paths": [
+        "C:\\Users\\Adi\\Downloads\\seal\\IMG_7937.MOV"
+      ],
+      "reverified_at": "2026-10-11T07:34:25.005Z"
+    },
+    "1383e588b7ee3783db3ad18c648d6cd27190985f2f34bce7e5a4f50b645998b9": {
+      "paths": [
+        "C:\\Users\\Adi\\Downloads\\seal\\IMG_7938.MOV"
+      ],
+      "reverified_at": "2026-10-11T07:34:25.278Z"
+    }
+  }
+}

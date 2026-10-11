@@ -378,3 +378,39 @@ accuracy/timing, the 30-minute camera soak, learned hybrid fitting and default
 promotion remain unfinished. Offline diagnostics are separate from live latency.
 
 Evidence and remaining work: [October 11 implementation report](YOLO_UPGRADE_IMPLEMENTATION_2026_10_11.md).
+
+## October 11 — nested recording folders and compilation safeguards
+
+Recursive source hashing found 25 videos in the footage-type subfolders
+(12 training, eight validation, five seal) and reconnected 11 existing original
+identities through the source-location sidecar. Existing review labels and
+session assignments were not rewritten. An immutable backup preserves the
+previous resolver bytes. The development manifest separately records requested
+folder splits and effective known-session roles.
+
+The user confirms the World Cup sources are mixed-match highlight compilations.
+They remain development material, excluded from independent validation/test.
+The original ten iPhone clips still belong to one previously reviewed session;
+the folder layout cannot establish new sessions. `001.mp4` and `demo5.mp4` source
+hashes match prior development reports. No near-duplicate/source-overlap result
+is claimed from exact-byte hashing.
+
+Thirty-one fixtures pass: recursive Unicode/space paths, immutable identities,
+domain/session preservation, source hash/mtime drift, exact duplicates, explicit
+exposure exclusions, registry-only sealed identity handling, same-content
+junction rejection, immutable outputs, exclusive locks, backups and failed
+rename preservation. This is source/data plumbing evidence, not model accuracy.
+
+Evidence: `artifacts/yolo_upgrade_2026_10_10_v1/nested_folder_audit_v1.json`,
+`development_folder_split_v3.json`, and
+`artifacts/recording_split_tests_2026_10_11_v2.log`.
+
+The refreshed v5 production plan resolves assigned originals with no source
+issues and still blocks fitting on 15 data/export requirements. The reconciliation
+report verifies unchanged production session assignments, 750 review images,
+42 original metadata/review files and all three model hashes. Resolver/backup
+hashes and current manifest paths, source sizes and modification times match.
+No models were loaded for fitting, no annotations were added and no actual
+live-camera or accuracy acceptance is claimed.
+See `artifacts/yolo_upgrade_2026_10_10_v1/nested_folder_verification_v1.json`
+and `artifacts/yolo_paired_training_plan_2026_10_11_v5.json`.

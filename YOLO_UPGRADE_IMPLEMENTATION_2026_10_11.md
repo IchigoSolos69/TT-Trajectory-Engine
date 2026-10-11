@@ -7,23 +7,33 @@ camera data is not ready. Existing engines and completed annotations are preserv
 
 ## Recording folders and existing reviews
 
-The Downloads folder audit found 23 videos: nine in training, eight in validation
-and six in seal. Eleven relocated original sources match stored SHA-256 identities
+The latest recursive Downloads folder audit found 25 videos: 12 in training,
+eight in validation and five in seal. Eleven relocated original sources match stored SHA-256 identities
 and now resolve through `training_data/live/source_locations.json`. Original
 capture metadata and annotation files were not rewritten.
 
 The ten IMG_7936–IMG_7945 originals still belong to the previously reviewed
-`iphone_same_venue_session_1`. Their actual current folder distribution is four,
-three and three; moving them cannot create independent sessions. Twelve imports
+`iphone_same_venue_session_1`. Their latest folder distribution is six in training,
+two in validation and two in seal; moving them cannot create independent sessions. Twelve imports
 of those originals, including targeted failure bursts, are explicitly registered
 as existing iPhone training data. The separate folder comparison manifest preserves
 the requested clip distribution as development comparisons. The user clarified
-that the additional recordings are official World Cup gameplay from the event
-website, and that there are no current PC/webcam recordings. Twelve additional
-sources are recorded as user-declared public match footage in the development
-manifest. They require their original match identities and reviewed targets;
-they cannot establish the actual PC-camera domain. Previously exposed clips
-cannot become blind tests.
+that the additional recordings are official World Cup gameplay, specifically
+mixed-match highlight compilations, and that there are no current PC/webcam
+recordings. Fourteen sources in `world_cup` are retained as declared match
+development footage. Compilations need source/overlap auditing and reviewed
+targets before training; they cannot establish independent validation/test or
+the actual PC-camera domain. The sealed-folder `001.mp4` and `demo5.mp4` byte
+identities match prior development reports and cannot become blind tests.
+
+The importer now discovers nested `iphone`/`world_cup` folders without requiring
+session or match subfolders. The resolver migration has an exclusive lock and
+an exact backup of the old sidecar; old paths and capture/annotation files are
+preserved. The development manifest rehashes every source and retains original
+session roles, folder-declared domains, compilation exclusions and exposure
+evidence. Thirty-one isolated fixture checks pass for recursive discovery,
+identity, stale sources, split safeguards, junction rejection and migration failures.
+Exact duplicate hashes do not rule out overlapping or re-edited highlights.
 
 The strict assigned-camera audit currently accepts 18 visible frames and nine
 absent frames from 330 saved frames, with 301 unreviewed and two unknown. This
@@ -32,9 +42,21 @@ and still require source/device/session reconciliation. Seven conflicting duplic
 positive boxes remain excluded until human review. Video Project 6 contains actual
 balls in some reviewed frames and must never be labeled negative as a whole.
 
-Evidence: `artifacts/yolo_upgrade_2026_10_10_v1/download_folder_audit.json`,
-`existing_session_assignment.json`, `development_folder_split_v2.json`, and
-`artifacts/yolo_paired_training_plan_2026_10_11_v4.json`.
+Current folder evidence: `artifacts/yolo_upgrade_2026_10_10_v1/nested_folder_audit_v1.json`,
+`development_folder_split_v3.json` and
+`artifacts/recording_split_tests_2026_10_11_v2.log`. Earlier source inventories,
+assignments and plans are retained as historical snapshots. The source resolver
+changed; `artifacts/yolo_paired_training_plan_2026_10_11_v5.json` now binds the
+updated paths and hashes. It reports no original-source resolution issues but
+remains not ready for fitting, with 15 data/export blockers. The assigned-camera
+counts remain 18 visible and nine absent, without PC-camera or independent
+validation coverage.
+
+`artifacts/yolo_upgrade_2026_10_10_v1/nested_folder_verification_v1.json` verifies
+that all 750 review images, 42 original capture/index/annotation files, the
+production session registry and three deployed model hashes remain unchanged.
+The resolver backup and all 25 manifest source paths/sizes/modification times
+also match. No labels, optimizer outputs or replacement models were created.
 
 ## Implemented training controls
 

@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-11T13:44:02.270Z",
+  "scope": "Source-only nested folder reconciliation; no fitted model accuracy or independent release acceptance",
+  "files": 25,
+  "folder_counts": {
+    "train": 12,
+    "val": 8,
+    "test": 5
+  },
+  "reconnected_originals": 11,
+  "matched_review_imports": 14,
+  "mixed_match_compilations": 14,
+  "exact_cross_split_duplicates": [],
+  "same_session_cross_folder_sources": 5,
+  "independent_release_evidence": false,
+  "production_partitions_modified": false,
+  "sealed_test_labels_consumed": false,
+  "ready_for_fitting": false,
+  "promotion_approved": false,
+  "camera_counts": {
+    "train": {
+      "iphone": {
+        "visible": 18,
+        "absent": 9
+      },
+      "pc_camera": {
+        "visible": 0,
+        "absent": 0
+      }
+    },
+    "val": {
+      "iphone": {
+        "visible": 0,
+        "absent": 0
+      },
+      "pc_camera": {
+        "visible": 0,
+        "absent": 0
+      }
+    }
+  },
+  "training_blockers": [
+    "CHECKED_PAIRED_TRAINING_EXPORT_MISSING",
+    "TRAIN_1000_VERIFIED_ABSENT_REQUIRED",
+    "TRAIN_2000_VISIBLE_REQUIRED",
+    "TRAIN_500_AUDITED_POSITIVE_WINDOWS_REQUIRED",
+    "TRAIN_A_IPHONE_MISSING",
+    "TRAIN_A_PC_CAMERA_MISSING",
+    "TRAIN_PC_CAMERA_BOTH_CLASSES_MISSING",
+    "VAL_IPHONE_1000_VISIBLE_REQUIRED",
+    "VAL_IPHONE_10_REVIEWED_RALLIES_REQUIRED",
+    "VAL_IPHONE_120S_VERIFIED_ABSENCE_REQUIRED",
+    "VAL_IPHONE_BOTH_CLASSES_MISSING",
+    "VAL_PC_CAMERA_1000_VISIBLE_REQUIRED",
+    "VAL_PC_CAMERA_10_REVIEWED_RALLIES_REQUIRED",
+    "VAL_PC_CAMERA_120S_VERIFIED_ABSENCE_REQUIRED",
+    "VAL_PC_CAMERA_BOTH_CLASSES_MISSING"
+  ],
+  "preserved": {
+    "original_capture_index_annotation_files": 42,
+    "original_review_images": 750,
+    "sealed_preservation_reads_skipped": 0,
+    "models": {
+      "ball": "2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9",
+      "scene": "5eb0ecbfe0cddb8631cc89fbf6e7a2145d2a4a6b10595034afd4ab8b1a454cee",
+      "blurball_experimental": "48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f"
+    }
+  },
+  "checks": {
+    "inventory_fixtures": 15,
+    "development_split_fixtures": 16,
+    "live_camera_tested": false
+  },
+  "source_resolver_sha256": "f38ba5b0407dd8e03422355d221ebb47a905b6111a940d8573b34efcdc78bf4d",
+  "evidence_sha256": {
+    "artifacts/yolo_upgrade_2026_10_10_v1/nested_folder_audit_v1.json": "574fbaa519a20312ed95e741bfcf15d5adc260f36695e85a998531be2068a4c6",
+    "artifacts/yolo_upgrade_2026_10_10_v1/development_folder_split_v3.json": "df1fd4eb1d302727490875814b7f46462d39365d1b5a0a849f935045f6c33ab2",
+    "artifacts/yolo_paired_training_plan_2026_10_11_v5.json": "764b96b7f29aa1d2bdccf773c7b999c30d84f63afca00b8759d1630bac493448",
+    "artifacts/recording_split_tests_2026_10_11_v2.log": "3586d0b128c156079b33966fbedd1d3c44535434107327ed278dc7dabcdc94f4"
+  },
+  "source_sha256": {
+    "tools/audit_recording_folders.cjs": "2225a8038369525b68b19d2e28015b93105966f338293fa3ec04288a59ae35a6",
+    "tools/recording_folder_inventory.cjs": "131b5245d4d4068331eba3401d8761274458d98a47cf361cb57052050bd97d62",
+    "tools/prepare_development_folder_split.cjs": "e2fe47b57676ce60c01a8c57c717504843b71a9c1893399333921ad469c9faa4",
+    "tools/verify_recording_folder_migration.cjs": "5c90696bc95db7982241d3129902e0e5e643cea5e51eceed88596b3995d28247",
+    "tools/tests/recording_folder_inventory.test.cjs": "55e4807ed98ba78e9d793254684677ad08fea6c8502a98f1d74e520e29ba859f",
+    "tools/tests/development_folder_split.test.cjs": "155d0e866d859041fb8d8496fb5914b755d4f96cde6bf05f36ed8469aa69debc"
+  },
+  "limits": [
+    "Byte duplicate check does not detect overlapping highlight edits",
+    "No additional reviewed labels created",
+    "Independent paired camera validation/test remains missing",
+    "No live throughput/accuracy acceptance measured"
+  ]
+}
