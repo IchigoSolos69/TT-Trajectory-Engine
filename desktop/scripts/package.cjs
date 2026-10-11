@@ -32,6 +32,15 @@ fs.mkdirSync(path.join(runtime,'models'),{recursive:true});
 for(const name of ['yolov11_ttgames.engine','scene.engine','yolov11_ttgames.manifest.json','scene.manifest.json','blurball_fp32.engine','blurball.manifest.json','BlurBall-LICENSE.txt'])fs.copyFileSync(path.join(root,'models',name),path.join(runtime,'models',name));
 const backend=path.join(runtime,'backend');fs.mkdirSync(backend,{recursive:true});
 fs.copyFileSync(executable,path.join(backend,'tt_trajectory_engine.exe'));
+// Interval preparation is explicit training work. Its decoder is packaged,
+// while Python/OpenCV/NumPy remain an optional external training dependency.
+const trainingTools=path.join(runtime,'training-tools');fs.mkdirSync(trainingTools,{recursive:true});
+const intervalToolNames=['prepare_absence_interval.py','recording_source.py'];
+for(const name of intervalToolNames){
+  const source=path.join(root,'python_tools',name);
+  if(!fs.existsSync(source))throw Error(`Training interval tool missing: ${source}`);
+  fs.copyFileSync(source,path.join(trainingTools,name));
+}
 const searchDirectories=[path.dirname(executable),'C:/TensorRT/bin','C:/opencv/build/x64/vc16/bin','C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.4/bin/x64',...(process.env.PATH||'').split(path.delimiter)];
 const redistRoot='C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Redist/MSVC';
 if(fs.existsSync(redistRoot))for(const version of fs.readdirSync(redistRoot))searchDirectories.unshift(path.join(redistRoot,version,'x64','Microsoft.VC143.CRT'));
@@ -57,7 +66,7 @@ while(pending.length){
   }
 }
 const hash=file=>crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
-const manifest={schema_version:1,created_at:new Date().toISOString(),platform:'win32-x64',electron:require('electron/package.json').version,frontend_build:frontendBuild,native_runtime:[...copied].sort(),system_dependencies:[...new Set(system)].sort(),source_backend_sha256:hash(executable),models:{ball:hash(required[2]),scene:hash(required[3]),blurball_experimental:hash(required[4])},gpu_requirement:'NVIDIA driver and GPU compatible with the serialized TensorRT engines; built for the current RTX 5050 environment.'};
+const manifest={schema_version:1,created_at:new Date().toISOString(),platform:'win32-x64',electron:require('electron/package.json').version,frontend_build:frontendBuild,native_runtime:[...copied].sort(),system_dependencies:[...new Set(system)].sort(),source_backend_sha256:hash(executable),models:{ball:hash(required[2]),scene:hash(required[3]),blurball_experimental:hash(required[4])},optional_training_tools:Object.fromEntries(intervalToolNames.map(name=>[name,hash(path.join(trainingTools,name))])),optional_training_runtime:'Python with OpenCV and NumPy; needed only for explicitly requested full absence-interval preparation.',gpu_requirement:'NVIDIA driver and GPU compatible with the serialized TensorRT engines; built for the current RTX 5050 environment.'};
 fs.writeFileSync(path.join(output,'release-manifest.json'),JSON.stringify(manifest,null,2));
-fs.writeFileSync(path.join(output,'README.txt'),'Double-click TT Trajectory Engine.exe. Keep this entire folder together.\r\nNo Node.js, Python, browser, or internet connection is required to run.\r\nRequires a compatible NVIDIA GPU/driver. Serialized TensorRT engines are hardware-specific.\r\nChoose a recording or a live session. Camera starts only after explicit authorization.\r\nWhen run inside the source project, existing training_data and analysis folders are retained.\r\nWhen moved outside the project, data and logs use %APPDATA%/TT Trajectory Engine.\r\nUse Help > Open local data and logs to find the active folder.\r\n');
+fs.writeFileSync(path.join(output,'README.txt'),'Double-click TT Trajectory Engine.exe. Keep this entire folder together.\r\nNo Node.js, Python, browser, or internet connection is required for normal footage analysis.\r\nOptional full absence-interval preparation requires an installed training Python with OpenCV and NumPy. No runtime is downloaded automatically.\r\nRequires a compatible NVIDIA GPU/driver. Serialized TensorRT engines are hardware-specific.\r\nChoose a recording or a live session. Camera starts only after explicit authorization.\r\nWhen run inside the source project, existing training_data and analysis folders are retained.\r\nWhen moved outside the project, data and logs use %APPDATA%/TT Trajectory Engine.\r\nUse Help > Open local data and logs to find the active folder.\r\n');
 console.log(JSON.stringify({output,native_files:copied.size,manifest},null,2));

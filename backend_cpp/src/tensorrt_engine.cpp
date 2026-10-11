@@ -6,6 +6,7 @@
 #include <cstring>
 #include <chrono>
 #include <stdexcept>
+#include <limits>
 #ifdef _WIN32
 #ifndef NOMINMAX
 #define NOMINMAX
@@ -27,6 +28,11 @@ public:
         }
     }
 } gLogger;
+
+static void checkCuda(cudaError_t status, const char* stage) {
+    if (status != cudaSuccess)
+        throw std::runtime_error(std::string("CUDA ") + stage + ": " + cudaGetErrorString(status));
+}
 #endif
 
 #include <filesystem>
@@ -45,7 +51,7 @@ static std::string computeSha256(const std::string& filePath) {
         CryptReleaseContext(provider, 0);
         throw std::runtime_error("Cannot initialize SHA-256 hash.");
     }
-    std::ifstream file(filePath, std::ios::binary);
+    std::ifstream file(std::filesystem::u8path(filePath), std::ios::binary);
     bool valid = file.good();
     char buffer[65536];
     while (valid && file.read(buffer, sizeof(buffer))) {
@@ -70,8 +76,8 @@ static std::string computeSha256(const std::string& filePath) {
 static std::string getFileLastModifiedIso(const std::string& filePath) {
     try {
         namespace fs = std::filesystem;
-        if (!fs::exists(filePath)) return "N/A";
-        auto ftime = fs::last_write_time(filePath);
+        if (!fs::exists(fs::u8path(filePath))) return "N/A";
+        auto ftime = fs::last_write_time(fs::u8path(filePath));
         auto s_time = std::chrono::time_point_cast<std::chrono::system_clock::duration>(
             ftime - fs::file_time_type::clock::now() + std::chrono::system_clock::now()
         );
@@ -86,18 +92,18 @@ static std::string getFileLastModifiedIso(const std::string& filePath) {
 }
 
 std::string TensorRTEngine::resolveEnginePath(const std::string& userPath) {
-    if (!userPath.empty() && std::ifstream(userPath).good()) {
+    if (!userPath.empty() && std::ifstream(std::filesystem::u8path(userPath)).good()) {
         return userPath;
     }
     if (!userPath.empty()) {
         for (const auto& prefix : {"../", "../../", "../../../"}) {
             const auto path = std::string(prefix) + userPath;
-            if (std::ifstream(path).good()) return path;
+            if (std::ifstream(std::filesystem::u8path(path)).good()) return path;
         }
         throw std::runtime_error("Requested engine was not found: " + userPath);
     }
     const char* envPath = std::getenv("TT_ENGINE_PATH");
-    if (envPath && std::ifstream(envPath).good()) {
+    if (envPath && std::ifstream(std::filesystem::u8path(envPath)).good()) {
         return std::string(envPath);
     }
 
@@ -119,10 +125,10 @@ std::string TensorRTEngine::resolveEnginePath(const std::string& userPath) {
     namespace fs = std::filesystem;
 
     for (const auto& path : candidateSearchList) {
-        if (std::ifstream(path).good()) {
+        if (std::ifstream(fs::u8path(path)).good()) {
             std::string cPath = path;
             try {
-                cPath = fs::canonical(path).string();
+                cPath = fs::canonical(fs::u8path(path)).u8string();
             } catch (...) {}
 
             // Check if canonical path is unique
@@ -139,7 +145,7 @@ std::string TensorRTEngine::resolveEnginePath(const std::string& userPath) {
         std::cerr << "[TensorRTEngine] Ambiguity hazard! The engine resolver found " << canonicalPaths.size() << " conflicting engine files:\n";
         for (size_t i = 0; i < existingPaths.size(); ++i) {
             uint64_t fSize = 0;
-            try { fSize = fs::file_size(existingPaths[i]); } catch(...) {}
+            try { fSize = fs::file_size(fs::u8path(existingPaths[i])); } catch(...) {}
             std::string sha = computeSha256(existingPaths[i]);
             std::cerr << "  [" << (i + 1) << "] Relative: " << existingPaths[i]
                       << " | Canonical: " << canonicalPaths[i]
@@ -171,8 +177,22 @@ TensorRTEngine::TensorRTEngine(const std::string& enginePath, int inputWidth, in
       hostOutputBuffer_(nullptr),
       deviceInputBuffer_(nullptr),
       deviceOutputBuffer_(nullptr) {
-    inputSize_ = 1 * 3 * inputW_ * inputH_ * sizeof(float);
-    outputSize_ = (4 + classes_) * 8400 * sizeof(float);
+    if (inputWidth <= 0 || inputHeight <= 0 || classes < 1 || classes > 80)
+        throw std::invalid_argument("Positive input hints and 1..80 configured YOLO classes required.");
+}
+
+void DetectorTensorShape::validate() const {
+    if (inputWidth <= 0 || inputHeight <= 0 || inputWidth % 32 || inputHeight % 32 ||
+        classes < 1 || classes > 80 || anchors <= 0 ||
+        static_cast<size_t>(inputWidth) * inputHeight > static_cast<size_t>(std::numeric_limits<int>::max()) ||
+        static_cast<size_t>(anchors) > std::numeric_limits<size_t>::max() / (4 + classes) / sizeof(float))
+        throw std::invalid_argument("Malformed static FP32 YOLO tensor contract.");
+}
+size_t DetectorTensorShape::inputElements() const { validate(); return static_cast<size_t>(3) * inputWidth * inputHeight; }
+size_t DetectorTensorShape::outputElements() const { validate(); return static_cast<size_t>(4 + classes) * anchors; }
+DetectorTensorShape TensorRTEngine::getTensorShape() const {
+    if (!isInitialized_) throw std::runtime_error("Detector tensor contract requires initialized engine.");
+    return {inputW_, inputH_, classes_, anchorCount_};
 }
 
 TensorRTEngine::~TensorRTEngine() {
@@ -227,9 +247,10 @@ static std::string fetchGitCommitSha() {
 #endif
 
 bool TensorRTEngine::init() {
+    if (isInitialized_) return true;
     std::cout << "[TensorRTEngine] Loading engine file: " << enginePath_ << std::endl;
 
-    std::ifstream file(enginePath_, std::ios::binary);
+    std::ifstream file(std::filesystem::u8path(enginePath_), std::ios::binary);
     if (!file.good()) {
         std::cerr << "[TensorRTEngine] CRITICAL FATAL ERROR: Cannot open engine file at '"
                   << enginePath_ << "'. Exiting program with code 1." << std::endl;
@@ -256,35 +277,46 @@ bool TensorRTEngine::init() {
 #ifdef HAS_TENSORRT
     int trtVersion = getInferLibVersion();
     std::cout << "[TensorRTEngine] TensorRT Library Version : " << (trtVersion / 10000) << "." << ((trtVersion / 100) % 100) << "." << (trtVersion % 100) << " (raw: " << trtVersion << ")" << std::endl;
-    nvinfer1::IRuntime* runtime = nvinfer1::createInferRuntime(gLogger);
+    std::unique_ptr<nvinfer1::IRuntime> runtime(nvinfer1::createInferRuntime(gLogger));
+    if (!runtime) throw std::runtime_error("Cannot create TensorRT runtime.");
     nvinfer1::ICudaEngine* engine = runtime->deserializeCudaEngine(engineData.data(), fileSizeBytes_);
     if (!engine) {
         std::cerr << "[TensorRTEngine] CRITICAL FATAL ERROR: Failed to deserialize CUDA engine. Exiting code 1." << std::endl;
-        delete runtime;
         std::exit(1);
     }
 
     engine_ = engine;
     if (engine->getNbIOTensors() != 2) throw std::runtime_error("Expected exactly one model input and output.");
+    bool foundInput = false, foundOutput = false;
     for (int i = 0; i < engine->getNbIOTensors(); ++i) {
         const char* name = engine->getIOTensorName(i);
         auto dims = engine->getTensorShape(name);
         bool input = engine->getTensorIOMode(name) == nvinfer1::TensorIOMode::kINPUT;
-        bool shapeOk = input ? (dims.nbDims == 4 && dims.d[0] == 1 && dims.d[1] == 3 && dims.d[2] == inputH_ && dims.d[3] == inputW_)
-                             : (dims.nbDims == 3 && dims.d[0] == 1 && dims.d[1] == 4 + classes_ && dims.d[2] == 8400);
-        if (!shapeOk || engine->getTensorDataType(name) != nvinfer1::DataType::kFLOAT)
+        bool shapeOk = input ? (!foundInput && dims.nbDims == 4 && dims.d[0] == 1 && dims.d[1] == 3 && dims.d[2] > 0 && dims.d[3] > 0 &&
+                                dims.d[2] <= std::numeric_limits<int>::max() && dims.d[3] <= std::numeric_limits<int>::max())
+                             : (!foundOutput && dims.nbDims == 3 && dims.d[0] == 1 && dims.d[1] == 4 + classes_ && dims.d[2] > 0 &&
+                                dims.d[2] <= std::numeric_limits<int>::max());
+        if (!shapeOk || engine->getTensorDataType(name) != nvinfer1::DataType::kFLOAT ||
+            engine->getTensorFormat(name) != nvinfer1::TensorFormat::kLINEAR ||
+            engine->getTensorLocation(name) != nvinfer1::TensorLocation::kDEVICE)
             throw std::runtime_error("Unexpected detector I/O shape or precision for configured class count.");
+        if (input) { inputH_ = dims.d[2]; inputW_ = dims.d[3]; foundInput = true; }
+        else { anchorCount_ = dims.d[2]; foundOutput = true; }
     }
+    if (!foundInput || !foundOutput) throw std::runtime_error("Expected one detector input and one output.");
+    const DetectorTensorShape contract{inputW_, inputH_, classes_, anchorCount_};
+    inputSize_ = contract.inputElements() * sizeof(float);
+    outputSize_ = contract.outputElements() * sizeof(float);
     nvinfer1::IExecutionContext* context = engine->createExecutionContext();
     context_ = context;
     if (!context) throw std::runtime_error("Cannot create TensorRT execution context.");
 
     // Allocate Pinned Host Memory for zero-copy DMA execution
-    cudaMallocHost(&hostInputBuffer_, inputSize_);
-    cudaMallocHost(&hostOutputBuffer_, outputSize_);
+    checkCuda(cudaMallocHost(&hostInputBuffer_, inputSize_), "allocate pinned input");
+    checkCuda(cudaMallocHost(&hostOutputBuffer_, outputSize_), "allocate pinned output");
 
     cudaStream_t stream;
-    cudaStreamCreate(&stream);
+    checkCuda(cudaStreamCreate(&stream), "create stream");
     stream_ = stream;
 
     // Log data type for all I/O tensors via TensorRT 10 API
@@ -299,32 +331,27 @@ bool TensorRTEngine::init() {
     }
 
     // Allocate GPU memory
-    cudaMalloc(&deviceInputBuffer_, inputSize_);
-    cudaMalloc(&deviceOutputBuffer_, outputSize_);
+    checkCuda(cudaMalloc(&deviceInputBuffer_, inputSize_), "allocate input");
+    checkCuda(cudaMalloc(&deviceOutputBuffer_, outputSize_), "allocate output");
 
     // Set static tensor addresses once during init
     for (int i = 0; i < engine->getNbIOTensors(); ++i) {
         const char* tName = engine->getIOTensorName(i);
         if (engine->getTensorIOMode(tName) == nvinfer1::TensorIOMode::kINPUT) {
-            context->setTensorAddress(tName, deviceInputBuffer_);
+            if (!context->setTensorAddress(tName, deviceInputBuffer_)) throw std::runtime_error("Cannot bind detector input.");
         } else {
-            context->setTensorAddress(tName, deviceOutputBuffer_);
+            if (!context->setTensorAddress(tName, deviceOutputBuffer_)) throw std::runtime_error("Cannot bind detector output.");
         }
     }
 
-    cudaEventCreate(reinterpret_cast<cudaEvent_t*>(&evStartH2D_));
-    cudaEventCreate(reinterpret_cast<cudaEvent_t*>(&evStopH2D_));
-    cudaEventCreate(reinterpret_cast<cudaEvent_t*>(&evStartPrep_));
-    cudaEventCreate(reinterpret_cast<cudaEvent_t*>(&evStopPrep_));
-    cudaEventCreate(reinterpret_cast<cudaEvent_t*>(&evStartExec_));
-    cudaEventCreate(reinterpret_cast<cudaEvent_t*>(&evStopExec_));
-    cudaEventCreate(reinterpret_cast<cudaEvent_t*>(&evStartD2H_));
-    cudaEventCreate(reinterpret_cast<cudaEvent_t*>(&evStopD2H_));
+    for (void** event : {&evStartH2D_, &evStopH2D_, &evStartPrep_, &evStopPrep_,
+                         &evStartExec_, &evStopExec_, &evStartD2H_, &evStopD2H_})
+        checkCuda(cudaEventCreate(reinterpret_cast<cudaEvent_t*>(event)), "create timing event");
 
     std::cout << "[TensorRTEngine] CUDA buffers allocated successfully on Device GPU (Pinned Host Memory Enabled)." << std::endl;
-    std::cout << "[TensorRTEngine] Input Tensor Shape  : [1, 3, " << inputW_ << ", " << inputH_ << "] (Float32 CHW)" << std::endl;
-    std::cout << "[TensorRTEngine] Validated static detector output (FP32 I/O, FP16 compute)" << std::endl;
-    delete runtime;
+    std::cout << "[TensorRTEngine] Input Tensor Shape  : [1, 3, " << inputH_ << ", " << inputW_ << "] (Float32 CHW)" << std::endl;
+    std::cout << "[TensorRTEngine] Output Tensor Shape : [1, " << 4 + classes_ << ", " << anchorCount_ << "] (Float32)" << std::endl;
+    std::cout << "[TensorRTEngine] Validated static FP32 I/O; internal precision belongs to engine export metadata." << std::endl;
 #else
     std::cerr << "[TensorRTEngine] TensorRT support is required for analysis." << std::endl;
     return false;
@@ -396,7 +423,7 @@ std::vector<Detection> TensorRTEngine::inferFrame(const std::vector<float>& rgbN
 
     std::vector<float> rawOutput(outputSize_ / sizeof(float), 0.0f);
     executeInference(rgbNormalizedBuffer, rawOutput);
-    detections = postProcess(rawOutput, origImgWidth, origImgHeight, confThreshold, nmsThreshold);
+    detections = postProcess(rawOutput, getTensorShape(), origImgWidth, origImgHeight, confThreshold, nmsThreshold);
 
     return detections;
 }
@@ -412,7 +439,7 @@ std::vector<Detection> TensorRTEngine::inferFrameDetailed(const std::vector<floa
     executeInferenceDetailed(rgbNormalizedBuffer, rawOutput, timing.h2dMs, timing.gpuComputeMs, timing.d2hMs);
 
     auto tDecodeStart = std::chrono::high_resolution_clock::now();
-    detections = postProcess(rawOutput, origImgWidth, origImgHeight, confThreshold, nmsThreshold);
+    detections = postProcess(rawOutput, getTensorShape(), origImgWidth, origImgHeight, confThreshold, nmsThreshold);
     auto tDecodeEnd = std::chrono::high_resolution_clock::now();
     timing.decodeMs = std::chrono::duration<float, std::milli>(tDecodeEnd - tDecodeStart).count();
 
@@ -420,16 +447,42 @@ std::vector<Detection> TensorRTEngine::inferFrameDetailed(const std::vector<floa
 }
 
 std::vector<Detection> TensorRTEngine::inferFrameGPUDetailed(const cv::Mat& frame, InferenceTimingDetailed& timing, float confThreshold, float nmsThreshold) {
-    std::vector<Detection> detections;
-    if (!isInitialized_ || frame.empty()) return detections;
+    if (!isInitialized_ || frame.empty()) return {};
+    const auto raw = inferRawFrame(frame, true, false);
+    timing = raw.timing;
+    const auto start = std::chrono::steady_clock::now();
+    auto detections = postProcess(raw.rawOutput, raw.shape, frame.cols, frame.rows, confThreshold, nmsThreshold);
+    timing.decodeMs = std::chrono::duration<float, std::milli>(std::chrono::steady_clock::now() - start).count();
+    return detections;
+}
+
+RawDetectorInference TensorRTEngine::inferRawFrame(const cv::Mat& frame, bool cudaPreprocessing, bool includeInputTensor) {
+    if (!isInitialized_) throw std::runtime_error("Raw inference requires initialized detector.");
+    if (frame.empty() || frame.type() != CV_8UC3) throw std::invalid_argument("Raw inference requires nonempty BGR8 frame.");
+    RawDetectorInference result;
+    result.shape = getTensorShape(); result.sourceWidth = frame.cols; result.sourceHeight = frame.rows;
+    result.rawOutput.resize(result.shape.outputElements());
+    if (!cudaPreprocessing) {
+        result.preprocessingRevision = "opencv-linear-letterbox-round-pad114-bgr8-rgb-chw-v1";
+        const auto start = std::chrono::steady_clock::now();
+        auto input = preprocessOpenCVFrame(frame, inputW_, inputH_);
+        result.timing.preprocessMs = std::chrono::duration<float, std::milli>(std::chrono::steady_clock::now() - start).count();
+        executeInferenceDetailed(input, result.rawOutput, result.timing.h2dMs, result.timing.gpuComputeMs, result.timing.d2hMs);
+        if (includeInputTensor) result.inputTensor = std::move(input);
+        return result;
+    }
+    result.preprocessingRevision = "cuda-nearest-floor-letterbox-round-pad114-bgr8-rgb-chw-v1";
 
 #ifdef HAS_TENSORRT
+    // The kernel requires contiguous rows. A ROI can carry its parent's stride;
+    // uploading total()*elemSize() while preserving that stride is unsafe.
+    const cv::Mat contiguous = frame.isContinuous() ? frame : frame.clone();
     cudaStream_t stream = static_cast<cudaStream_t>(stream_);
-    size_t reqBGRSize = frame.total() * frame.elemSize();
+    size_t reqBGRSize = contiguous.total() * contiguous.elemSize();
 
     if (deviceBGRCapacity_ < reqBGRSize) {
-        if (deviceBGRBuffer_) cudaFree(deviceBGRBuffer_);
-        cudaMalloc(&deviceBGRBuffer_, reqBGRSize);
+        if (deviceBGRBuffer_) { checkCuda(cudaFree(deviceBGRBuffer_), "release BGR buffer"); deviceBGRBuffer_ = nullptr; }
+        checkCuda(cudaMalloc(&deviceBGRBuffer_, reqBGRSize), "allocate BGR buffer");
         deviceBGRCapacity_ = reqBGRSize;
     }
 
@@ -443,51 +496,49 @@ std::vector<Detection> TensorRTEngine::inferFrameGPUDetailed(const cv::Mat& fram
     cudaEvent_t stopD2H = static_cast<cudaEvent_t>(evStopD2H_);
 
     // 1. Copy raw frame BGR bytes directly to GPU memory (H2D)
-    cudaEventRecord(startH2D, stream);
-    cudaMemcpyAsync(deviceBGRBuffer_, frame.data, reqBGRSize, cudaMemcpyHostToDevice, stream);
-    cudaEventRecord(stopH2D, stream);
+    checkCuda(cudaEventRecord(startH2D, stream), "record H2D begin");
+    checkCuda(cudaMemcpyAsync(deviceBGRBuffer_, contiguous.data, reqBGRSize, cudaMemcpyHostToDevice, stream), "upload BGR");
+    checkCuda(cudaEventRecord(stopH2D, stream), "record H2D end");
 
     // 2. Launch CUDA Letterbox Preprocessing Kernel (NV12/BGR -> RGB planar CHW float)
-    cudaEventRecord(startPrep, stream);
+    checkCuda(cudaEventRecord(startPrep, stream), "record preprocess begin");
     launchLetterboxPreprocessKernel(
-        static_cast<const unsigned char*>(deviceBGRBuffer_), frame.cols, frame.rows, static_cast<int>(frame.step),
+        static_cast<const unsigned char*>(deviceBGRBuffer_), contiguous.cols, contiguous.rows, static_cast<int>(contiguous.step),
         static_cast<float*>(deviceInputBuffer_), inputW_, inputH_,
         stream
     );
-    cudaEventRecord(stopPrep, stream);
+    checkCuda(cudaGetLastError(), "launch preprocessing");
+    checkCuda(cudaEventRecord(stopPrep, stream), "record preprocess end");
 
     // 3. TensorRT GPU Compute
-    cudaEventRecord(startExec, stream);
+    checkCuda(cudaEventRecord(startExec, stream), "record inference begin");
     auto* ctx = static_cast<nvinfer1::IExecutionContext*>(context_);
-    ctx->enqueueV3(stream);
-    cudaEventRecord(stopExec, stream);
+    if (!ctx->enqueueV3(stream)) throw std::runtime_error("TensorRT enqueueV3 failed.");
+    checkCuda(cudaEventRecord(stopExec, stream), "record inference end");
 
     // 4. Device to Host Output Copy (into Pinned Host Memory)
-    cudaEventRecord(startD2H, stream);
-    std::vector<float> rawOutput(outputSize_ / sizeof(float), 0.0f);
-    size_t copyBytes = std::min(outputSize_, rawOutput.size() * sizeof(float));
-    cudaMemcpyAsync(hostOutputBuffer_ ? hostOutputBuffer_ : rawOutput.data(), deviceOutputBuffer_, copyBytes, cudaMemcpyDeviceToHost, stream);
-    cudaEventRecord(stopD2H, stream);
-
-    cudaStreamSynchronize(stream);
+    checkCuda(cudaEventRecord(startD2H, stream), "record D2H begin");
+    checkCuda(cudaMemcpyAsync(hostOutputBuffer_, deviceOutputBuffer_, outputSize_, cudaMemcpyDeviceToHost, stream), "download raw output");
+    if (includeInputTensor) {
+        result.inputTensor.resize(result.shape.inputElements());
+        checkCuda(cudaMemcpyAsync(hostInputBuffer_, deviceInputBuffer_, inputSize_, cudaMemcpyDeviceToHost, stream), "download actual preprocessed input");
+    }
+    checkCuda(cudaEventRecord(stopD2H, stream), "record D2H end");
+    checkCuda(cudaStreamSynchronize(stream), "synchronize inference");
 
     if (hostOutputBuffer_) {
-        std::memcpy(rawOutput.data(), hostOutputBuffer_, copyBytes);
+        std::memcpy(result.rawOutput.data(), hostOutputBuffer_, outputSize_);
     }
+    if (includeInputTensor) std::memcpy(result.inputTensor.data(), hostInputBuffer_, inputSize_);
 
-    cudaEventElapsedTime(&timing.h2dMs, startH2D, stopH2D);
-    cudaEventElapsedTime(&timing.preprocessMs, startPrep, stopPrep);
-    cudaEventElapsedTime(&timing.gpuComputeMs, startExec, stopExec);
-    cudaEventElapsedTime(&timing.d2hMs, startD2H, stopD2H);
-
-    // 5. Unletterbox Postprocess
-    auto tDecodeStart = std::chrono::high_resolution_clock::now();
-    detections = postProcess(rawOutput, frame.cols, frame.rows, confThreshold, nmsThreshold);
-    auto tDecodeEnd = std::chrono::high_resolution_clock::now();
-    timing.decodeMs = std::chrono::duration<float, std::milli>(tDecodeEnd - tDecodeStart).count();
+    checkCuda(cudaEventElapsedTime(&result.timing.h2dMs, startH2D, stopH2D), "time H2D");
+    checkCuda(cudaEventElapsedTime(&result.timing.preprocessMs, startPrep, stopPrep), "time preprocessing");
+    checkCuda(cudaEventElapsedTime(&result.timing.gpuComputeMs, startExec, stopExec), "time inference");
+    checkCuda(cudaEventElapsedTime(&result.timing.d2hMs, startD2H, stopD2H), "time D2H");
+#else
+    throw std::runtime_error("CUDA preprocessing requires TensorRT build.");
 #endif
-
-    return detections;
+    return result;
 }
 
 std::vector<Detection> TensorRTEngine::inferFrameGPU(const cv::Mat& frame, float confThreshold, float nmsThreshold) {
@@ -496,115 +547,67 @@ std::vector<Detection> TensorRTEngine::inferFrameGPU(const cv::Mat& frame, float
 }
 
 void TensorRTEngine::executeInference(const std::vector<float>& inputCPU, std::vector<float>& outputCPU) {
-    if (inputCPU.size() * sizeof(float) != inputSize_) throw std::invalid_argument("Unexpected inference input size.");
-#ifdef HAS_TENSORRT
-    if (context_ && stream_) {
-        cudaStream_t stream = static_cast<cudaStream_t>(stream_);
-        auto checkCuda = [](cudaError_t status) {
-            if (status != cudaSuccess) throw std::runtime_error(std::string("CUDA inference failed: ") + cudaGetErrorString(status));
-        };
-
-        if (hostInputBuffer_) {
-            std::memcpy(hostInputBuffer_, inputCPU.data(), inputSize_);
-        }
-
-        // 1. Host to Device (CPU -> GPU)
-        checkCuda(cudaMemcpyAsync(deviceInputBuffer_, hostInputBuffer_ ? hostInputBuffer_ : inputCPU.data(), inputSize_, cudaMemcpyHostToDevice, stream));
-
-        // 2. Execute TRT inference
-        auto* ctx = static_cast<nvinfer1::IExecutionContext*>(context_);
-        if (!ctx->enqueueV3(stream)) throw std::runtime_error("TensorRT enqueueV3 failed.");
-
-        // 3. Device to Host (GPU -> CPU)
-        size_t copyBytes = std::min(outputSize_, outputCPU.size() * sizeof(float));
-        checkCuda(cudaMemcpyAsync(hostOutputBuffer_ ? hostOutputBuffer_ : outputCPU.data(), deviceOutputBuffer_, copyBytes, cudaMemcpyDeviceToHost, stream));
-
-        // 4. Block CPU until stream finishes
-        checkCuda(cudaStreamSynchronize(stream));
-
-        if (hostOutputBuffer_) {
-            std::memcpy(outputCPU.data(), hostOutputBuffer_, copyBytes);
-        }
-    }
-#endif
+    float h2d = 0, compute = 0, d2h = 0;
+    executeInferenceDetailed(inputCPU, outputCPU, h2d, compute, d2h);
 }
 
 void TensorRTEngine::executeInferenceDetailed(const std::vector<float>& inputCPU, std::vector<float>& outputCPU, float& h2dMs, float& gpuComputeMs, float& d2hMs) {
+    if (!isInitialized_) throw std::runtime_error("Inference requires initialized detector.");
+    if (inputCPU.size() != inputSize_ / sizeof(float) || outputCPU.size() != outputSize_ / sizeof(float))
+        throw std::invalid_argument("Unexpected inference input/output element count.");
 #ifdef HAS_TENSORRT
-    if (context_ && stream_) {
-        cudaStream_t stream = static_cast<cudaStream_t>(stream_);
-        cudaEvent_t startH2D, stopH2D, startExec, stopExec, startD2H, stopD2H;
-        cudaEventCreate(&startH2D); cudaEventCreate(&stopH2D);
-        cudaEventCreate(&startExec); cudaEventCreate(&stopExec);
-        cudaEventCreate(&startD2H); cudaEventCreate(&stopD2H);
-
-        if (hostInputBuffer_) {
-            std::memcpy(hostInputBuffer_, inputCPU.data(), inputSize_);
-        }
-
-        // 1. H2D (Host to Device)
-        cudaEventRecord(startH2D, stream);
-        cudaMemcpyAsync(deviceInputBuffer_, hostInputBuffer_ ? hostInputBuffer_ : inputCPU.data(), inputSize_, cudaMemcpyHostToDevice, stream);
-        cudaEventRecord(stopH2D, stream);
-
-        // 2. GPU Execution
-        cudaEventRecord(startExec, stream);
-        auto* ctx = static_cast<nvinfer1::IExecutionContext*>(context_);
-        bool status = ctx->enqueueV3(stream);
-        if (!status) {
-            std::cerr << "[TensorRTEngine] ERROR: TensorRT enqueueV3 failed!" << std::endl;
-        }
-        cudaEventRecord(stopExec, stream);
-
-        // 3. D2H (Device to Host)
-        cudaEventRecord(startD2H, stream);
-        size_t copyBytes = std::min(outputSize_, outputCPU.size() * sizeof(float));
-        cudaError_t errCopy = cudaMemcpyAsync(hostOutputBuffer_ ? hostOutputBuffer_ : outputCPU.data(), deviceOutputBuffer_, copyBytes, cudaMemcpyDeviceToHost, stream);
-        if (errCopy != cudaSuccess) {
-            std::cerr << "[TensorRTEngine] CUDA Error on D2H copy: " << cudaGetErrorString(errCopy) << std::endl;
-        }
-        cudaEventRecord(stopD2H, stream);
-
-        cudaError_t errSync = cudaStreamSynchronize(stream);
-        if (errSync != cudaSuccess) {
-            std::cerr << "[TensorRTEngine] CUDA Error on stream sync: " << cudaGetErrorString(errSync) << std::endl;
-        }
-
-        if (hostOutputBuffer_) {
-            std::memcpy(outputCPU.data(), hostOutputBuffer_, copyBytes);
-        }
-
-        cudaEventElapsedTime(&h2dMs, startH2D, stopH2D);
-        cudaEventElapsedTime(&gpuComputeMs, startExec, stopExec);
-        cudaEventElapsedTime(&d2hMs, startD2H, stopD2H);
-
-        cudaEventDestroy(startH2D); cudaEventDestroy(stopH2D);
-        cudaEventDestroy(startExec); cudaEventDestroy(stopExec);
-        cudaEventDestroy(startD2H); cudaEventDestroy(stopD2H);
-    }
+    const cudaStream_t stream = static_cast<cudaStream_t>(stream_);
+    const auto beginH2D = static_cast<cudaEvent_t>(evStartH2D_), endH2D = static_cast<cudaEvent_t>(evStopH2D_);
+    const auto beginExec = static_cast<cudaEvent_t>(evStartExec_), endExec = static_cast<cudaEvent_t>(evStopExec_);
+    const auto beginD2H = static_cast<cudaEvent_t>(evStartD2H_), endD2H = static_cast<cudaEvent_t>(evStopD2H_);
+    std::memcpy(hostInputBuffer_, inputCPU.data(), inputSize_);
+    checkCuda(cudaEventRecord(beginH2D, stream), "record H2D begin");
+    checkCuda(cudaMemcpyAsync(deviceInputBuffer_, hostInputBuffer_, inputSize_, cudaMemcpyHostToDevice, stream), "upload input");
+    checkCuda(cudaEventRecord(endH2D, stream), "record H2D end");
+    checkCuda(cudaEventRecord(beginExec, stream), "record inference begin");
+    if (!static_cast<nvinfer1::IExecutionContext*>(context_)->enqueueV3(stream))
+        throw std::runtime_error("TensorRT enqueueV3 failed.");
+    checkCuda(cudaEventRecord(endExec, stream), "record inference end");
+    checkCuda(cudaEventRecord(beginD2H, stream), "record D2H begin");
+    checkCuda(cudaMemcpyAsync(hostOutputBuffer_, deviceOutputBuffer_, outputSize_, cudaMemcpyDeviceToHost, stream), "download output");
+    checkCuda(cudaEventRecord(endD2H, stream), "record D2H end");
+    checkCuda(cudaStreamSynchronize(stream), "synchronize inference");
+    std::memcpy(outputCPU.data(), hostOutputBuffer_, outputSize_);
+    checkCuda(cudaEventElapsedTime(&h2dMs, beginH2D, endH2D), "time H2D");
+    checkCuda(cudaEventElapsedTime(&gpuComputeMs, beginExec, endExec), "time inference");
+    checkCuda(cudaEventElapsedTime(&d2hMs, beginD2H, endD2H), "time D2H");
+#else
+    throw std::runtime_error("Inference requires TensorRT build.");
 #endif
 }
 
 std::vector<Detection> TensorRTEngine::postProcess(const std::vector<float>& rawOutput, int imgWidth, int imgHeight, float confThreshold, float nmsThreshold) {
+    // Compatibility adapter for the original standard P3 640-square API only.
+    // New engine paths always supply their actual contract via the overload.
+    const int anchors = (640 / 8) * (640 / 8) + (640 / 16) * (640 / 16) + (640 / 32) * (640 / 32);
+    if (rawOutput.size() % anchors) throw std::runtime_error("Malformed legacy YOLO output tensor");
+    const int classes = static_cast<int>(rawOutput.size() / anchors) - 4;
+    return postProcess(rawOutput, DetectorTensorShape{640, 640, classes, anchors}, imgWidth, imgHeight, confThreshold, nmsThreshold);
+}
+
+std::vector<Detection> TensorRTEngine::postProcess(const std::vector<float>& rawOutput, const DetectorTensorShape& shape, int imgWidth, int imgHeight, float confThreshold, float nmsThreshold) {
+    shape.validate();
+    if (rawOutput.size() != shape.outputElements() || imgWidth <= 0 || imgHeight <= 0 ||
+        !std::isfinite(confThreshold) || confThreshold < 0 || confThreshold > 1 ||
+        !std::isfinite(nmsThreshold) || nmsThreshold <= 0 || nmsThreshold > 1)
+        throw std::invalid_argument("Malformed YOLO tensor, source geometry or decoding thresholds.");
     std::vector<Detection> finalDetections;
     std::vector<cv::Rect2d> boxes;
     std::vector<float> confidences;
     std::vector<int> classIds;
 
-    const int numAnchors = 8400;
-    const int totalOutputElements = static_cast<int>(rawOutput.size());
-    const int numChannels = totalOutputElements / numAnchors; // 5 for 1-class ball model, 84 for COCO model
-
-    if (numChannels < 5 || numChannels > 84 || totalOutputElements % numAnchors != 0) {
-        throw std::runtime_error("Malformed YOLO output tensor");
-    }
-
-    const int numClasses = numChannels - 4; // 1 class (ball) for 5-channel layout
+    const int numAnchors = shape.anchors;
+    const int numClasses = shape.classes;
 
     // Un-letterboxing parameters based on target input shape (640x640)
-    float scaleR = std::min(640.0f / imgWidth, 640.0f / imgHeight);
-    float padW = static_cast<float>((640 - static_cast<int>(std::round(imgWidth * scaleR))) / 2);
-    float padH = static_cast<float>((640 - static_cast<int>(std::round(imgHeight * scaleR))) / 2);
+    float scaleR = std::min(static_cast<float>(shape.inputWidth) / imgWidth, static_cast<float>(shape.inputHeight) / imgHeight);
+    float padW = static_cast<float>((shape.inputWidth - static_cast<int>(std::round(imgWidth * scaleR))) / 2);
+    float padH = static_cast<float>((shape.inputHeight - static_cast<int>(std::round(imgHeight * scaleR))) / 2);
 
     // Loop through all 8400 predictions
     for (int i = 0; i < numAnchors; ++i) {
@@ -613,6 +616,7 @@ std::vector<Detection> TensorRTEngine::postProcess(const std::vector<float>& raw
 
         for (int c = 0; c < numClasses; ++c) {
             float prob = rawOutput[(4 + c) * numAnchors + i];
+            if (!std::isfinite(prob) || prob < 0 || prob > 1) throw std::runtime_error("Nonfinite or out-of-range YOLO class score.");
             if (prob > maxProb) {
                 maxProb = prob;
                 maxClassId = c;
@@ -625,6 +629,9 @@ std::vector<Detection> TensorRTEngine::postProcess(const std::vector<float>& raw
             float cy = rawOutput[1 * numAnchors + i];
             float w  = rawOutput[2 * numAnchors + i];
             float h  = rawOutput[3 * numAnchors + i];
+            if (!std::isfinite(cx) || !std::isfinite(cy) || !std::isfinite(w) || !std::isfinite(h))
+                throw std::runtime_error("Nonfinite YOLO box geometry.");
+            if (w <= 0 || h <= 0) continue;
 
             // Un-letterbox: subtract padding offset and divide by scale ratio
             float cxOrig = (cx - padW) / scaleR;

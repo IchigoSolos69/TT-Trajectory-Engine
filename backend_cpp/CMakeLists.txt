@@ -173,8 +173,19 @@ target_link_libraries(tt_intelligence_candidate PRIVATE $<TARGET_PROPERTY:tt_tra
 # Offline paired-model research. Production source/model selection is unchanged.
 add_executable(test_ball_candidate_selection tests/test_ball_candidate_selection.cpp)
 target_link_libraries(test_ball_candidate_selection PRIVATE ${OpenCV_LIBS})
+add_executable(test_ball_candidate_selection_v2 tests/test_ball_candidate_selection_v2.cpp)
+target_link_libraries(test_ball_candidate_selection_v2 PRIVATE ${OpenCV_LIBS})
 add_executable(eval_paired_ball_candidates EXCLUDE_FROM_ALL tests/eval_paired_ball_candidates.cpp src/tensorrt_engine.cpp src/blurball_engine.cpp src/cuda_preprocess.cu)
 target_link_libraries(eval_paired_ball_candidates PRIVATE ${OpenCV_LIBS} ${TENSORRT_LIBS} ${CUDA_LIBRARIES} ${CUDA_cudart_static_LIBRARY})
 if(WIN32)
     target_link_libraries(eval_paired_ball_candidates PRIVATE advapi32 ws2_32 crypt32 ole32 uuid)
 endif()
+
+# Shape-aware model inspection and exact raw tensor parity diagnostics.
+foreach(TARGET_NAME test_detector_tensor_shapes dump_detector_raw)
+    add_executable(${TARGET_NAME} EXCLUDE_FROM_ALL tests/${TARGET_NAME}.cpp src/tensorrt_engine.cpp src/cuda_preprocess.cu)
+    target_link_libraries(${TARGET_NAME} PRIVATE ${OpenCV_LIBS} ${TENSORRT_LIBS} ${CUDA_LIBRARIES} ${CUDA_cudart_static_LIBRARY})
+    if(WIN32)
+        target_link_libraries(${TARGET_NAME} PRIVATE advapi32)
+    endif()
+endforeach()

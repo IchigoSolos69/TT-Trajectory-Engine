@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "interval_id": "bcb441a7-6f7f-41a1-9475-93b5a7c3b282",
+  "clip": "phone_0123456789abcdef_1",
+  "session_id": "paired_A",
+  "domain": "iphone",
+  "role": "train",
+  "stage": "A",
+  "start_source_frame": 1,
+  "end_source_frame": 60
+}

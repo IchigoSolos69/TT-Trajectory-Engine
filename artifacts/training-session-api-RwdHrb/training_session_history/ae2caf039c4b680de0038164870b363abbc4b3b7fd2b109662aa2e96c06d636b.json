@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "sessions": {
+    "iphone_same_venue_session_1": {
+      "role": "train",
+      "stage": "existing",
+      "sealed": false,
+      "assigned_at": "2026-10-10T17:31:26.111Z"
+    }
+  },
+  "captures": {
+    "phone_0123456789abcdef_1": {
+      "session_id": "iphone_same_venue_session_1",
+      "domain": "iphone",
+      "assigned_at": "2026-10-10T17:31:26.111Z"
+    }
+  }
+}

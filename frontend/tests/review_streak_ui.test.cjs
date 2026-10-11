@@ -17,6 +17,8 @@ const api=async(url,options)=>({ok:true,json:async()=>{
 const Page=load(path.join(__dirname,'../src/app/training-review/page.tsx'),{
  'react':hooks,'react/jsx-runtime':require('../node_modules/react/jsx-runtime'),'../../lib/reviewGeometry':geometry,
  '../../lib/reviewAnnotations':review,'../../components/ReviewFrameImage':{ReviewFrameImage},
+ '../../components/TrainingSessionReadiness':{TrainingSessionReadiness(){return null;}},
+ '../../components/BurstContinuityReview':{BurstContinuityReview(){return null;}},'../../components/FullAbsenceIntervalReview':{FullAbsenceIntervalReview(){return null;}},
 },{fetch:api,window:{addEventListener(){},removeEventListener(){}},localStorage:{getItem(){return null;},setItem(){}}}).default;
 const walk=node=>!node||typeof node!=='object'?[]:[node,...React.Children.toArray(node.props?.children).flatMap(walk)];
 const render=()=>{cursor=0;effects=[];return walk(Page());};

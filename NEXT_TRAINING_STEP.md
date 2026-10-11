@@ -1,5 +1,35 @@
 # Training handoff after the completed reviews — October 10, 2026
 
+October 11 update: the approved paired-camera YOLO runner now supersedes the
+older minimum-input fitting safeguards below. See
+[current implementation and data audit](YOLO_UPGRADE_IMPLEMENTATION_2026_10_11.md)
+and [the executable workflow](python_tools/YOLO_BALL_EXPERIMENTS.md).
+The moved Downloads sources resolve by unchanged SHA; clip-level folder splits
+are development comparisons until original session/device identities and
+independent camera validation are established. Completed reviews are retained.
+
+The added clips are public World Cup match footage, according to the user's
+clarification. No current PC/webcam recordings exist. Match footage can support
+match training after original-session grouping and review; it cannot replace
+actual camera validation. The paired workflow requires 2,000 reviewed visible
+frames, 1,000 verified absences and 500 audited positive windows for training,
+plus independent per-device validation coverage. The app's readiness panel shows
+the missing data and keeps fitting disabled.
+
+For easier absence review, import and assign the unchanged original, then use
+the complete-interval preparation control in Training Review. Inspect every
+prepared frame and the original interval before explicitly confirming that the
+ball is absent and not hidden or uncertain. This saves a source-bound review
+sidecar without changing earlier annotations. Do not confirm all of Video
+Project 6: actual balls occur in some of its reviewed frames.
+
+The next implementation milestone is now executable: a BlurBall-primary native
+selector, a causal model using actual YOLO11n features and temporal heatmaps, and
+an isolated YOLO experiment runner. The selector repairs the development recall
+failure but fails venue-negative acceptance; the student passes real optimizer
+checks but is not fitted. See [current implementation evidence](HYBRID_V2_IMPLEMENTATION_REPORT.md).
+Completed reviews remain intact; no new accuracy claim or default change follows.
+
 Your two **Video Project 6.mp4** review batches and the five **IMG_7944.MOV**
 temporal point targets are saved. You confirmed that
 positive boxes mark actual balls. Preserve those boxes; this recording contains
@@ -67,9 +97,10 @@ checkpoint is saved or deployed, and no accuracy improvement is claimed.
 7. Export passing candidates and check native TensorRT preprocessing/output
    parity before considering deployment. Failed candidates remain experimental.
 
-The current trainer enforces at least 30 reviewed frames and five positive/five
-absent examples per independent partition. These are minimum input safeguards,
-not evidence of adequate training diversity or guaranteed accuracy.
+The older reviewed-data adapter/smoke safeguard enforced at least 30 reviewed
+frames and five positive/five absent examples per independent partition. Those
+historical minimums are not the active paired-training readiness gate above,
+nor evidence of adequate training diversity or guaranteed accuracy.
 
 ## What the completed labels already reveal
 

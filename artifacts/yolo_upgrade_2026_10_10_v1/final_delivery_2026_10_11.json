@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-11",
+  "timezone": "Asia/Calcutta",
+  "scope": "Verified paired-training foundation and local interval review; no fitted accuracy improvement or default model replacement.",
+  "application": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\desktop\\dist\\TT Trajectory Engine paired training v2\\TT Trajectory Engine.exe",
+  "launcher": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\launch_desktop.bat",
+  "whole_plan_complete": false,
+  "ready_for_fitting": false,
+  "promotion_approved": false,
+  "data_clarification": "Additional user clips are declared official World Cup match footage. No actual PC-camera recordings currently exist. Original iPhone clips remain one earlier session.",
+  "reviewed_camera_counts": {
+    "train": {
+      "iphone": {
+        "visible": 18,
+        "absent": 9
+      },
+      "pc_camera": {
+        "visible": 0,
+        "absent": 0
+      }
+    },
+    "val": {
+      "iphone": {
+        "visible": 0,
+        "absent": 0
+      },
+      "pc_camera": {
+        "visible": 0,
+        "absent": 0
+      }
+    }
+  },
+  "training_blockers": [
+    "CHECKED_PAIRED_TRAINING_EXPORT_MISSING",
+    "TRAIN_1000_VERIFIED_ABSENT_REQUIRED",
+    "TRAIN_2000_VISIBLE_REQUIRED",
+    "TRAIN_500_AUDITED_POSITIVE_WINDOWS_REQUIRED",
+    "TRAIN_A_IPHONE_MISSING",
+    "TRAIN_A_PC_CAMERA_MISSING",
+    "TRAIN_PC_CAMERA_BOTH_CLASSES_MISSING",
+    "VAL_IPHONE_1000_VISIBLE_REQUIRED",
+    "VAL_IPHONE_10_REVIEWED_RALLIES_REQUIRED",
+    "VAL_IPHONE_120S_VERIFIED_ABSENCE_REQUIRED",
+    "VAL_IPHONE_BOTH_CLASSES_MISSING",
+    "VAL_PC_CAMERA_1000_VISIBLE_REQUIRED",
+    "VAL_PC_CAMERA_10_REVIEWED_RALLIES_REQUIRED",
+    "VAL_PC_CAMERA_120S_VERIFIED_ABSENCE_REQUIRED",
+    "VAL_PC_CAMERA_BOTH_CLASSES_MISSING"
+  ],
+  "sealed_test_labels_consumed": false,
+  "live_accuracy_measured": false,
+  "live_60fps_measured": false,
+  "live_soak_completed": false,
+  "tests": {
+    "training_and_interval_cpu": 62,
+    "release_metrics": 19,
+    "raw_diagnostics": 9,
+    "desktop_unit": 6,
+    "decoder_api": 64,
+    "session_api": 43,
+    "decoder_ownership": 8,
+    "collection_readiness": 24,
+    "packaged_app": 19
+  },
+  "preserved": {
+    "original_review_images": 750,
+    "original_capture_index_annotation_files": 42,
+    "sealed_preservation_reads_skipped": 0,
+    "models": {
+      "ball": "2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9",
+      "scene": "5eb0ecbfe0cddb8631cc89fbf6e7a2145d2a4a6b10595034afd4ab8b1a454cee",
+      "blurball_experimental": "48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f"
+    },
+    "checkpoint_sha256": "299f8c879755ac41fd0ca2351685e7bdb93dd18c76161a3819cf842393b4fd18"
+  },
+  "release_manifest_sha256": "3119f40ba8b864ddfe73a84ecc7abc93742760b3ce2988bb144f2e84886779d0",
+  "source_sha256": {
+    "launch_desktop.bat": "49eecf0232515fe7a612c15eacefd8c59cc7cb32abdd0cb08ba32ab810caffb3",
+    "desktop/main.cjs": "f967b3535ae528c6044ee1b6723f99e82f2811a5b8c01ae30788f5f04d545225",
+    "desktop/scripts/package.cjs": "20ce49194a400ef9ad9a16948254e7c263a6453a0197e3a27dcfa6ad10e767fc",
+    "desktop/tests/in-app-smoke.cjs": "020befc904e128b513569ee1be0c0b049fb4e2ff4442e17644142050e3c9dbbb",
+    "frontend/src/app/api/training-absence/route.ts": "17bd33f1360aef351ec8dc254c13bc8ba339e0a9e2d9449cf81322b6fa0a6201",
+    "frontend/src/app/api/training-sessions/route.ts": "92875799343562cf6e55542aaf4b594e6db600278938556a5279be4f90650b13",
+    "frontend/src/components/FullAbsenceIntervalReview.tsx": "fa78541494aa4f1b160574b03858d78b4422b24cf46902499ba60099faad0d18",
+    "frontend/src/lib/trainingIntervalStorage.ts": "b4325f8fbec78c76478b368533b6926636d0e40a8ddf740efed3131df00bc7cf",
+    "frontend/src/lib/trainingDecoderLock.ts": "4001bece8ef3748fa25ed7c9263dee16962d8a4ac63969a68316b0959168354b",
+    "frontend/src/lib/trainingSessions.ts": "a60b5da3539e037cd79e0bfb64bc6e31f8aac6aa1490357a1acff8de02ac42ed",
+    "python_tools/yolo_ball_experiments.py": "18538e1c8d2250a0a93e68ad4c3046c54299d47e67b4d5256fb10744de4a0ebe",
+    "python_tools/yolo_paired_data.py": "18a198585ecbadf5a21598df7080346a232a1b80628264699f87175c02aa1ceb",
+    "python_tools/yolo_training_policy.py": "29776bb14f19b9f5ce40fff560dcb11e4c9abca82c0def27ca12f6672fe32560",
+    "python_tools/yolo_ultralytics_hooks.py": "1e32a93d925ae6cfe9ce39e9039fd648125fb69fb7226692cf0f445e79fe814d",
+    "python_tools/prepare_absence_interval.py": "6f108bfd474f53995395c1819a0169c1d2f5c832a85ce0e9807cb0412ea5de40",
+    "python_tools/recording_source.py": "dbc751ee23cce7277479faf222fb76e291e1d7261e302da3e563f28a8399ca34",
+    "python_tools/audit_absence_intervals.py": "c4aee45b3d6625f254078bec04f2db8ebdbee5128206cea65d1e53352ddd2c0b",
+    "python_tools/ball_release_metrics.py": "58dd95f803f3e2cfcd127d7c038cb3a25c6f0a8e0c5c8123609c29df21baba6c",
+    "python_tools/yolo_raw_diagnostics.py": "63115f4e284215a5c5a3df6121eb42661e201da729a9efd236b35020612fc65a",
+    "backend_cpp/include/tensorrt_engine.hpp": "5e452e591fe248e935558fb486b89c76bdd9a3b7f3ca362f005a62cc49636940",
+    "backend_cpp/src/tensorrt_engine.cpp": "06c30ee93e3fa52fb1939050f1c6b784263830283e0839e30b519040ee81ca4c",
+    "YOLO_UPGRADE_IMPLEMENTATION_2026_10_11.md": "66e46df558ad1b352908ebc733c38b44eaf7bab5834cac3bab2157ba86751b6e",
+    "NEXT_TRAINING_STEP.md": "a34e59ca34ee53f8e87032d288417ed7393f3958ded92e44f4365da6195017f1",
+    "REQUIREMENTS_LEDGER.md": "e4a5a4d80d22abcb148dd3f6788dbeb25edc8f86586c203455036ec013597fd1",
+    "VERIFICATION.md": "e847a20941d56b2873797bd1c5eb04300e352a9947ff84778ca5a2cc8788804f"
+  },
+  "evidence_sha256": {
+    "artifacts/yolo_paired_training_plan_2026_10_11_v4.json": "206a1a74b729a3d8df75c9f160b5474ed37c7e60e7a8ada0c6c1f4cd6226271e",
+    "artifacts/yolo_paired_training_blocked_fit_2026_10_11_v4.log": "3220cf4337d9c43d6364fe28a970e5cc922dd280b84d4bcee3959b947f53cf4b",
+    "artifacts/absence_interval_training_tests_2026_10_11_v4.log": "90cbef476e8e616053d70b344545eea9f6e8dfbc4bbbe548e04a60568ecfd592",
+    "artifacts/full_absence_api_checks.json": "92089beb5a9f4ca3554e8fa7c7cd4b6b9b9011269612d51613c1f6331cc2c14d",
+    "artifacts/training_sessions_api_checks.json": "09ef107daf68031ccc11a548cd2cee9c083da95ff06db7141802fa732c55ed57",
+    "artifacts/training_decoder_lock_checks.json": "cd9eaf6717c731d77fc935f9608e2f9ddbbec68b92b74673ddbaec724030746c",
+    "artifacts/training_sessions_checks.json": "aaf4b9219dc980d8b0552bea4d76fe84931bb1963e7fee1099900643df755176",
+    "artifacts/yolo_upgrade_2026_10_10_v1/release_and_raw_final_tests.log": "28baaea195d03a693e9f729b0a305cc7c81e7ac5745b54ef96aa076b8cd08c74",
+    "artifacts/yolo_upgrade_2026_10_10_v1/desktop_smoke_v4.json": "1b342f1654d8937146bfaf60d21742ed165136ae73672cb05198087649ab2499",
+    "artifacts/yolo_upgrade_2026_10_10_v1/frontend_build_v2.log": "7aace20344a00a993ce3a473272ed4988eb731b54a5b120252e4e997d91d2604",
+    "artifacts/yolo_upgrade_2026_10_10_v1/desktop_unit_v2.log": "7d904ce9b245e33c0279ab30bcec47545d6b5ecbfc0115e673b8442061d12a98",
+    "artifacts/yolo_upgrade_2026_10_10_v1/desktop_package_v2.log": "f2e829b692e843df489bc1fcd61abe3de06e958c79ee027d75d323aa533b51a6",
+    "artifacts/yolo_upgrade_2026_10_10_v1/development_folder_split_v2.json": "e7ec1d78b0b08bbf08f401799cca57e384a8b375d7ecedd152a8f7fd0d62abe5",
+    "artifacts/yolo_upgrade_2026_10_10_v1/raw_postprocess_reaudit.json": "f04fa9512a546e65ab5340a064bae0e99c7fa597c16104a3acd89ce2403fa2f6",
+    "artifacts/yolo_shape_native_2026_10_10_v1/paired_shape_regression.json": "2e07447031312dd1bd97df76996724836a6601c38de67bec583b1c9da1e2cc90"
+  },
+  "remaining": [
+    "Independent paired camera sessions and reviewed labels",
+    "Controlled YOLO fitting and precision/recall gates",
+    "Learned YOLO–BlurBall selector and student comparison",
+    "Independent sealed acceptance and actual live latency/soak",
+    "Earlier feature acceptance and broader digital-twin/event/physics plan closure"
+  ]
+}

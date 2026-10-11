@@ -1,0 +1,188 @@
+{
+  "passed": true,
+  "scope": "Two real reviewed in-memory optimizer steps / causal student prototype",
+  "accuracy_measured": false,
+  "candidate_fine_tuned": false,
+  "checkpoint_saved": false,
+  "promotion_approved": false,
+  "live_latency_measured": false,
+  "splits_assigned": false,
+  "teacher_used": false,
+  "device": "cpu",
+  "stage": "complete",
+  "staged_manifest_sha256": "6180aa1b1759b35996d5a4e47f53876d32628152330e46d97e7153fefc06ffdb",
+  "staged_windows_sha256": "e331301d27288dddc3fd74f008401f463c1320a088018935402d67004f0a6b4d",
+  "prototype_source_sha256": "644e0ff68f678b8d24cd6a17b48659d57ace56e68163e6ab9f11cb920de83c37",
+  "smoke_source_sha256": "08c0121391aa82810adc4bda5c78ce97da2a1d2e9cd7542461c8ff769f9b9232",
+  "selection_helper_source": "C:/Users/Adi/Documents/GitHub/TT Trajectory Engine/python_tools/smoke_reviewed_blurball_training.py",
+  "selection_helper_source_sha256": "1897ea728e1239a0717afa92d639d81bb448dc1c5eea75a2da2899a293bd0c70",
+  "torch": "2.14.0+cu130",
+  "ultralytics": "8.4.155",
+  "available_windows": 178,
+  "model": {
+    "encoder": "actual Ultralytics YOLO11n blocks 0..4",
+    "checkpoint": "C:/Users/Adi/Documents/GitHub/TT Trajectory Engine/yolo11n.pt",
+    "checkpoint_sha256": "0ebbc80d4a7680d14987a577cd21342b65ecfd94632bd9a8da63ae6417644ee1",
+    "temporal_offsets": [
+      -2,
+      -1,
+      0
+    ],
+    "latest_frame_only": true,
+    "encoder_frozen": true,
+    "new_fusion_and_heads": "random initialization",
+    "deployment_compatible": false
+  },
+  "parameter_count": 153954,
+  "trainable_parameter_count": 79106,
+  "head_geometry": {
+    "fusion_stride": 4,
+    "heatmap": [
+      1,
+      1,
+      288,
+      512
+    ],
+    "visibility": [
+      1,
+      1
+    ]
+  },
+  "optimizer": {
+    "name": "AdamW",
+    "learning_rate": 0.0001,
+    "weight_decay": 0
+  },
+  "steps": [
+    {
+      "dataset_index": 175,
+      "kind": "reviewed_visible",
+      "context": {
+        "source_ids": [
+          "phone_e23544b0c4c1a850_1"
+        ],
+        "source_frame_ids": [
+          [
+            14960,
+            14961,
+            14962
+          ]
+        ],
+        "geometry": "reviewed_source_max_dimension_affine_512x288_v1"
+      },
+      "input_shape": [
+        1,
+        3,
+        3,
+        288,
+        512
+      ],
+      "target_nonzero_pixels": 29,
+      "visibility_target": 1.0,
+      "losses": {
+        "total": 1.0129454135894775,
+        "heatmap": 0.3507552146911621,
+        "visibility": 0.6621901988983154,
+        "distillation": -0.0
+      },
+      "finite_gradient_tensors": 12,
+      "gradient_norms": {
+        "fuse8.0.weight": 0.009623107500374317,
+        "fuse8.0.bias": 0.0018922436283901334,
+        "fuse8.2.weight": 0.013484512455761433,
+        "fuse8.2.bias": 0.006987756118178368,
+        "fuse4.0.weight": 0.6867828369140625,
+        "fuse4.0.bias": 0.04236150532960892,
+        "fuse4.2.weight": 0.8500649929046631,
+        "fuse4.2.bias": 0.1482751965522766,
+        "heatmap.weight": 0.12160242348909378,
+        "heatmap.bias": 0.10395786911249161,
+        "visibility.weight": 0.25872161984443665,
+        "visibility.bias": 0.48427945375442505
+      },
+      "changed_parameter_tensors": 12,
+      "changed_parameters": [
+        "fuse8.0.weight",
+        "fuse8.0.bias",
+        "fuse8.2.weight",
+        "fuse8.2.bias",
+        "fuse4.0.weight",
+        "fuse4.0.bias",
+        "fuse4.2.weight",
+        "fuse4.2.bias",
+        "heatmap.weight",
+        "heatmap.bias",
+        "visibility.weight",
+        "visibility.bias"
+      ]
+    },
+    {
+      "dataset_index": 0,
+      "kind": "reviewed_absent",
+      "context": {
+        "source_ids": [
+          "phone_452627e98a3c2652_1"
+        ],
+        "source_frame_ids": [
+          [
+            1,
+            2,
+            3
+          ]
+        ],
+        "geometry": "reviewed_source_max_dimension_affine_512x288_v1"
+      },
+      "input_shape": [
+        1,
+        3,
+        3,
+        288,
+        512
+      ],
+      "target_nonzero_pixels": 0,
+      "visibility_target": 0.0,
+      "losses": {
+        "total": 0.868287205696106,
+        "heatmap": 0.13667048513889313,
+        "visibility": 0.731616735458374,
+        "distillation": -0.0
+      },
+      "finite_gradient_tensors": 12,
+      "gradient_norms": {
+        "fuse8.0.weight": 0.009369896724820137,
+        "fuse8.0.bias": 0.0022142718080431223,
+        "fuse8.2.weight": 0.013020106591284275,
+        "fuse8.2.bias": 0.007868977263569832,
+        "fuse4.0.weight": 0.591491162776947,
+        "fuse4.0.bias": 0.04587246850132942,
+        "fuse4.2.weight": 0.8673849701881409,
+        "fuse4.2.bias": 0.17149843275547028,
+        "heatmap.weight": 0.12491434067487717,
+        "heatmap.bias": 0.24724961817264557,
+        "visibility.weight": 0.2622334063053131,
+        "visibility.bias": 0.5188695192337036
+      },
+      "changed_parameter_tensors": 12,
+      "changed_parameters": [
+        "fuse8.0.weight",
+        "fuse8.0.bias",
+        "fuse8.2.weight",
+        "fuse8.2.bias",
+        "fuse4.0.weight",
+        "fuse4.0.bias",
+        "fuse4.2.weight",
+        "fuse4.2.bias",
+        "heatmap.weight",
+        "heatmap.bias",
+        "visibility.weight",
+        "visibility.bias"
+      ]
+    }
+  ],
+  "snapshot_reverified_after_optimizer": true,
+  "encoder_weights_and_statistics_unchanged": true,
+  "original_checkpoint_unchanged": true,
+  "prototype_and_smoke_source_unchanged": true,
+  "selection_helper_source_unchanged": true,
+  "offline_smoke_wall_s": 35.82005320000462
+}

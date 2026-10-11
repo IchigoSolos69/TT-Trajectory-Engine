@@ -1,0 +1,82 @@
+{
+  "source": "C:\\Users\\Adi\\Videos\\2026-10-10 16-13-40.mp4",
+  "source_sha256": "3a710402b4b3216ddc00a46bbff0a3611d36e87c67028e18e1fd0ef44c5a4657",
+  "reported_fps": 60.0,
+  "reported_frame_count": 2731,
+  "decoded_frame_count": 2731,
+  "extraction_only": true,
+  "training_imported": false,
+  "opencv_version": "5.0.0",
+  "frames": [
+    {
+      "zero_based_frame_id": 0,
+      "decoded_pts_seconds": 0.0,
+      "width": 1920,
+      "height": 1080,
+      "evidence_file": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\user_hybrid_video_2026_10_10_v1\\frame_000000.jpg"
+    },
+    {
+      "zero_based_frame_id": 120,
+      "decoded_pts_seconds": 2.0,
+      "width": 1920,
+      "height": 1080,
+      "evidence_file": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\user_hybrid_video_2026_10_10_v1\\frame_000120.jpg"
+    },
+    {
+      "zero_based_frame_id": 300,
+      "decoded_pts_seconds": 5.0,
+      "width": 1920,
+      "height": 1080,
+      "evidence_file": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\user_hybrid_video_2026_10_10_v1\\frame_000300.jpg"
+    },
+    {
+      "zero_based_frame_id": 600,
+      "decoded_pts_seconds": 10.0,
+      "width": 1920,
+      "height": 1080,
+      "evidence_file": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\user_hybrid_video_2026_10_10_v1\\frame_000600.jpg"
+    },
+    {
+      "zero_based_frame_id": 900,
+      "decoded_pts_seconds": 15.0,
+      "width": 1920,
+      "height": 1080,
+      "evidence_file": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\user_hybrid_video_2026_10_10_v1\\frame_000900.jpg"
+    },
+    {
+      "zero_based_frame_id": 1200,
+      "decoded_pts_seconds": 20.0,
+      "width": 1920,
+      "height": 1080,
+      "evidence_file": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\user_hybrid_video_2026_10_10_v1\\frame_001200.jpg"
+    },
+    {
+      "zero_based_frame_id": 1500,
+      "decoded_pts_seconds": 25.0,
+      "width": 1920,
+      "height": 1080,
+      "evidence_file": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\user_hybrid_video_2026_10_10_v1\\frame_001500.jpg"
+    },
+    {
+      "zero_based_frame_id": 1800,
+      "decoded_pts_seconds": 30.0,
+      "width": 1920,
+      "height": 1080,
+      "evidence_file": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\user_hybrid_video_2026_10_10_v1\\frame_001800.jpg"
+    },
+    {
+      "zero_based_frame_id": 2400,
+      "decoded_pts_seconds": 40.0,
+      "width": 1920,
+      "height": 1080,
+      "evidence_file": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\user_hybrid_video_2026_10_10_v1\\frame_002400.jpg"
+    },
+    {
+      "zero_based_frame_id": 2730,
+      "decoded_pts_seconds": 45.5,
+      "width": 1920,
+      "height": 1080,
+      "evidence_file": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\user_hybrid_video_2026_10_10_v1\\frame_002730.jpg"
+    }
+  ]
+}

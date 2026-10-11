@@ -3,7 +3,7 @@
 const fs=require('node:fs'),fsp=require('node:fs/promises'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const ts=require('../node_modules/typescript'),next=require('../node_modules/next/server');
 const load=(file,deps,extra={})=>{const scope={exports:{},require:name=>deps[name],...extra};vm.runInNewContext(ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,esModuleInterop:true}}).outputText,scope);return scope.exports;};
-const lib=path.join(__dirname,'../src/lib'),geometry=load(path.join(lib,'reviewGeometry.ts'),{}),review=load(path.join(lib,'reviewAnnotations.ts'),{'./reviewGeometry':geometry}),absence=load(path.join(lib,'reviewAbsence.ts'),{'./reviewAnnotations':review,'./reviewGeometry':geometry}),origin=load(path.join(lib,'reviewOrigin.ts'),{},{URL});
+const lib=path.join(__dirname,'../src/lib'),geometry=load(path.join(lib,'reviewGeometry.ts'),{}),review=load(path.join(lib,'reviewAnnotations.ts'),{'./reviewGeometry':geometry}),absence=load(path.join(lib,'reviewAbsence.ts'),{'./reviewAnnotations':review,'./reviewGeometry':geometry}),origin=load(path.join(lib,'reviewOrigin.ts'),{},{URL}),intervals=load(path.join(lib,'trainingAbsenceIntervals.ts')),sessions=load(path.join(lib,'trainingSessions.ts'),{'./reviewAnnotations':review,'./trainingAbsenceIntervals':intervals});
 const sha=text=>crypto.createHash('sha256').update(text).digest('hex');
 async function main(){
  const artifacts=path.resolve(__dirname,'../../artifacts'),root=await fsp.mkdtemp(path.join(artifacts,'review-absence-fixture-')),clip='phone_1234567890abcdef_1',dir=path.join(root,clip);await fsp.mkdir(dir);
@@ -18,7 +18,7 @@ async function main(){
  await fsp.writeFile(path.join(dir,'annotations.json'),raw);
  const errors=[],route=load(path.join(__dirname,'../src/app/api/training-review/route.ts'),{
   'next/server':next,'node:fs/promises':fsp,'node:path':path,'node:crypto':crypto,
-  '../../../lib/reviewGeometry':geometry,'../../../lib/reviewOrigin':origin,'../../../lib/reviewAbsence':absence,
+  '../../../lib/reviewGeometry':geometry,'../../../lib/reviewOrigin':origin,'../../../lib/reviewAbsence':absence,'../../../lib/trainingSessions':sessions,
  },{process:{env:{TT_TRAINING_ROOT:root},cwd:()=>path.resolve(__dirname,'../..')},console:{error(...args){errors.push(args.map(value=>value?.stack??String(value)).join(' '));}},Error});
  let revision=sha(raw);
  const request=async(action,extra={},originHeader='http://127.0.0.1:3100')=>{

@@ -1,0 +1,23 @@
+{
+  "scope": "Audit existing native raw snapshots under corrected diagnostic NMS policy; prior PyTorch outputs not rerun",
+  "current_diagnostic_sha256": "63115f4e284215a5c5a3df6121eb42661e201da729a9efd236b35020612fc65a",
+  "results": [
+    {
+      "report": "artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\report.json",
+      "report_sha256": "ff0e840eb4441e82163c3cc1a50846767e1a4eecf958e4816f45561e00589e76",
+      "native_raw_snapshots_reverified": true,
+      "candidate_diagnostic_changes": [],
+      "raw_score_parity_all_passed": true,
+      "original_exact_input_coordinate_parity_all_passed": true
+    },
+    {
+      "report": "artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\report.json",
+      "report_sha256": "02351d49d56e3502c793c88f6a0f43a2a229f374db8f32cff05e34556a054b4c",
+      "native_raw_snapshots_reverified": true,
+      "candidate_diagnostic_changes": [],
+      "raw_score_parity_all_passed": true,
+      "original_exact_input_coordinate_parity_all_passed": false
+    }
+  ],
+  "promotion_approved": false
+}

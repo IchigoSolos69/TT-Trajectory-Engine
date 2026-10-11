@@ -22,6 +22,14 @@ export function previousBallSuggestion(frames:Frame[],index:number,annotations:R
   if(!classReviewed(label,'ball')||!label||label.ball.length!==1||ballReviewProblem(label)||label.geometry?.visibility==='occluded')return null;
   return [...label.ball[0]];
 }
+/** Copy only to an unreviewed adjacent image; the result is an editable draft. */
+export function nextBallDraft(frames:Frame[],index:number,current:Labels,annotations:Record<string,Annotation>,drafts:Record<string,Labels>,clip:string):{index:number;key:string;labels:Labels}|null{
+  const from=frames[index],to=frames[index+1];
+  if(!from||!to||from.burst_id===undefined||from.burst_id!==to.burst_id||to.source_frame!==from.source_frame+1||classReviewed(annotations[to.file],'ball')||drafts[clip+'/'+to.file])return null;
+  if(current.ball.length!==1||ballReviewProblem(current)||!['visible','partial'].includes(current.geometry?.visibility??'unknown'))return null;
+  const previous=annotations[to.file]??emptyLabels();
+  return {index:index+1,key:clip+'/'+to.file,labels:{...previous,ball:[[...current.ball[0]]],geometry:{...(previous.geometry??validateGeometry(undefined)),visibility:'unknown',blur:'unknown',blur_streak:null}}};
+}
 export function nextBallReviewIndex(frames:Frame[],index:number,annotations:Record<string,Annotation>):number{
   for(let step=1;step<=frames.length;step++){
     const candidate=(index+step)%frames.length,label=annotations[frames[candidate].file];

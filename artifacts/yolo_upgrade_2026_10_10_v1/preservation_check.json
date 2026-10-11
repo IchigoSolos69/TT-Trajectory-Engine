@@ -1,0 +1,10 @@
+{
+  "capture_files_checked": 36,
+  "capture_mismatches": [],
+  "model_hashes_unchanged": true,
+  "models": {
+    "ball": "2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9",
+    "scene": "5eb0ecbfe0cddb8631cc89fbf6e7a2145d2a4a6b10595034afd4ab8b1a454cee",
+    "blurball_experimental": "48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f"
+  }
+}

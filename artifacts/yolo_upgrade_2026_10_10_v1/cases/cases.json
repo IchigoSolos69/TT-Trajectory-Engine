@@ -1,0 +1,315 @@
+{
+  "schema_version": 1,
+  "role": "development",
+  "cases": [
+    {
+      "image": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\cases\\official_1.png",
+      "image_sha256": "5a9df39d665c15d794a6920b2375c6ea3adf3b88f63f86c467a86ad97324d1e6",
+      "domain": "match",
+      "source_id": "3597a95c664683d4b512c934b095bf51b45eda9112ebf377c960742e2146e011",
+      "frame_id": 1,
+      "timestamp_s": 0.0,
+      "reference": {
+        "visibility": "visible",
+        "center_px": [
+          388.01,
+          285.8
+        ]
+      },
+      "reference_method": "Published CSV source pixels",
+      "label_sha256": "9573cfecf3c3a45178ef1cc4c1d9539e7bb1e5981bb125434d67a87ba3cd53ea"
+    },
+    {
+      "image": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\cases\\official_3.png",
+      "image_sha256": "fc5f0bf86043f0715ab738f62740699eb908980c5db04abfad10451c99437195",
+      "domain": "match",
+      "source_id": "3597a95c664683d4b512c934b095bf51b45eda9112ebf377c960742e2146e011",
+      "frame_id": 3,
+      "timestamp_s": 0.03336666666666667,
+      "reference": {
+        "visibility": "visible",
+        "center_px": [
+          387.58,
+          285.76
+        ]
+      },
+      "reference_method": "Published CSV source pixels",
+      "label_sha256": "9573cfecf3c3a45178ef1cc4c1d9539e7bb1e5981bb125434d67a87ba3cd53ea"
+    },
+    {
+      "image": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\cases\\official_40.png",
+      "image_sha256": "4404f7be65a3d2693c813734f9e9813f7ddeb3362694fb7c34990d4d0e9f6f07",
+      "domain": "match",
+      "source_id": "3597a95c664683d4b512c934b095bf51b45eda9112ebf377c960742e2146e011",
+      "frame_id": 40,
+      "timestamp_s": 0.6506500000000001,
+      "reference": {
+        "visibility": "visible",
+        "center_px": [
+          356.46,
+          185.44
+        ]
+      },
+      "reference_method": "Published CSV source pixels",
+      "label_sha256": "9573cfecf3c3a45178ef1cc4c1d9539e7bb1e5981bb125434d67a87ba3cd53ea"
+    },
+    {
+      "image": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\cases\\official_80.png",
+      "image_sha256": "f0f1b12fb85a03575473a02607a83452ece632ec57bd79aebd3d533d5bf0a423",
+      "domain": "match",
+      "source_id": "3597a95c664683d4b512c934b095bf51b45eda9112ebf377c960742e2146e011",
+      "frame_id": 80,
+      "timestamp_s": 1.3179833333333335,
+      "reference": {
+        "visibility": "visible",
+        "center_px": [
+          703.7850000000001,
+          282.225
+        ]
+      },
+      "reference_method": "Published CSV source pixels",
+      "label_sha256": "9573cfecf3c3a45178ef1cc4c1d9539e7bb1e5981bb125434d67a87ba3cd53ea"
+    },
+    {
+      "image": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\cases\\official_120.png",
+      "image_sha256": "3461b95776cc9a5684f12217e16403aa908c011968254461b85b51448dca5b57",
+      "domain": "match",
+      "source_id": "3597a95c664683d4b512c934b095bf51b45eda9112ebf377c960742e2146e011",
+      "frame_id": 120,
+      "timestamp_s": 1.9853166666666668,
+      "reference": {
+        "visibility": "visible",
+        "center_px": [
+          627.365,
+          279.765
+        ]
+      },
+      "reference_method": "Published CSV source pixels",
+      "label_sha256": "9573cfecf3c3a45178ef1cc4c1d9539e7bb1e5981bb125434d67a87ba3cd53ea"
+    },
+    {
+      "image": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\cases\\official_160.png",
+      "image_sha256": "f159956fb19b6b72300ac2b1fac63d25dc50dd93ca9a5856f6b9877e5311644a",
+      "domain": "match",
+      "source_id": "3597a95c664683d4b512c934b095bf51b45eda9112ebf377c960742e2146e011",
+      "frame_id": 160,
+      "timestamp_s": 2.65265,
+      "reference": {
+        "visibility": "visible",
+        "center_px": [
+          850.65,
+          304.83500000000004
+        ]
+      },
+      "reference_method": "Published CSV source pixels",
+      "label_sha256": "9573cfecf3c3a45178ef1cc4c1d9539e7bb1e5981bb125434d67a87ba3cd53ea"
+    },
+    {
+      "image": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\cases\\official_200.png",
+      "image_sha256": "0471e962fac8910283fe1ac2a3d30c69dd98789de493f3cf8eea82c4cae810cc",
+      "domain": "match",
+      "source_id": "3597a95c664683d4b512c934b095bf51b45eda9112ebf377c960742e2146e011",
+      "frame_id": 200,
+      "timestamp_s": 3.3199833333333335,
+      "reference": {
+        "visibility": "visible",
+        "center_px": [
+          269.03499999999997,
+          314.40999999999997
+        ]
+      },
+      "reference_method": "Published CSV source pixels",
+      "label_sha256": "9573cfecf3c3a45178ef1cc4c1d9539e7bb1e5981bb125434d67a87ba3cd53ea"
+    },
+    {
+      "image": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\cases\\official_240.png",
+      "image_sha256": "ae60ca3a59b546b4aa589f8c83370ec4df5c6bd5ba071b9efbea1655935f3581",
+      "domain": "match",
+      "source_id": "3597a95c664683d4b512c934b095bf51b45eda9112ebf377c960742e2146e011",
+      "frame_id": 240,
+      "timestamp_s": 3.987316666666667,
+      "reference": {
+        "visibility": "visible",
+        "center_px": [
+          941.37,
+          275.46
+        ]
+      },
+      "reference_method": "Published CSV source pixels",
+      "label_sha256": "9573cfecf3c3a45178ef1cc4c1d9539e7bb1e5981bb125434d67a87ba3cd53ea"
+    },
+    {
+      "image": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\cases\\official_270.png",
+      "image_sha256": "4668e319d9b5dd89a0a09f1d5f797a6629d9cf0d03ff160a557783a26f6197ce",
+      "domain": "match",
+      "source_id": "3597a95c664683d4b512c934b095bf51b45eda9112ebf377c960742e2146e011",
+      "frame_id": 270,
+      "timestamp_s": 4.487816666666667,
+      "reference": {
+        "visibility": "visible",
+        "center_px": [
+          251.03500000000003,
+          314.55499999999995
+        ]
+      },
+      "reference_method": "Published CSV source pixels",
+      "label_sha256": "9573cfecf3c3a45178ef1cc4c1d9539e7bb1e5981bb125434d67a87ba3cd53ea"
+    },
+    {
+      "image": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\cases\\official_272.png",
+      "image_sha256": "b4cc4820e727550657816470738c604cd3b388c4ec3aa25eeb6d8aa4f563bc5e",
+      "domain": "match",
+      "source_id": "3597a95c664683d4b512c934b095bf51b45eda9112ebf377c960742e2146e011",
+      "frame_id": 272,
+      "timestamp_s": 4.537866666666667,
+      "reference": {
+        "visibility": "visible",
+        "center_px": [
+          169.77499999999998,
+          315.28499999999997
+        ]
+      },
+      "reference_method": "Published CSV source pixels",
+      "label_sha256": "9573cfecf3c3a45178ef1cc4c1d9539e7bb1e5981bb125434d67a87ba3cd53ea"
+    },
+    {
+      "image": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_e23544b0c4c1a850_1\\frame_16.jpg",
+      "image_sha256": "fba63c3b5a79e50ce94c0c9435598ca23d18db61080c6bdc971005a11bfbb8df",
+      "domain": "iphone",
+      "source_id": "e23544b0c4c1a8506f529f4d53e75ecb9e0c98f7e529e03355086875cce433de",
+      "frame_id": 14960,
+      "timestamp_s": 249.81,
+      "reference": {
+        "visibility": "visible",
+        "center_px": [
+          1348.8676538991394,
+          618.6248992210877
+        ]
+      },
+      "reference_method": "Explicit reviewed exposure-center point/streak",
+      "label_sha256": "c864ec0ca37e45a8b10785fc221d35a1f6c019b2be7d00d64ceba8dd0cf04135"
+    },
+    {
+      "image": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_e23544b0c4c1a850_1\\frame_17.jpg",
+      "image_sha256": "00f1ae02370b8a13fd4d08245524f72a02866b1552f91f84b66c0f8ba6b31e70",
+      "domain": "iphone",
+      "source_id": "e23544b0c4c1a8506f529f4d53e75ecb9e0c98f7e529e03355086875cce433de",
+      "frame_id": 14961,
+      "timestamp_s": 249.82666666666668,
+      "reference": {
+        "visibility": "visible",
+        "center_px": [
+          1358.108236622171,
+          612.4408264160156
+        ]
+      },
+      "reference_method": "Explicit reviewed exposure-center point/streak",
+      "label_sha256": "c864ec0ca37e45a8b10785fc221d35a1f6c019b2be7d00d64ceba8dd0cf04135"
+    },
+    {
+      "image": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_e23544b0c4c1a850_1\\frame_18.jpg",
+      "image_sha256": "782bd0f7da8349e1512ef37fabc02786d88472cadc71501d07c627555351f369",
+      "domain": "iphone",
+      "source_id": "e23544b0c4c1a8506f529f4d53e75ecb9e0c98f7e529e03355086875cce433de",
+      "frame_id": 14962,
+      "timestamp_s": 249.84333333333336,
+      "reference": {
+        "visibility": "visible",
+        "center_px": [
+          1369.4595310005009,
+          614.0625183105469
+        ]
+      },
+      "reference_method": "Explicit reviewed exposure-center point/streak",
+      "label_sha256": "c864ec0ca37e45a8b10785fc221d35a1f6c019b2be7d00d64ceba8dd0cf04135"
+    },
+    {
+      "image": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_e23544b0c4c1a850_1\\frame_19.jpg",
+      "image_sha256": "60157d5971021608f2c6f51afdd656b93001369ff0c399103b8f0069d1cb9648",
+      "domain": "iphone",
+      "source_id": "e23544b0c4c1a8506f529f4d53e75ecb9e0c98f7e529e03355086875cce433de",
+      "frame_id": 14963,
+      "timestamp_s": 249.86,
+      "reference": {
+        "visibility": "visible",
+        "center_px": [
+          1375.9460790995056,
+          612.4408264160156
+        ]
+      },
+      "reference_method": "Explicit reviewed exposure-center point/streak",
+      "label_sha256": "c864ec0ca37e45a8b10785fc221d35a1f6c019b2be7d00d64ceba8dd0cf04135"
+    },
+    {
+      "image": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_e23544b0c4c1a850_1\\frame_20.jpg",
+      "image_sha256": "2b61dbb507e5a23970f6930456a65e2532f9b521c74a983dfed98aea2d43b380",
+      "domain": "iphone",
+      "source_id": "e23544b0c4c1a8506f529f4d53e75ecb9e0c98f7e529e03355086875cce433de",
+      "frame_id": 14964,
+      "timestamp_s": 249.8766666666667,
+      "reference": {
+        "visibility": "visible",
+        "center_px": [
+          1385.675791384727,
+          612.4408264160156
+        ]
+      },
+      "reference_method": "Explicit reviewed exposure-center point/streak",
+      "label_sha256": "c864ec0ca37e45a8b10785fc221d35a1f6c019b2be7d00d64ceba8dd0cf04135"
+    },
+    {
+      "image": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_452627e98a3c2652_1\\frame_1.jpg",
+      "image_sha256": "26b7fc4aac79058196e0447ff27e35eefd3ed6a727e977ac868ff9299ae4a836",
+      "domain": "iphone",
+      "source_id": "452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706",
+      "frame_id": 1,
+      "timestamp_s": 0.0,
+      "reference": {
+        "visibility": "absent",
+        "center_px": null
+      },
+      "reference_method": "Explicit saved absence review",
+      "label_sha256": "fa8bb851eac615aba6d2ee74fed360e682d421e3c7ea5d175539b1b4ee7c3f34"
+    },
+    {
+      "image": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_452627e98a3c2652_1\\frame_2.jpg",
+      "image_sha256": "f1b9afec56e34bca9cb1471f2a11ec29f4eff9fb866edee09eef18666eef2bd6",
+      "domain": "iphone",
+      "source_id": "452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706",
+      "frame_id": 2,
+      "timestamp_s": 0.03333333333333333,
+      "reference": {
+        "visibility": "absent",
+        "center_px": null
+      },
+      "reference_method": "Explicit saved absence review",
+      "label_sha256": "fa8bb851eac615aba6d2ee74fed360e682d421e3c7ea5d175539b1b4ee7c3f34"
+    },
+    {
+      "image": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_452627e98a3c2652_1\\frame_3.jpg",
+      "image_sha256": "2e847c1dff27b3e5ad9a764bdaa1e2366ec3128caeba77b7418fbff3f5b91c19",
+      "domain": "iphone",
+      "source_id": "452627e98a3c2652bbfe08bdaff90a7e1a3c5c5d6d21a22e75d61fe14a6bf706",
+      "frame_id": 3,
+      "timestamp_s": 0.06666666666666667,
+      "reference": {
+        "visibility": "absent",
+        "center_px": null
+      },
+      "reference_method": "Explicit saved absence review",
+      "label_sha256": "fa8bb851eac615aba6d2ee74fed360e682d421e3c7ea5d175539b1b4ee7c3f34"
+    },
+    {
+      "image": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\phone_c343f0cdb72df492_3\\frame_6.jpg",
+      "image_sha256": "21d119ef4117a4a237b8a25627e5071f126dfd47f59b75420ce3f88e72eec9d4",
+      "domain": "iphone",
+      "source_id": "c343f0cdb72df492b3de2a69278e4d9c6884e9a22e80a5db69b903a2a9129e7f",
+      "frame_id": 1845,
+      "timestamp_s": 30.778333333333336,
+      "reference": null,
+      "reference_method": "Unknown; never a screenshot hint",
+      "label_sha256": "d51e0f6c248f078b728a7add29b3a0a3ab8f0ee6c43ad35b58b6023a4209dd3c"
+    }
+  ],
+  "pc_camera_reason": "No new reviewed PC-camera session supplied; not fabricated or silently substituted"
+}

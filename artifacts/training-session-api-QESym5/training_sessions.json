@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "sessions": {
+    "iphone_same_venue_session_1": {
+      "role": "train",
+      "stage": "existing",
+      "sealed": false,
+      "assigned_at": "2026-10-11T08:20:56.947Z"
+    },
+    "new_paired_C": {
+      "role": "test",
+      "stage": "C",
+      "sealed": true,
+      "assigned_at": "2026-10-11T08:20:56.959Z"
+    }
+  },
+  "captures": {
+    "phone_0123456789abcdef_1": {
+      "session_id": "iphone_same_venue_session_1",
+      "domain": "iphone",
+      "assigned_at": "2026-10-11T08:20:56.947Z",
+      "source_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "live_100_0": {
+      "session_id": "new_paired_C",
+      "domain": "pc_camera",
+      "assigned_at": "2026-10-11T08:20:56.959Z"
+    }
+  }
+}

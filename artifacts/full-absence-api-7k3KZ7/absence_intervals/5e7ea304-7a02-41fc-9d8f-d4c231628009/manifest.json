@@ -1,0 +1,54 @@
+{
+  "clip": "phone_0123456789abcdef_1",
+  "contains_ground_truth": false,
+  "coverage_complete": true,
+  "created_at": "2026-10-11T08:21:19.025075+00:00",
+  "decoder": {
+    "name": "opencv_ffmpeg",
+    "opencv_version": "5.0.0",
+    "random_seek": false,
+    "sequential": true
+  },
+  "domain": "iphone",
+  "duration_s": 2.0,
+  "end_source_frame": 60,
+  "index_sha256": "04f9ab63e6eef027a2601822fcfd216df36027c8eb4a5b2a209c9aba4a26949c",
+  "interval_frames": 60,
+  "interval_id": "5e7ea304-7a02-41fc-9d8f-d4c231628009",
+  "original_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\full-absence-api-7k3KZ7\\original gameplay with spaces.mp4",
+  "preparation_dependencies_sha256": {
+    "C:/Users/Adi/Documents/GitHub/TT Trajectory Engine/artifacts/full-absence-api-7k3KZ7/absence_intervals/5e7ea304-7a02-41fc-9d8f-d4c231628009/request.json": "eaa30561a32f7b758524ef75d71f5513efdbd09957b13b4835debfff37ea2a28",
+    "C:/Users/Adi/Documents/GitHub/TT Trajectory Engine/artifacts/full-absence-api-7k3KZ7/original gameplay with spaces.mp4": "0f6c4bbb9abde24d04704b2ba106f5a01b7fd54e6bfd1c3216f5614ab3a88c9b",
+    "C:/Users/Adi/Documents/GitHub/TT Trajectory Engine/artifacts/full-absence-api-7k3KZ7/phone_0123456789abcdef_1/annotations.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "C:/Users/Adi/Documents/GitHub/TT Trajectory Engine/artifacts/full-absence-api-7k3KZ7/phone_0123456789abcdef_1/capture.json": "86fb7d21a2f35d0e0e655575933da906e0c3cb3d4b4930dae90f3412d83e245b",
+    "C:/Users/Adi/Documents/GitHub/TT Trajectory Engine/artifacts/full-absence-api-7k3KZ7/phone_0123456789abcdef_1/frames.jsonl": "b86964abb0b2eb31dee30664edf4115502fb2273c7bee6a09295ecb2cdacc521",
+    "C:/Users/Adi/Documents/GitHub/TT Trajectory Engine/artifacts/full-absence-api-7k3KZ7/training_sessions.json": "5852cd180e91e1c7b4eb836e1a11abb419ee3498abe7f8b5903d9589fdffd54b",
+    "C:/Users/Adi/Documents/GitHub/TT Trajectory Engine/python_tools/prepare_absence_interval.py": "6f108bfd474f53995395c1819a0169c1d2f5c832a85ce0e9807cb0412ea5de40",
+    "C:/Users/Adi/Documents/GitHub/TT Trajectory Engine/python_tools/recording_source.py": "dbc751ee23cce7277479faf222fb76e291e1d7261e302da3e563f28a8399ca34"
+  },
+  "resolved_source_path": "C:/Users/Adi/Documents/GitHub/TT Trajectory Engine/artifacts/full-absence-api-7k3KZ7/original gameplay with spaces.mp4",
+  "role": "train",
+  "schema_version": 1,
+  "session_id": "paired_A",
+  "settings": {
+    "full_resolution": true,
+    "jpeg_quality": 95,
+    "source_pts": true,
+    "terminal_duration_policy": "ZERO_WITHOUT_NEXT_PTS"
+  },
+  "source_capture_sha256": "86fb7d21a2f35d0e0e655575933da906e0c3cb3d4b4930dae90f3412d83e245b",
+  "source_decoded_frames": 90,
+  "source_end_s": 2.0,
+  "source_index_sha256": "0024ddf05d7316274b49b83f7e698ff10850c252227fe7e9b053854cf3023c5d",
+  "source_reported_frames": 90,
+  "source_sha256": "0f6c4bbb9abde24d04704b2ba106f5a01b7fd54e6bfd1c3216f5614ab3a88c9b",
+  "source_size": [
+    320,
+    180
+  ],
+  "source_start_s": 0.0,
+  "stage": "A",
+  "start_source_frame": 1,
+  "status": "prepared",
+  "timestamp_basis": "opencv_ffmpeg_source_pts_ms"
+}

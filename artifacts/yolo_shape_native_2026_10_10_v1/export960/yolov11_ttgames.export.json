@@ -1,0 +1,27 @@
+{
+  "input": [
+    1,
+    3,
+    960,
+    960
+  ],
+  "output": [
+    1,
+    5,
+    18900
+  ],
+  "classes": 1,
+  "anchors": 18900,
+  "dtype": "float32",
+  "strides": [
+    8,
+    16,
+    32
+  ],
+  "checkpoint": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\multigame\\candidate\\weights\\best.pt",
+  "checkpoint_sha256": "299f8c879755ac41fd0ca2351685e7bdb93dd18c76161a3819cf842393b4fd18",
+  "onnx_sha256": "0dac47c7dd10b6b90ef77cce5fffc5dad52deb794c7ae3b1c135ae1492b651d2",
+  "internal_fp16": true,
+  "kind": "ball",
+  "promoted": false
+}

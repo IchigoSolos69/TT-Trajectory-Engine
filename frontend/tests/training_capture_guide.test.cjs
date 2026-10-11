@@ -11,7 +11,8 @@ function moduleAt(file,extra={}){
  return scope.exports;
 }
 const guide=moduleAt('TrainingRecordingGuide.tsx');
-const controls=moduleAt('TrainingCaptureControls.tsx',{'./TrainingRecordingGuide':guide});
+const sessions=moduleAt('TrainingSessionReadiness.tsx');
+const controls=moduleAt('TrainingCaptureControls.tsx',{'./TrainingRecordingGuide':guide,'./TrainingSessionReadiness':sessions});
 const walk=node=>!node||typeof node!=='object'?[]:[node,...React.Children.toArray(node.props?.children).flatMap(walk)];
 const commands=[];
 const frame={mode:'live',camera_active:false,camera_index:0,source_id:1,training_recording:{active:false,failed:false,saved_frames:0,dropped_frames:0,clip:''}};
@@ -35,6 +36,7 @@ assert.match(html,/Some images were not saved/);assert.match(html,/Recording fai
 assert.match(html,/Camera settings need your check/);assert.match(html,/Sampled images, not continuous match video/);
 assert.match(html,/ball hidden behind a player is occluded/);assert.match(html,/validation and test sessions/);
 assert.match(html,/After recording/);assert.match(html,/Nothing is uploaded/);
+assert.match(html,/Session C is reserved for final acceptance/);assert.match(html,/three separate gameplay sessions/);assert.match(html,/Brightness is not a cure/);
 state=[];cursor=0;
 let checks=walk(guide.TrainingRecordingGuide()).filter(node=>node.type==='input');
 assert.equal(checks.length,4);assert(checks.every(c=>!c.props.checked));

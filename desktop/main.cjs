@@ -76,7 +76,7 @@ async function ensureFrontend() {
   const log = fs.createWriteStream(path.join(dataRoot, 'logs', `dashboard-${Date.now()}.log`));
   frontend = utilityProcess.fork(server, [], {
     cwd: frontendRoot, stdio: 'pipe', serviceName: 'TT local dashboard',
-    env: { ...process.env, NODE_ENV: 'production', HOSTNAME: '127.0.0.1', PORT: String(port), NEXT_TELEMETRY_DISABLED: '1', TT_PROJECT_ROOT: dataRoot, TT_TRAINING_ROOT: path.join(dataRoot, 'training_data', 'live') },
+    env: { ...process.env, NODE_ENV: 'production', HOSTNAME: '127.0.0.1', PORT: String(port), NEXT_TELEMETRY_DISABLED: '1', TT_PROJECT_ROOT: dataRoot, TT_TRAINING_ROOT: path.join(dataRoot, 'training_data', 'live'), TT_INTERVAL_PREPARER: app.isPackaged ? path.join(resources,'training-tools','prepare_absence_interval.py') : path.join(projectRoot,'python_tools','prepare_absence_interval.py') },
   });
   const child = frontend;
   child.stdout.pipe(log, { end: false }); child.stderr.pipe(log, { end: false });

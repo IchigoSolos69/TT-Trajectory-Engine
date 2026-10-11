@@ -1,0 +1,7 @@
+{
+  "contains_ground_truth": false,
+  "decoded_frames": 90,
+  "interval_frames": 60,
+  "source_reported_frames": 90,
+  "status": "prepared"
+}

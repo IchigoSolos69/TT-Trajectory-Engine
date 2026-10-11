@@ -99,3 +99,15 @@ workspace and packaged native backend and all three engine hashes. They remain
 unchanged. It records the scored evidence hashes, 25 native selector checks,
 25 scorer tests, nine readiness tests and both synthetic optimizer smokes. The
 complete action plan and final whole-chat closure remain unfinished.
+
+## October 10 — next implementation milestone
+
+[The v2 implementation report](HYBRID_V2_IMPLEMENTATION_REPORT.md) supersedes the
+first selector's results: full native replay matches BlurBall's development
+precision/recall but fails venue-negative acceptance (75 false detections among
+284 reviewed absences, versus BlurBall 71 and YOLO 42). No production promotion
+occurs. Actual pretrained YOLO11n features now feed a causal three-frame heatmap/
+visibility prototype; 15 tests and two real-data optimizer checks pass without a
+saved candidate. A separate 15-test YOLO experiment runner verifies fresh private
+fit data and frozen provenance, with full fitting still awaiting independent
+session splits. Existing reviewed labels and deployed weights remain intact.

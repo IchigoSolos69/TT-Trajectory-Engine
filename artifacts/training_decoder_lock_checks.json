@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "checks": 8,
+  "fixture_root": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\decoder-lock-0BUgk2",
+  "scope": "Exclusive decoder ownership, dead-owner recovery, concurrent prepares and delayed finalizers; no processes killed"
+}

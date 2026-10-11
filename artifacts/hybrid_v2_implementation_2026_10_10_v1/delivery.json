@@ -1,0 +1,150 @@
+{
+  "date": "2026-10-10",
+  "timezone": "Asia/Calcutta",
+  "implementation_verified": true,
+  "scope": "Experimental native selector, causal YOLO-feature student and isolated fitting runner",
+  "deployed_models": {
+    "blurball_experimental": {
+      "path": "models/blurball_fp32.engine",
+      "sha256": "48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f",
+      "unchanged": true
+    },
+    "scene": {
+      "path": "models/scene.engine",
+      "sha256": "5eb0ecbfe0cddb8631cc89fbf6e7a2145d2a4a6b10595034afd4ab8b1a454cee",
+      "unchanged": true
+    },
+    "ball": {
+      "path": "models/yolov11_ttgames.engine",
+      "sha256": "2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9",
+      "unchanged": true
+    }
+  },
+  "backend_sha256": "85b693c29b6ada72d1444b86c325f87bd3aff846fddeace903b6fec7919b3366",
+  "backend_unchanged": true,
+  "native_checks": {
+    "native_v1_checks": 25,
+    "native_v2_checks": 24,
+    "native_cli_checks": 9
+  },
+  "python_tests": {
+    "scorer_and_review": 52,
+    "temporal_student": 15,
+    "yolo_experiments": 15
+  },
+  "real_student_optimizer_steps": 2,
+  "official_development": {
+    "standalone_yolo": {
+      "frames": 272,
+      "visible_reference_frames": 270,
+      "absent_reference_frames": 2,
+      "tp": 12,
+      "wrong_location_predictions": 258,
+      "absent_false_positives": 2,
+      "no_prediction_visible_frames": 0,
+      "true_negatives": 0,
+      "precision": 0.04411764705882353,
+      "recall": 0.044444444444444446,
+      "f1": 0.04428044280442805,
+      "upstream_recall_convention": 1.0,
+      "localization_all_visible_predictions": {
+        "count": 270,
+        "median_source_px": 154.78488894736319,
+        "p95_source_px": 464.4080348267809,
+        "rmse_source_px": 266.97492362540316
+      },
+      "missed_visible_reference_frames": 258,
+      "false_positives": 260,
+      "false_negatives": 258
+    },
+    "standalone_blurball_causal": {
+      "frames": 272,
+      "visible_reference_frames": 270,
+      "absent_reference_frames": 2,
+      "tp": 254,
+      "wrong_location_predictions": 6,
+      "absent_false_positives": 0,
+      "no_prediction_visible_frames": 10,
+      "true_negatives": 2,
+      "precision": 0.9769230769230769,
+      "recall": 0.9407407407407408,
+      "f1": 0.9584905660377359,
+      "upstream_recall_convention": 0.9621212121212122,
+      "localization_all_visible_predictions": {
+        "count": 260,
+        "median_source_px": 1.1083626540279792,
+        "p95_source_px": 2.8915415749448123,
+        "rmse_source_px": 2.2697768060213237
+      },
+      "missed_visible_reference_frames": 16,
+      "false_positives": 6,
+      "false_negatives": 16
+    },
+    "experimental_selector": {
+      "frames": 272,
+      "visible_reference_frames": 270,
+      "absent_reference_frames": 2,
+      "tp": 254,
+      "wrong_location_predictions": 6,
+      "absent_false_positives": 0,
+      "no_prediction_visible_frames": 10,
+      "true_negatives": 2,
+      "precision": 0.9769230769230769,
+      "recall": 0.9407407407407408,
+      "f1": 0.9584905660377359,
+      "upstream_recall_convention": 0.9621212121212122,
+      "localization_all_visible_predictions": {
+        "count": 260,
+        "median_source_px": 1.1083626540279792,
+        "p95_source_px": 2.8915415749448123,
+        "rmse_source_px": 2.2697768060213237
+      },
+      "missed_visible_reference_frames": 16,
+      "false_positives": 6,
+      "false_negatives": 16
+    }
+  },
+  "reviewed_absent_frames": 284,
+  "negative_false_positives": {
+    "standalone_yolo": 42,
+    "standalone_blurball_causal": 71,
+    "experimental_selector": 75
+  },
+  "negative_gate": {
+    "maximum_accepted": 42,
+    "actual": 75,
+    "passed": false
+  },
+  "ready_for_full_fitting": false,
+  "fitting_blockers": [
+    "BALL_POSITIVE_ABSENT_MINIMUM_NOT_MET_TEST",
+    "BALL_POSITIVE_ABSENT_MINIMUM_NOT_MET_TRAIN",
+    "BALL_POSITIVE_ABSENT_MINIMUM_NOT_MET_VAL",
+    "BALL_REVIEWED_MINIMUM_NOT_MET_TEST",
+    "BALL_REVIEWED_MINIMUM_NOT_MET_TRAIN",
+    "BALL_REVIEWED_MINIMUM_NOT_MET_VAL",
+    "CHECKED_PREPARED_BALL_DATASET_MISSING",
+    "CONFLICTING_DUPLICATE_LABELS",
+    "FROZEN_SPLITS_MISSING",
+    "INDEPENDENT_SESSIONS_INSUFFICIENT"
+  ],
+  "trained_candidate_saved": false,
+  "promotion_approved": false,
+  "application_default_changed": false,
+  "live_accuracy_verified": false,
+  "live_latency_measured": false,
+  "whole_plan_complete": false,
+  "evidence_sha256": {
+    "artifacts/paired_ball_official_22_003_primary_v2/metrics.json": "8ef48ca52562eb452b229065b9af66444c8d43a50009cd6f7f621ddd0345f16e",
+    "artifacts/hybrid_v2_implementation_2026_10_10_v1/reviewed_negative_metrics.json": "5ce5190aa0d15eae99bdb447398f9d9836b1a0a3c4c603c9975cd6294f25b5b7",
+    "artifacts/temporal_ball_student_real_smoke_2026_10_10_v3/report.json": "2533859ef577d6e799c1bde23e1ebbf99a0e401ec966608539d60377e9c1d3a5",
+    "artifacts/yolo_experiment_plan_2026_10_10_v3.json": "a88d8ed7f9238cb40d5e5b26581648643af0e6eadb1bce932125705c8b9c7531",
+    "artifacts/hybrid_v2_implementation_2026_10_10_v1/eval_paired_ball_candidates.exe": "55ad0b7a8fb4557dd8b24c5ec9dd4766b7489190fdf60cbc297d97b9aca4d110",
+    "artifacts/hybrid_v2_implementation_2026_10_10_v1/all_scorer_regressions.log": "d3ea1bf2cc20d30c20dc644281f25a640f9f91811eff0b65246bd3e03a678300",
+    "artifacts/temporal_ball_student_tests_2026_10_10_v3.log": "8e02167bdbc3cdea1fc7e6206c110328e14c43dcff21dd070ffbc978b063bada",
+    "artifacts/yolo_ball_experiment_tests_2026_10_10_v3.log": "79aed3c72f90656010a0de29f95915659e30dff2b7aa9a2e592cdedef33d97f7",
+    "artifacts/hybrid_v2_implementation_2026_10_10_v1/native_v1_checks.json": "8d2e2b9b0345da6b3c0688f95ef371c005a8656d9728eb73996215e36f963e0d",
+    "artifacts/hybrid_v2_implementation_2026_10_10_v1/native_v2_checks.json": "a26159917c0f1d1d8bbaf4ebaad7eb87e81175940326d37e0d6ef1bfd7f52f94",
+    "artifacts/hybrid_v2_implementation_2026_10_10_v1/native_cli_checks.json": "c1eb40a91e1f35980e890527a63895af3d4069a62b72176a78caa2668c047de3"
+  }
+}

@@ -1,4 +1,5 @@
 #include "ball_candidate_selection.hpp"
+#include "ball_candidate_selection_v2.hpp"
 #include "blurball_stream.hpp"
 #include "recording_controller.hpp"
 #include <chrono>
@@ -103,6 +104,17 @@ std::string configJson(const Config& config) {
         {"within_model_ambiguity_ratio", number(config.ambiguityRatio)}, {"coordinate_policy", recording::quote("CHOOSE_EXISTING_BLURBALL_CENTER_OR_YOLO_BOX_CENTER_NO_BLEND")},
         {"score_policy", recording::quote("RAW_MODEL_EVIDENCE_NEVER_AVERAGED_OR_PROBABILITY_CALIBRATED")}, {"warmup_policy", recording::quote("ABSTAIN_UNTIL_THREE_REAL_CONSECUTIVE_SOURCE_FRAMES")}});
 }
+std::string configJson(const ball_candidates_v2::Config& config) {
+    return recording::json({{"revision", recording::quote(ball_candidates_v2::selectorRevision)}, {"experimental", "true"}, {"thresholds_fitted", "false"},
+        {"yolo_proposal_score", number(config.yoloProposalScore)}, {"yolo_evidence_score", number(config.yoloEvidenceScore)},
+        {"yolo_fallback_score", number(config.yoloFallbackScore)}, {"blurball_minimum_peak", number(config.blurballMinimumPeak)},
+        {"agreement_radius_source_px", number(config.agreementRadiusPx)}, {"within_model_ambiguity_ratio", number(config.ambiguityRatio)},
+        {"allow_yolo_fallback", config.allowYoloFallback ? "true" : "false"},
+        {"selection_policy", recording::quote(ball_candidates_v2::selectionPolicy)},
+        {"coordinate_policy", recording::quote("CHOOSE_EXISTING_BLURBALL_CENTER_OR_YOLO_BOX_CENTER_NO_BLEND")},
+        {"score_policy", recording::quote("RAW_MODEL_EVIDENCE_NEVER_AVERAGED_OR_PROBABILITY_CALIBRATED")},
+        {"warmup_policy", recording::quote("ABSTAIN_UNTIL_THREE_REAL_CONSECUTIVE_SOURCE_FRAMES")}});
+}
 std::string candidateJson(const Candidate& candidate) {
     recording::Object fields{{"source_sha256", recording::quote(candidate.frame.sourceSha256)}, {"decoded_image_sha256", recording::quote(candidate.frame.decodedImageSha256)},
         {"frame_id", std::to_string(candidate.frame.frameId)}, {"source_pts_s", number(candidate.frame.timestamp)},
@@ -154,26 +166,47 @@ int runEvaluation(int argc, char** argv) {
     int decoded = 0, committed = 0, expected = 0, declared = 0;
     const auto evaluationStart = Clock::now();
     try {
-        if (argc < 5) throw std::invalid_argument("Usage: eval_paired_ball_candidates YOLO.engine BLURBALL.engine ORIGINAL_VIDEO NEW_OUTPUT_DIRECTORY [--limit N] [--proposal-threshold S] [--nms-threshold S] [--agreement-radius-px R] [--yolo-agreement-score S] [--yolo-solo-score S] [--blurball-solo-peak S] [--ambiguity-ratio R] [--maximum-temporal-gap-s T]");
-        Config config; int limit = 0; double nmsThreshold = .45, standaloneYoloThreshold = .25, maximumGap = 0;
+        if (argc < 5) throw std::invalid_argument("Usage: eval_paired_ball_candidates YOLO.engine BLURBALL.engine ORIGINAL_VIDEO NEW_OUTPUT_DIRECTORY [--selector-revision v1|v2] [--limit N] [--proposal-threshold S] [--nms-threshold S] [--agreement-radius-px R] [--ambiguity-ratio R] [--maximum-temporal-gap-s T] [v1: --yolo-agreement-score S --yolo-solo-score S --blurball-solo-peak S] [v2: --yolo-evidence-score S --yolo-fallback-score S --blurball-minimum-peak S --allow-yolo-fallback 0|1]");
+        Config config; ball_candidates_v2::Config primaryConfig;
+        std::string selectorVersion = "v1";
+        int limit = 0; double nmsThreshold = .45, standaloneYoloThreshold = .25, maximumGap = 0;
         std::set<std::string> options;
         for (int index = 5; index < argc; ++index) {
             const std::string option = argv[index];
             if (!options.insert(option).second || index + 1 >= argc) throw std::invalid_argument("Repeated or incomplete option: " + option);
+            if (option == "--selector-revision") {
+                selectorVersion = argv[++index];
+                if (selectorVersion != "v1" && selectorVersion != "v2") throw std::invalid_argument("Selector revision must be v1 or v2");
+                continue;
+            }
             const double value = numeric(argv[++index]);
             if (option == "--limit") { if (value < 1 || value > std::numeric_limits<int>::max() || std::floor(value) != value) throw std::invalid_argument("Limit must be a positive integer"); limit = int(value); }
-            else if (option == "--proposal-threshold") config.yoloProposalScore = float(value);
+            else if (option == "--proposal-threshold") { config.yoloProposalScore = float(value); primaryConfig.yoloProposalScore = float(value); }
             else if (option == "--nms-threshold") nmsThreshold = value;
-            else if (option == "--agreement-radius-px") config.agreementRadiusPx = value;
+            else if (option == "--agreement-radius-px") { config.agreementRadiusPx = value; primaryConfig.agreementRadiusPx = value; }
             else if (option == "--yolo-agreement-score") config.yoloAgreementScore = float(value);
             else if (option == "--yolo-solo-score") config.yoloSoloScore = float(value);
             else if (option == "--blurball-solo-peak") config.blurballSoloPeak = float(value);
-            else if (option == "--ambiguity-ratio") config.ambiguityRatio = value;
+            else if (option == "--yolo-evidence-score") primaryConfig.yoloEvidenceScore = float(value);
+            else if (option == "--yolo-fallback-score") primaryConfig.yoloFallbackScore = float(value);
+            else if (option == "--blurball-minimum-peak") primaryConfig.blurballMinimumPeak = float(value);
+            else if (option == "--allow-yolo-fallback") {
+                if (value != 0 && value != 1) throw std::invalid_argument("YOLO fallback flag must be exactly 0 or 1");
+                primaryConfig.allowYoloFallback = value == 1;
+            }
+            else if (option == "--ambiguity-ratio") { config.ambiguityRatio = value; primaryConfig.ambiguityRatio = value; }
             else if (option == "--maximum-temporal-gap-s") maximumGap = value;
             else throw std::invalid_argument("Unknown option: " + option);
         }
-        validate(config);
-        if (nmsThreshold <= 0 || nmsThreshold > 1 || maximumGap < 0 || config.yoloProposalScore > standaloneYoloThreshold)
+        const bool primarySelector = selectorVersion == "v2";
+        const std::set<std::string> v1Only{"--yolo-agreement-score", "--yolo-solo-score", "--blurball-solo-peak"};
+        const std::set<std::string> v2Only{"--yolo-evidence-score", "--yolo-fallback-score", "--blurball-minimum-peak", "--allow-yolo-fallback"};
+        for (const auto& option : options)
+            if ((primarySelector && v1Only.count(option)) || (!primarySelector && v2Only.count(option)))
+                throw std::invalid_argument("Option " + option + " does not apply to selector revision " + selectorVersion);
+        if (primarySelector) ball_candidates_v2::validate(primaryConfig); else validate(config);
+        const float proposalThreshold = primarySelector ? primaryConfig.yoloProposalScore : config.yoloProposalScore;
+        if (nmsThreshold <= 0 || nmsThreshold > 1 || maximumGap < 0 || proposalThreshold > standaloneYoloThreshold)
             throw std::invalid_argument("Invalid NMS/temporal gap or proposal threshold excludes standalone YOLO baseline");
         const auto yoloPath = std::filesystem::absolute(std::filesystem::u8path(argv[1]));
         const auto blurPath = std::filesystem::absolute(std::filesystem::u8path(argv[2]));
@@ -192,8 +225,24 @@ int runEvaluation(int argc, char** argv) {
         TensorRTEngine yolo(yoloPath.u8string(), 640, 640, 1);
         if (!yolo.init()) throw std::runtime_error("YOLO initialization failed; no fallback hypotheses");
         BlurBallEngine blur(blurPath.u8string()); BlurBallStream stream(blur);
+        const auto yoloShape = yolo.getTensorShape();
+        const auto tensorContracts = recording::json({
+            {"yolo", recording::json({
+                {"input_shape", "[1,3," + std::to_string(yoloShape.inputHeight) + "," + std::to_string(yoloShape.inputWidth) + "]"},
+                {"output_shape", "[1," + std::to_string(4 + yoloShape.classes) + "," + std::to_string(yoloShape.anchors) + "]"},
+                {"classes", std::to_string(yoloShape.classes)}, {"anchors", std::to_string(yoloShape.anchors)},
+                {"io_dtype", recording::quote("float32")}, {"input_layout", recording::quote("NCHW")},
+                {"output_layout", recording::quote("CHANNEL_MAJOR")},
+                {"shape_source", recording::quote("TENSORRT_ENGINE_STATIC_BINDINGS")}})},
+            {"blurball", recording::json({
+                {"input_shape", "[1,9," + std::to_string(BlurBallEngine::inputHeight) + "," + std::to_string(BlurBallEngine::inputWidth) + "]"},
+                {"output_shape", "[1,3," + std::to_string(BlurBallEngine::inputHeight) + "," + std::to_string(BlurBallEngine::inputWidth) + "]"},
+                {"io_dtype", recording::quote("float32")}, {"input_layout", recording::quote("NCHW")},
+                {"output_layout", recording::quote("NCHW")},
+                {"shape_source", recording::quote("TENSORRT_ENGINE_STATIC_BINDINGS_VALIDATED_FIXED_EXPORT")}})}});
         const auto sourceHash = recording::sha256(source), yoloHash = yolo.getSha256Hash(), blurHash = blur.getSha256Hash();
-        const auto configuration = configJson(config), fusionHash = textDigest(configuration);
+        const auto configuration = primarySelector ? configJson(primaryConfig) : configJson(config);
+        const auto fusionHash = textDigest(configuration);
         const auto runtimeHash = recording::sha256(std::filesystem::u8path(argv[0]));
         const auto manifest = recording::json({{"schema_version", "1"}, {"evaluation", recording::quote("PAIRED_CAUSAL_NATIVE_CANDIDATE_REPLAY")},
             {"source_path", recording::quote(source.u8string())}, {"source_sha256", recording::quote(sourceHash)}, {"source_fps", number(fps)},
@@ -205,9 +254,10 @@ int runEvaluation(int argc, char** argv) {
             {"yolo_model_path", recording::quote(yoloPath.u8string())}, {"yolo_model_sha256", recording::quote(yoloHash)},
             {"blurball_model_path", recording::quote(blurPath.u8string())}, {"blurball_model_sha256", recording::quote(blurHash)},
             {"runtime_sha256", recording::quote(runtimeHash)}, {"fusion_sha256", recording::quote(fusionHash)}, {"fusion", configuration},
-            {"preprocessing", recording::json({{"yolo", recording::quote("opencv-bgr-rgb-letterbox-640-chw-div255-v1")}, {"blurball", recording::quote("opencv-affine-rgb-imagenet-512x288-three-frames-v1")},
+            {"tensor_contracts", tensorContracts},
+            {"preprocessing", recording::json({{"yolo", recording::quote("opencv-linear-letterbox-round-pad114-bgr8-rgb-chw-v1")}, {"blurball", recording::quote("opencv-affine-rgb-imagenet-512x288-three-frames-v1")},
                 {"input_transform", recording::quote("RAW_SOURCE_NO_FILTER")}, {"decoded_image_hash", recording::quote("SHA256_UINT32_LE_WIDTH_HEIGHT_OPENCV_TYPE_THEN_PACKED_BGR_ROWS")}})},
-            {"yolo_proposal_threshold", number(config.yoloProposalScore)}, {"yolo_nms_threshold", number(float(nmsThreshold))},
+            {"yolo_proposal_threshold", number(proposalThreshold)}, {"yolo_nms_threshold", number(float(nmsThreshold))},
             {"standalone_yolo_threshold", number(standaloneYoloThreshold)}, {"standalone_blurball_selection", recording::quote("HIGHEST_COMPONENT_MASS_STRICT_300_SOURCE_PIXEL_ANCHOR_GATE")},
             {"blurball_heatmap_threshold", number(BlurBallEngine::heatmapThreshold)}, {"temporal_policy", recording::quote("CAUSAL_CHANNEL_2_T_MINUS_2_T_MINUS_1_T")},
             {"lookahead_frames", "0"}, {"warmup_frames", "2"}, {"source_images_shared", "true"}, {"opened_camera", "false"},
@@ -250,12 +300,13 @@ int runEvaluation(int argc, char** argv) {
             if (duplicate) ++duplicates;
             const FrameIdentity identity{sourceHash, pixelsHash, uint64_t(decoded), pts, image.size()};
             traceStage(decoded, "YOLO_PREPROCESS", "BEGIN", evaluationStart);
-            const auto prepStart = Clock::now(); const auto input = TensorRTEngine::preprocessOpenCVFrame(image);
+            const auto prepStart = Clock::now();
+            const auto input = TensorRTEngine::preprocessOpenCVFrame(image, yoloShape.inputWidth, yoloShape.inputHeight);
             const double preprocessMs = milliseconds(prepStart);
             traceStage(decoded, "YOLO_PREPROCESS", "END", evaluationStart, preprocessMs);
             traceStage(decoded, "YOLO_INFER", "BEGIN", evaluationStart);
             const auto yoloStart = Clock::now();
-            const auto yoloRaw = yolo.inferFrame(input, image.cols, image.rows, config.yoloProposalScore, float(nmsThreshold));
+            const auto yoloRaw = yolo.inferFrame(input, image.cols, image.rows, proposalThreshold, float(nmsThreshold));
             const double yoloMs = milliseconds(yoloStart); yoloWallMs += yoloMs;
             traceStage(decoded, "YOLO_INFER", "END", evaluationStart, yoloMs, "proposals=" + std::to_string(yoloRaw.size()));
             traceStage(decoded, "BLURBALL_INFER", "BEGIN", evaluationStart);
@@ -277,7 +328,8 @@ int runEvaluation(int argc, char** argv) {
             for (const auto& candidate : yoloCandidates)
                 if (candidate.valid && candidate.raw.confidence >= standaloneYoloThreshold && (!yoloBaseline || candidate.raw.confidence > yoloBaseline->raw.confidence)) yoloBaseline = candidate;
             const auto blurSelectedCandidate = blurBaseline(blurResult, blurCandidates);
-            const auto selected = select(identity, yoloHash, blurHash, yoloCandidates, blurCandidates, ready, config);
+            const auto selected = primarySelector ? ball_candidates_v2::select(identity, yoloHash, blurHash, yoloCandidates, blurCandidates, ready, primaryConfig)
+                : select(identity, yoloHash, blurHash, yoloCandidates, blurCandidates, ready, config);
             traceStage(decoded, "NORMALIZE_AND_SELECT", "END", evaluationStart, milliseconds(selectionStart), selected.reason);
             yoloSelected += yoloBaseline.has_value(); blurSelected += blurSelectedCandidate.has_value(); hybridSelected += selected.selected.has_value();
             std::string window = "["; for (int id : windowIds) { if (window.size() > 1) window += ','; window += std::to_string(id); } window += ']';

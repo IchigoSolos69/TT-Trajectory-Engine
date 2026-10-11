@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "reviewed": true,
+  "index_sha256": "5b8dca854367b3083e91676323bcb2a80bab8a6f6b16bdb9c3dc3cb760d852f3",
+  "source_id": "capture:live_200_0",
+  "source_frame_ranges": [
+    [
+      1,
+      3
+    ]
+  ],
+  "reviewed_at": "2026-10-10T17:36:05.069Z",
+  "method": "manual_saved_burst",
+  "image_sha256": {
+    "frame_1.jpg": "882f89ff7eb5f7e8949d6b0f7ec0227beeae141e02e38f78702a1b2c6ec1f043",
+    "frame_2.jpg": "cf7e9fab436ae8b7f0507d4c83cdb1467033a4dcaf9d3235df31b0f4ba87e237",
+    "frame_3.jpg": "a12718361976af9388dcadef968391781abf334eb3aaf31bf02c799d6d613023"
+  }
+}

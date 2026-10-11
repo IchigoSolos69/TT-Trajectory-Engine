@@ -327,7 +327,8 @@ int runEngine(int argc,char** argv) try {
             }
             refreshRecording();
         }
-        auto input=TensorRTEngine::preprocessOpenCVFrame(frame);
+        const auto sceneShape=sceneEngine.getTensorShape();
+        auto input=TensorRTEngine::preprocessOpenCVFrame(frame,sceneShape.inputWidth,sceneShape.inputHeight);
         const auto inferStart=Clock::now();
         std::vector<Detection> detections;
         if(blurStream){
@@ -348,7 +349,14 @@ int runEngine(int argc,char** argv) try {
                     {"axis_directed","false"},{"exposure_seconds","null"},{"gpu_ms",std::to_string(blurFrame.gpuMs)}});
             }
         }else{
-            detections=ballEngine->inferFrame(input,frame.cols,frame.rows,lowConfidence);
+            const auto ballShape=ballEngine->getTensorShape();
+            std::vector<float> separateBallInput;
+            const auto* ballInput=&input;
+            if(ballShape.inputWidth!=sceneShape.inputWidth||ballShape.inputHeight!=sceneShape.inputHeight){
+                separateBallInput=TensorRTEngine::preprocessOpenCVFrame(frame,ballShape.inputWidth,ballShape.inputHeight);
+                ballInput=&separateBallInput;
+            }
+            detections=ballEngine->inferFrame(*ballInput,frame.cols,frame.rows,lowConfidence);
             inferMs=std::chrono::duration<float,std::milli>(Clock::now()-inferStart).count();
         }
         tracks=tracker.update(detections);

@@ -1,0 +1,79 @@
+{
+  "scope": "Metadata/native-shape migration regression on complete published development recording; not blind accuracy or live timing",
+  "checks": {
+    "full_272_coverage": true,
+    "same_source_models_selector": true,
+    "all_original_frame_evidence_identical": true,
+    "aggregate_accuracy_identical": true,
+    "hypothesis_counts_identical": true,
+    "selector_reasons_identical": true,
+    "regression_gates_identical": true,
+    "both_archived_runtime_bytes_verified": true,
+    "reference_matches_historical_hash": true,
+    "actual640_tensor_shape_recorded": true
+  },
+  "passed": true,
+  "changed_frame_ids_by_field": {
+    "frame_id": [],
+    "source_sha256": [],
+    "decoded_image_sha256": [],
+    "source_pts_s": [],
+    "nominal_source_time_s": [],
+    "source_size": [],
+    "same_decoded_pixels_as_previous": [],
+    "temporal_window_frame_ids": [],
+    "temporal_window_ready": [],
+    "temporal_reset_reason": [],
+    "yolo_candidates": [],
+    "blurball_candidates": [],
+    "standalone_yolo": [],
+    "standalone_blurball": [],
+    "experimental_selection": [],
+    "fusion_sha256": []
+  },
+  "previous_journal": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\paired_ball_official_22_003_primary_v2",
+  "new_journal": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_shape_native_2026_10_10_v1\\paired640_primary_v2",
+  "old_binary_sha256": "55ad0b7a8fb4557dd8b24c5ec9dd4766b7489190fdf60cbc297d97b9aca4d110",
+  "new_binary_sha256": "bd18d33ab4bb4eb28279afe6ac8b865ffe8c8692264fec6eb238dc1931dc9fb3",
+  "tensor_contracts": {
+    "blurball": {
+      "input_layout": "NCHW",
+      "input_shape": [
+        1,
+        9,
+        288,
+        512
+      ],
+      "io_dtype": "float32",
+      "output_layout": "NCHW",
+      "output_shape": [
+        1,
+        3,
+        288,
+        512
+      ],
+      "shape_source": "TENSORRT_ENGINE_STATIC_BINDINGS_VALIDATED_FIXED_EXPORT"
+    },
+    "yolo": {
+      "anchors": 8400,
+      "classes": 1,
+      "input_layout": "NCHW",
+      "input_shape": [
+        1,
+        3,
+        640,
+        640
+      ],
+      "io_dtype": "float32",
+      "output_layout": "CHANNEL_MAJOR",
+      "output_shape": [
+        1,
+        5,
+        8400
+      ],
+      "shape_source": "TENSORRT_ENGINE_STATIC_BINDINGS"
+    }
+  },
+  "promotion_approved": false,
+  "960_status": "Shape support is implemented; root raw960 CUDA p95 1.05 px case fails 1 px parity gate; 960 is not released"
+}

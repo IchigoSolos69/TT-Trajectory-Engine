@@ -28,7 +28,7 @@ export function TrainingRecordingGuide() {
     <details className="rounded-xl border border-slate-700/70 bg-slate-950/30 p-3" open>
       <summary className="cursor-pointer text-sm font-semibold text-cyan-300">What to capture — follow this order</summary>
       <ol className="mt-3 list-decimal pl-5 space-y-3 text-xs leading-relaxed text-slate-300">
-        <li><strong className="text-slate-100">Record verified absence.</strong> Remove the ball from view and record the table with players, then an empty scene. Include ordinary furniture and white objects that could cause false detections. A ball hidden behind a player is occluded, not a verified absent-ball example.</li>
+        <li><strong className="text-slate-100">Record verified absence.</strong> Physically remove the ball and capture at least two minutes of original footage per device in each session, with players moving normally, then an empty scene. Include ordinary furniture, ceiling lights and white objects that could cause false detections. A ball hidden behind a player is occluded, not a verified absent-ball example. Two sampled-image clips do not prove two minutes of continuous reviewed no-ball video.</li>
         <li><strong className="text-slate-100">Record clear ball examples.</strong> Show the ball near and far from the camera, stationary and moving. Include both table ends and different background regions. Verify it can be located in the saved images.</li>
         <li><strong className="text-slate-100">Record normal gameplay.</strong> Capture serves and rallies from both players, short and deep placements, and left/right directions. Stop and repeat for another clip when the 60-second capture ends.</li>
         <li><strong className="text-slate-100">Repeat with temporal bursts.</strong> Use Record temporal bursts for moving balls and brief paddle/player occlusions. Bursts are taken once per second and can miss a contact; repeat across several rallies so you capture varied sequences.</li>
@@ -39,7 +39,7 @@ export function TrainingRecordingGuide() {
     <details className="rounded-xl border border-slate-700/70 bg-slate-950/30 p-3">
       <summary className="cursor-pointer text-sm font-semibold text-emerald-300">After recording — review before training</summary>
       <ol className="mt-3 list-decimal pl-5 space-y-2 text-xs leading-relaxed text-slate-300">
-        <li>Open <strong>Review saved frames</strong>. Correct every visible ball, person and table box; remove false person boxes on furniture. A desk is not a table-tennis table.</li>
+        <li>Open <strong>Review saved frames</strong>. Start with Ball only to correct ball boxes and explicit absence. Use the center/streak tool for accurate temporal targets. People, table corners and events are optional separate tasks; a desk is not a table-tennis table.</li>
         <li>Tag ball visibility and blur. Add visible table corners, center-line endpoints and net endpoints. Leave hidden landmarks unknown. Only add an event when its contact is visible at that captured frame.</li>
         <li>Save reviewed labels only when you can label the frame reliably. An empty class list means you checked and verified absence. Exclude ambiguous or fully occluded frames rather than turning an unknown ball position into a negative label.</li>
         <li>Assign whole sessions to training, validation or testing. Keep evaluation sessions held out and remove duplicate images across splits. Audit complete temporal bursts before temporal training.</li>
@@ -54,6 +54,7 @@ export function TrainingRecordingGuide() {
         <li><strong>Recording ends after 60 seconds</strong>, when the camera stops or switches, or when all dashboard clients disconnect. Check that frames were actually saved before starting the next clip.</li>
         <li><strong>Never fill a missing burst frame with a copy or interpolation.</strong> Incomplete or nonconsecutive five-frame bursts must be excluded from temporal training.</li>
         <li><strong>Suggestions need human review.</strong> Low confidence is not proof of an error; high confidence is not ground truth. Include representative clear footage as well as suspected failures.</li>
+        <li><strong>Brightness is not a cure for false detections.</strong> Inspect glare, clipped highlights and the far-end ball at original size. Shorten exposure and improve even lighting when supported; simply dimming the whole video can hide the ball further. Preserve the original recording for controlled preprocessing experiments.</li>
       </ul>
     </aside>
   </section>;

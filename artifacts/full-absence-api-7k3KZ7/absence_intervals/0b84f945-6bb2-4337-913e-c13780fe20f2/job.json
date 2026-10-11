@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "status": "failed",
+  "created_at": "2026-10-11T08:21:19.599Z",
+  "process_id": 38208,
+  "owner_pid": 16336,
+  "error": "Injected decoder log disk failure",
+  "completed_at": "2026-10-11T08:21:19.923Z"
+}

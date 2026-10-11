@@ -1,0 +1,1 @@
+{"frame_1.jpg":{"reviewed":true,"reviewed_classes":{"ball":true,"person":false,"table":false},"ball":[[0.2,0.3,0.01,0.01]],"person":[],"table":[],"geometry":{"landmarks":{},"landmarks_reviewed":false,"visibility":"visible","blur":"unknown","events":[],"events_reviewed":false}}}

@@ -1,0 +1,318 @@
+{
+  "started_at": "2026-10-11T07:40:06.151Z",
+  "packaged": true,
+  "electron": "44.7.0",
+  "checks": [
+    "Sandboxed native window with isolated, typed preload bridge",
+    "Launcher training review opens without starting an inference backend or camera",
+    "Launcher live control starts only live mode; camera remains unauthorized",
+    "End session releases its backend process",
+    "Native recording selection bridge handles Unicode/spaces and analyzes every frame",
+    "Desktop renders footage and native controls; review API, current assets and favicon load",
+    "Footage, 2D and 3D retain the same paused frame and authoritative table coordinates",
+    "Actual Chromium renderer saves and reloads reviewed fixture annotations at its exact dynamic loopback origin",
+    "Actual pointer drag creates a reviewed source-size streak through GUI Save, preserving prior boxes",
+    "Packaged Chromium previews and explicitly confirms a source-bound no-ball interval without reviewing scene classes",
+    "Actual packaged GUI explicitly assigns paired A/iPhone and A/PC recordings, persists immutable roles/devices and renders source-audited collection progress",
+    "Actual packaged GUI confirms distinct original burst images, persists index/source/image-bound continuity and reloads its audit without changing ball annotations",
+    "Packaged GUI seals C with manual-only annotation, suppresses model suggestions and leaves automated test readiness unavailable",
+    "Review drafts persist in an application-owned file independent of the HTTP port",
+    "Invalid video preserves the active recording",
+    "Canceling recording selection preserves the session",
+    "Closing the native window stops both application-owned services and frees their ports"
+  ],
+  "renderer_errors": [],
+  "security": {
+    "node": "undefined",
+    "bridge": "function",
+    "isolated": "undefined",
+    "launcher": true
+  },
+  "live": {
+    "pid": 40440,
+    "url": "ws://127.0.0.1:63143",
+    "camera_active": false
+  },
+  "recording": {
+    "pid": 28068,
+    "url": "ws://127.0.0.1:56054",
+    "analysis": {
+      "analyzed_frames": 272,
+      "coverage": "ALL_SOURCE_FRAMES",
+      "requested_frame": 0,
+      "status": "COMPLETE",
+      "total_frames": 272,
+      "waiting_for_analysis": false
+    },
+    "source_id": 1
+  },
+  "http": [
+    {
+      "endpoint": "/",
+      "status": 200
+    },
+    {
+      "endpoint": "/training-review",
+      "status": 200
+    },
+    {
+      "endpoint": "/api/training-review",
+      "status": 200
+    },
+    {
+      "endpoint": "/favicon.ico",
+      "status": 200
+    }
+  ],
+  "rendered": {
+    "toolbar": true,
+    "canvas": true,
+    "frame": 120,
+    "buttons": [
+      "Open recording…",
+      "Live camera",
+      "End session",
+      "Open recording…"
+    ],
+    "painted_frame": 120
+  },
+  "spatial_views": {
+    "radar": {
+      "frame": "120",
+      "x": "-0.0641",
+      "y": "1.8907"
+    },
+    "volumetric": {
+      "frame": "120",
+      "x": "-0.0641",
+      "y": "1.8907"
+    }
+  },
+  "training_review": {
+    "origin": "http://127.0.0.1:50897",
+    "status": 200,
+    "saved": true,
+    "annotation": {
+      "reviewed": true,
+      "ball": [
+        [
+          0.2,
+          0.3,
+          0.01,
+          0.01
+        ]
+      ],
+      "person": [],
+      "table": [],
+      "reviewed_at": "2026-10-11T07:40:19.853Z",
+      "geometry": {
+        "landmarks": {},
+        "landmarks_reviewed": false,
+        "visibility": "visible",
+        "blur": "unknown",
+        "events": [],
+        "events_reviewed": false
+      },
+      "source_frame": 120,
+      "elapsed_ms": 1000,
+      "reviewed_classes": {
+        "ball": true,
+        "person": false,
+        "table": false
+      }
+    },
+    "revision": "801e98dd2fdc424f5f618744b7b41da6027ecb7227b7b6e5a33ac55e2350a35f"
+  },
+  "streak_review": {
+    "endpoints": [
+      [
+        0.3005021015547944,
+        0.399995310355295
+      ],
+      [
+        0.3999821007761046,
+        0.44999653617348795
+      ]
+    ],
+    "source_width": 1630,
+    "source_height": 1003,
+    "center": [
+      0.3502421011654495,
+      0.4249959232643915
+    ],
+    "half_length_px": 84.86540260031848,
+    "axis_rad": 0.29995280248727996,
+    "method": "manual_streak_endpoints",
+    "reviewed": true
+  },
+  "absence_review": {
+    "sampled_frames": 3,
+    "explicit_gui_confirmation": true,
+    "scene_classes_unreviewed": true,
+    "interval_review": {
+      "start_source_frame": 1,
+      "end_source_frame": 3,
+      "method": "manual_interval",
+      "review_id": "d932b90e-f244-486d-8231-eb1b7d243017",
+      "reviewed_at": "2026-10-11T07:40:21.955Z",
+      "original_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "session_id": "SYNTHETIC_SMOKE_ONLY",
+      "index_sha256": "afbc03fe7ce2c7024a53491e35711900e5c7eb85a0ebf24aa47fc941bf81b6aa",
+      "previous_annotation_revision": "ecc24993fa3742d10497eabc26299ec857058937fe4af4d094a870098dc0e49e",
+      "sampled_frames": 3,
+      "image_sha256": "accf78897d587729fb62a40a6dfb0877cd33fba77d2af951ba0371e49be440d9"
+    }
+  },
+  "paired_training_review": {
+    "fixture_only": true,
+    "origin": "http://127.0.0.1:50897",
+    "registry_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\desktop_test_1791704405681\\training_data\\live\\training_sessions.json",
+    "session": {
+      "role": "train",
+      "stage": "A",
+      "sealed": false,
+      "assigned_at": "2026-10-11T07:40:24.933Z"
+    },
+    "readiness": {
+      "schema_version": 1,
+      "counts": {
+        "train": {
+          "iphone": {
+            "visible_frames": 3,
+            "visible_boxes": 3,
+            "absent_frames": 0,
+            "precise_points": 1,
+            "positive_windows": 1,
+            "unknown_frames": 0,
+            "conflicting_frames": 0,
+            "rallies": null,
+            "verified_absence_seconds": null
+          },
+          "pc_camera": {
+            "visible_frames": 3,
+            "visible_boxes": 3,
+            "absent_frames": 0,
+            "precise_points": 1,
+            "positive_windows": 1,
+            "unknown_frames": 0,
+            "conflicting_frames": 0,
+            "rallies": null,
+            "verified_absence_seconds": null
+          }
+        },
+        "val": {
+          "iphone": {
+            "visible_frames": 0,
+            "visible_boxes": 0,
+            "absent_frames": 0,
+            "precise_points": 0,
+            "positive_windows": 0,
+            "unknown_frames": 0,
+            "conflicting_frames": 0,
+            "rallies": null,
+            "verified_absence_seconds": null
+          },
+          "pc_camera": {
+            "visible_frames": 0,
+            "visible_boxes": 0,
+            "absent_frames": 0,
+            "precise_points": 0,
+            "positive_windows": 0,
+            "unknown_frames": 0,
+            "conflicting_frames": 0,
+            "rallies": null,
+            "verified_absence_seconds": null
+          }
+        },
+        "test": null
+      },
+      "sealed_test_readiness": "NOT_AUDITED",
+      "unassigned": {
+        "visible_frames": 1,
+        "visible_boxes": 1,
+        "absent_frames": 1,
+        "precise_points": 1,
+        "positive_windows": 0,
+        "unknown_frames": 0,
+        "conflicting_frames": 0,
+        "rallies": null,
+        "verified_absence_seconds": null
+      },
+      "sessions": {
+        "SMOKE_PAIRED_A": {
+          "role": "train",
+          "stage": "A",
+          "sealed": false,
+          "assigned_at": "2026-10-11T07:40:24.933Z"
+        }
+      },
+      "assigned_captures": 2,
+      "unassigned_captures": 2,
+      "duplicate_images": 2,
+      "conflicting_source_frames": 0,
+      "training_targets": {
+        "visible_boxes": 2000,
+        "absent_frames": 1000,
+        "positive_windows": 500
+      },
+      "evaluation_targets": {
+        "visible_per_device": 1000,
+        "rallies_per_device": 10,
+        "absence_seconds_per_device": 120
+      },
+      "first_cycle_ready": false,
+      "limitations": [
+        "Collection progress is not an audited dataset freeze or a model accuracy result.",
+        "Sealed session C labels, image data and frame index are not opened by collection readiness. Its test counts remain unavailable until final acceptance.",
+        "Rallies require explicit complete-original-rally review and source-specific IDs. Complete verified no-ball duration remains unknown; sparse saved images cannot establish it.",
+        "Exact duplicate images and conflicting source labels are excluded here. Near-duplicate cross-split leakage, independent session capture, second-pass annotation review and frozen manifests still need audit.",
+        "Positive temporal windows require three consecutive reviewed box-positive original images, a saved continuity audit and an explicitly reviewed center/streak target on the latest frame. Box centers alone do not count as precise temporal targets."
+      ]
+    },
+    "continuity_checks": [
+      {
+        "device": "iphone",
+        "clip": "phone_1111222233334444_1",
+        "index_sha256": "0d7c76a681130da17f0bc10824fa59cd1d536c317e6714e0b570aeae9f8a6031",
+        "source_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "source_frame_ranges": [
+          [
+            1,
+            3
+          ]
+        ],
+        "reloaded": true
+      },
+      {
+        "device": "pc_camera",
+        "clip": "live_400_0",
+        "index_sha256": "0d7c76a681130da17f0bc10824fa59cd1d536c317e6714e0b570aeae9f8a6031",
+        "source_id": "capture:live_400_0",
+        "source_frame_ranges": [
+          [
+            1,
+            3
+          ]
+        ],
+        "reloaded": true
+      }
+    ],
+    "source_and_labels_preserved": true
+  },
+  "sealed_test_review": {
+    "origin": "http://127.0.0.1:50897",
+    "seal": true,
+    "test_counts": null,
+    "test_status": "NOT_AUDITED",
+    "suggestions": [
+      null,
+      null,
+      null
+    ]
+  },
+  "frontend_origin": "http://127.0.0.1:50897",
+  "data_root": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\desktop_test_1791704405681",
+  "ok": true,
+  "finished_at": "2026-10-11T07:40:28.277Z",
+  "clean_runtime_path": true
+}

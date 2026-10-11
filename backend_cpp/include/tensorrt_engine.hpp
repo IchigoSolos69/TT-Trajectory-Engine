@@ -21,6 +21,26 @@ struct InferenceTimingDetailed {
     float decodeMs{0.0f};
 };
 
+// Static YOLO export contract. Standard P3 and additional P2 heads differ in
+// anchor count; the engine's actual tensor dimensions remain authoritative.
+struct DetectorTensorShape {
+    int inputWidth{640}, inputHeight{640}, classes{1}, anchors{0};
+    void validate() const;
+    size_t inputElements() const;
+    size_t outputElements() const;
+};
+
+// Research diagnostic only: unmodified FP32 tensor, before thresholds/NMS.
+// inputTensor is the actual submitted tensor, including CUDA preprocessing when
+// requested, rather than a separately reconstructed approximation.
+struct RawDetectorInference {
+    DetectorTensorShape shape;
+    int sourceWidth{0}, sourceHeight{0};
+    std::string preprocessingRevision;
+    std::vector<float> inputTensor, rawOutput;
+    InferenceTimingDetailed timing;
+};
+
 class TensorRTEngine {
 public:
     TensorRTEngine(const std::string& enginePath = "", int inputWidth = 640, int inputHeight = 640, int classes = 1);
@@ -33,6 +53,9 @@ public:
     // High-performance CUDA Preprocessed GPU Pipeline (bypasses CPU resize/copy)
     std::vector<Detection> inferFrameGPU(const cv::Mat& frame, float confThreshold = 0.25f, float nmsThreshold = 0.45f);
     std::vector<Detection> inferFrameGPUDetailed(const cv::Mat& frame, InferenceTimingDetailed& timing, float confThreshold = 0.25f, float nmsThreshold = 0.45f);
+
+    DetectorTensorShape getTensorShape() const;
+    RawDetectorInference inferRawFrame(const cv::Mat& frame, bool cudaPreprocessing = false, bool includeInputTensor = true);
     
     // Resolve canonical engine path (CLI arg -> TT_ENGINE_PATH env var -> "models/yolov11_ttgames.engine")
     static std::string resolveEnginePath(const std::string& userPath = "");
@@ -56,12 +79,14 @@ public:
 
     // Phase 4: Output tensor decoding and NMS post-processing
     static std::vector<Detection> postProcess(const std::vector<float>& rawOutput, int imgWidth = 640, int imgHeight = 640, float confThreshold = 0.15f, float nmsThreshold = 0.45f);
+    static std::vector<Detection> postProcess(const std::vector<float>& rawOutput, const DetectorTensorShape& shape, int imgWidth, int imgHeight, float confThreshold = 0.15f, float nmsThreshold = 0.45f);
 
 private:
     std::string enginePath_;
     int classes_;
     int inputW_;
     int inputH_;
+    int anchorCount_{0};
     bool isInitialized_;
     size_t fileSizeBytes_{0};
     std::string lastModifiedIso_{"N/A"};

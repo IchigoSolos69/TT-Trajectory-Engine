@@ -1,0 +1,339 @@
+{
+  "scope": "Provisional evaluation of one source recording/prefix; checkpoint lineage is not established as blind validation",
+  "journal_directory": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\paired_ball_official_22_003_primary_v2",
+  "source_interval": "COMPLETE_RECORDING",
+  "entire_recording_decoded": true,
+  "source_sha256": "3597a95c664683d4b512c934b095bf51b45eda9112ebf377c960742e2146e011",
+  "yolo_model_sha256": "2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9",
+  "blurball_model_sha256": "48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f",
+  "fusion_sha256": "c3626111e49b5bb2d780c6080c0112fc5d4575ff623bb631830d22e902795ab3",
+  "runtime_binary_sha256_recorded_from_manifest": "55ad0b7a8fb4557dd8b24c5ec9dd4766b7489190fdf60cbc297d97b9aca4d110",
+  "runtime_binary_current_file_reverified": true,
+  "runtime_binary_supplied_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\hybrid_v2_implementation_2026_10_10_v1\\eval_paired_ball_candidates.exe",
+  "runtime_binary_sha256_current_file": "55ad0b7a8fb4557dd8b24c5ec9dd4766b7489190fdf60cbc297d97b9aca4d110",
+  "runtime_binary_limitation_reason": null,
+  "selector_configuration": {
+    "agreement_radius_source_px": 12,
+    "allow_yolo_fallback": true,
+    "blurball_minimum_peak": 0.699999988079071,
+    "coordinate_policy": "CHOOSE_EXISTING_BLURBALL_CENTER_OR_YOLO_BOX_CENTER_NO_BLEND",
+    "experimental": true,
+    "revision": "blurball-primary-source-candidates-v2",
+    "score_policy": "RAW_MODEL_EVIDENCE_NEVER_AVERAGED_OR_PROBABILITY_CALIBRATED",
+    "selection_policy": "BLURBALL_PRIMARY_YOLO_NO_VETO",
+    "thresholds_fitted": false,
+    "warmup_policy": "ABSTAIN_UNTIL_THREE_REAL_CONSECUTIVE_SOURCE_FRAMES",
+    "within_model_ambiguity_ratio": 0.8,
+    "yolo_evidence_score": 0.25,
+    "yolo_fallback_score": 0.949999988079071,
+    "yolo_proposal_score": 0.10000000149011612
+  },
+  "audit": {
+    "status": "PASS",
+    "frames_accounted_for": 272,
+    "runtime_binary_sha256_recorded_from_manifest": "55ad0b7a8fb4557dd8b24c5ec9dd4766b7489190fdf60cbc297d97b9aca4d110",
+    "runtime_binary_current_file_reverified": true,
+    "runtime_binary_supplied_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\hybrid_v2_implementation_2026_10_10_v1\\eval_paired_ball_candidates.exe",
+    "runtime_binary_sha256_current_file": "55ad0b7a8fb4557dd8b24c5ec9dd4766b7489190fdf60cbc297d97b9aca4d110",
+    "runtime_binary_limitation_reason": null,
+    "index_offsets_verified": true,
+    "file_sha256": {
+      "manifest.json": "14fdec493a0870f5738c391ae6bcb3490957d3bd6f56ce119f5ae63f9be78d3d",
+      "diagnostic_summary.json": "0df95068565199a430dd48ef63886141e439efeb69fa1857793205249ee0573e",
+      "completion.json": "535fad1269f64b6dc6a5151329b04d9d5e231e514022b0568f21111e84e0d9a0",
+      "frames.jsonl": "503ee3ea9106f9fc4084989d6dd6be0f07f630b41d97e093643f4cdaddb3d18d",
+      "frames.idx": "012dad2c06f266bd16e8192a4409e58a89df943670225798c1c0cd3b6785dd53"
+    },
+    "source_and_model_files": {
+      "source": {
+        "path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\blurball_research\\official_22_003\\source.mp4",
+        "available": true,
+        "sha256_match": true
+      },
+      "yolo_model": {
+        "path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\models\\yolov11_ttgames.engine",
+        "available": true,
+        "sha256_match": true
+      },
+      "blurball_model": {
+        "path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\models\\blurball_fp32.engine",
+        "available": true,
+        "sha256_match": true
+      }
+    },
+    "decoded_pixels_independently_recomputed": false,
+    "candidate_ground_truth_verified_by_hashes": false,
+    "selection_and_baseline_policies_recomputed": true,
+    "counters": {
+      "consecutive_pixel_duplicates": 0,
+      "causal_warmup_frames": 2,
+      "yolo_candidates": 2856,
+      "yolo_invalid_candidates": 0,
+      "blurball_candidates": 261,
+      "blurball_invalid_candidates": 0,
+      "standalone_yolo_selected_frames": 272,
+      "standalone_blurball_causal_selected_frames": 260,
+      "experimental_selector_selected_frames": 260
+    },
+    "selector_reason_histogram": {
+      "AMBIGUOUS_YOLO_CANDIDATES": 10,
+      "BLURBALL_CAUSAL_WARMUP": 2,
+      "BLURBALL_PRIMARY_AMBIGUOUS_YOLO": 216,
+      "BLURBALL_PRIMARY_SPATIAL_AGREEMENT": 5,
+      "BLURBALL_PRIMARY_YOLO_DISAGREEMENT": 39
+    }
+  },
+  "hypothesis_counts": {
+    "standalone_yolo": {
+      "selected_frames": 272,
+      "abstained_frames": 0,
+      "candidate_count": 2856
+    },
+    "standalone_blurball_causal": {
+      "selected_frames": 260,
+      "abstained_frames": 12,
+      "candidate_count": 261
+    },
+    "experimental_selector": {
+      "selected_frames": 260,
+      "abstained_frames": 12,
+      "selected_model_counts": {
+        "blurball": 260
+      }
+    }
+  },
+  "selector_reason_histogram": {
+    "AMBIGUOUS_YOLO_CANDIDATES": 10,
+    "BLURBALL_CAUSAL_WARMUP": 2,
+    "BLURBALL_PRIMARY_AMBIGUOUS_YOLO": 216,
+    "BLURBALL_PRIMARY_SPATIAL_AGREEMENT": 5,
+    "BLURBALL_PRIMARY_YOLO_DISAGREEMENT": 39
+  },
+  "accuracy": {
+    "full_recording": {
+      "standalone_yolo": {
+        "frames": 272,
+        "visible_reference_frames": 270,
+        "absent_reference_frames": 2,
+        "tp": 12,
+        "wrong_location_predictions": 258,
+        "absent_false_positives": 2,
+        "no_prediction_visible_frames": 0,
+        "true_negatives": 0,
+        "precision": 0.04411764705882353,
+        "recall": 0.044444444444444446,
+        "f1": 0.04428044280442805,
+        "upstream_recall_convention": 1.0,
+        "localization_all_visible_predictions": {
+          "count": 270,
+          "median_source_px": 154.78488894736319,
+          "p95_source_px": 464.4080348267809,
+          "rmse_source_px": 266.97492362540316
+        },
+        "missed_visible_reference_frames": 258,
+        "false_positives": 260,
+        "false_negatives": 258
+      },
+      "standalone_blurball_causal": {
+        "frames": 272,
+        "visible_reference_frames": 270,
+        "absent_reference_frames": 2,
+        "tp": 254,
+        "wrong_location_predictions": 6,
+        "absent_false_positives": 0,
+        "no_prediction_visible_frames": 10,
+        "true_negatives": 2,
+        "precision": 0.9769230769230769,
+        "recall": 0.9407407407407408,
+        "f1": 0.9584905660377359,
+        "upstream_recall_convention": 0.9621212121212122,
+        "localization_all_visible_predictions": {
+          "count": 260,
+          "median_source_px": 1.1083626540279792,
+          "p95_source_px": 2.8915415749448123,
+          "rmse_source_px": 2.2697768060213237
+        },
+        "missed_visible_reference_frames": 16,
+        "false_positives": 6,
+        "false_negatives": 16
+      },
+      "experimental_selector": {
+        "frames": 272,
+        "visible_reference_frames": 270,
+        "absent_reference_frames": 2,
+        "tp": 254,
+        "wrong_location_predictions": 6,
+        "absent_false_positives": 0,
+        "no_prediction_visible_frames": 10,
+        "true_negatives": 2,
+        "precision": 0.9769230769230769,
+        "recall": 0.9407407407407408,
+        "f1": 0.9584905660377359,
+        "upstream_recall_convention": 0.9621212121212122,
+        "localization_all_visible_predictions": {
+          "count": 260,
+          "median_source_px": 1.1083626540279792,
+          "p95_source_px": 2.8915415749448123,
+          "rmse_source_px": 2.2697768060213237
+        },
+        "missed_visible_reference_frames": 16,
+        "false_positives": 6,
+        "false_negatives": 16
+      }
+    },
+    "after_causal_warmup": {
+      "standalone_yolo": {
+        "frames": 270,
+        "visible_reference_frames": 268,
+        "absent_reference_frames": 2,
+        "tp": 12,
+        "wrong_location_predictions": 256,
+        "absent_false_positives": 2,
+        "no_prediction_visible_frames": 0,
+        "true_negatives": 0,
+        "precision": 0.044444444444444446,
+        "recall": 0.04477611940298507,
+        "f1": 0.04460966542750929,
+        "upstream_recall_convention": 1.0,
+        "localization_all_visible_predictions": {
+          "count": 268,
+          "median_source_px": 153.64049514858146,
+          "p95_source_px": 464.42450537034847,
+          "rmse_source_px": 265.2605014034493
+        },
+        "missed_visible_reference_frames": 256,
+        "false_positives": 258,
+        "false_negatives": 256
+      },
+      "standalone_blurball_causal": {
+        "frames": 270,
+        "visible_reference_frames": 268,
+        "absent_reference_frames": 2,
+        "tp": 254,
+        "wrong_location_predictions": 6,
+        "absent_false_positives": 0,
+        "no_prediction_visible_frames": 8,
+        "true_negatives": 2,
+        "precision": 0.9769230769230769,
+        "recall": 0.9477611940298507,
+        "f1": 0.962121212121212,
+        "upstream_recall_convention": 0.9694656488549618,
+        "localization_all_visible_predictions": {
+          "count": 260,
+          "median_source_px": 1.1083626540279792,
+          "p95_source_px": 2.8915415749448123,
+          "rmse_source_px": 2.2697768060213237
+        },
+        "missed_visible_reference_frames": 14,
+        "false_positives": 6,
+        "false_negatives": 14
+      },
+      "experimental_selector": {
+        "frames": 270,
+        "visible_reference_frames": 268,
+        "absent_reference_frames": 2,
+        "tp": 254,
+        "wrong_location_predictions": 6,
+        "absent_false_positives": 0,
+        "no_prediction_visible_frames": 8,
+        "true_negatives": 2,
+        "precision": 0.9769230769230769,
+        "recall": 0.9477611940298507,
+        "f1": 0.962121212121212,
+        "upstream_recall_convention": 0.9694656488549618,
+        "localization_all_visible_predictions": {
+          "count": 260,
+          "median_source_px": 1.1083626540279792,
+          "p95_source_px": 2.8915415749448123,
+          "rmse_source_px": 2.2697768060213237
+        },
+        "missed_visible_reference_frames": 14,
+        "false_positives": 6,
+        "false_negatives": 14
+      }
+    },
+    "warmup_exclusion": "Exclude every non-ready causal window, including after temporal resets"
+  },
+  "gates": {
+    "full_recording": {
+      "strongest_baseline_by_f1": "standalone_blurball_causal",
+      "policy": "No regression against the strongest measured baseline for each metric; explicit absent labels required for negatives",
+      "checks": {
+        "precision_no_regression": {
+          "baseline": "standalone_blurball_causal",
+          "baseline_value": 0.9769230769230769,
+          "experimental_value": 0.9769230769230769,
+          "passed": true
+        },
+        "recall_no_regression": {
+          "baseline": "standalone_blurball_causal",
+          "baseline_value": 0.9407407407407408,
+          "experimental_value": 0.9407407407407408,
+          "passed": true
+        },
+        "negative_false_positives_no_regression": {
+          "baseline": "standalone_blurball_causal",
+          "absent_reference_frames": 2,
+          "baseline_value": 0,
+          "experimental_value": 0,
+          "passed": true
+        }
+      },
+      "passed": true,
+      "failed_checks": [],
+      "unevaluated_checks": []
+    },
+    "after_causal_warmup": {
+      "strongest_baseline_by_f1": "standalone_blurball_causal",
+      "policy": "No regression against the strongest measured baseline for each metric; explicit absent labels required for negatives",
+      "checks": {
+        "precision_no_regression": {
+          "baseline": "standalone_blurball_causal",
+          "baseline_value": 0.9769230769230769,
+          "experimental_value": 0.9769230769230769,
+          "passed": true
+        },
+        "recall_no_regression": {
+          "baseline": "standalone_blurball_causal",
+          "baseline_value": 0.9477611940298507,
+          "experimental_value": 0.9477611940298507,
+          "passed": true
+        },
+        "negative_false_positives_no_regression": {
+          "baseline": "standalone_blurball_causal",
+          "absent_reference_frames": 2,
+          "baseline_value": 0,
+          "experimental_value": 0,
+          "passed": true
+        }
+      },
+      "passed": true,
+      "failed_checks": [],
+      "unevaluated_checks": []
+    }
+  },
+  "matching": {
+    "tolerance_source_px": 4.0,
+    "comparison": "STRICT_DISTANCE_LESS_THAN_TOLERANCE",
+    "reference_coordinates": "Unscaled CSV source pixels; zero-based Frame -> one-based journal frame_id",
+    "wrong_visible_localization": "One false positive and one missed visible reference",
+    "recall_definition": "Correctly localized detections / ALL visible reference frames"
+  },
+  "accuracy_measured": true,
+  "settings_selected_before_scoring": true,
+  "thresholds_fitted": false,
+  "confidence_calibrated": false,
+  "promotion_approved": false,
+  "unlabeled_policy": "Accuracy is null without explicit binary reference CSV; user-declared no-ball never becomes automatic ground truth",
+  "remaining_gates": [
+    "Independent recordings and venue sessions with known checkpoint lineage",
+    "Broad ball/blur/occlusion and explicit negative reference comparisons",
+    "Confidence/uncertainty calibration",
+    "Native live capture-to-display timing"
+  ],
+  "reference": {
+    "path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\blurball_research\\official_22_003\\labels.csv",
+    "sha256": "9573cfecf3c3a45178ef1cc4c1d9539e7bb1e5981bb125434d67a87ba3cd53ea",
+    "visibility_policy": "Explicit binary 0/1; unknown and occluded visibility rejected"
+  }
+}

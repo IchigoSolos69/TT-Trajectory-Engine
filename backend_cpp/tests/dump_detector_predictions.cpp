@@ -23,7 +23,8 @@ int main(int argc, char** argv) try {
         throw std::runtime_error("Invalid starting frame");
     while (count < finalFrame && cap.read(frame)) {
         ++count;
-        auto input = TensorRTEngine::preprocessOpenCVFrame(frame);
+        const auto shape = engine.getTensorShape();
+        auto input = TensorRTEngine::preprocessOpenCVFrame(frame, shape.inputWidth, shape.inputHeight);
         auto detections = engine.inferFrame(input, frame.cols, frame.rows, 0.001f);
         if (detections.empty()) out << count << ",-1,-1,0,0,0,0\n";
         else {

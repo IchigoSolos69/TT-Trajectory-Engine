@@ -1,0 +1,37 @@
+{
+  "frame_1.jpg": {
+    "reviewed": true,
+    "ball": [
+      [
+        0.2,
+        0.3,
+        0.01,
+        0.01
+      ]
+    ],
+    "person": [],
+    "table": [],
+    "reviewed_at": "2026-10-10T17:36:05.150Z",
+    "geometry": {
+      "landmarks": {},
+      "landmarks_reviewed": false,
+      "visibility": "visible",
+      "blur": "unknown",
+      "events": [],
+      "events_reviewed": false,
+      "rally_id": "rally_01",
+      "rally_reviewed": true,
+      "quality_tags": [
+        "bright_background",
+        "motion_blur"
+      ]
+    },
+    "source_frame": 1,
+    "elapsed_ms": 0,
+    "reviewed_classes": {
+      "ball": true,
+      "person": false,
+      "table": false
+    }
+  }
+}

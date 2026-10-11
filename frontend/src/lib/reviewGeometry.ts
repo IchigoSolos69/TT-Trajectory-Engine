@@ -20,6 +20,10 @@ export type ReviewGeometry={
   blur:'unknown'|'none'|'mild'|'moderate'|'severe'|'extreme';
   events:Array<typeof eventNames[number]>;
   events_reviewed:boolean;
+  /** Human-reviewed complete rally identity; never derived from event guesses. */
+  rally_id?:string|null;
+  rally_reviewed?:boolean;
+  quality_tags?:Array<'bright_background'|'small_ball'|'motion_blur'|'partial_occlusion'>;
   blur_streak?:BlurStreak|null;
 };
 export const emptyGeometry=():ReviewGeometry=>({landmarks:{},landmarks_reviewed:false,visibility:'unknown',blur:'unknown',events:[],events_reviewed:false});
@@ -81,6 +85,12 @@ export function validateGeometry(value:unknown):ReviewGeometry{
   }
   if(!['unknown','visible','partial','occluded','absent'].includes(v.visibility)||!['unknown','none','mild','moderate','severe','extreme'].includes(v.blur))throw Error('Invalid visibility/blur tag');
   if(!Array.isArray(v.events)||v.events.some(e=>!eventNames.includes(e))||new Set(v.events).size!==v.events.length)throw Error('Invalid event labels');
+  if(v.rally_id!==undefined&&v.rally_id!==null&&(typeof v.rally_id!=='string'||!(/^[A-Za-z0-9][A-Za-z0-9_.-]{0,95}$/).test(v.rally_id)))throw Error('Use a short source-specific rally ID without spaces');
+  if(v.rally_reviewed!==undefined&&typeof v.rally_reviewed!=='boolean')throw Error('Explicit rally review state required');
+  if(v.rally_reviewed===true&&!v.rally_id)throw Error('A reviewed rally needs its complete-rally ID');
+  if(v.quality_tags!==undefined&&(!Array.isArray(v.quality_tags)||new Set(v.quality_tags).size!==v.quality_tags.length||v.quality_tags.some(tag=>!['bright_background','small_ball','motion_blur','partial_occlusion'].includes(tag))))throw Error('Invalid reviewed ball-quality tags');
   return {...result,landmarks_reviewed:v.landmarks_reviewed,events_reviewed:v.events_reviewed,visibility:v.visibility,blur:v.blur,events:v.events,
+    ...(v.rally_id!==undefined?{rally_id:v.rally_id}:{}),...(v.rally_reviewed!==undefined?{rally_reviewed:v.rally_reviewed}:{}),
+    ...(v.quality_tags!==undefined?{quality_tags:[...v.quality_tags]}:{}),
     ...(v.blur_streak!==undefined?{blur_streak:validateBlurStreak(v.blur_streak)}:{})};
 }

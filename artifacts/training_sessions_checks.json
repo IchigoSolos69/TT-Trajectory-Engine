@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "checks": 24,
+  "real_camera_opened": false,
+  "scope": "Production metadata/readiness and review helpers; no real captures or annotations changed"
+}

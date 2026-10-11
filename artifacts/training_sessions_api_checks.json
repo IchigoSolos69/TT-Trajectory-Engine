@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "checks": 43,
+  "scope": "Real production NextRequest route with isolated filesystem; no real captures, annotations or registry changed",
+  "fixture_root": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\training-session-api-QESym5",
+  "errors_expected": 14,
+  "source_preserved": true,
+  "real_camera_opened": false
+}

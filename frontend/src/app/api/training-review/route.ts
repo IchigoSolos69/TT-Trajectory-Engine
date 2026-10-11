@@ -5,6 +5,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import {validateGeometry,ReviewGeometry,jpegDimensions,createBlurStreak} from '../../../lib/reviewGeometry';
 import {localReviewOrigin,sameOriginReview} from '../../../lib/reviewOrigin';
 import {previewAbsenceInterval,reviewedAbsence,IndexedReviewFrame,AbsenceProvenance} from '../../../lib/reviewAbsence';
+import {validateTrainingRegistry} from '../../../lib/trainingSessions';
 
 export const runtime='nodejs';
 export const dynamic='force-dynamic';
@@ -56,7 +57,17 @@ export async function GET(req:NextRequest){
     let capture=null;
     try { const manifest=JSON.parse(await fs.readFile(path.join(dir,'capture.json'),'utf8')); capture={source:manifest.source,original_name:typeof manifest.original_path==='string'?path.basename(manifest.original_path):undefined,session_id:manifest.session_id,source_fps_average:manifest.source_fps_average,frame_count_discrepancy:manifest.frame_count_discrepancy,capture_note:manifest.capture_note,full_source_decode_counted:manifest.full_source_decode_counted,source_frames:manifest.source_frames}; }
     catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;}
-    return NextResponse.json({frames:await frameIndex(dir),annotations:JSON.parse(raw),revision:revision(raw),capture});
+    let sealedTest=false;
+    try{
+      const base=await fs.realpath(root),registryPath=await fs.realpath(path.join(base,'training_sessions.json'));
+      if(path.dirname(registryPath).toLowerCase()!==base.toLowerCase())throw Error('Session registry escapes training directory');
+      const registry=validateTrainingRegistry(JSON.parse(await fs.readFile(registryPath,'utf8'))),assignment=registry.captures[clip];
+      sealedTest=!!assignment&&registry.sessions[assignment.session_id].sealed;
+    }catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;}
+    const frames=await frameIndex(dir);
+    // Human blind annotation can read the chosen test clip, but receives no
+    // model-generated box suggestions. Test collection readiness stays sealed.
+    return NextResponse.json({frames:sealedTest?frames.map(frame=>({...frame,review_metadata:frame.review_metadata?{...frame.review_metadata,suggestions:undefined}:undefined})):frames,annotations:JSON.parse(raw),revision:revision(raw),capture,sealed_test:sealedTest});
   }catch(error){console.error('[training-review]',error);return NextResponse.json({error:'Cannot read this local capture. Check the server log.'},{status:400});}
 }
 export async function POST(req:NextRequest){
@@ -147,7 +158,8 @@ export async function POST(req:NextRequest){
       if(body.scope==='ball'){
         labels.person=previous?.person??[];labels.table=previous?.table??[];
         const oldGeometry=previous?.geometry;
-        if(oldGeometry)labels.geometry={...oldGeometry,visibility:labels.geometry.visibility,blur:labels.geometry.blur,blur_streak:labels.geometry.blur_streak};
+        if(oldGeometry)labels.geometry={...oldGeometry,visibility:labels.geometry.visibility,blur:labels.geometry.blur,blur_streak:labels.geometry.blur_streak,
+          ...(labels.geometry.rally_id!==undefined?{rally_id:labels.geometry.rally_id}:{}),...(labels.geometry.rally_reviewed!==undefined?{rally_reviewed:labels.geometry.rally_reviewed}:{}),...(labels.geometry.quality_tags!==undefined?{quality_tags:labels.geometry.quality_tags}:{})};
       }
       if(flags.ball&&labels.geometry.visibility==='absent'&&labels.ball.length)throw Error('Absent-ball tag conflicts with reviewed ball boxes');
       if(body.reviewed===true&&labels.geometry.visibility==='occluded'&&labels.ball.length)throw Error('A fully occluded ball cannot have an observed box');

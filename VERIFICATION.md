@@ -308,3 +308,73 @@ editing, label overwrite, split assignment, default promotion, live performance
 measurement or model-accuracy improvement is claimed. Independent data,
 representative positive-window coverage, continuity and full candidate training
 remain separate acceptance work. See [the updated checklist](NEXT_TRAINING_STEP.md).
+
+## October 10 — experimental hybrid v2 and causal YOLO-feature student
+
+Full native replay covers the 272-frame development clip and all 9,164 mixed
+venue frames. The archived runtime executable hash is reverified during scoring.
+V2 selects original BlurBall observations despite unreliable YOLO disagreement;
+24 v2, 25 legacy native and nine CLI checks pass. The 52-test Python journal/
+review suite passes. Development precision/recall match causal BlurBall at
+97.69%/94.07%, repairing the historical hybrid's 1.85% recall.
+
+On 284 explicitly reviewed venue absences, however, v2 accepts 75 false
+detections versus BlurBall's 71 and YOLO's 42. This fails negative no-regression;
+v2 remains experimental outside application defaults. These sampled-negative
+counts are not whole-video accuracy or blind session validation.
+
+An executable research student reuses actual YOLO11n stride-4/8 encoder features
+and fuses three causal frames into current-frame heatmap/visibility heads. Fifteen
+CPU checks and two real reviewed optimizer steps pass. Original checkpoint,
+frozen encoder/BatchNorm, staging/review/source and imported helper hashes remain
+unchanged. This is not a fitted or exported student and no accuracy gain is claimed.
+
+The isolated YOLO fitting runner passes 15 CPU controls, including fresh private
+train/validation copies without inherited label caches and post-fit target
+verification. Its real-data v3 plan refuses fitting before model loading or output
+creation. Required independent sessions, reviewed positive windows and prepared
+frozen splits are still missing. Offline replay stage timings are separate from
+repeatable GPU benchmarks and live capture-to-display latency.
+
+Full evidence and remaining gates: [implementation report](HYBRID_V2_IMPLEMENTATION_REPORT.md).
+
+## October 11 — paired YOLO foundation and native diagnosis
+
+The current training/interval suite passes 62 controls for real installed
+Ultralytics interfaces, balanced camera domains, augmentation, fixed batch/memory
+handling, sealed C exclusions, source relocation and frozen provenance. The final
+v4 current-data plan refuses fitting before model load/output: 18 eligible visible
+and nine absent assigned iPhone frames, no independent paired A/B camera coverage.
+Original captures/annotations are preserved; 11 moved source identities resolve
+without rewriting them. Downloads folder roles remain development comparisons.
+The user clarified that additional clips are public World Cup footage and no
+actual PC-camera recordings exist.
+
+Shape-aware ball/scene/960 native contracts and a complete 272-frame paired replay
+pass; previous coordinates/selections are unchanged. Raw parity is accepted on
+the evaluable 640 cases; one 960 CUDA case fails the 1 px p95 gate. Nine diagnostic
+and 19 release-metric tests pass, protecting native NMS order, independent score
+parity, strict localization, false-positive/miss accounting, conservative PTS
+duration and unavailable false-track rates when identity is unknown.
+
+The complete-original absence workflow passes 64 actual decoder/API checks,
+43 session API checks, eight ownership/race checks, 24 readiness checks and 13
+interval integrity checks. Preparation alone creates no reviewed labels. Failed,
+running, canceled, tampered, conflicting or aliased sealed-source inputs are
+excluded. Original source/session/image/PTS identities and overlap union are
+enforced; log/disk failures and decoder owner death are tested.
+
+The final paired training v2 package passes production compile/type checks,
+six desktop service tests and 19 Chromium/runtime checks with zero renderer
+errors. The real GUI decodes all 90 frames of an isolated synthetic original,
+retains 60 interval frames, saves/reloads exactly 2.00 seconds of explicit absence
+review, preserves previous source/scene labels and rejects stale inspection after
+capture changes. Session assignment, burst continuity, sealed C manual-only
+handling, same-origin saves, all 272 replay frames, aligned footage/2D/3D and
+owned-process cleanup also pass. Failed earlier harness evidence is retained.
+
+No camera is authorized during these tests. Actual manual picker use, real live
+accuracy/timing, the 30-minute camera soak, learned hybrid fitting and default
+promotion remain unfinished. Offline diagnostics are separate from live latency.
+
+Evidence and remaining work: [October 11 implementation report](YOLO_UPGRADE_IMPLEMENTATION_2026_10_11.md).

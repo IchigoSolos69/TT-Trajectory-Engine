@@ -20,6 +20,7 @@ except ImportError:
 
 
 REVISION = 'conservative-source-candidates-v1'
+PRIMARY_REVISION = 'blurball-primary-source-candidates-v2'
 HYPOTHESES = ('standalone_yolo', 'standalone_blurball_causal', 'experimental_selector')
 IDENTITY_FIELDS = ('source_sha256', 'decoded_image_sha256', 'frame_id',
                    'source_pts_s', 'source_size')
@@ -34,6 +35,22 @@ CONFIG_POLICIES = {
 CONFIG_NUMBERS = ('yolo_proposal_score', 'yolo_agreement_score', 'yolo_solo_score',
                   'blurball_agreement_peak', 'blurball_solo_peak',
                   'agreement_radius_source_px', 'within_model_ambiguity_ratio')
+PRIMARY_POLICIES = {
+    **CONFIG_POLICIES, 'revision': PRIMARY_REVISION,
+    'selection_policy': 'BLURBALL_PRIMARY_YOLO_NO_VETO',
+}
+PRIMARY_NUMBERS = ('yolo_proposal_score', 'yolo_evidence_score', 'yolo_fallback_score',
+                   'blurball_minimum_peak', 'agreement_radius_source_px',
+                   'within_model_ambiguity_ratio')
+
+
+def primary_config(allow_yolo_fallback=True):
+    """Frozen research settings, not learned or fitted to the scored references."""
+    return {**PRIMARY_POLICIES, 'yolo_proposal_score': f32(.1),
+            'yolo_evidence_score': f32(.25), 'yolo_fallback_score': f32(.95),
+            'blurball_minimum_peak': f32(.7), 'agreement_radius_source_px': 12.,
+            'within_model_ambiguity_ratio': .8,
+            'allow_yolo_fallback': allow_yolo_fallback}
 
 
 def require(condition, message):
@@ -241,6 +258,8 @@ def validate_candidate(candidate, row, model, model_hash, index):
 
 
 def recompute_selection(row, config):
+    if config.get('revision') == PRIMARY_REVISION:
+        return recompute_primary_selection(row, config)
     yolo = [c for c in row['yolo_candidates'] if c['valid'] and c['raw_score'] >= config['yolo_agreement_score']]
     blur = [c for c in row['blurball_candidates'] if c['valid'] and c['raw_score'] >= config['blurball_agreement_peak']]
     result = {'selected': None, 'reason': None, 'confidence': None,
@@ -283,6 +302,126 @@ def recompute_selection(row, config):
     return finish('NO_ELIGIBLE_CANDIDATE')
 
 
+def recompute_primary_selection(row, config):
+    """Mirror experimental native v2; one branch's score cannot veto another."""
+    yolo = [c for c in row['yolo_candidates'] if c['valid'] and c['raw_score'] >= config['yolo_evidence_score']]
+    blur = [c for c in row['blurball_candidates'] if c['valid'] and c['raw_score'] >= config['blurball_minimum_peak']]
+    result = {'selected': None, 'reason': None, 'confidence': None,
+              'confidence_reason': 'EXPERIMENTAL_UNCALIBRATED_SELECTOR',
+              'yolo_support_index': None, 'blurball_support_index': None,
+              'agreement_distance_source_px': None,
+              'invalid_candidates': sum(not c['valid'] for c in row['yolo_candidates'] + row['blurball_candidates']),
+              'eligible_yolo': len(yolo), 'eligible_blurball': len(blur)}
+
+    def finish(reason, selected=None):
+        result.update(reason=reason, selected=selected)
+        return result
+
+    if not row['temporal_window_ready']:
+        return finish('BLURBALL_CAUSAL_WARMUP')
+    rank = lambda c: c['blur_evidence']['component_mass'] if c['model'] == 'blurball' else c['raw_score']
+    yolo_best, blur_best = (max(candidates, key=rank) if candidates else None for candidates in (yolo, blur))
+
+    def ambiguous(candidates, winner):
+        return winner is not None and any(c is not winner and rank(c) >= rank(winner) * config['within_model_ambiguity_ratio']
+                                         and native_distance(c['center_px'], winner['center_px']) > config['agreement_radius_source_px']
+                                         for c in candidates)
+
+    if ambiguous(blur, blur_best):
+        return finish('AMBIGUOUS_BLURBALL_CANDIDATES')
+    result['yolo_support_index'] = yolo_best['candidate_index'] if yolo_best else None
+    result['blurball_support_index'] = blur_best['candidate_index'] if blur_best else None
+    if blur_best:
+        if ambiguous(yolo, yolo_best):
+            return finish('BLURBALL_PRIMARY_AMBIGUOUS_YOLO', blur_best)
+        if yolo_best:
+            distance = native_distance(blur_best['center_px'], yolo_best['center_px'])
+            result['agreement_distance_source_px'] = distance
+            reason = ('BLURBALL_PRIMARY_SPATIAL_AGREEMENT' if distance <= config['agreement_radius_source_px']
+                      else 'BLURBALL_PRIMARY_YOLO_DISAGREEMENT')
+            return finish(reason, blur_best)
+        return finish('BLURBALL_PRIMARY_NO_ELIGIBLE_YOLO', blur_best)
+    if not yolo_best:
+        return finish('NO_ELIGIBLE_CANDIDATE')
+    if not config['allow_yolo_fallback']:
+        return finish('YOLO_FALLBACK_DISABLED')
+    if ambiguous(yolo, yolo_best):
+        return finish('AMBIGUOUS_YOLO_CANDIDATES')
+    if yolo_best['raw_score'] < config['yolo_fallback_score']:
+        return finish('YOLO_ONLY_INSUFFICIENT_EVIDENCE')
+    return finish('CONSERVATIVE_YOLO_ONLY_FALLBACK', yolo_best)
+
+
+def validate_fusion_config(config):
+    require(isinstance(config, dict), 'fusion: configuration must be an object')
+    revision = config.get('revision')
+    require(revision in (REVISION, PRIMARY_REVISION), 'fusion: unknown configuration revision')
+    primary = revision == PRIMARY_REVISION
+    policies = PRIMARY_POLICIES if primary else CONFIG_POLICIES
+    numbers = PRIMARY_NUMBERS if primary else CONFIG_NUMBERS
+    booleans = ('allow_yolo_fallback',) if primary else ()
+    expect_fields(config, (*policies, *numbers, *booleans), 'fusion')
+    require(set(config) == set(policies) | set(numbers) | set(booleans), 'fusion: unknown configuration fields/revision')
+    for key, value in policies.items():
+        expect_value(config, key, value, 'fusion')
+    for key in booleans:
+        require(type(config[key]) is bool, f'fusion: {key} must be boolean')
+    for key in numbers:
+        require(finite(config[key]) and config[key] > 0, f'fusion: invalid {key}')
+    evidence, fallback = ('yolo_evidence_score', 'yolo_fallback_score') if primary else ('yolo_agreement_score', 'yolo_solo_score')
+    peak = 'blurball_minimum_peak' if primary else 'blurball_agreement_peak'
+    require(0 < config['yolo_proposal_score'] <= config[evidence] <= config[fallback] <= 1 and
+            config['yolo_proposal_score'] <= .25 and f32(.7) <= config[peak] <= 1 and
+            config['within_model_ambiguity_ratio'] <= 1, 'fusion: inconsistent thresholds')
+    if not primary:
+        require(config[peak] <= config['blurball_solo_peak'] <= 1, 'fusion: inconsistent thresholds')
+    for key in numbers[:4 if primary else 5]:
+        require(config[key] == f32(config[key]), f'fusion: {key} is not native float32')
+
+
+def validate_tensor_contracts(manifest):
+    """Accept archived 640 manifests; new shape-aware replays declare exact IO.
+
+    These are native-validated serialized engine dimensions, not a claim that a
+    new resolution has passed export parity, accuracy or release gates.
+    """
+    preprocessing = manifest.get('preprocessing')
+    require(isinstance(preprocessing, dict), 'manifest preprocessing: expected object')
+    revision = preprocessing.get('yolo')
+    legacy = revision == 'opencv-bgr-rgb-letterbox-640-chw-div255-v1'
+    require(legacy or revision == 'opencv-linear-letterbox-round-pad114-bgr8-rgb-chw-v1',
+            'manifest preprocessing: unknown YOLO revision')
+    contracts = manifest.get('tensor_contracts')
+    if legacy and contracts is None:
+        return  # Historical evidence is preserved, without inventing output dimensions.
+    require(isinstance(contracts, dict) and set(contracts) == {'yolo', 'blurball'},
+            'manifest tensor_contracts: both exact model contracts required')
+    yolo, blur = contracts['yolo'], contracts['blurball']
+    require(isinstance(yolo, dict) and isinstance(blur, dict), 'manifest tensor_contracts: expected objects')
+    for name, contract in contracts.items():
+        expect_value(contract, 'io_dtype', 'float32', f'manifest {name} tensor')
+        expect_value(contract, 'input_layout', 'NCHW', f'manifest {name} tensor')
+    expect_value(yolo, 'output_layout', 'CHANNEL_MAJOR', 'manifest yolo tensor')
+    expect_value(yolo, 'shape_source', 'TENSORRT_ENGINE_STATIC_BINDINGS', 'manifest yolo tensor')
+    input_shape, output_shape = yolo.get('input_shape'), yolo.get('output_shape')
+    require(isinstance(input_shape, list) and len(input_shape) == 4 and input_shape[:2] == [1, 3]
+            and all(integer(v, 1) for v in input_shape)
+            and all(v % 32 == 0 for v in input_shape[2:]), 'manifest yolo tensor: invalid static input shape')
+    classes, anchors = yolo.get('classes'), yolo.get('anchors')
+    require(classes == 1 and type(classes) is int and integer(anchors, 1),
+            'manifest yolo tensor: paired ball replay requires one class and positive anchors')
+    require(isinstance(output_shape, list) and all(integer(v, 1) for v in output_shape)
+            and output_shape == [1, 4 + classes, anchors], 'manifest yolo tensor: output shape disagrees with classes/anchors')
+    require(not legacy or input_shape == [1, 3, 640, 640],
+            'manifest yolo tensor: legacy 640 preprocessing cannot describe another input resolution')
+    expect_value(blur, 'input_shape', [1, 9, 288, 512], 'manifest blurball tensor')
+    expect_value(blur, 'output_shape', [1, 3, 288, 512], 'manifest blurball tensor')
+    require(all(integer(v, 1) for key in ('input_shape', 'output_shape') for v in blur[key]),
+            'manifest blurball tensor: static dimensions must be positive integers')
+    expect_value(blur, 'output_layout', 'NCHW', 'manifest blurball tensor')
+    expect_value(blur, 'shape_source', 'TENSORRT_ENGINE_STATIC_BINDINGS_VALIDATED_FIXED_EXPORT', 'manifest blurball tensor')
+
+
 def validate_manifest(manifest):
     context = 'manifest'
     expected = {'schema_version': 1, 'evaluation': 'PAIRED_CAUSAL_NATIVE_CANDIDATE_REPLAY',
@@ -314,24 +453,13 @@ def validate_manifest(manifest):
     require(finite(manifest.get('yolo_nms_threshold')) and 0 < manifest['yolo_nms_threshold'] <= 1,
             'manifest: invalid YOLO NMS threshold')
     preprocessing = manifest.get('preprocessing')
-    for key, value in {'yolo': 'opencv-bgr-rgb-letterbox-640-chw-div255-v1',
-                       'blurball': 'opencv-affine-rgb-imagenet-512x288-three-frames-v1',
+    validate_tensor_contracts(manifest)
+    for key, value in {'blurball': 'opencv-affine-rgb-imagenet-512x288-three-frames-v1',
                        'input_transform': 'RAW_SOURCE_NO_FILTER',
                        'decoded_image_hash': 'SHA256_UINT32_LE_WIDTH_HEIGHT_OPENCV_TYPE_THEN_PACKED_BGR_ROWS'}.items():
         expect_value(preprocessing, key, value, 'manifest preprocessing')
     config = manifest.get('fusion')
-    expect_fields(config, (*CONFIG_POLICIES, *CONFIG_NUMBERS), 'fusion')
-    require(set(config) == set(CONFIG_POLICIES) | set(CONFIG_NUMBERS), 'fusion: unknown configuration fields/revision')
-    for key, value in CONFIG_POLICIES.items():
-        expect_value(config, key, value, 'fusion')
-    for key in CONFIG_NUMBERS:
-        require(finite(config[key]) and config[key] > 0, f'fusion: invalid {key}')
-    require(0 < config['yolo_proposal_score'] <= config['yolo_agreement_score'] <= config['yolo_solo_score'] <= 1 and
-            config['yolo_proposal_score'] <= .25 and
-            f32(.7) <= config['blurball_agreement_peak'] <= config['blurball_solo_peak'] <= 1 and
-            config['within_model_ambiguity_ratio'] <= 1, 'fusion: inconsistent thresholds')
-    for key in CONFIG_NUMBERS[:5]:
-        require(config[key] == f32(config[key]), f'fusion: {key} is not native float32')
+    validate_fusion_config(config)
     require(manifest.get('yolo_proposal_threshold') == config['yolo_proposal_score'], 'manifest: proposal threshold differs from fusion')
     require(sha256_bytes(cpp_canonical_json(config).encode('utf-8')) == manifest['fusion_sha256'],
             'manifest: fusion SHA-256 does not match native canonical configuration')
@@ -635,6 +763,9 @@ def score(journal_dir, labels_csv=None, tolerance=4., runtime_binary=None):
               'entire_recording_decoded': manifest['source_interval'] == 'COMPLETE_RECORDING',
               'source_sha256': manifest['source_sha256'], 'yolo_model_sha256': manifest['yolo_model_sha256'],
               'blurball_model_sha256': manifest['blurball_model_sha256'], 'fusion_sha256': manifest['fusion_sha256'],
+              'preprocessing': manifest['preprocessing'], 'tensor_contracts': manifest.get('tensor_contracts'),
+              'tensor_contracts_limitation': (None if manifest.get('tensor_contracts') is not None else
+                  'Legacy 640 preprocessing provenance; exact tensor dimensions were not recorded by this archived runtime'),
               **{key: value for key, value in audit.items() if key.startswith('runtime_binary_')},
               'selector_configuration': manifest['fusion'], 'audit': audit, 'hypothesis_counts': counts,
               'selector_reason_histogram': audit['selector_reason_histogram'], 'accuracy': None, 'gates': None,

@@ -2,7 +2,10 @@
 import {useEffect,useState} from 'react';
 import {landmarkNames,eventNames,emptyGeometry,LandmarkName,createBlurStreak} from '../../lib/reviewGeometry';
 import {ReviewFrameImage} from '../../components/ReviewFrameImage';
-import {Kind,Box,Labels,Annotation,Frame,emptyLabels,classReviewed,ballReviewProblem,previousBallSuggestion,nextBallReviewIndex,validDraft} from '../../lib/reviewAnnotations';
+import {TrainingSessionReadiness} from '../../components/TrainingSessionReadiness';
+import {BurstContinuityReview} from '../../components/BurstContinuityReview';
+import {FullAbsenceIntervalReview} from '../../components/FullAbsenceIntervalReview';
+import {Kind,Box,Labels,Annotation,Frame,emptyLabels,classReviewed,ballReviewProblem,previousBallSuggestion,nextBallDraft,nextBallReviewIndex,validDraft} from '../../lib/reviewAnnotations';
 type Capture={source?:string;original_name?:string;session_id?:string;source_fps_average?:number;frame_count_discrepancy?:number;capture_note?:string;full_source_decode_counted?:boolean;source_frames?:number};
 type AbsencePreview={preview_token:string;affected_frames:number;frames:Frame[];conflicts:Array<{file:string;source_frame:number}>;session_id:string};
 const draftStorageKey='tt-training-review-drafts-v1';
@@ -11,6 +14,8 @@ export default function TrainingReview(){
   const [drafts,setDrafts]=useState<Record<string,Labels>>({}),[annotations,setAnnotations]=useState<Record<string,Annotation>>({});
   const [revision,setRevision]=useState(''),[message,setMessage]=useState(''),[kind,setKind]=useState<Kind>('ball'),[busy,setBusy]=useState(false);
   const [capture,setCapture]=useState<Capture|null>(null);
+  const [readinessVersion,setReadinessVersion]=useState(0);
+  const [sealedTest,setSealedTest]=useState(false);
   const [clipNames,setClipNames]=useState<Record<string,string>>({});
   const [landmark,setLandmark]=useState<LandmarkName|''>('');
   const [annotationMode,setAnnotationMode]=useState<'box'|'streak'>('box');
@@ -19,6 +24,8 @@ export default function TrainingReview(){
   const frame=frames[index];
   const key=clip+'/'+(frame?.file??''),labels=drafts[key]??annotations[frame?.file??'']??emptyLabels();
   const problem=ballReviewProblem(labels),previousBall=previousBallSuggestion(frames,index,annotations);
+  const nextSuggestion=nextBallDraft(frames,index,labels,annotations,drafts,clip);
+  const burst=frame?.burst_id===undefined?[]:frames.filter(value=>value.burst_id===frame.burst_id);
   const clipHasDrafts=Object.keys(drafts).some(draft=>draft.startsWith(clip+'/'));
   useEffect(()=>{setAbsencePreview(null);setAbsenceConfirmed(false);},[clip,revision,absenceStart,absenceEnd]);
   function setLabels(value:Labels|((previous:Labels)=>Labels)){
@@ -54,7 +61,7 @@ export default function TrainingReview(){
   async function load(value:string){
     setBusy(true);setMessage('');
     try{const r=await fetch('/api/training-review?clip='+encodeURIComponent(value)),d=await r.json();if(!r.ok)throw Error(d.error);
-      setClip(value);setFrames(d.frames);setAnnotations(d.annotations);setRevision(d.revision);setIndex(0);setCapture(d.capture??null);
+      setClip(value);setFrames(d.frames);setAnnotations(d.annotations);setRevision(d.revision);setIndex(0);setCapture(d.capture??null);setSealedTest(d.sealed_test===true);
       setAbsenceStart(d.frames[0]?.source_frame??1);setAbsenceEnd(d.frames.at(-1)?.source_frame??1);setAbsencePreview(null);setAbsenceConfirmed(false);
     }catch(e){setMessage(String(e));}finally{setBusy(false);}
   }
@@ -71,6 +78,11 @@ export default function TrainingReview(){
     if(box[2]>0&&box[3]>0)setLabels(previous=>({...previous,[kind]:scope==='ball'?[box]:[...previous[kind],box],geometry:kind==='ball'?{...(previous.geometry??emptyGeometry()),visibility:'visible'}:previous.geometry}));
   }
   function reuseBall(){if(previousBall){setKind('ball');setLandmark('');setAnnotationMode('box');setLabels(l=>({...l,ball:[previousBall],geometry:{...(l.geometry??emptyGeometry()),visibility:'visible'}}));setMessage('Previous box copied as a draft. Check and move it to the current ball before saving.');}}
+  function suggestNextBall(){
+    if(!nextSuggestion||busy)return;
+    setDrafts(previous=>({...previous,[nextSuggestion.key]:nextSuggestion.labels}));setIndex(nextSuggestion.index);setKind('ball');setLandmark('');setAnnotationMode('box');
+    setMessage('Adjacent box copied as an unconfirmed draft. Inspect and correct this image, choose its visibility and save explicitly. Existing reviewed frames and drafts were preserved.');
+  }
   async function save(reviewed:boolean,advance=false){
     if(!frame||busy)return;setBusy(true);setMessage('');
     try{const r=await fetch('/api/training-review',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clip,file:frame.file,labels,reviewed,revision,scope})}),d=await r.json();if(!r.ok)throw Error(d.error);
@@ -102,6 +114,8 @@ export default function TrainingReview(){
     <div className="flex flex-wrap gap-3 text-sm"><button disabled={busy} aria-pressed={scope==='ball'} onClick={()=>{setScope('ball');setKind('ball');setLandmark('');setAnnotationMode('box');}} className="border border-cyan-500/40 rounded-lg px-3 py-2">Ball only · faster</button><button disabled={busy} aria-pressed={scope==='all'} onClick={()=>setScope('all')} className="border border-slate-700 rounded-lg px-3 py-2">Full scene & advanced</button></div>
     <select aria-label="Capture clip" value={clip} disabled={busy} onChange={e=>load(e.target.value)} className="bg-slate-900 border border-slate-700 rounded-lg p-2"><option value="">Select a captured clip</option>{clips.map(c=><option key={c} value={c}>{clipNames[c]??c}</option>)}</select>
     {!clips.length&&<p>No local training captures yet. Use the live-camera recording controls or import original camera recordings first.</p>}
+    <TrainingSessionReadiness key={clip} clip={clip||undefined} originalSession={capture?.session_id} refreshKey={revision+'-'+readinessVersion} onSaved={()=>{if(clip)void load(clip);}}/>
+    {sealedTest&&<p role="status" className="rounded-xl border border-amber-500/40 bg-amber-500/5 p-3 text-sm text-amber-200">Sealed test: manual annotation only. Model suggestions are disabled, and its labels/frames are excluded from automated collection readiness and model development. Final evaluation waits until models and thresholds are frozen.</p>}
     {capture?.source==='recorded_camera'&&<div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4 text-sm space-y-2">
       <p className="text-cyan-300">{capture.original_name} · {capture.source_fps_average?.toFixed(2)} average FPS · session {capture.session_id}</p>
       {capture.capture_note&&<p className="text-amber-200">Review focus: {capture.capture_note}</p>}
@@ -109,6 +123,7 @@ export default function TrainingReview(){
       {!!capture.frame_count_discrepancy&&<p className="text-amber-200">Reported and decoded frame counts differ by {capture.frame_count_discrepancy}. Imported frames use sequential decoding and source timestamps; recording playback timing still needs separate verification.</p>}
     </div>}
     {!!Object.keys(drafts).length&&<p className="text-amber-300 text-sm">{Object.keys(drafts).length} frame(s) have unconfirmed drafts stored locally. Drafts stay excluded from training until reviewed and saved.</p>}
+    {clip&&capture?.source==='recorded_camera'&&<FullAbsenceIntervalReview key={clip+'-'+sealedTest} clip={clip} sealed={sealedTest} disabled={busy||clipHasDrafts||!draftsRestored} sourceFrames={capture.source_frames} onSaved={()=>setReadinessVersion(value=>value+1)}/>}
     {capture?.source==='recorded_camera'&&capture.full_source_decode_counted&&frames.length>0&&<details className="rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-4 text-sm space-y-3">
       <summary className="cursor-pointer font-semibold text-emerald-300">No-ball interval · review saved images together</summary>
       <p>Use this for a recording interval you know contains no ball. Only saved images in the interval will be labelled; unsampled footage is not labelled. Hidden or uncertain balls need individual review. People and table labels keep their current status.</p>
@@ -129,11 +144,16 @@ export default function TrainingReview(){
     </details>}
     {frame&&<>
       <div className="flex gap-3 flex-wrap items-center font-mono text-xs"><button disabled={busy||index===0} onClick={()=>setIndex(index-1)}>Previous</button><span>{index+1} / {frames.length} · source frame {frame.source_frame} · {classReviewed(annotations[frame.file],'ball')?'BALL REVIEWED':'BALL UNREVIEWED'}</span><button disabled={busy||index===frames.length-1} onClick={()=>setIndex(index+1)}>Next</button><button disabled={busy} onClick={()=>{const next=nextBallReviewIndex(frames,index,annotations);if(next>=0)setIndex(next);else setMessage('No remaining ball frames need review in this capture.');}}>Next needing review</button></div>
+      {burst.length>1&&<details open className="rounded-xl border border-slate-700 bg-slate-900/30 p-3 text-xs" aria-label="Consecutive burst review"><summary className="cursor-pointer text-cyan-200">Burst {frame.burst_id} · {burst.length} saved frames · {burst.filter(value=>classReviewed(annotations[value.file],'ball')).length} ball labels saved</summary><p className="mt-2 text-slate-400">Inspect nearby images together. Each visible center, absent label or correction still needs an explicit save; missing images and hidden balls are never interpolated into ground truth.</p><div className="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-5">{burst.map(value=><button key={value.file} disabled={busy} aria-label={'Review burst source frame '+value.source_frame} onClick={()=>setIndex(frames.findIndex(candidate=>candidate.file===value.file))} className={'rounded-lg border p-1 text-left '+(value.file===frame.file?'border-cyan-400':'border-slate-700')}><img alt={'Burst source frame '+value.source_frame} src={'/api/training-review?clip='+encodeURIComponent(clip)+'&file='+encodeURIComponent(value.file)} className="w-full rounded"/><span className="mt-1 block font-mono">{value.source_frame} · {drafts[clip+'/'+value.file]?'draft':classReviewed(annotations[value.file],'ball')?'saved':'unreviewed'}</span></button>)}</div><BurstContinuityReview key={clip+'/'+frame.burst_id} clip={clip} burst={burst} onSaved={()=>setReadinessVersion(value=>value+1)}/></details>}
       <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-3 space-y-3 text-sm">
         <div className="flex flex-wrap gap-3"><button disabled={busy||!!problem} onClick={()=>save(true,true)} className="bg-emerald-400 text-slate-950 font-bold rounded-lg px-4 py-2">Save & next</button><button disabled={busy||!!problem} onClick={()=>save(true)} className="border border-slate-700 rounded-lg px-3 py-2">Save this frame</button><button disabled={busy} onClick={()=>save(false,true)} className="border border-slate-700 rounded-lg px-3 py-2">Skip / keep unreviewed</button><button disabled={busy||!previousBall} onClick={reuseBall} className="border border-slate-700 rounded-lg px-3 py-2">Reuse previous ball box</button></div>
+        <button disabled={busy||!nextSuggestion} onClick={suggestNextBall} className="rounded-lg border border-cyan-500/40 px-3 py-2 disabled:opacity-40">Suggest box on next burst frame</button>
         <div className="flex flex-wrap gap-3">{(['visible','partial','absent','occluded'] as const).map((visibility,i)=><button key={visibility} disabled={busy} aria-pressed={labels.geometry?.visibility===visibility} onClick={()=>setLabels(l=>({...l,ball:visibility==='absent'||visibility==='occluded'?[]:l.ball,geometry:{...(l.geometry??emptyGeometry()),visibility,blur_streak:visibility==='absent'||visibility==='occluded'?null:l.geometry?.blur_streak??null}}))} className="border border-slate-700 rounded-lg px-3 py-2">{['Visible','Partly visible','Not in frame','Hidden / unsure'][i]}</button>)}</div>
         <div className="flex flex-wrap gap-3"><button disabled={busy} aria-pressed={annotationMode==='box'&&!landmark} onClick={()=>{setAnnotationMode('box');setKind('ball');setLandmark('');}} className="border border-slate-700 rounded-lg px-3 py-2">Ball box</button><button disabled={busy} aria-pressed={annotationMode==='streak'&&!landmark} onClick={()=>{setAnnotationMode('streak');setKind('ball');setLandmark('');}} className="border border-cyan-500/40 rounded-lg px-3 py-2">Blur streak · drag endpoints</button><button disabled={busy||!labels.geometry?.blur_streak} onClick={()=>setLabels(l=>({...l,geometry:{...(l.geometry??emptyGeometry()),blur_streak:null}}))} className="border border-slate-700 rounded-lg px-3 py-2">Clear streak</button></div>
         {annotationMode==='streak'&&!landmark&&<p className="text-cyan-200 text-xs">Drag only the visible streak’s two ends. For a sharp ball, click its center. Do not extend the label through a player or guess a hidden ball. Save explicitly confirms this frame; no model suggestion becomes a reviewed label automatically.</p>}
+        <p className="text-xs text-slate-400">For precise temporal targets, use Blur streak mode: click the center of a sharp ball or drag the two ends of its visible streak. A box is still required separately for YOLO training. Bright lights and white walls are not balls; preserve those false detections as explicitly reviewed negatives only when the real ball is absent.</p>
+        <div className="flex flex-wrap gap-3 text-xs" aria-label="Reviewed ball difficulty tags">{(['bright_background','small_ball','motion_blur','partial_occlusion'] as const).map(tag=><label key={tag} className="flex gap-2"><input type="checkbox" disabled={busy} checked={labels.geometry?.quality_tags?.includes(tag)??false} onChange={event=>setLabels(value=>{const geometry=value.geometry??emptyGeometry(),tags=geometry.quality_tags??[];return {...value,geometry:{...geometry,quality_tags:event.target.checked?[...tags,tag]:tags.filter(item=>item!==tag)}};})}/>{tag.replaceAll('_',' ')}</label>)}</div>
+        <details className="rounded-lg border border-slate-700 p-3 text-xs"><summary className="cursor-pointer text-cyan-200">Optional complete-rally identity</summary><p className="mt-2 text-slate-400">Watch the complete rally in the original recording, including its start and end. Give all its sampled frames one source-specific ID (for example rally_01). A guessed strike or a sparse frame does not prove a complete rally.</p><label className="mt-2 block">Rally ID<input aria-label="Reviewed complete rally ID" value={labels.geometry?.rally_id??''} disabled={busy} onChange={event=>setLabels(value=>({...value,geometry:{...(value.geometry??emptyGeometry()),rally_id:event.target.value||null,rally_reviewed:false}}))} placeholder="rally_01" className="ml-2 rounded border border-slate-700 bg-slate-900 p-2"/></label><label className="mt-2 flex items-start gap-2"><input aria-label="Confirm complete rally reviewed in original footage" type="checkbox" disabled={busy||!labels.geometry?.rally_id} checked={labels.geometry?.rally_reviewed??false} onChange={event=>setLabels(value=>({...value,geometry:{...(value.geometry??emptyGeometry()),rally_reviewed:event.target.checked}}))}/>I reviewed the full original rally and verified that this image belongs to this ID. Save this frame explicitly to confirm it.</label></details>
         {labels.geometry?.blur_streak&&<p className="font-mono text-xs text-cyan-200">Streak center {(labels.geometry.blur_streak.center[0]*labels.geometry.blur_streak.source_width).toFixed(1)}, {(labels.geometry.blur_streak.center[1]*labels.geometry.blur_streak.source_height).toFixed(1)} px · half-length {labels.geometry.blur_streak.half_length_px.toFixed(1)} px · {labels.geometry.blur_streak.reviewed?'saved reviewed label':'unconfirmed draft'}. Axis is undirected; this is not spin or measured speed.</p>}
         {problem&&<p role="alert" className="text-amber-300">{problem}</p>}
         {labels.geometry?.visibility==='occluded'&&<p className="text-amber-300">Hidden / unsure frames are excluded from ball-detector training; they are not absent-ball negatives.</p>}
@@ -148,7 +168,7 @@ export default function TrainingReview(){
       <div className="flex flex-wrap gap-3 text-sm">{(scope==='ball'?['ball'] as Kind[]:['ball','person','table'] as Kind[]).map(k=><button key={k} onClick={()=>{setKind(k);setLandmark('');setAnnotationMode('box');}} className={'px-3 py-2 rounded-lg border '+(kind===k&&!landmark&&annotationMode==='box'?'border-cyan-400 text-cyan-300':'border-slate-700')}>{k} · {labels[k].length}</button>)}
         <button disabled={busy} onClick={()=>setLabels(l=>({...l,[kind]:l[kind].slice(0,-1)}))}>Undo {kind}</button>
         <button disabled={busy} onClick={()=>setLabels(l=>({...l,[kind]:[]}))}>Clear {kind}</button>
-        <button disabled={busy||!frame.review_metadata?.suggestions} onClick={()=>setLabels(l=>scope==='ball'?{...l,ball:frame.review_metadata?.suggestions?.ball??[],geometry:{...(l.geometry??emptyGeometry()),visibility:'unknown'}}:frame.review_metadata?.suggestions??emptyLabels())}>Load model suggestions</button>
+        <button disabled={busy||sealedTest||!frame.review_metadata?.suggestions} onClick={()=>setLabels(l=>scope==='ball'?{...l,ball:frame.review_metadata?.suggestions?.ball??[],geometry:{...(l.geometry??emptyGeometry()),visibility:'unknown'}}:frame.review_metadata?.suggestions??emptyLabels())}>Load model suggestions</button>
       </div>
       {scope==='all'&&<details className="border border-slate-700 rounded-xl p-4 text-sm"><summary>Optional table geometry, blur and event labels</summary><fieldset className="space-y-3 pt-3"><legend className="sr-only">Table geometry and temporal labels</legend>
         <p className="text-slate-400">Near/far refer to the camera; left/right refer to the image. Select a landmark, then click its visible location. Omitted landmarks remain unknown. Return to a box class to draw boxes.</p>

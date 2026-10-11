@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "checks": 64,
+  "fixture_root": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\full-absence-api-7k3KZ7",
+  "source_frames": 90,
+  "interval_frames": 60,
+  "verified_absence_seconds": 2,
+  "real_sequential_decoder": true,
+  "old_annotations_preserved": true,
+  "sealed_labels_opened": false,
+  "real_camera_opened": false,
+  "spawns": 2,
+  "late_failed_or_canceled_manifest_excluded": true,
+  "log_disk_failure_survived": true,
+  "disjoint_original_source_conflict_excluded": true
+}

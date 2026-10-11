@@ -1,0 +1,65 @@
+{
+  "output_directory_created": false,
+  "production_backend_modified": false,
+  "passed": true,
+  "checks": [
+    {
+      "exit_code": 1,
+      "diagnostic": "[eval_paired_ball_candidates] Selector revision must be v1 or v2",
+      "name": "unknown_revision",
+      "passed": true
+    },
+    {
+      "exit_code": 1,
+      "diagnostic": "[eval_paired_ball_candidates] Option --yolo-evidence-score does not apply to selector revision v1",
+      "name": "v2_option_requires_v2",
+      "passed": true
+    },
+    {
+      "exit_code": 1,
+      "diagnostic": "[eval_paired_ball_candidates] Option --blurball-solo-peak does not apply to selector revision v2",
+      "name": "v1_option_rejected_for_v2",
+      "passed": true
+    },
+    {
+      "exit_code": 1,
+      "diagnostic": "[eval_paired_ball_candidates] YOLO fallback flag must be exactly 0 or 1",
+      "name": "non_boolean_fallback_rejected",
+      "passed": true
+    },
+    {
+      "exit_code": 1,
+      "diagnostic": "[eval_paired_ball_candidates] Repeated or incomplete option: --selector-revision",
+      "name": "duplicate_revision_rejected",
+      "passed": true
+    },
+    {
+      "exit_code": 1,
+      "diagnostic": "[eval_paired_ball_candidates] Repeated or incomplete option: --selector-revision",
+      "name": "incomplete_revision_rejected",
+      "passed": true
+    },
+    {
+      "exit_code": 1,
+      "diagnostic": "[eval_paired_ball_candidates] Invalid NMS/temporal gap or proposal threshold excludes standalone YOLO baseline",
+      "name": "proposal_cannot_remove_baseline_candidates",
+      "passed": true
+    },
+    {
+      "exit_code": 1,
+      "diagnostic": "[eval_paired_ball_candidates] Original local source/model file missing: C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\missing-yolo.engine",
+      "name": "default_v1_accepts_original_option",
+      "passed": true
+    },
+    {
+      "exit_code": 1,
+      "diagnostic": "[eval_paired_ball_candidates] Original local source/model file missing: C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\missing-yolo.engine",
+      "name": "v2_accepts_explicit_disabled_fallback",
+      "passed": true
+    }
+  ],
+  "runtime_sha256": "55ad0b7a8fb4557dd8b24c5ec9dd4766b7489190fdf60cbc297d97b9aca4d110",
+  "labels_loaded": false,
+  "check_count": 9,
+  "gpu_inference_run": false
+}
