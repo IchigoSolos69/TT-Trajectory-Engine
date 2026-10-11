@@ -1,4 +1,8 @@
 import json
+if __package__:
+    from .public_dataset_source import resolve_public_dataset_video
+else:
+    from public_dataset_source import resolve_public_dataset_video
 import cv2
 import numpy as np
 import onnxruntime as ort
@@ -6,7 +10,7 @@ import os
 
 def test_preprocessing_methods():
     model_path = "models/yolov11_ttgames.onnx"
-    video_path = "python_tools/dataset/raw_videos/test_1.mp4"
+    video_path = str(resolve_public_dataset_video("test_1"))
     json_path = "python_tools/dataset/raw_markup/test_1/ball_markup.json"
 
     with open(json_path, 'r') as f:

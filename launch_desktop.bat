@@ -2,8 +2,6 @@
 setlocal
 set "DESKTOP_EXE=%~dp0desktop\dist\TT Trajectory Engine paired training v2\TT Trajectory Engine.exe"
 if not exist "%DESKTOP_EXE%" set "DESKTOP_EXE=%~dp0desktop\dist\TT Trajectory Engine paired training v1\TT Trajectory Engine.exe"
-if not exist "%DESKTOP_EXE%" set "DESKTOP_EXE=%~dp0desktop\dist\TT Trajectory Engine training review v2\TT Trajectory Engine.exe"
-if not exist "%DESKTOP_EXE%" set "DESKTOP_EXE=%~dp0desktop\dist\TT Trajectory Engine\TT Trajectory Engine.exe"
 if exist "%DESKTOP_EXE%" (
     start "" "%DESKTOP_EXE%"
     exit /b 0

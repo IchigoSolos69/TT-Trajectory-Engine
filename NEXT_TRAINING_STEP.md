@@ -4,7 +4,7 @@ October 11 update: the approved paired-camera YOLO runner now supersedes the
 older minimum-input fitting safeguards below. See
 [current implementation and data audit](YOLO_UPGRADE_IMPLEMENTATION_2026_10_11.md)
 and [the executable workflow](python_tools/YOLO_BALL_EXPERIMENTS.md).
-The moved Downloads sources resolve by unchanged SHA; clip-level folder splits
+The moved sources resolve by unchanged SHA; clip-level folder splits
 are development comparisons until original session/device identities and
 independent camera validation are established. Completed reviews are retained.
 
@@ -12,13 +12,18 @@ The added World Cup clips are mixed-match highlight compilations, according to
 the user's clarification. No current PC/webcam recordings exist. They can support
 development and, after original-source/overlap auditing and review, match training;
 they cannot replace independent camera validation or sealed test sessions. The
-latest recursive inventory contains 25 videos (12/8/5 by folder), with 11 moved
+latest recursive inventory contains 29 videos (14/10/5 by folder), with 11 moved
 originals reconnected to existing reviews. Extra session/match subfolders are
 optional; source/session metadata carries the grouping. Existing iPhone clips
 remain one training session regardless of where their files were moved.
-See `artifacts/yolo_upgrade_2026_10_10_v1/development_folder_split_v3.json`.
-The refreshed `artifacts/yolo_paired_training_plan_2026_10_11_v5.json` resolves
-all assigned originals but retains 15 data/export blockers. Existing models,
+The canonical recording root is now `python_tools/dataset/raw_videos`; see
+`artifacts/repo_cleanup_2026_10_11/relocated_recordings_audit.json` and
+[the storage cleanup report](REPOSITORY_CLEANUP_2026_10_11.md).
+The earlier `artifacts/yolo_paired_training_plan_2026_10_11_v5.json` resolved
+assigned originals but retained 15 data/export blockers. Regenerate a fresh
+frozen plan before fitting: relocation changed the source resolver manifest,
+and source-path compatibility changes also invalidate previous code hashes.
+No training or split promotion resulted from cleanup. Existing models,
 750 review images and 42 capture/index/annotation files pass preservation checks.
 The paired workflow requires 2,000 reviewed visible
 frames, 1,000 verified absences and 500 audited positive windows for training,

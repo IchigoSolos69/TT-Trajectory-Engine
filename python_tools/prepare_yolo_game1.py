@@ -1,4 +1,8 @@
 import os
+if __package__:
+    from .public_dataset_source import resolve_public_dataset_video
+else:
+    from public_dataset_source import resolve_public_dataset_video
 import json
 import shutil
 import random
@@ -23,7 +27,7 @@ def prepare_dataset():
     os.makedirs(val_lbl_dir, exist_ok=True)
 
     ball_json_path = os.path.join(dataset_root, "raw_markup", "game_1", "ball_markup.json")
-    video_path = os.path.join(dataset_root, "raw_videos", "game_1.mp4")
+    video_path = str(resolve_public_dataset_video("game_1"))
 
     if not os.path.exists(ball_json_path) or not os.path.exists(video_path):
         print(f"Error: Required files for game_1 missing ({ball_json_path} or {video_path}).")

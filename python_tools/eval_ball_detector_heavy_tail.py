@@ -1,4 +1,8 @@
 import json
+if __package__:
+    from .public_dataset_source import resolve_public_dataset_video
+else:
+    from public_dataset_source import resolve_public_dataset_video
 import os
 import glob
 import math
@@ -48,9 +52,7 @@ def run_heavy_tail_evaluation(model_path, test_seq="test_1", imgsz=640, conf_thr
             if float(v["x"]) >= 0 and float(v["y"]) >= 0:
                 gt_frames[int(k)] = (float(v["x"]), float(v["y"]))
                 
-    video_path = f"python_tools/dataset/raw_videos/{test_seq}.mp4"
-    if not os.path.exists(video_path):
-        video_path = f"dataset/raw_videos/{test_seq}.mp4"
+    video_path = str(resolve_public_dataset_video(test_seq))
         
     if not os.path.exists(video_path):
         print(f"Error: video {video_path} not found.")

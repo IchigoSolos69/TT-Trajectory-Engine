@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-11T18:27:17.384Z",
+  "scope": "Read-only preservation checks; report write only. No original video rehash, labels altered, decoder/model inference, training, app or camera startup.",
+  "mismatches": [],
+  "original_recordings": {
+    "files_checked": 29,
+    "metadata_unchanged": 29,
+    "baseline": "size and last-write timestamp; no original pre-cleanup content SHA for this subset unless separately noted",
+    "bytes": 32166783016,
+    "prior_sha256_evidence": "artifacts/repo_cleanup_2026_10_11/relocated_recordings_audit.json",
+    "content_rehashed": false
+  },
+  "original_dataset_baseline_metadata": {
+    "files_checked": 95546,
+    "metadata_unchanged": 95546,
+    "baseline": "size and last-write timestamp; no original pre-cleanup content SHA for this subset unless separately noted"
+  },
+  "original_review_sha256": {
+    "images_checked": 750,
+    "capture_index_annotation_files_checked": 42,
+    "files_checked": 792,
+    "baseline": "artifacts/reviewed_training_stage_2026_10_10_v1/manifest.json source_snapshots; also reverified in final_delivery_2026_10_11.json",
+    "sealed_reads_skipped": 0
+  },
+  "annotation_history_sha256": {
+    "files_checked": 114,
+    "baseline": "artifacts/yolo_paired_training_plan_2026_10_11_v5.json dependencies"
+  },
+  "releases": [
+    {
+      "name": "TT Trajectory Engine paired training v2",
+      "application_exists": true,
+      "frontend_build": "M3L_upNeE9zCr6DHvyDn_",
+      "files_checked": 1864,
+      "metadata_unchanged": 1864,
+      "baseline": "size and last-write timestamp; no original pre-cleanup content SHA for this subset unless separately noted"
+    },
+    {
+      "name": "TT Trajectory Engine paired training v1",
+      "application_exists": true,
+      "frontend_build": "7JnxxsNpSRl-y9Q_TNEsP",
+      "files_checked": 1859,
+      "metadata_unchanged": 1859,
+      "baseline": "size and last-write timestamp; no original pre-cleanup content SHA for this subset unless separately noted"
+    }
+  ],
+  "model_checkpoint_registry_release_hashes": [
+    {
+      "scope": "deployed model",
+      "path": "models/yolov11_ttgames.engine",
+      "expected": "2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9",
+      "actual": "2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9",
+      "passed": true
+    },
+    {
+      "scope": "packaged model",
+      "path": "desktop/dist/TT Trajectory Engine paired training v2/resources/runtime/models/yolov11_ttgames.engine",
+      "expected": "2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9",
+      "actual": "2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9",
+      "passed": true
+    },
+    {
+      "scope": "packaged model",
+      "path": "desktop/dist/TT Trajectory Engine paired training v1/resources/runtime/models/yolov11_ttgames.engine",
+      "expected": "2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9",
+      "actual": "2f0b1c61d2b8e9ad9cc08d56ccce467ec24be3bc87d63e28c4896055b1a8efd9",
+      "passed": true
+    },
+    {
+      "scope": "deployed model",
+      "path": "models/scene.engine",
+      "expected": "5eb0ecbfe0cddb8631cc89fbf6e7a2145d2a4a6b10595034afd4ab8b1a454cee",
+      "actual": "5eb0ecbfe0cddb8631cc89fbf6e7a2145d2a4a6b10595034afd4ab8b1a454cee",
+      "passed": true
+    },
+    {
+      "scope": "packaged model",
+      "path": "desktop/dist/TT Trajectory Engine paired training v2/resources/runtime/models/scene.engine",
+      "expected": "5eb0ecbfe0cddb8631cc89fbf6e7a2145d2a4a6b10595034afd4ab8b1a454cee",
+      "actual": "5eb0ecbfe0cddb8631cc89fbf6e7a2145d2a4a6b10595034afd4ab8b1a454cee",
+      "passed": true
+    },
+    {
+      "scope": "packaged model",
+      "path": "desktop/dist/TT Trajectory Engine paired training v1/resources/runtime/models/scene.engine",
+      "expected": "5eb0ecbfe0cddb8631cc89fbf6e7a2145d2a4a6b10595034afd4ab8b1a454cee",
+      "actual": "5eb0ecbfe0cddb8631cc89fbf6e7a2145d2a4a6b10595034afd4ab8b1a454cee",
+      "passed": true
+    },
+    {
+      "scope": "deployed model",
+      "path": "models/blurball_fp32.engine",
+      "expected": "48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f",
+      "actual": "48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f",
+      "passed": true
+    },
+    {
+      "scope": "packaged model",
+      "path": "desktop/dist/TT Trajectory Engine paired training v2/resources/runtime/models/blurball_fp32.engine",
+      "expected": "48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f",
+      "actual": "48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f",
+      "passed": true
+    },
+    {
+      "scope": "packaged model",
+      "path": "desktop/dist/TT Trajectory Engine paired training v1/resources/runtime/models/blurball_fp32.engine",
+      "expected": "48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f",
+      "actual": "48a3c3910b87552efd6cf2475fc70f1fd770db46d73fc30fe605b051d25faf0f",
+      "passed": true
+    },
+    {
+      "scope": "training baseline checkpoint",
+      "path": "C:/Users/Adi/Documents/GitHub/TT Trajectory Engine/artifacts/multigame/candidate/weights/best.pt",
+      "expected": "299f8c879755ac41fd0ca2351685e7bdb93dd18c76161a3819cf842393b4fd18",
+      "actual": "299f8c879755ac41fd0ca2351685e7bdb93dd18c76161a3819cf842393b4fd18",
+      "passed": true
+    },
+    {
+      "scope": "production session registry",
+      "path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\training_sessions.json",
+      "expected": "82ec2f86eabcba6cd175bf607c16cfbd8f1481928f3c1f6a19b0501bd0a08131",
+      "actual": "82ec2f86eabcba6cd175bf607c16cfbd8f1481928f3c1f6a19b0501bd0a08131",
+      "passed": true
+    },
+    {
+      "scope": "intentionally migrated source resolver",
+      "path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\training_data\\live\\source_locations.json",
+      "expected": "742c5b18c51b1cfaf3b42dcc7e66d74f591b8c95f31079ac72dc47eb17ba0346",
+      "actual": "742c5b18c51b1cfaf3b42dcc7e66d74f591b8c95f31079ac72dc47eb17ba0346",
+      "passed": true
+    },
+    {
+      "scope": "release manifest",
+      "path": "desktop/dist/TT Trajectory Engine paired training v2/release-manifest.json",
+      "expected": "3119f40ba8b864ddfe73a84ecc7abc93742760b3ce2988bb144f2e84886779d0",
+      "actual": "3119f40ba8b864ddfe73a84ecc7abc93742760b3ce2988bb144f2e84886779d0",
+      "passed": true
+    },
+    {
+      "scope": "packaged native backend",
+      "path": "desktop/dist/TT Trajectory Engine paired training v2/resources/runtime/backend/tt_trajectory_engine.exe",
+      "expected": "127379c841d5dc1d6965b448d57004c57fbf36a3947659305587a1f5c260914e",
+      "actual": "127379c841d5dc1d6965b448d57004c57fbf36a3947659305587a1f5c260914e",
+      "passed": true
+    },
+    {
+      "scope": "release manifest",
+      "path": "desktop/dist/TT Trajectory Engine paired training v1/release-manifest.json",
+      "expected": "cff4bcf80cb5d02884f73bbd5c62c4f509fca548f2cc92302333896da67f8a77",
+      "actual": "cff4bcf80cb5d02884f73bbd5c62c4f509fca548f2cc92302333896da67f8a77",
+      "passed": true
+    },
+    {
+      "scope": "packaged native backend",
+      "path": "desktop/dist/TT Trajectory Engine paired training v1/resources/runtime/backend/tt_trajectory_engine.exe",
+      "expected": "127379c841d5dc1d6965b448d57004c57fbf36a3947659305587a1f5c260914e",
+      "actual": "127379c841d5dc1d6965b448d57004c57fbf36a3947659305587a1f5c260914e",
+      "passed": true
+    }
+  ],
+  "local_storage_indexeddb_and_drafts": {
+    "files_checked": 126,
+    "metadata_unchanged": 126,
+    "baseline": "storage_before.json metadata; cache-removal report paths",
+    "deletion_roots_checked": 168,
+    "protected_deletion_overlap_count": 0,
+    "limits": "No pre-cleanup SHA256 baseline for browser database/native draft files. Their size/mtime and exclusion from deletion are verified; byte-for-byte preservation beyond this baseline is not asserted.",
+    "current_native_draft_sha256": "4b1fdf9496f43962ec2fe441ff4a3789de2240ab82d110bafdfa882e497ce9f6"
+  },
+  "ok": true,
+  "sealed_test_labels_consumed": false,
+  "limitations": [
+    "Original recordings were already SHA256-audited immediately before cleanup; this final pass confirms size/mtime without rereading 32 GB.",
+    "Browser Local Storage/IndexedDB/native draft baseline contains metadata only, so prior content SHA equality cannot be established.",
+    "Intentionally relocated source_locations.json is compared to the fresh migration report rather than the obsolete old-location digest."
+  ]
+}

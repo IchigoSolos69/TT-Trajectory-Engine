@@ -99,9 +99,13 @@ int runEngine(int argc,char** argv) try {
     cv::VideoCapture cap;
     if(!isLiveMode) {
         if(videoPath.empty()) {
-            for(const auto& prefix:{"","../","../../","../../../"}) {
-                const auto path=std::string(prefix)+"python_tools/dataset/raw_videos/game_1.mp4";
-                if(std::filesystem::is_regular_file(path)){videoPath=path;break;}
+            for(const auto& source:{"python_tools/dataset/raw_videos/training/world_cup/game_1.mp4",
+                                    "python_tools/dataset/raw_videos/game_1.mp4"}) {
+                for(const auto& prefix:{"","../","../../","../../../"}) {
+                    const auto path=std::string(prefix)+source;
+                    if(std::filesystem::is_regular_file(path)){videoPath=path;break;}
+                }
+                if(!videoPath.empty())break;
             }
         }
         if(!std::filesystem::is_regular_file(std::filesystem::u8path(videoPath)) || !cap.open(videoPath,cv::CAP_FFMPEG))

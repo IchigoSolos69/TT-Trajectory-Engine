@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "scope": "Cleanup one-frame source-path smoke check; not a complete recording analysis or accuracy evaluation",
+  "fixture_only": true,
+  "source_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\python_tools\\dataset\\raw_videos\\training\\world_cup\\game_1.mp4",
+  "source_sha256": "1297b3db91f2e3e160337643695dff07eabf9785ea2d88c2f7b59687ba511148",
+  "frame_limit": 1
+}

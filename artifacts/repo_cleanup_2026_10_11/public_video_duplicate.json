@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-11T18:12:40.362Z",
+  "canonical": {
+    "path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\python_tools\\dataset\\raw_videos\\training\\world_cup\\game_1.mp4",
+    "bytes": 5572649632,
+    "mtime_ms": 1789757816654.8801,
+    "sha256": "1297b3db91f2e3e160337643695dff07eabf9785ea2d88c2f7b59687ba511148"
+  },
+  "duplicate": {
+    "path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\frontend\\public\\game_1.mp4",
+    "bytes": 5572649632,
+    "mtime_ms": 1789757816654.8801,
+    "sha256": "1297b3db91f2e3e160337643695dff07eabf9785ea2d88c2f7b59687ba511148"
+  },
+  "matches": true,
+  "deletion_performed": false,
+  "scope": "Exact byte comparison of unused frontend copy against retained raw original"
+}

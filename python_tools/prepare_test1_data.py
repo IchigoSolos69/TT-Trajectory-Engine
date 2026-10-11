@@ -1,4 +1,8 @@
 import cv2
+if __package__:
+    from .public_dataset_source import resolve_public_dataset_video
+else:
+    from public_dataset_source import resolve_public_dataset_video
 import json
 import os
 
@@ -53,7 +57,7 @@ def convert_test1_labels(json_path, video_path, image_out_dir, label_out_dir, pr
 if __name__ == "__main__":
     convert_test1_labels(
         json_path="python_tools/dataset/raw_markup/test_1/ball_markup.json",
-        video_path="python_tools/dataset/raw_videos/test_1.mp4",
+        video_path=str(resolve_public_dataset_video("test_1")),
         image_out_dir="python_tools/dataset/images/test_1",
         label_out_dir="python_tools/dataset/labels/test_1",
         prefix="test_1"

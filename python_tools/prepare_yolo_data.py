@@ -1,4 +1,8 @@
 import cv2
+if __package__:
+    from .public_dataset_source import resolve_public_dataset_video
+else:
+    from public_dataset_source import resolve_public_dataset_video
 import json
 import os
 
@@ -83,7 +87,7 @@ def convert_to_yolo_format(json_path, video_path, image_out_dir, label_out_dir, 
 
 if __name__ == "__main__":
     json_path = "dataset/raw_markup/game_1/ball_markup.json"
-    video_path = "dataset/raw_videos/game_1.mp4"
+    video_path = str(resolve_public_dataset_video("game_1"))
 
     # Fallback check if JSON path is in single directory format
     if not os.path.exists(json_path) and os.path.exists("dataset/raw_markup/game_1.json"):

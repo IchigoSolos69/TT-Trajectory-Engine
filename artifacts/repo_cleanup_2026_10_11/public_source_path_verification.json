@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "scope": "Syntax and existing source-path metadata checks only; no decoder/model/camera/training execution",
+  "compiled_sources": [
+    {
+      "path": "python_tools\\analyze_204_bounces.py",
+      "sha256": "897865f5febcf417723a0b03dbf88772eb0a5e3fa399b6a274e49f0cebc93f37"
+    },
+    {
+      "path": "python_tools\\compare_preprocessing.py",
+      "sha256": "ab92a7b6163880c457e1ef7fbcec7a64d3cc725f5d2f0667a5745a903b16a9c4"
+    },
+    {
+      "path": "python_tools\\dump_frame_1672_raw_tensors.py",
+      "sha256": "8e0ce37ec02843bb41dc2893bf22c1e8359cb3938852e71775bd85bcd282bd8e"
+    },
+    {
+      "path": "python_tools\\eval_ball_detector_heavy_tail.py",
+      "sha256": "3abb136f692ee718b9ee2f910623075368950332ade4ac5f61465ec60b9a31c4"
+    },
+    {
+      "path": "python_tools\\fast_render_fp_overlays.py",
+      "sha256": "4c0e544cf88a128858fbc6854de70a053d62911d5407e6d03203d7cd5ea34729"
+    },
+    {
+      "path": "python_tools\\frame_shift_sweep.py",
+      "sha256": "5d43ee678669b14b8c7f6ec59a9b2d10568c1f68f18364f8f761118f17d6e3ea"
+    },
+    {
+      "path": "python_tools\\improve_detector.py",
+      "sha256": "2bf87964c275d07f97e3134f382ce937e4d28ee96a47f01a35aff5ecc54c20e0"
+    },
+    {
+      "path": "python_tools\\make_replay_fixture.py",
+      "sha256": "8a6837abe6d5d4aa28f66b5158e615f9a09323423386b5d3d6cba79feae57136"
+    },
+    {
+      "path": "python_tools\\measure_decode_latency.py",
+      "sha256": "c20043f9e0508f9f5b30953c07a0168d76db4c6f564c034d9a807f43b58568e8"
+    },
+    {
+      "path": "python_tools\\overlay_fp_bounces.py",
+      "sha256": "13538ee9fffac30af0dec73ed47ec77e6cac52183c405e9a5ba69ce766602424"
+    },
+    {
+      "path": "python_tools\\prepare_temporal_hard_cases.py",
+      "sha256": "c450a808a223b9c063d5414662dc6dbdecf8ebb3970f6068379df90b5aa31308"
+    },
+    {
+      "path": "python_tools\\prepare_test1_data.py",
+      "sha256": "402877fef106f912d57edf2bce331722ac3f71d71b81fcd9c524cfddb484c5ee"
+    },
+    {
+      "path": "python_tools\\prepare_yolo_data.py",
+      "sha256": "4b070bb6a89da81cc3fdf2f51259ad6f452d55415c2b667c6d78dffbbcf03702"
+    },
+    {
+      "path": "python_tools\\prepare_yolo_game1.py",
+      "sha256": "4272d3f11f002dfad7f4a728c557f8a7e178fd28167ac07885df87b81ed834b6"
+    },
+    {
+      "path": "python_tools\\print_side_by_side_detections.py",
+      "sha256": "7aa68fa166f5006359214ec33edc5b502076b4699129065746381ea1bfdcb07f"
+    },
+    {
+      "path": "python_tools\\public_dataset_source.py",
+      "sha256": "deafaa87634815059bc118274d0fa91568e774d1da810fa18cc2d058f7e26f20"
+    },
+    {
+      "path": "python_tools\\run_real_yolo_eval.py",
+      "sha256": "7ffe7d37e911284572ac991ac11bf92e29a4c7e3703e520b10e200ca1f03d6ed"
+    },
+    {
+      "path": "python_tools\\temporal_recovery.py",
+      "sha256": "0cf36028a5c4605f2327a07973f2aaa5e53462e30fef020bea2f9bfc5af23128"
+    },
+    {
+      "path": "python_tools\\test_public_dataset_source.py",
+      "sha256": "00fe4f9585cae76d87765afa196a57ccd3f7b5661de6905841cb31ad73040770"
+    },
+    {
+      "path": "python_tools\\train_multigame.py",
+      "sha256": "bb9fa831c2d1836f838fcdf7f75606be8ce437d881c545412e0865fb23ed5ae9"
+    },
+    {
+      "path": "python_tools\\train_scene_detector.py",
+      "sha256": "5a2a35d684071bc559e453d19d07b966ef913cb6baef68430bc8efa2f4d788d9"
+    },
+    {
+      "path": "python_tools\\train_yolo_ball_detector.py",
+      "sha256": "661fd28e008a57fea767493073261c56e8d817573c3f53e986ee3434edcf82e1"
+    },
+    {
+      "path": "python_tools\\verify_engine_parity.py",
+      "sha256": "6b1b9eee56bd323e32a55d034314c1bd760ee1a4fca1c7b5282776be71d0d64a"
+    },
+    {
+      "path": "python_tools\\verify_engine_parity_fast.py",
+      "sha256": "ed09762527cdcb4b36029f2a3fa84f3a8c8157d34d19452b4b0e49f139bd2b41"
+    },
+    {
+      "path": "python_tools\\verify_gt_overlay_5frames.py",
+      "sha256": "1b54c77d303fe28659ac3315b56361bebac92cf23ee394db0f0e437f03c4eb07"
+    }
+  ],
+  "existing_public_paths": [
+    {
+      "sequence": "game_1",
+      "path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\python_tools\\dataset\\raw_videos\\training\\world_cup\\game_1.mp4",
+      "bytes": 5572649632,
+      "read_only_metadata_check": true
+    },
+    {
+      "sequence": "game_2",
+      "path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\python_tools\\dataset\\raw_videos\\training\\world_cup\\game_2.mp4",
+      "bytes": 10833064677,
+      "read_only_metadata_check": true
+    },
+    {
+      "sequence": "test_1",
+      "path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\python_tools\\dataset\\raw_videos\\validation\\world_cup\\test_1.mp4",
+      "bytes": 1050070368,
+      "read_only_metadata_check": true
+    },
+    {
+      "sequence": "test_2",
+      "path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\python_tools\\dataset\\raw_videos\\validation\\world_cup\\test_2.mp4",
+      "bytes": 225118372,
+      "read_only_metadata_check": true
+    }
+  ],
+  "tests": "public_dataset_source_tests.log",
+  "models_changed": false,
+  "original_videos_changed": false,
+  "legacy_artifact_manifests_rewritten": false,
+  "frozen_code_snapshot_note": "Existing plans that hash changed source scripts must be regenerated before fitting; old plans remain historical evidence."
+}

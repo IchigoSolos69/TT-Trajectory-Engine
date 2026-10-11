@@ -1,0 +1,1043 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-11T18:24:46.061Z",
+  "scope": "Exact SHA/size/timestamp-identical immutable raw diagnostic blobs only; all pathnames and non-blob evidence preserved",
+  "applied": false,
+  "verified_files": 342,
+  "actions": [],
+  "skipped": [
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_9_cuda_nearest\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_9_cuda_nearest\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_18_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_18_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_18_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_18_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_18_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_18_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_18_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_18_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_18_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_18_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_12_cuda_nearest\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_12_cuda_nearest\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_16_cuda_nearest\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_16_cuda_nearest\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_3_cuda_nearest\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_3_cuda_nearest\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_11_cuda_nearest\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_11_cuda_nearest\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_3_cpu_linear\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_3_cpu_linear\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_11_cuda_nearest\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_11_cuda_nearest\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_1_cpu_linear\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_1_cpu_linear\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_10_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_10_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_10_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_10_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_10_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_10_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_10_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_10_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_10_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_10_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_15_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_15_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_15_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_15_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_15_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_15_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_15_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_15_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_15_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_15_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_4_cuda_nearest\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_4_cuda_nearest\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_12_cpu_linear\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_12_cpu_linear\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_17_cpu_linear\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_17_cpu_linear\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_16_cpu_linear\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_16_cpu_linear\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_2_cuda_nearest\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_2_cuda_nearest\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_6_cuda_nearest\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_6_cuda_nearest\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_14_cpu_linear\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_14_cpu_linear\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_13_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_13_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_13_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_13_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_13_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_13_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_13_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_13_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_13_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_13_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_7_cuda_nearest\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_7_cuda_nearest\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_17_cpu_linear\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_17_cpu_linear\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_13_cpu_linear\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_13_cpu_linear\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_16_cuda_nearest\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_16_cuda_nearest\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_12_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_12_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_12_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_12_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_12_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_12_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_12_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_12_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_12_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_12_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_10_cpu_linear\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_10_cpu_linear\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_15_cuda_nearest\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_15_cuda_nearest\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_6_cpu_linear\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_6_cpu_linear\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_3_cpu_linear\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_3_cpu_linear\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_6_cuda_nearest\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_6_cuda_nearest\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_18_cuda_nearest\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_18_cuda_nearest\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_7_cpu_linear\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_7_cpu_linear\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_19_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_19_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_19_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_19_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_19_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_19_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_19_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_19_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_19_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_19_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_19_cuda_nearest\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_19_cuda_nearest\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_1_cuda_nearest\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_1_cuda_nearest\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_9_cuda_nearest\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_9_cuda_nearest\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_14_cpu_linear\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_14_cpu_linear\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_15_cpu_linear\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_15_cpu_linear\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_17_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_17_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_17_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_17_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_17_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_17_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_17_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_17_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_17_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_17_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_1_cpu_linear\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_1_cpu_linear\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_17_cuda_nearest\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_17_cuda_nearest\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_11_cpu_linear\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_11_cpu_linear\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_8_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_8_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_8_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_8_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_8_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_8_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_8_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_8_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_8_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_8_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_15_cuda_nearest\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_15_cuda_nearest\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_3_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_3_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_3_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_3_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_3_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_3_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_3_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_3_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_3_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_3_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_4_cpu_linear\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_4_cpu_linear\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_10_cpu_linear\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_10_cpu_linear\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_4_cpu_linear\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_4_cpu_linear\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_2_cpu_linear\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_2_cpu_linear\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_13_cpu_linear\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_13_cpu_linear\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_1_cuda_nearest\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_1_cuda_nearest\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_19_cpu_linear\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_19_cpu_linear\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_4_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_4_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_4_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_4_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_4_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_4_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_4_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_4_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_4_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_4_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_5_cuda_nearest\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_5_cuda_nearest\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_3_cuda_nearest\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_3_cuda_nearest\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_13_cuda_nearest\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_13_cuda_nearest\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_9_cpu_linear\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_9_cpu_linear\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_8_cuda_nearest\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_8_cuda_nearest\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_2_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_2_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_2_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_2_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_2_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_2_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_2_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_2_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_2_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_2_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_10_cuda_nearest\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_10_cuda_nearest\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_5_cuda_nearest\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_5_cuda_nearest\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_14_cuda_nearest\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_14_cuda_nearest\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_13_cuda_nearest\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_13_cuda_nearest\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_10_cuda_nearest\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_10_cuda_nearest\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_7_cpu_linear\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_7_cpu_linear\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_8_cpu_linear\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_8_cpu_linear\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_5_cpu_linear\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_5_cpu_linear\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_18_cpu_linear\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_18_cpu_linear\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_5_cpu_linear\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_5_cpu_linear\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_12_cpu_linear\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_12_cpu_linear\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_19_cpu_linear\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_19_cpu_linear\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_18_cpu_linear\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_18_cpu_linear\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_17_cuda_nearest\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_17_cuda_nearest\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_16_cpu_linear\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_16_cpu_linear\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_15_cpu_linear\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_15_cpu_linear\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_18_cuda_nearest\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_18_cuda_nearest\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_5_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_5_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_5_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_5_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_5_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_5_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_5_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_5_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_5_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_5_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_14_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_14_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_14_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_14_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_14_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_14_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_14_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_14_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_14_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_14_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_6_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_6_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_6_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_6_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_6_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_6_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_6_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_6_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_6_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_6_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_11_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_11_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_11_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_11_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_11_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_11_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_11_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_11_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_11_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_11_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_12_cuda_nearest\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_12_cuda_nearest\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_11_cpu_linear\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_11_cpu_linear\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_9_cpu_linear\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_9_cpu_linear\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_2_cuda_nearest\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_2_cuda_nearest\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_7_cuda_nearest\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_7_cuda_nearest\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_16_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_16_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_16_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_16_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_16_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_16_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_16_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_16_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_16_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_16_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 6220800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_1_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_1_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_1_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_1_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_1_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_1_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_1_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_1_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_1_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_1_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_8_cuda_nearest\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_8_cuda_nearest\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_4_cuda_nearest\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_4_cuda_nearest\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_9_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_9_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_9_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_9_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_9_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_9_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_9_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_9_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_9_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_9_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_19_cuda_nearest\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_19_cuda_nearest\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_2_cpu_linear\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_2_cpu_linear\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_6_cpu_linear\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_6_cpu_linear\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_14_cuda_nearest\\output.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_14_cuda_nearest\\output.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 168000
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_7_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_7_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_7_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_7_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_7_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_7_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_7_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_7_cpu_linear\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_7_cpu_linear\\source.bgr8",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw960\\case_7_cuda_nearest\\source.bgr8",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 2764800
+    },
+    {
+      "canonical": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640\\case_8_cpu_linear\\input.f32",
+      "target": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\yolo_upgrade_2026_10_10_v1\\raw640_v2\\case_8_cpu_linear\\input.f32",
+      "reason": "DIFFERENT_TIMESTAMP",
+      "bytes": 4915200
+    }
+  ],
+  "results": [],
+  "reclaimed_unique_content_bytes": 0,
+  "note": "Unique content bytes freed by removing the final redundant inode link; not a measured filesystem free-space delta",
+  "audit": {
+    "path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\artifacts\\repo_cleanup_2026_10_11\\raw_tensor_duplicate_audit.json",
+    "sha256": "bc18a8a6ec57a67009c269c85d42e50071cdec5f410717c929cbf107edd1c1c4"
+  }
+}

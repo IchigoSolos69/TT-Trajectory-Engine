@@ -1,0 +1,1392 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-11T18:11:44.6018391Z",
+  "mutation": "none",
+  "source_inventory": "storage_before.json",
+  "cache_candidates": [
+    {
+      "path": "artifacts\\browser-profile\\optimization_guide_model_store",
+      "bytes": 47840692,
+      "files": 24,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\browser-profile-v2\\optimization_guide_model_store",
+      "bytes": 47638590,
+      "files": 22,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\browser-profile\\component_crx_cache",
+      "bytes": 39014343,
+      "files": 19,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\browser-profile-v2\\component_crx_cache",
+      "bytes": 39011298,
+      "files": 19,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\browser-profile\\Safe Browsing",
+      "bytes": 38796213,
+      "files": 32,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\browser-profile\\WasmTtsEngine",
+      "bytes": 23345149,
+      "files": 10,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\browser-profile-v2\\WasmTtsEngine",
+      "bytes": 23345149,
+      "files": 10,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\browser-profile-v2\\Safe Browsing",
+      "bytes": 19450765,
+      "files": 23,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\browser-profile\\OnDeviceHeadSuggestModel",
+      "bytes": 7930045,
+      "files": 3,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\browser-profile-v2\\OnDeviceHeadSuggestModel",
+      "bytes": 7930045,
+      "files": 3,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\browser-profile\\Default\\Cache",
+      "bytes": 6926060,
+      "files": 22,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\browser-profile-v2\\Default\\Cache",
+      "bytes": 6911316,
+      "files": 22,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791703974542\\Cache",
+      "bytes": 6231911,
+      "files": 14,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791704405681\\Cache",
+      "bytes": 6231911,
+      "files": 14,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791706995403\\Cache",
+      "bytes": 6231911,
+      "files": 14,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791723514316\\Cache",
+      "bytes": 6231911,
+      "files": 14,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791545839426\\Cache",
+      "bytes": 6231627,
+      "files": 14,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791546774038\\Cache",
+      "bytes": 6231627,
+      "files": 14,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791552263462\\Cache",
+      "bytes": 6231627,
+      "files": 14,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553219893\\Cache",
+      "bytes": 6231627,
+      "files": 14,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553602645\\Cache",
+      "bytes": 6231627,
+      "files": 14,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791531749747\\Cache",
+      "bytes": 6231242,
+      "files": 14,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791531364384\\Cache",
+      "bytes": 6231115,
+      "files": 14,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791528098196\\Cache",
+      "bytes": 6230865,
+      "files": 14,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791528425370\\Cache",
+      "bytes": 6230865,
+      "files": 14,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527570160\\Cache",
+      "bytes": 6010781,
+      "files": 12,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527671475\\Cache",
+      "bytes": 6010781,
+      "files": 12,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527749668\\Cache",
+      "bytes": 6010781,
+      "files": 12,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553085695\\Cache",
+      "bytes": 5922776,
+      "files": 9,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\browser-profile\\Default\\GPUCache",
+      "bytes": 5837168,
+      "files": 5,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\browser-profile-v2\\Default\\GPUCache",
+      "bytes": 5837168,
+      "files": 5,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791706995403\\GrShaderCache",
+      "bytes": 4879508,
+      "files": 10,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791703974542\\GrShaderCache",
+      "bytes": 4861040,
+      "files": 9,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791704405681\\GrShaderCache",
+      "bytes": 4861040,
+      "files": 9,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791723514316\\GrShaderCache",
+      "bytes": 4860264,
+      "files": 9,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527570160\\GrShaderCache",
+      "bytes": 4841796,
+      "files": 8,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527671475\\GrShaderCache",
+      "bytes": 4841796,
+      "files": 8,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527749668\\GrShaderCache",
+      "bytes": 4841796,
+      "files": 8,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791528098196\\GrShaderCache",
+      "bytes": 4841796,
+      "files": 8,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791528425370\\GrShaderCache",
+      "bytes": 4841796,
+      "files": 8,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791531364384\\GrShaderCache",
+      "bytes": 4841796,
+      "files": 8,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791531749747\\GrShaderCache",
+      "bytes": 4841796,
+      "files": 8,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791545839426\\GrShaderCache",
+      "bytes": 4841796,
+      "files": 8,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791546774038\\GrShaderCache",
+      "bytes": 4841796,
+      "files": 8,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791552263462\\GrShaderCache",
+      "bytes": 4841796,
+      "files": 8,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553219893\\GrShaderCache",
+      "bytes": 4841796,
+      "files": 8,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553602645\\GrShaderCache",
+      "bytes": 4841796,
+      "files": 8,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527382100\\GrShaderCache",
+      "bytes": 4805060,
+      "files": 6,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553085695\\GrShaderCache",
+      "bytes": 4805060,
+      "files": 6,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\browser-profile\\Default\\Code Cache",
+      "bytes": 3181616,
+      "files": 64,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527570160\\GPUCache",
+      "bytes": 1642864,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527671475\\GPUCache",
+      "bytes": 1642864,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527749668\\GPUCache",
+      "bytes": 1642864,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791528098196\\GPUCache",
+      "bytes": 1642864,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791528425370\\GPUCache",
+      "bytes": 1642864,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791531364384\\GPUCache",
+      "bytes": 1642864,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791531749747\\GPUCache",
+      "bytes": 1642864,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791545839426\\GPUCache",
+      "bytes": 1642864,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791546774038\\GPUCache",
+      "bytes": 1642864,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791552263462\\GPUCache",
+      "bytes": 1642864,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553219893\\GPUCache",
+      "bytes": 1642864,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553602645\\GPUCache",
+      "bytes": 1642864,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791703974542\\GPUCache",
+      "bytes": 1642864,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791704405681\\GPUCache",
+      "bytes": 1642864,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791706995403\\GPUCache",
+      "bytes": 1642864,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791723514316\\GPUCache",
+      "bytes": 1642864,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791545839426\\Code Cache",
+      "bytes": 918434,
+      "files": 23,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791546774038\\Code Cache",
+      "bytes": 918434,
+      "files": 23,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791531749747\\Code Cache",
+      "bytes": 906770,
+      "files": 21,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\browser-profile\\Default\\DawnGraphiteCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\browser-profile\\Default\\DawnWebGPUCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\browser-profile\\GrShaderCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\browser-profile\\ShaderCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\browser-profile-v2\\Default\\DawnGraphiteCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\browser-profile-v2\\Default\\DawnWebGPUCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\browser-profile-v2\\GrShaderCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\browser-profile-v2\\ShaderCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527382100\\DawnGraphiteCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527382100\\DawnWebGPUCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527382100\\GPUCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527382100\\ShaderCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527570160\\DawnGraphiteCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527570160\\DawnWebGPUCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527570160\\ShaderCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527671475\\DawnGraphiteCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527671475\\DawnWebGPUCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527671475\\ShaderCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527749668\\DawnGraphiteCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527749668\\DawnWebGPUCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527749668\\ShaderCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791528098196\\DawnGraphiteCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791528098196\\DawnWebGPUCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791528098196\\ShaderCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791528425370\\DawnGraphiteCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791528425370\\DawnWebGPUCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791528425370\\ShaderCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791531364384\\DawnGraphiteCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791531364384\\DawnWebGPUCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791531364384\\ShaderCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791531749747\\DawnGraphiteCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791531749747\\DawnWebGPUCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791531749747\\ShaderCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791545839426\\DawnGraphiteCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791545839426\\DawnWebGPUCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791545839426\\ShaderCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791546774038\\DawnGraphiteCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791546774038\\DawnWebGPUCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791546774038\\ShaderCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791552263462\\DawnGraphiteCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791552263462\\DawnWebGPUCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791552263462\\ShaderCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553085695\\DawnGraphiteCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553085695\\DawnWebGPUCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553085695\\GPUCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553085695\\ShaderCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553219893\\DawnGraphiteCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553219893\\DawnWebGPUCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553219893\\ShaderCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553602645\\DawnGraphiteCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553602645\\DawnWebGPUCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553602645\\ShaderCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791703974542\\DawnGraphiteCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791703974542\\DawnWebGPUCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791703974542\\ShaderCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791704405681\\DawnGraphiteCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791704405681\\DawnWebGPUCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791704405681\\ShaderCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791706995403\\DawnGraphiteCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791706995403\\DawnWebGPUCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791706995403\\ShaderCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791723514316\\DawnGraphiteCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791723514316\\DawnWebGPUCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791723514316\\ShaderCache",
+      "bytes": 557424,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\browser-profile-v2\\Default\\Code Cache",
+      "bytes": 444297,
+      "files": 26,
+      "decision": "disposable_browser_cache",
+      "proof": "Preserve entire Default except specific cache paths; preserve Local State and all Local Storage/IndexedDB/session data as possible draft evidence",
+      "rebuild": "Renderer caches regenerate on browser use; component downloads are optional browser data, unrelated to local native app"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791552263462\\Code Cache",
+      "bytes": 302690,
+      "files": 21,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791704405681\\Code Cache",
+      "bytes": 284167,
+      "files": 20,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791528098196\\Code Cache",
+      "bytes": 282426,
+      "files": 19,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791528425370\\Code Cache",
+      "bytes": 282426,
+      "files": 19,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527671475\\Code Cache",
+      "bytes": 279751,
+      "files": 16,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791723514316\\Code Cache",
+      "bytes": 263223,
+      "files": 21,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791703974542\\Code Cache",
+      "bytes": 262999,
+      "files": 21,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553219893\\Code Cache",
+      "bytes": 262834,
+      "files": 20,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553602645\\Code Cache",
+      "bytes": 261762,
+      "files": 20,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791706995403\\Code Cache",
+      "bytes": 261143,
+      "files": 21,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791531364384\\Code Cache",
+      "bytes": 258386,
+      "files": 20,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527749668\\Code Cache",
+      "bytes": 256647,
+      "files": 17,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527570160\\Code Cache",
+      "bytes": 256567,
+      "files": 17,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553085695\\Code Cache",
+      "bytes": 6670,
+      "files": 11,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527382100\\Code Cache",
+      "bytes": 2052,
+      "files": 5,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527382100\\Cache",
+      "bytes": 0,
+      "files": 0,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527382100\\GPUPersistentCache",
+      "bytes": 0,
+      "files": 3,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527570160\\GPUPersistentCache",
+      "bytes": 0,
+      "files": 3,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527671475\\GPUPersistentCache",
+      "bytes": 0,
+      "files": 3,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791527749668\\GPUPersistentCache",
+      "bytes": 0,
+      "files": 3,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791528098196\\GPUPersistentCache",
+      "bytes": 0,
+      "files": 3,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791528425370\\GPUPersistentCache",
+      "bytes": 0,
+      "files": 3,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791531364384\\GPUPersistentCache",
+      "bytes": 0,
+      "files": 3,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791531749747\\GPUPersistentCache",
+      "bytes": 0,
+      "files": 3,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791545839426\\GPUPersistentCache",
+      "bytes": 0,
+      "files": 3,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791546774038\\GPUPersistentCache",
+      "bytes": 0,
+      "files": 3,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791552263462\\GPUPersistentCache",
+      "bytes": 0,
+      "files": 3,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553085695\\GPUPersistentCache",
+      "bytes": 0,
+      "files": 3,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553219893\\GPUPersistentCache",
+      "bytes": 0,
+      "files": 3,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791553602645\\GPUPersistentCache",
+      "bytes": 0,
+      "files": 3,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791703974542\\GPUPersistentCache",
+      "bytes": 0,
+      "files": 3,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791704405681\\GPUPersistentCache",
+      "bytes": 0,
+      "files": 3,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791706995403\\GPUPersistentCache",
+      "bytes": 0,
+      "files": 3,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    },
+    {
+      "path": "artifacts\\desktop_test_1791723514316\\GPUPersistentCache",
+      "bytes": 0,
+      "files": 3,
+      "decision": "disposable_renderer_cache",
+      "proof": "desktop/tests/smoke.cjs creates isolated desktop_test timestamp root; desktop/main.cjs sets userData; outputs/training_data/logs/review drafts preserved",
+      "rebuild": "Generated by Electron automatically on next smoke run"
+    }
+  ],
+  "cache_candidate_bytes": 583806764,
+  "retained": [
+    {
+      "path": "artifacts/detector_improvement/clean_dataset",
+      "bytes": 3085473708,
+      "decision": "retain",
+      "reason": "Current multigame train/val lists reference these game1 images and corrected labels. Example image is same NTFS FileID as yolo_ball_game1; logical image bytes shared, deletion does not reclaim most listed bytes."
+    },
+    {
+      "path": "artifacts/scene_detector/dataset",
+      "bytes": 2135885811,
+      "decision": "retain",
+      "reason": "prepare_live_training.py166 references its image lists for scene adaptation. Preserve until frozen prepared-data contract is replaced."
+    },
+    {
+      "path": "artifacts/multigame",
+      "bytes": 1487637138,
+      "decision": "retain",
+      "reason": "Current yolo_ball_experiments default match_root and best.pt depend on this dataset, lists, and baseline checkpoint."
+    },
+    {
+      "path": "python_tools/dataset/yolo_ball_game1",
+      "bytes": 12156741061,
+      "decision": "retain",
+      "reason": "Original extracted dataset and labels are protected, hardlink targets of corrected clean dataset."
+    },
+    {
+      "path": "python_tools/dataset/images",
+      "bytes": 3050416546,
+      "decision": "retain",
+      "reason": "Original legacy extracted dataset/images; user requested preservation of original images and annotations. No exact duplicate or complete reproducibility proof established."
+    },
+    {
+      "path": "artifacts/temporal_recovery_v1 and v2",
+      "bytes": 1059476374,
+      "decision": "retain models, lineage and reports",
+      "reason": "Experimental candidate checkpoints and published recovery evidence preserved. train/val npz caches could be rebuilt but expensive and preparation source must remain available."
+    }
+  ],
+  "draft_preservation": "frontend training-review/page.tsx stores browser drafts in localStorage; desktop/draft-store.cjs stores native drafts in artifacts/desktop/review-drafts.json. Entire browser Default profile must not be deleted indiscriminately."
+}

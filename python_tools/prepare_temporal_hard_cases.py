@@ -9,6 +9,10 @@ from collections import deque
 import hashlib
 import json
 from pathlib import Path
+if __package__:
+    from .public_dataset_source import resolve_public_dataset_video
+else:
+    from public_dataset_source import resolve_public_dataset_video
 import shutil
 
 import cv2
@@ -40,7 +44,7 @@ def prepare(base, output, requests):
         if not selected:
             raise ValueError('No labeled detector-conditioned cases')
         needed = {fid-d for fid in selected for d in range(5)}
-        cap = cv2.VideoCapture(str(DATA/'raw_videos'/f'{game}.mp4'))
+        cap = cv2.VideoCapture(str(resolve_public_dataset_video(game)))
         if not cap.isOpened() or not cap.set(cv2.CAP_PROP_POS_FRAMES, min(needed)-1):
             raise RuntimeError('Cannot decode training video')
         frames = deque(maxlen=5)

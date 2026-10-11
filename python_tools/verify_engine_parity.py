@@ -1,4 +1,8 @@
 import json
+if __package__:
+    from .public_dataset_source import resolve_public_dataset_video
+else:
+    from public_dataset_source import resolve_public_dataset_video
 import os
 import cv2
 import torch
@@ -47,7 +51,7 @@ def test_pytorch_vs_trt_parity():
 
     print(f"Loaded ONNX Model    : {onnx_path}")
 
-    video_path = "python_tools/dataset/raw_videos/test_1.mp4"
+    video_path = str(resolve_public_dataset_video("test_1"))
     ball_json_path = "python_tools/dataset/raw_markup/test_1/ball_markup.json"
 
     with open(ball_json_path, 'r') as f:

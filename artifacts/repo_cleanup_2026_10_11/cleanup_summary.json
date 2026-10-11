@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "measured_at_utc": "2026-10-11T18:31:35.0728742Z",
+  "task": "Repository cleanup and original-recording relocation",
+  "complete": true,
+  "removed_logical_bytes": 12895148835.0,
+  "removed_logical_gib": 12.009543213061988,
+  "storage_before_scan_bytes": 74859899703,
+  "next_caches_removed_before_initial_full_scan_bytes": 451768311,
+  "storage_before_reconstructed_bytes": 75311668014,
+  "storage_after_scan_bytes": 62442983700,
+  "storage_after_scan_gib": 58.15456034615636,
+  "disk_free_after_bytes": 12902629376,
+  "original_recordings_preserved": 29,
+  "preservation_mismatches": 0,
+  "raw_diagnostics_verified": 342,
+  "raw_diagnostics_deduplicated": 0,
+  "tests": {
+    "inventory": 38,
+    "public_source_resolver": 11,
+    "optional_dedup_safety": 16,
+    "python_files_compiled": 25,
+    "native_build_passed": true,
+    "native_one_frame_simulation_passed": true,
+    "repository_diff_check_passed": true
+  },
+  "original_recordings_deleted": 0,
+  "trained_or_promoted_models": 0,
+  "report": "REPOSITORY_CLEANUP_2026_10_11.md",
+  "limits": [
+    "Logical sizes count hardlinked paths separately",
+    "Protected metadata and reparse targets excluded",
+    "Actual free space also reflects other filesystem activity",
+    "No model accuracy, full recording, live camera, native picker or soak acceptance claim"
+  ]
+}

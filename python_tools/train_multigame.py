@@ -1,5 +1,9 @@
 """Add a second training match while keeping every test sequence held out."""
 from pathlib import Path
+if __package__:
+    from .public_dataset_source import resolve_public_dataset_video
+else:
+    from public_dataset_source import resolve_public_dataset_video
 import sys
 import json
 import os
@@ -19,7 +23,7 @@ if __name__ == '__main__':
         for image in (ROOT / f'artifacts/detector_improvement/clean_dataset/images/{split}').glob('*.jpg'):
             lists[split].append(image.resolve().as_posix())
     labels = json.loads((ROOT / 'python_tools/dataset/raw_markup/game_2/ball_markup.json').read_text())
-    video = ROOT / 'python_tools/dataset/raw_videos/game_2.mp4'
+    video = resolve_public_dataset_video('game_2')
     cap = cv2.VideoCapture(str(video))
     if not cap.isOpened():
         raise RuntimeError(f'Video not readable: {video}')

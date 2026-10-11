@@ -1,10 +1,14 @@
 import cv2
+if __package__:
+    from .public_dataset_source import resolve_public_dataset_video
+else:
+    from public_dataset_source import resolve_public_dataset_video
 import json
 import numpy as np
 import onnxruntime as ort
 
 def main():
-    video_path = "python_tools/dataset/raw_videos/test_1.mp4"
+    video_path = str(resolve_public_dataset_video("test_1"))
     ball_json_path = "python_tools/dataset/raw_markup/test_1/ball_markup.json"
     onnx_path = "models/yolov11_ttgames.onnx"
 

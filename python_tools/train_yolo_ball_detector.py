@@ -1,4 +1,8 @@
 import sys
+if __package__:
+    from .public_dataset_source import resolve_public_dataset_video
+else:
+    from public_dataset_source import resolve_public_dataset_video
 import types
 import os
 import json
@@ -72,7 +76,7 @@ def eval_on_test1(weights_path=None, imgsz=640):
     print("=========================================================================")
 
     model = YOLO(weights_path)
-    video_path = "python_tools/dataset/raw_videos/test_1.mp4"
+    video_path = str(resolve_public_dataset_video("test_1"))
     json_path = "python_tools/dataset/raw_markup/test_1/ball_markup.json"
 
     if not os.path.exists(video_path) or not os.path.exists(json_path):

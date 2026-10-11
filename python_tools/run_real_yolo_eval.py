@@ -1,4 +1,8 @@
 import os
+if __package__:
+    from .public_dataset_source import resolve_public_dataset_video
+else:
+    from public_dataset_source import resolve_public_dataset_video
 import cv2
 import json
 import numpy as np
@@ -17,7 +21,7 @@ def run_onnx_inference_on_test1():
     print(f"Model Input Name: {input_name} | Shape: {session.get_inputs()[0].shape}")
 
     json_path = "python_tools/dataset/raw_markup/test_1/ball_markup.json"
-    video_path = "python_tools/dataset/raw_videos/test_1.mp4"
+    video_path = str(resolve_public_dataset_video("test_1"))
     if not os.path.exists(json_path) or not os.path.exists(video_path):
         print("Error: Missing test_1 video or markup file.")
         return

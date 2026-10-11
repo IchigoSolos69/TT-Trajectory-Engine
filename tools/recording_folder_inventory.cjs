@@ -54,37 +54,81 @@ async function videoFiles(directory){
   }
   return files;
 }
-async function inventory({downloads,captures,mixedMatchHighlights=false,priorExposure=new Map(),onFile=()=>{}}){
+async function inventory({downloads,recordingsRoot,captures,mixedMatchHighlights=false,mixedMatchHashes,priorExposure=new Map(),onFile=()=>{}}){
+  const scanRoot=recordingsRoot??downloads;
+  if(typeof scanRoot!=='string'||!scanRoot.trim())throw Error('A recordings root is required');
+  if(mixedMatchHashes!==undefined&&(!(mixedMatchHashes instanceof Set)||[...mixedMatchHashes].some(hash=>!/^[0-9a-f]{64}$/.test(hash))))throw Error('Invalid confirmed compilation SHA identities');
+  if(mixedMatchHighlights&&mixedMatchHashes!==undefined)throw Error('Choose either global mixed-match classification or a confirmed compilation manifest');
   const known=await knownSources(captures),rows=[],sources={};
   for(const [folder,requested_role]of roles){
-    const directory=path.join(downloads,folder);
+    const directory=path.join(scanRoot,folder);
     for(const file of await videoFiles(directory)){
       const before=await fsp.stat(file),hash=await sha(file),after=await fsp.stat(file);
       if(before.size!==after.size||before.mtimeMs!==after.mtimeMs)throw Error('File changed during hash audit: '+file);
       const imports=known.get(hash)??[],sessions=[...new Set(imports.map(item=>item.session_id).filter(Boolean))];
       const category=path.relative(directory,file).split(path.sep)[0];
       const folderDomain=category==='iphone'?'iphone':category==='world_cup'?'match':null;
+      const mixedMatch=(folderDomain==='match'&&mixedMatchHighlights)||(mixedMatchHashes?.has(hash)??false);
       const knownDevelopment=sessions.includes('iphone_same_venue_session_1'),exposure=priorExposure.get(hash)??[];
       const reasons=[];
       if(knownDevelopment&&requested_role!=='train')reasons.push('SAME_IPHONE_SESSION_CROSS_FOLDER');
-      if(folderDomain==='match'&&mixedMatchHighlights)reasons.push('MIXED_MATCH_COMPILATION_NOT_INDEPENDENT');
+      if(mixedMatch)reasons.push('MIXED_MATCH_COMPILATION_NOT_INDEPENDENT');
       if(exposure.length&&requested_role==='test')reasons.push('PREVIOUSLY_EXPOSED_SOURCE_NOT_BLIND_TEST');
       if(imports.some(item=>item.sealed)&&requested_role!=='test')reasons.push('SEALED_SOURCE_DEVELOPMENT_ALIAS');
       if(knownDevelopment&&folderDomain==='match')reasons.push('FOLDER_DOMAIN_CONFLICTS_WITH_KNOWN_SESSION');
-      rows.push({path:file,relative_path:path.relative(downloads,file),sha256:hash,bytes:after.size,source_mtime_ms:after.mtimeMs,
+      rows.push({path:file,relative_path:path.relative(scanRoot,file),sha256:hash,bytes:after.size,source_mtime_ms:after.mtimeMs,
         requested_role,folder_declared_domain:folderDomain,matching_imports:imports,known_session_ids:sessions,
         effective_role:knownDevelopment?'train':'unassigned',independent_release_evidence:false,
-        mixed_match_highlights:folderDomain==='match'&&mixedMatchHighlights,prior_development_evidence:exposure,
+        mixed_match_highlights:mixedMatch,prior_development_evidence:exposure,
         reason_codes:reasons,reason:knownDevelopment?'Previously reviewed same-session development footage; folder movement cannot establish independent validation/test':
-          folderDomain==='match'&&mixedMatchHighlights?'User-declared mixed-match highlights; review and duplicate/source audit required for training/development, excluded from independent validation/test':
+          mixedMatch?'User-declared mixed-match highlights; review and duplicate/source audit required for training/development, excluded from independent validation/test':
           'Source/session/device provenance and reviewed labels still required'});
       if(imports.length)sources[hash]={paths:[...(sources[hash]?.paths??[]),file],reverified_at:new Date().toISOString()};
-      onFile({file,relative_path:path.relative(downloads,file),known_original:imports.length>0});
+      onFile({file,relative_path:path.relative(scanRoot,file),known_original:imports.length>0});
     }
   }
   const byHash=new Map();for(const row of rows){const list=byHash.get(row.sha256)??[];list.push(row);byHash.set(row.sha256,list);}
   return {rows,sources,exact_cross_split_duplicates:[...byHash].filter(([,list])=>new Set(list.map(row=>row.requested_role)).size>1)
     .map(([sha256,list])=>({sha256,paths:list.map(row=>row.path),requested_roles:[...new Set(list.map(row=>row.requested_role))]}))};
+}
+const usage='Usage: node tools/audit_recording_folders.cjs NEW_REPORT.json [--recordings-root PATH] [--update-source-locations] [--mixed-match-highlights | --mixed-match-manifest FILE]';
+function parseInventoryArgs(argv,{defaultRecordingsRoot=path.join(process.env.USERPROFILE??process.cwd(),'Downloads')}={}){
+  const [destination,...args]=argv;
+  if(typeof destination!=='string'||!destination.trim()||destination.startsWith('--'))throw Error(usage);
+  const parsed={destination:path.resolve(destination),recordingsRoot:path.resolve(defaultRecordingsRoot),updateSourceLocations:false,mixedMatchHighlights:false,mixedMatchManifest:null},seen=new Set();
+  for(let i=0;i<args.length;i++){
+    const option=args[i];
+    if(!['--recordings-root','--update-source-locations','--mixed-match-highlights','--mixed-match-manifest'].includes(option)||seen.has(option))throw Error(usage+'; unknown or repeated option: '+option);
+    seen.add(option);
+    if(option==='--update-source-locations')parsed.updateSourceLocations=true;
+    else if(option==='--mixed-match-highlights')parsed.mixedMatchHighlights=true;
+    else{
+      const value=args[++i];
+      if(typeof value!=='string'||!value.trim()||value.startsWith('--'))throw Error(usage+'; missing value for '+option);
+      if(option==='--recordings-root')parsed.recordingsRoot=path.resolve(value);
+      else parsed.mixedMatchManifest=path.resolve(value);
+    }
+  }
+  if(parsed.mixedMatchHighlights&&parsed.mixedMatchManifest)throw Error(usage+'; classification options are mutually exclusive');
+  return parsed;
+}
+function compilationHashesFromManifest(bytes){
+  let value;try{value=JSON.parse(bytes);}catch(error){throw Error('Malformed compilation manifest JSON: '+error.message);}
+  if(!value||value.schema_version!==1||!Array.isArray(value.rows))throw Error('Invalid compilation manifest: expected schema_version 1 and rows');
+  const hashes=new Set(),declared=new Map();
+  for(const row of value.rows){
+    if(!row||typeof row!=='object'||Array.isArray(row)||!/^[0-9a-f]{64}$/.test(row.sha256??'')||(row.mixed_match_highlights!==undefined&&typeof row.mixed_match_highlights!=='boolean'))throw Error('Invalid compilation manifest row');
+    if(row.mixed_match_highlights===undefined)continue;
+    if(declared.has(row.sha256)&&declared.get(row.sha256)!==row.mixed_match_highlights)throw Error('Conflicting compilation declarations for the same SHA identity');
+    declared.set(row.sha256,row.mixed_match_highlights);
+    if(row.mixed_match_highlights===true)hashes.add(row.sha256);
+  }
+  return hashes;
+}
+async function loadMixedMatchManifest(file){
+  const absolute=path.resolve(file),bytes=await ownedFile(path.dirname(absolute),path.basename(absolute));
+  const hashes=compilationHashesFromManifest(bytes);
+  return {hashes,provenance:{path:absolute,sha256:digest(bytes),confirmed_hash_count:hashes.size}};
 }
 function mergedLocations(previous,sources){
   if(previous&&(previous.schema_version!==1||!previous.sources||typeof previous.sources!=='object'||Array.isArray(previous.sources)))throw Error('Invalid existing source resolver');
@@ -122,18 +166,20 @@ async function priorExposure(){
   return result;
 }
 async function main(){
-  const [destination,...options]=process.argv.slice(2);
-  if(!destination||fs.existsSync(destination)||options.some(option=>!['--update-source-locations','--mixed-match-highlights'].includes(option)))throw Error('Usage: node tools/audit_recording_folders.cjs NEW_REPORT.json [--update-source-locations] [--mixed-match-highlights]');
-  const captures=path.join(root,'training_data/live'),downloads=path.join(process.env.USERPROFILE,'Downloads');
-  const {rows,sources,exact_cross_split_duplicates}=await inventory({downloads,captures,mixedMatchHighlights:options.includes('--mixed-match-highlights'),priorExposure:await priorExposure(),onFile:row=>console.log(row.relative_path+': '+(row.known_original?'known original matched':'new/unassigned'))});
-  const locations=await writeLocations({captures,sources,backup:path.resolve(destination).replace(/\.json$/i,'')+'.source_locations.before.json',update:options.includes('--update-source-locations')});
+  const options=parseInventoryArgs(process.argv.slice(2)),destination=options.destination;
+  if(fs.existsSync(destination))throw Error('Inventory report already exists; preserve it and choose a new report path');
+  const captures=path.join(root,'training_data/live'),compilations=options.mixedMatchManifest?await loadMixedMatchManifest(options.mixedMatchManifest):null;
+  const {rows,sources,exact_cross_split_duplicates}=await inventory({recordingsRoot:options.recordingsRoot,captures,mixedMatchHighlights:options.mixedMatchHighlights,mixedMatchHashes:compilations?.hashes,priorExposure:await priorExposure(),onFile:row=>console.log(row.relative_path+': '+(row.known_original?'known original matched':'new/unassigned'))});
+  const locations=await writeLocations({captures,sources,backup:destination.replace(/\.json$/i,'')+'.source_locations.before.json',update:options.updateSourceLocations});
   const report={schema_version:1,created_at:new Date().toISOString(),scope:'Recursive source-byte identity audit only; no video decoding, sealed labels/results, annotations or dataset assignment changed',
     rows,source_locations_path:locations.path,source_locations_sha256:locations.sha256,source_locations_migration:locations,
     existing_originals_relocated:Object.keys(sources).length,known_session_split_conflicts:rows.filter(row=>row.reason_codes.includes('SAME_IPHONE_SESSION_CROSS_FOLDER')).length,
     exact_cross_split_duplicates,folder_counts:Object.fromEntries(roles.map(([,role])=>[role,rows.filter(row=>row.requested_role===role).length])),
-    mixed_match_highlights_declared:options.includes('--mixed-match-highlights'),production_labels_modified:false,dataset_partitions_modified:false,ready_for_training:false};
+    recordings_root:options.recordingsRoot,mixed_match_compilation_manifest:compilations?.provenance??null,
+    mixed_match_classification_mode:compilations?'confirmed_sha_manifest':options.mixedMatchHighlights?'all_folder_declared_match':'none',
+    mixed_match_highlights_declared:options.mixedMatchHighlights,production_labels_modified:false,dataset_partitions_modified:false,ready_for_training:false};
   await fsp.writeFile(destination,JSON.stringify(report,null,2)+'\n',{flag:'wx'});
   console.log(JSON.stringify({files:rows.length,reconnected_originals:report.existing_originals_relocated,same_session_split_conflicts:report.known_session_split_conflicts,folder_counts:report.folder_counts,ready_for_training:false}));
 }
-module.exports={inventory,mergedLocations,writeLocations,videoFiles,main};
+module.exports={inventory,mergedLocations,writeLocations,videoFiles,parseInventoryArgs,compilationHashesFromManifest,loadMixedMatchManifest,main};
 if(require.main===module)main().catch(error=>{console.error(error.stack);process.exitCode=1;});

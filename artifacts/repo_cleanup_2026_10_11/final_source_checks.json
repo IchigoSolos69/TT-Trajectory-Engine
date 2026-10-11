@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "checked": true,
+  "diff_check_exit": 0,
+  "forced_autocrlf_false_exit": 2,
+  "forced_autocrlf_false_log": "diff_check_crlf_false.log",
+  "launcher_targets": [
+    {
+      "path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\desktop\\dist\\TT Trajectory Engine paired training v2\\TT Trajectory Engine.exe",
+      "exists": true
+    },
+    {
+      "path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\desktop\\dist\\TT Trajectory Engine paired training v1\\TT Trajectory Engine.exe",
+      "exists": true
+    },
+    {
+      "path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\desktop\\node_modules\\electron\\dist\\electron.exe",
+      "exists": true
+    }
+  ],
+  "scope": "Repository-configured diff check and static launcher target existence; no application or camera launch"
+}

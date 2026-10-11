@@ -1,0 +1,29 @@
+{
+  "obsolete_releases_reparse_points": [],
+  "total_reclaimable_release_bytes": 6286085964,
+  "public_video_bytes": 5572649632,
+  "public_video_decision": "Remove only after root proves SHA256 equality with nested original; native fallback and Python compatibility uses raw_videos, never public copy",
+  "retain_build_trees_reason": "Implementation continues; about 79 MB of native and frontend build outputs remain outside node_modules; rebuilds would consume time/storage and packaging uses .next-desktop",
+  "no_frontend_video_reference": true,
+  "hardcoded_flat_source_scripts": [
+    "python_tools\\analyze_204_bounces.py",
+    "python_tools\\compare_preprocessing.py",
+    "python_tools\\dump_frame_1672_raw_tensors.py",
+    "python_tools\\fast_render_fp_overlays.py",
+    "python_tools\\frame_shift_sweep.py",
+    "python_tools\\improve_detector.py",
+    "python_tools\\make_replay_fixture.py",
+    "python_tools\\measure_decode_latency.py",
+    "python_tools\\overlay_fp_bounces.py",
+    "python_tools\\prepare_test1_data.py",
+    "python_tools\\prepare_yolo_data.py",
+    "python_tools\\prepare_yolo_game1.py",
+    "python_tools\\print_side_by_side_detections.py",
+    "python_tools\\run_real_yolo_eval.py",
+    "python_tools\\train_multigame.py",
+    "python_tools\\train_yolo_ball_detector.py",
+    "python_tools\\verify_engine_parity.py",
+    "python_tools\\verify_engine_parity_fast.py",
+    "python_tools\\verify_gt_overlay_5frames.py"
+  ]
+}

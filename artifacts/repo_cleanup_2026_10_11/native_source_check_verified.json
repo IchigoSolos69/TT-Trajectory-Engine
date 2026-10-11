@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "verified": true,
+  "source_path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\python_tools\\dataset\\raw_videos\\training\\world_cup\\game_1.mp4",
+  "source_sha256": "1297b3db91f2e3e160337643695dff07eabf9785ea2d88c2f7b59687ba511148",
+  "mode": "simulation",
+  "camera_active": false,
+  "frame_id": 1,
+  "source_dimensions": [
+    1920,
+    1080
+  ],
+  "analyzed_frames": 1,
+  "status": "PARTIAL",
+  "native_executable_sha256": "b90ec21803594740d7c0aab75b2a0eee591e9fb0eaccce0eb167b45fc0361710",
+  "log": "artifacts/repo_cleanup_2026_10_11/native_source_check_v3.log",
+  "limits": [
+    "One-frame simulation smoke check only",
+    "Not complete-recording, model-accuracy, live-camera or latency acceptance"
+  ]
+}

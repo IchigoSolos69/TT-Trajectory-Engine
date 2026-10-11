@@ -5,6 +5,10 @@ not assigned player identities. Chronological split with one-second exclusion.
 No test_* footage is used. This model is not a camera calibration oracle.
 """
 from pathlib import Path
+if __package__:
+    from .public_dataset_source import resolve_public_dataset_video
+else:
+    from public_dataset_source import resolve_public_dataset_video
 import sys
 import json
 
@@ -26,7 +30,7 @@ def prepare():
         paths = sorted(masks.glob('*.png'), key=lambda p: int(p.stem))[::3]
         if not paths:
             continue
-        cap = cv2.VideoCapture(str(ROOT / f'python_tools/dataset/raw_videos/{game}.mp4'))
+        cap = cv2.VideoCapture(str(resolve_public_dataset_video(game)))
         if not cap.isOpened():
             raise RuntimeError(f'Cannot decode {game}')
         cutoff = int(cap.get(cv2.CAP_PROP_FRAME_COUNT) * .8)

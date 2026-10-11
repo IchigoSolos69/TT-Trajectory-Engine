@@ -1,0 +1,8 @@
+{
+  "path": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\frontend\\public\\game_1.mp4",
+  "bytes": 5572649632,
+  "removed": true,
+  "retained_original": "C:\\Users\\Adi\\Documents\\GitHub\\TT Trajectory Engine\\python_tools\\dataset\\raw_videos\\training\\world_cup\\game_1.mp4",
+  "sha256": "1297b3db91f2e3e160337643695dff07eabf9785ea2d88c2f7b59687ba511148",
+  "reason": "Unused exact-byte frontend video duplicate"
+}

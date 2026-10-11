@@ -1,4 +1,8 @@
 import cv2
+if __package__:
+    from .public_dataset_source import resolve_public_dataset_video
+else:
+    from public_dataset_source import resolve_public_dataset_video
 import time
 import numpy as np
 import os
@@ -55,4 +59,4 @@ def measure_clip_decode(video_path):
     print(f"  Min : {min_t:.3f} ms")
 
 if __name__ == "__main__":
-    measure_clip_decode("python_tools/dataset/raw_videos/test_1.mp4")
+    measure_clip_decode(str(resolve_public_dataset_video("test_1")))

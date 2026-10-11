@@ -6,7 +6,7 @@ const fs = require('node:fs');
 const fsp = fs.promises;
 const path = require('node:path');
 const crypto = require('node:crypto');
-const {inventory, mergedLocations, writeLocations, videoFiles} = require('../recording_folder_inventory.cjs');
+const {inventory, mergedLocations, writeLocations, videoFiles, parseInventoryArgs, compilationHashesFromManifest, loadMixedMatchManifest} = require('../recording_folder_inventory.cjs');
 const artifacts = path.resolve(__dirname, '../../artifacts');
 const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const phone = 'phone_0123456789abcdef_1';
@@ -37,6 +37,76 @@ async function capture(captures, name, bytes, session = 'iphone_same_venue_sessi
   await json(captures, name + '/capture.json', {original_sha256: sha(bytes), original_path: path.join(captures, 'old source.mov'), session_id: session});
   return write(captures, name + '/annotations.json', 'unchanged annotation draft\n');
 }
+
+test('validated CLI parsing preserves the Downloads default and supports an arbitrary recordings root', () => {
+  const defaultRoot = path.resolve('fixture home', 'Downloads');
+  const defaults = parseInventoryArgs(['new report.json'], {defaultRecordingsRoot: defaultRoot});
+  assert.equal(defaults.recordingsRoot, defaultRoot);
+  assert.equal(defaults.destination, path.resolve('new report.json'));
+  assert.equal(defaults.updateSourceLocations, false);
+  const selected = parseInventoryArgs(['new report.json', '--recordings-root', 'python_tools/dataset/raw_videos', '--update-source-locations', '--mixed-match-manifest', 'old confirmed report.json'], {defaultRecordingsRoot: defaultRoot});
+  assert.equal(selected.recordingsRoot, path.resolve('python_tools/dataset/raw_videos'));
+  assert.equal(selected.mixedMatchManifest, path.resolve('old confirmed report.json'));
+  assert.equal(selected.updateSourceLocations, true);
+  assert.equal(selected.mixedMatchHighlights, false);
+  assert.equal(parseInventoryArgs(['report.json', '--mixed-match-highlights']).mixedMatchHighlights, true);
+});
+
+test('CLI rejects missing values, unknown or repeated flags and contradictory compilation options', () => {
+  for (const args of [[], ['--recordings-root', 'data'], ['r.json', '--recordings-root'], ['r.json', '--mixed-match-manifest'], ['r.json', '--recordings-root', '--update-source-locations'], ['r.json', '--mixed-match-manifest', ''], ['r.json', '--junk'], ['r.json', '--update-source-locations', '--update-source-locations'], ['r.json', '--recordings-root', 'a', '--recordings-root', 'b']]) {
+    assert.throws(() => parseInventoryArgs(args), /Usage:/);
+  }
+  assert.throws(() => parseInventoryArgs(['r.json', '--mixed-match-highlights', '--mixed-match-manifest', 'm.json']), /mutually exclusive/);
+});
+
+test('compilation manifest admits only explicit true SHA identities and deduplicates repeated sources', () => {
+  const confirmed = sha('known mixed compilation'), original = sha('established full match');
+  const hashes = compilationHashesFromManifest(JSON.stringify({schema_version: 1, rows: [{sha256: confirmed, mixed_match_highlights: true, path: 'old unavailable filename.mp4'}, {sha256: confirmed, mixed_match_highlights: true}, {sha256: original, mixed_match_highlights: false}, {sha256: sha('unknown')}]}));
+  assert.deepEqual([...hashes], [confirmed]);
+  assert.equal(hashes.has(original), false);
+});
+
+test('malformed compilation declarations fail before inventory rather than implying a global classification', () => {
+  for (const value of ['{broken', 'null', JSON.stringify({schema_version: 2, rows: []}), JSON.stringify({schema_version: 1}), JSON.stringify({schema_version: 1, rows: [null]}), JSON.stringify({schema_version: 1, rows: [{sha256: 'not a hash', mixed_match_highlights: true}]}), JSON.stringify({schema_version: 1, rows: [{sha256: sha('x'), mixed_match_highlights: 'true'}]})]) {
+    assert.throws(() => compilationHashesFromManifest(value), /manifest/i);
+  }
+  assert.throws(() => compilationHashesFromManifest(JSON.stringify({schema_version: 1, rows: [{sha256: sha('x'), mixed_match_highlights: true}, {sha256: sha('x'), mixed_match_highlights: false}]})), /Conflicting/);
+});
+
+test('manifest loading binds exact bytes and canonical file path without opening any named video paths', async t => {
+  const f = await fixture(t), confirmed = sha('compiled footage');
+  const file = await json(f.directory, 'confirmed historical audit.json', {schema_version: 1, rows: [{sha256: confirmed, mixed_match_highlights: true, path: path.join(f.directory, 'nonexistent.mp4')}]});
+  const bytes = await fsp.readFile(file), loaded = await loadMixedMatchManifest(file);
+  assert.deepEqual([...loaded.hashes], [confirmed]);
+  assert.deepEqual(loaded.provenance, {path: path.resolve(file), sha256: sha(bytes), confirmed_hash_count: 1});
+  assert.deepEqual(await fsp.readFile(file), bytes);
+});
+
+test('arbitrary recordings root classifies relocated confirmed bytes while leaving new full-match sources unclassified', async t => {
+  const f = await fixture(t), recordingsRoot = path.join(f.directory, 'dataset', 'raw_videos');
+  for (const role of ['training', 'validation', 'seal']) await fsp.mkdir(path.join(recordingsRoot, role), {recursive: true});
+  await write(recordingsRoot, 'validation/world_cup/renamed compilation.mp4', 'historical highlights');
+  for (const name of ['game_1', 'game_2', 'test_1', 'test_2']) await write(recordingsRoot, 'training/world_cup/' + name + '.mp4', name + ' complete source bytes');
+  // A misleading same name with different bytes is a new source, not a known compilation.
+  await write(recordingsRoot, 'seal/world_cup/old compilation name.mp4', 'new complete source');
+  await write(f.downloads, 'training/world_cup/ignored default.mp4', 'default should not be scanned');
+  const result = await inventory({...f, recordingsRoot, mixedMatchHashes: new Set([sha('historical highlights')])});
+  assert.equal(result.rows.length, 6);
+  const compiled = result.rows.filter(row => row.mixed_match_highlights);
+  assert.equal(compiled.length, 1);
+  assert.equal(compiled[0].sha256, sha('historical highlights'));
+  assert.equal(compiled[0].relative_path, path.join('validation', 'world_cup', 'renamed compilation.mp4'));
+  assert.ok(compiled[0].reason_codes.includes('MIXED_MATCH_COMPILATION_NOT_INDEPENDENT'));
+  for (const row of result.rows.filter(row => !row.mixed_match_highlights)) assert.equal(row.reason_codes.includes('MIXED_MATCH_COMPILATION_NOT_INDEPENDENT'), false);
+  assert.equal(result.rows.every(row => row.independent_release_evidence === false), true);
+});
+
+test('inventory rejects invalid or competing direct compilation identity configurations', async t => {
+  const f = await fixture(t);
+  await assert.rejects(inventory({...f, mixedMatchHashes: ['not a Set']}), /Invalid confirmed/);
+  await assert.rejects(inventory({...f, mixedMatchHashes: new Set(['invalid hash'])}), /Invalid confirmed/);
+  await assert.rejects(inventory({...f, mixedMatchHighlights: true, mixedMatchHashes: new Set()}), /Choose either/);
+});
 
 test('recursively inventories Unicode and space paths without treating non-videos as footage', async t => {
   const f = await fixture(t);

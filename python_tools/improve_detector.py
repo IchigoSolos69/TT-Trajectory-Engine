@@ -8,6 +8,10 @@ import hashlib
 import json
 import sys
 from pathlib import Path
+if __package__:
+    from .public_dataset_source import resolve_public_dataset_video, registered_public_dataset_videos
+else:
+    from public_dataset_source import resolve_public_dataset_video, registered_public_dataset_videos
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / 'python_tools/dataset'
@@ -41,7 +45,7 @@ def prepare():
     import cv2
     OUTPUT.mkdir(parents=True, exist_ok=True)
     markup = json.loads((DATA / 'raw_markup/game_1/ball_markup.json').read_text())
-    cap = cv2.VideoCapture(str(DATA / 'raw_videos/game_1.mp4'))
+    cap = cv2.VideoCapture(str(resolve_public_dataset_video('game_1')))
     if not cap.isOpened():
         raise RuntimeError('Cannot open game_1 dataset video')
     total = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -142,7 +146,7 @@ def audit():
               'opencv': cv2.__version__, 'cuda': torch.cuda.is_available(), 'videos': {}}
     if torch.cuda.is_available():
         report['gpu'] = torch.cuda.get_device_name(0)
-    for path in sorted((DATA / 'raw_videos').glob('*.mp4')):
+    for path in registered_public_dataset_videos():
         cap = cv2.VideoCapture(str(path))
         markup = json.loads((DATA / 'raw_markup' / path.stem / 'ball_markup.json').read_text())
         statuses = [annotation_status(v) for v in markup.values()]
