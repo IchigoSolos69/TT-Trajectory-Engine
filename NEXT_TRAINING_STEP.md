@@ -1,5 +1,18 @@
 # Training handoff after the completed reviews — October 10, 2026
 
+October 12 update: both Video Project 6 review batches are now registered as
+existing iPhone training from the original session, following the user's device
+confirmation. All 868 capture-tree files were preserved and reverified. The fresh
+strict audit counts **128 eligible visible frames and 293 absences**, zero PC
+camera/independent validation examples, and zero positive windows from new A.
+Seven duplicate disagreements and two unknown-visibility labels remain excluded;
+17 data/export blockers keep fitting disabled. Sealed labels were not consumed.
+See [current collection and training steps](TRAINING_NEXT_ACTIONS_2026_10_12.md),
+[the focused review queue](TRAINING_REVIEW_QUEUE_2026_10_12.md), and
+`artifacts/yolo_paired_training_plan_2026_10_12_v2.json`.
+Earlier structural counts and unassigned-session snapshots below remain
+historical evidence; they are not the current paired-training readiness count.
+
 October 11 update: the approved paired-camera YOLO runner now supersedes the
 older minimum-input fitting safeguards below. See
 [current implementation and data audit](YOLO_UPGRADE_IMPLEMENTATION_2026_10_11.md)
